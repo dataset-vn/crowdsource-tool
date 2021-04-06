@@ -115,7 +115,7 @@ export const PeoplePage = () => {
 
           <Space>
             <Button icon={<LsPlus/>} primary onClick={showInvitationModal}>
-              Add People
+              Thêm thành viên
             </Button>
           </Space>
         </Space>

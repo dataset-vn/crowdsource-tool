@@ -44,8 +44,8 @@ export const PeopleList = ({onSelect, selectedUser, defaultSelected}) => {
           <Elem name="header">
             <Elem name="column" mix="avatar"/>
             <Elem name="column" mix="email">Email</Elem>
-            <Elem name="column" mix="name">Name</Elem>
-            <Elem name="column" mix="last-activity">Last Activity</Elem>
+            <Elem name="column" mix="name">Tên</Elem>
+            <Elem name="column" mix="last-activity">Hoạt động</Elem>
           </Elem>
           <Elem name="body">
             {usersList.map(({user}) => {

@@ -122,7 +122,7 @@ export const Menubar = ({
             closeOnClickOutside={!sidebarPinned}
           >
             <div className={`${menubarClass.elem('trigger')} main-menu-trigger`}>
-              <img src={absoluteURL("/static/icons/logo-black.svg")} alt="Label Studio Logo" height="22"/>
+              <img src={absoluteURL("/static/icons/logodataset.svg")} alt="Label Studio Logo" height="22"/>
               <Hamburger opened={sidebarOpened}/>
             </div>
           </Dropdown.Trigger>
@@ -169,14 +169,14 @@ export const Menubar = ({
             >
               <Menu>
                 <Menu.Item
-                  label="Projects"
+                  label="Dự án"
                   to="/projects"
                   icon={<IconFolder/>}
                   data-external
                   exact
                 />
                 <Menu.Item
-                  label="People"
+                  label="Thành viên"
                   to="/people"
                   icon={<IconPersonInCircle/>}
                   data-external
