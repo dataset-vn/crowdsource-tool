@@ -7,17 +7,17 @@
   <head>
       <% var titlePrefix;
           if (isBlog) {
-            titlePrefix = 'Label Studio Blog';
+            titlePrefix = 'Dataset Blog';
           } else if (isGuide) {
-            titlePrefix = 'Label Studio Documentation';
+            titlePrefix = 'Dataset Documentation';
           } else {
-            titlePrefix = 'Label Studio';
+            titlePrefix = 'Dataset';
           }
       %>
       <% if (page.meta_title) { %>
       <title><%- titlePrefix + ' — ' + page.meta_title %></title>
       <% } else { %>
-      <title><%- page.title ? page.title + ' — ' : titlePrefix %>Label Studio — Data Labeling</title>
+      <title><%- page.title ? page.title + ' — ' : titlePrefix %>Dataset — Data Labeling</title>
       <% } %>
       <meta charset="utf-8">
       <meta name="description" content="<%- page.meta_description ? page.meta_description : theme.site_description %>">

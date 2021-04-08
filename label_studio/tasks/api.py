@@ -43,7 +43,7 @@ class TaskListAPI(generics.ListCreateAPIView):
     post:
     Create task
 
-    Create a new labeling task in Label Studio.
+    Create a new labeling task in Dataset.
     """
     parser_classes = (JSONParser, FormParser, MultiPartParser)
     permission_classes = (IsAuthenticated, )
@@ -82,7 +82,7 @@ class TaskAPI(generics.RetrieveUpdateDestroyAPIView):
     delete:
     Delete task
 
-    Delete a task in Label Studio. This action cannot be undone!
+    Delete a task in Dataset. This action cannot be undone!
     """
     parser_classes = (JSONParser, FormParser, MultiPartParser)
     permission_classes = (IsAuthenticated, )

@@ -3,7 +3,7 @@ title: List
 type: tags
 order: 411
 meta_title: List Tags for Lists
-meta_description: Label Studio List Tags customize Label Studio with lists for machine learning and data science projects.
+meta_description: Dataset List Tags customize Dataset with lists for machine learning and data science projects.
 ---
 
 List element, used for ranking results. Great choice for recomendation systems.

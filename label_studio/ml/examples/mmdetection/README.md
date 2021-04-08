@@ -3,7 +3,7 @@ title:
 type: blog
 order: 40
 meta_title: Prelabel Images with Bounding Boxes Tutorial
-meta_description: Label Studio tutorial for automatically pre-labeling or pre-annotating images with bounding boxes using OpenMMLab MMDetection library and Label Studio.
+meta_description: Dataset tutorial for automatically pre-labeling or pre-annotating images with bounding boxes using OpenMMLab MMDetection library and Dataset.
 ---
 
 This [Machine Learning backend](https://labelstud.io/guide/ml.html) allows you to automatically prelabel your images with bounding boxes. It is powered by amazing [OpenMMLab MMDetection library](https://github.com/open-mmlab/mmdetection), which gives you access to many existing state-of-the-art models like FasterRCNN, RetinaNet, YOLO and others. 
@@ -15,7 +15,7 @@ Check this installation guide and then play around them, pick up the best model 
 
 1. [Install the model locally](#Installation) or just copy paste this URL: `https://app.labelstud.io/coco-detector`
 
-2. Run Label Studio, then go to the **Model** page. Paste the selected ML backend URL then click on **Add Backend**.
+2. Run Dataset, then go to the **Model** page. Paste the selected ML backend URL then click on **Add Backend**.
 
 3. Go to **Setup** page, use `COCO annotation` template or `Bbox object detection`. O
    Optionally you can modify label config with `predicted_values` attribute. It provides a list of COCO labels separated by comma. If object detector outputs any of these labels, they will be translated to the actual label name from `value` attribute.

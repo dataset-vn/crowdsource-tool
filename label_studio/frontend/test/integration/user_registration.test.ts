@@ -19,7 +19,7 @@ describe("User authentication", () => {
   it("Should register and log in", async () => {
     await gotoSignUp(page);
 
-    expect(await page.title()).toBe("Label Studio");
+    expect(await page.title()).toBe("Dataset");
 
     await submitForm(page, 'form#signup-form', {
       email: 'test@heartex.com',
@@ -32,7 +32,7 @@ describe("User authentication", () => {
   it("Should fail sign up with invalid credentials", async () => {
     await gotoSignUp(page);
 
-    expect(await page.title()).toBe("Label Studio");
+    expect(await page.title()).toBe("Dataset");
 
     // Test email format
     await submitForm(page, 'form#signup-form', {
@@ -54,7 +54,7 @@ describe("User authentication", () => {
   it("Should log in with default credentials", async () => {
     await gotoLogIn(page);
 
-    expect(await page.title()).toBe("Label Studio");
+    expect(await page.title()).toBe("Dataset");
 
     await submitForm(page, 'form#login-form', {
       email: 'admin@heartex.com',

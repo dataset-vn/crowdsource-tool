@@ -72,7 +72,7 @@ def proceed_registration(request, user_form, organization_form, next_page):
         org = Organization.objects.first()
         org.add_user(user)
     else:
-        org = Organization.create_organization(created_by=user, title='Label Studio')
+        org = Organization.create_organization(created_by=user, title='Dataset')
     user.active_organization = org
     user.save(update_fields=['active_organization'])
 

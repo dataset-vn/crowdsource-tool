@@ -4505,7 +4505,7 @@ const Menubar = ({
           className: `${menubarClass.elem('trigger')} main-menu-trigger`,
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("img", {
             src: (0,_utils_helpers__WEBPACK_IMPORTED_MODULE_6__.absoluteURL)("/static/icons/logodataset.svg"),
-            alt: "Label Studio Logo",
+            alt: "Dataset Logo",
             height: "22"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)(_Hamburger_Hamburger__WEBPACK_IMPORTED_MODULE_9__.Hamburger, {
             opened: sidebarOpened
@@ -8040,7 +8040,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const initializeDataManager = async (root, props, params) => {
-  if (!window.LabelStudio) throw Error("Label Studio Frontend doesn't exist on the page");
+  if (!window.LabelStudio) throw Error("Dataset Frontend doesn't exist on the page");
   if (!root && root.dataset.dmInitialized) return;
   root.dataset.dmInitialized = true;
   const { ...settings

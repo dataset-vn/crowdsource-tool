@@ -3,7 +3,7 @@ title:
 type: blog
 order: 60
 meta_title: Automatic Speech Recognition with NVIDIA NeMO Tutorial
-meta_description: Label Studio tutorial for automatic speech recognition using NVIDIA NeMo toolkit and Label Studio. 
+meta_description: Dataset tutorial for automatic speech recognition using NVIDIA NeMo toolkit and Dataset. 
 ---
 
 ## Automatic Speech Recognition
@@ -18,11 +18,11 @@ With ASR models, you can do audio pre-annotations drawn within a text area, aka 
 
 1. Follow [this installation guide](https://github.com/NVIDIA/NeMo#installation) to set up the NeMo environment.
 
-2. On the same server or Docker container as NeMo, [install Label Studio](https://labelstud.io/guide/#Quickstart). 
+2. On the same server or Docker container as NeMo, [install Dataset](https://labelstud.io/guide/#Quickstart). 
 
-3. Create or download <a href="https://github.com/heartexlabs/label-studio/tree/master/label_studio/ml/examples/nemo/asr.py">asr.py</a> from Github into the current directory (or use `label_studio/ml/examples/nemo/asr.py` from the Label Studio package).
+3. Create or download <a href="https://github.com/heartexlabs/label-studio/tree/master/label_studio/ml/examples/nemo/asr.py">asr.py</a> from Github into the current directory (or use `label_studio/ml/examples/nemo/asr.py` from the Dataset package).
 
-4. Initialize the Label Studio machine learning backend with the ASR example: 
+4. Initialize the Dataset machine learning backend with the ASR example: 
     ```bash
     label-studio-ml init my_model --from asr.py
     ```
@@ -34,12 +34,12 @@ With ASR models, you can do audio pre-annotations drawn within a text area, aka 
    ```
    Wait until ML backend app starts on the default 9090 port.
 
-6. Start Label Studio: 
+6. Start Dataset: 
    ```bash
    label-studio start my_project --init
    ```
    
-7. In Label Studio, open the project Settings page.
+7. In Dataset, open the project Settings page.
 
 8. From the template list, select `Speech Transcription`. You can also create your own with `<TextArea>` and `<Audio>` tags. Or copy this labeling config into LS: 
     ```xml
@@ -58,8 +58,8 @@ With ASR models, you can do audio pre-annotations drawn within a text area, aka 
       </Style>
     </View>
     ```
-9. Open the Model page in Label Studio.
-    > Note: The NeMo engine downloads models automatically. This can take some time and could cause Label Studio UI to hang on the Model page while the models download.   
+9. Open the Model page in Dataset.
+    > Note: The NeMo engine downloads models automatically. This can take some time and could cause Dataset UI to hang on the Model page while the models download.   
 
 10. Add the ML backend using this address: `http://localhost:9090`
 

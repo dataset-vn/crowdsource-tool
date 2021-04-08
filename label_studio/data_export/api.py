@@ -87,7 +87,7 @@ class ProjectExportFiles(APIView):
     get:
     Export files
 
-    List of files exported from the Label Studio UI using the Export button on the Data Manager page.
+    List of files exported from the Dataset UI using the Export button on the Data Manager page.
     """
     permission_classes = (IsBusiness, ProjectAPIBasePermission)
 

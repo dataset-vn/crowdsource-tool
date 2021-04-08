@@ -3,7 +3,7 @@ title: Choices
 type: tags
 order: 403
 meta_title: Choices Tags for Multiple Choice Labels
-meta_description: Label Studio Choices Tags customize Label Studio for multiple choice labels for machine learning and data science projects.
+meta_description: Dataset Choices Tags customize Dataset for multiple choice labels for machine learning and data science projects.
 ---
 
 Choices tag, create a group of choices, radio, or checkboxes. Shall

@@ -3,7 +3,7 @@ title: Style
 type: tags
 order: 503
 meta_title: Style Tags to use CSS Styles
-meta_description: Label Studio Style Tags customize Label Studio with CSS Styles for machine learning and data science projects.
+meta_description: Dataset Style Tags customize Dataset with CSS Styles for machine learning and data science projects.
 ---
 
 Style tag, add css styles right through the config

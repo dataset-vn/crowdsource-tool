@@ -3,12 +3,12 @@ title:
 type: blog
 order: 30
 meta_title: Computer Vision PyTorch Tutorial
-meta_description: Label Studio tutorial for computer vision that showcases transfer learning for images using PyTorch and Label Studio.
+meta_description: Dataset tutorial for computer vision that showcases transfer learning for images using PyTorch and Dataset.
 ---
 
 ## Transfer learning for images with PyTorch
 
-It explains the basics of computer vision with Label Studio and [PyTorch](https://pytorch.org/).
+It explains the basics of computer vision with Dataset and [PyTorch](https://pytorch.org/).
 The proposed model leverages transfer learning from popular ResNet image classifier and able to be quickly finetuned to your own data.
 
 The example labeling config could be
@@ -25,11 +25,11 @@ The example labeling config could be
 
 ### Create a model script
 
-If you create ML backend by using Label Studio's ML SDK, you have to follow the rules:
+If you create ML backend by using Dataset's ML SDK, you have to follow the rules:
 
 - created model class should be inherited from `label_studio.ml.LabelStudioMLBase`
 - 2 methods should be overrided:
-    - `predict()` takes [input tasks](/guide/tasks.html#Basic-format) and outputs [predictions](/guide/export.html#predictions) in a Label Studio format
+    - `predict()` takes [input tasks](/guide/tasks.html#Basic-format) and outputs [predictions](/guide/export.html#predictions) in a Dataset format
     - `fit()` receives [completions](/guide/export.html#Basic-format) iterable and returns dictionary with created links and resources. This dictionary will be later used for model loading via `self.train_output` field.
 
 Create a file `model.py` with the PyTorch model for ready for training and inference.
@@ -170,7 +170,7 @@ class ImageClassifierAPI(LabelStudioMLBase):
 
 ### Create ML backend configs & scripts
 
-Label Studio can automatically create all necessary configs and scripts needed to run ML backend from your newly created model.
+Dataset can automatically create all necessary configs and scripts needed to run ML backend from your newly created model.
 
 Let's call ML backend `my_backend` and initialize ML backend directory `./my_backend`:
 
@@ -210,9 +210,9 @@ docker-compose up
 
 Now you can explore runtime logs in `my_backend/logs/uwsgi.log` and RQ training logs in `my_backend/logs/rq.log`
 
-### Using ML backend with Label Studio
+### Using ML backend with Dataset
 
-Initialize and start new Label Studio project connecting to the running ML backend:
+Initialize and start new Dataset project connecting to the running ML backend:
 
 ```bash
 label-studio start my_project --init --ml-backends http://localhost:9090

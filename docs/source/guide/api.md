@@ -3,39 +3,39 @@ title: Backend API
 type: guide
 order: 907
 meta_title: API Endpoints
-meta_description: Label Studio Documentation for backend API endpoints and integration with machine learning and data science projects.
+meta_description: Dataset Documentation for backend API endpoints and integration with machine learning and data science projects.
 ---
 
-## API reference for Label Studio 1.0.0
+## API reference for Dataset 1.0.0
 
-You can use the Label Studio API to import data for labeling, export annotations, set up machine learning with Label Studio, and sync tasks with cloud storage. 
+You can use the Dataset API to import data for labeling, export annotations, set up machine learning with Dataset, and sync tasks with cloud storage. 
 
 See the [API reference documentation](/api) for further guidance and interactive examples. 
 
 ### Authenticate to the API
 
-1. In the Label Studio UI, click the user icon in the upper right.
+1. In the Dataset UI, click the user icon in the upper right.
 2. Click **Account & Settings**.
 3. Copy the access token. 
 
 In your first API call, specify the access token. 
 ```bash
-curl -X <method> <Label Studio URL>/api/<endpoint> -H 'Authorization: Token <token>'
+curl -X <method> <Dataset URL>/api/<endpoint> -H 'Authorization: Token <token>'
 ```
 
-For example, ofor a Label Studio instance hosted at localhost:
+For example, ofor a Dataset instance hosted at localhost:
 ```bash
 curl -X GET https://localhost:8000/api/projects/ -H 'Authorization: Token 123456789abcdefghijklmnop123456789'
 ```
 
 
-### API endpoint reference for older Label Studio versions
+### API endpoint reference for older Dataset versions
 
-These API endpoints were introduced in Label Studio version 0.8.1 and are only valid until version 0.9.1. Use the API documentation linked inside Label Studio for guidance when working with version 1.0.0. 
+These API endpoints were introduced in Dataset version 0.8.1 and are only valid until version 0.9.1. Use the API documentation linked inside Dataset for guidance when working with version 1.0.0. 
 
 ### Set up project configuration
 
-> These API endpoints were introduced in Label Studio version 0.8.1 and are only valid until version 0.9.1. 
+> These API endpoints were introduced in Dataset version 0.8.1 and are only valid until version 0.9.1. 
 
 `POST /api/project/config`
 
@@ -62,18 +62,18 @@ If errors occur, the backend returns status 400 and the response body is a JSON 
 
 ### Import data, files and tasks 
 
-> These API endpoints were introduced in Label Studio version 0.8.1 and are only valid until version 0.9.1. 
+> These API endpoints were introduced in Dataset version 0.8.1 and are only valid until version 0.9.1. 
 
 `POST /api/project/import`
 
-Use the API to import tasks in [Label Studio basic format](tasks.html#Basic-format), which can be useful when you are creating a data stream.
+Use the API to import tasks in [Dataset basic format](tasks.html#Basic-format), which can be useful when you are creating a data stream.
 
 ```bash
 curl -X POST -H Content-Type:application/json http://localhost:8080/api/project/import \
 --data "[{\"my_key\": \"my_value_1\"}, {\"my_key\": \"my_value_2\"}]"
 ```
 
-Or you can import a file and make a Label Studio task automatically:
+Or you can import a file and make a Dataset task automatically:
 
 ```bash
 curl -X POST -F "FileUpload=@test.jpg" http://localhost:8080/api/project/import
@@ -81,7 +81,7 @@ curl -X POST -F "FileUpload=@test.jpg" http://localhost:8080/api/project/import
 
 ### Retrieve project
 
-> These API endpoints were introduced in Label Studio version 0.8.1 and are only valid until version 0.9.1. 
+> These API endpoints were introduced in Dataset version 0.8.1 and are only valid until version 0.9.1. 
 
 `GET /api/project`
 
@@ -103,7 +103,7 @@ Response example:
 
 ### Retrieve tasks
 
-> These API endpoints were introduced in Label Studio version 0.8.1 and are only valid until version 0.9.1. 
+> These API endpoints were introduced in Dataset version 0.8.1 and are only valid until version 0.9.1. 
 
 `GET /api/tasks`
 
@@ -140,7 +140,7 @@ Response example:
 
 ### Export annotations
 
-> These API endpoints were introduced in Label Studio version 0.8.1 and are only valid until version 0.9.1. 
+> These API endpoints were introduced in Dataset version 0.8.1 and are only valid until version 0.9.1. 
 
 `GET /api/project/export`
 
@@ -154,18 +154,18 @@ The format descriptions are presented [in the export documentation](export.html)
 The `format` parameters can be found on the Export page in the dropdown (`JSON`, `JSON_MIN`, `COCO`, `VOC`, etc).
 
 
-### Health check for Label Studio
+### Health check for Dataset
 
-Label Studio has a special endpoint to run health checks: 
+Dataset has a special endpoint to run health checks: 
   
 ```bash
 GET /api/health
 ```
 
 ### Reference
-Label Studio API endpoint reference.
+Dataset API endpoint reference.
 
-> These API endpoints were introduced in Label Studio version 0.8.1 and are only valid until version 0.9.1. 
+> These API endpoints were introduced in Dataset version 0.8.1 and are only valid until version 0.9.1. 
 
 
 | URL | Description |
@@ -193,4 +193,4 @@ Label Studio API endpoint reference.
 | /api/import-example               | `GET \| POST` generate example for import by given labeling config |
 | /api/import-example-file          | `GET` generate example file for import using current project labeling config | 
 | /api/health                       | `GET` health check |
-| /version                          | `GET` current Label Studio Backend and Frontend versions |
+| /version                          | `GET` current Dataset Backend and Frontend versions |

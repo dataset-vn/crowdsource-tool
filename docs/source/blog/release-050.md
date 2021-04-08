@@ -1,14 +1,14 @@
 ---
-title: Label Studio Release Notes 0.5.0
+title: Dataset Release Notes 0.5.0
 type: blog
 order: 102
-meta_title: Label Studio Release Notes 0.5.0
-meta_description: Label Studio Release 0.5.0 includes image segmentation, relations labeling, named entity recognition performance, image ellipses labeling, and more.
+meta_title: Dataset Release Notes 0.5.0
+meta_description: Dataset Release 0.5.0 includes image segmentation, relations labeling, named entity recognition performance, image ellipses labeling, and more.
 ---
 
 A month in the making, this new release brings a lot of bugfixes, updated documentation, and of course, a set of new features that have been requested. 
 
-## Label Studio Frontend
+## Dataset Frontend
 
 ### Relations labeling
 
@@ -109,7 +109,7 @@ A significant contribution from [@lrlunin](https://github.com/lrlunin), implemen
 ```
 
 
-## Label Studio Backend
+## Dataset Backend
 
 ### Multiplatform
 
@@ -120,7 +120,7 @@ Support for Windows, MacOSX, Linux with Python 3.5 or greater
 There are now several ways on how you can import your tasks for labeling:
 
 - uploading files via [web UI](http://localhost:8080/import)
-- by [specifying path](/guide/tasks.html#Import-formats) to a file or directory with images, audios or text files on Label Studio initialization
+- by [specifying path](/guide/tasks.html#Import-formats) to a file or directory with images, audios or text files on Dataset initialization
 - using [import API](/guide/tasks.html#Import-using-API)
 
 ### On-the-fly labeling config validation
@@ -133,14 +133,14 @@ When finishing your project - go to the [export page](http://localhost:8080/expo
 
 ### Connection to running Machine Learning backend
 
-[Connecting to a running machine learning backend](/guide/ml.html) allows you to retrain your model continually and visually inspect how its predictions behave on tasks. Just specify ML backend URL when launching Label Studio, and start labeling.
+[Connecting to a running machine learning backend](/guide/ml.html) allows you to retrain your model continually and visually inspect how its predictions behave on tasks. Just specify ML backend URL when launching Dataset, and start labeling.
 
 ## Miscellaneous
 
 ### Docker support
 
-Now Label Studio is also maintained and distributed as Docker container - [run one-liner](/guide/index.html#Running-with-Docker) to build your own cloud labeling solution.
+Now Dataset is also maintained and distributed as Docker container - [run one-liner](/guide/index.html#Running-with-Docker) to build your own cloud labeling solution.
 
 ### Multisession mode
 
-You can launch Label Studio in [multisession mode](/guide/#Multisession-mode) - then each browser session dynamically creates its own project. 
+You can launch Dataset in [multisession mode](/guide/#Multisession-mode) - then each browser session dynamically creates its own project. 

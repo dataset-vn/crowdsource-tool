@@ -3,7 +3,7 @@ title: Image
 type: tags
 order: 304
 meta_title: Image Tags for Images
-meta_description: Label Studio Image Tags customize Label Studio for images for machine learning and data science projects.
+meta_description: Dataset Image Tags customize Dataset for images for machine learning and data science projects.
 ---
 
 Image tag shows an image on the page.

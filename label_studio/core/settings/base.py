@@ -1,7 +1,7 @@
 """This file and its contents are licensed under the Apache License 2.0. Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
 """
 """
-Django Base settings for Label Studio.
+Django Base settings for Dataset.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/3.1/topics/settings/
@@ -316,7 +316,7 @@ TASK_LOCK_TTL = int(get_env('TASK_LOCK_TTL')) if get_env('TASK_LOCK_TTL') else N
 TASK_LOCK_DEFAULT_TTL = int(get_env('TASK_LOCK_DEFAULT_TTL', 3600))
 
 # Email backend
-FROM_EMAIL = 'Label Studio <hello@labelstud.io>'
+FROM_EMAIL = 'Dataset <hello@labelstud.io>'
 EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 
 """ React Libraries: do not forget to change this dir in /etc/nginx/nginx.conf """

@@ -3,7 +3,7 @@ title: Labels
 type: tags
 order: 410
 meta_title: Labels Tags for Label Groups
-meta_description: Label Studio Labels Tags customize Label Studio with label groups for machine learning and data science projects.
+meta_description: Dataset Labels Tags customize Dataset with label groups for machine learning and data science projects.
 ---
 
 Labels tag, create a group of labels

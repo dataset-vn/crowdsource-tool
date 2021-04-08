@@ -25,9 +25,9 @@ def parse_input_args():
         return os.path.normpath(raw_name)
 
     root_parser = argparse.ArgumentParser(add_help=False)
-    root_parser.add_argument('--version', dest='version', action='store_true', help='Show Label Studio version')
+    root_parser.add_argument('--version', dest='version', action='store_true', help='Show Dataset version')
     root_parser.add_argument(
-        '-b', '--no-browser', dest='no_browser', action='store_true', help='Do not open browser when starting Label Studio'
+        '-b', '--no-browser', dest='no_browser', action='store_true', help='Do not open browser when starting Dataset'
     )
     root_parser.add_argument(
         '-db', '--database', dest='database', help='Database file path for storing tasks and annotations'
@@ -73,7 +73,7 @@ def parse_input_args():
         dest='host',
         type=str,
         default='',
-        help='Label Studio full hostname for generating imported task urls, sample task urls, static loading, etc.\n'
+        help='Dataset full hostname for generating imported task urls, sample task urls, static loading, etc.\n'
              "Leave it empty to make all paths relative to the domain root, it's preferable for work for most cases."
              'Examples: "https://77.42.77.42:1234", "http://ls.domain.com/subdomain/"'
     )
@@ -91,7 +91,7 @@ def parse_input_args():
     root_parser.add_argument('--agree-fix-sqlite', dest='agree_fix_sqlite', action='store_true',
                              help='Agree to fix SQLite issues on python 3.6-3.8 on Windows automatically')
 
-    parser = argparse.ArgumentParser(description='Label studio', parents=[root_parser])
+    parser = argparse.ArgumentParser(description='Dataset', parents=[root_parser])
 
     subparsers = parser.add_subparsers(dest='command', help='Available commands')
     subparsers.required = False
@@ -100,14 +100,14 @@ def parse_input_args():
 
     parser_version = subparsers.add_parser('version', help='Print version info', parents=[root_parser])
 
-    parser_init = subparsers.add_parser('init', help='Initialize Label Studio', parents=[root_parser])
+    parser_init = subparsers.add_parser('init', help='Initialize Dataset', parents=[root_parser])
     parser_init.add_argument(
         'project_name', help='Path to directory where project state will be initialized', type=project_name
     )
 
     # start sub-command parser
 
-    parser_start = subparsers.add_parser('start', help='Start Label Studio server', parents=[root_parser])
+    parser_start = subparsers.add_parser('start', help='Start Dataset server', parents=[root_parser])
     parser_start.add_argument(
         'project_name', help='Project name', type=project_name, default='', nargs='?'
     )

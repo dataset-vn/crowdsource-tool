@@ -1,5 +1,5 @@
 {
-  "name": "Label Studio",
+  "name": "Dataset",
   "description": "Multi-type data labeling, annotation and exploration tool",
   "keywords": ["data annotation", "data labeling"],
   "website": "https://labelstud.io",
@@ -8,7 +8,7 @@
   "stack": "container",
   "env": {
     "LABEL_STUDIO_ONE_CLICK_DEPLOY": {
-      "description": "Label Studio One Click Deploy Environmental Flag",
+      "description": "Dataset One Click Deploy Environmental Flag",
       "value": "1",
       "required": false
     }

@@ -1,9 +1,9 @@
 ---
-title: Label Studio Release Notes 0.8.0 - Time Series Data Labeling
+title: Dataset Release Notes 0.8.0 - Time Series Data Labeling
 type: blog
 order: 99
-meta_title: Label Studio Release Notes 0.8.0 - Time Series Data Labeling
-meta_description: Label Studio Release 0.8.0 includes updates to support data labeling for time series data.
+meta_title: Dataset Release Notes 0.8.0 - Time Series Data Labeling
+meta_description: Dataset Release 0.8.0 includes updates to support data labeling for time series data.
 ---
 
 # Time Series Data Labeling
@@ -45,9 +45,9 @@ For examples below we will be using the following configuration:
 </View>
 ```
 
-> If you're new to Label Studio, [learn](https://labelstud.io/tags/) how you can use tags to setup different labeling interfaces for your data
+> If you're new to Dataset, [learn](https://labelstud.io/tags/) how you can use tags to setup different labeling interfaces for your data
 
-Depending on where your time series data is coming from it can be formatted very differently. Label Studio provides a way to configure how time series parsing is done so you don't have to transform the original file. Let's start with a simple CSV like that:
+Depending on where your time series data is coming from it can be formatted very differently. Dataset provides a way to configure how time series parsing is done so you don't have to transform the original file. Let's start with a simple CSV like that:
 
 ```csv
 time,sen1,sen2
@@ -124,14 +124,14 @@ This is an experimental feature right now, and we're working on finalizing the i
 
 ## Next
 
-Ready to try? [Install Label Studio](/guide/#Running-with-pip) following our guide and check the [template]() on time series configuration. Also, join the Slack channel if you need any help, have feedback, or feature requests. 
+Ready to try? [Install Dataset](/guide/#Running-with-pip) following our guide and check the [template]() on time series configuration. Also, join the Slack channel if you need any help, have feedback, or feature requests. 
 
 Cheers!
 
 ## Resources
 
-- Label Studio
-  - [Templates](/templates/time_series.html) - Label Studio pre configured templates for Time Series
+- Dataset
+  - [Templates](/templates/time_series.html) - Dataset pre configured templates for Time Series
   - [TimeSeries](/tags/timeseries.html) - Time Series tag specification
   - [Channel](/tags/timeseries.html#Channel) - Channel tag specification
 - Machine Learning

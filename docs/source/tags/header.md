@@ -3,7 +3,7 @@ title: Header
 type: tags
 order: 502
 meta_title: Header Tags to Show Headers
-meta_description: Label Studio Header Tags customize Label Studio to show headers for machine learning and data science projects.
+meta_description: Dataset Header Tags customize Dataset to show headers for machine learning and data science projects.
 ---
 
 Header tag, show header

@@ -4,7 +4,7 @@ type: templates
 order: 100
 is_new: t
 meta_title: Time Series Data Labeling Template
-meta_description: Label Studio Time Series Data Template for machine learning and data science data labeling projects.
+meta_description: Dataset Time Series Data Template for machine learning and data science data labeling projects.
 ---
 
 ## Run
@@ -49,13 +49,13 @@ Three tags used above are:
 
 `<TimeSeriesLabels>` is linked with `<TimeSeries>` via a toName field.
   
-`<TimeSeries>` has an attribute `valueType="url"`. This means that Label Studio expects links to CSV files in its tasks.
+`<TimeSeries>` has an attribute `valueType="url"`. This means that Dataset expects links to CSV files in its tasks.
 
 `timeColumn` in `TimeSeries` to use a specific column from your dataset as the X axis. If you skip it then it uses incremental integer values `0, 1, 2, ...`. 
 
 ## Input formats
 
-Label Studio supports several input types for time series:
+Dataset supports several input types for time series:
 
 - CSV with/without header
 - TSV with/without header
@@ -74,7 +74,7 @@ time,sensorone,sensortwo
 0.2,1.64,5.85
  ```
 
-Your `<TimeSeries>` tag should have an attribute `valueType="url"` which informs Label Studio to open value as URL with CSV file:
+Your `<TimeSeries>` tag should have an attribute `valueType="url"` which informs Dataset to open value as URL with CSV file:
 
 ```html
 <View>
@@ -111,11 +111,11 @@ The main difference for the headless CSV/TSV usage is another way to name `<Chan
 
 ### JSON
 
-All tasks in LS are stored in JSON and this is the native format for Label Studio. 
+All tasks in LS are stored in JSON and this is the native format for Dataset. 
 
 * valueType="url" 
 
-  When you use `valueType="url"` for TimeSeries tag and import a CSV file Label Studio **automatically** will create a JSON task with the body like this one: 
+  When you use `valueType="url"` for TimeSeries tag and import a CSV file Dataset **automatically** will create a JSON task with the body like this one: 
   
   ```json
   {
@@ -125,7 +125,7 @@ All tasks in LS are stored in JSON and this is the native format for Label Studi
 
 * valueType="json"
   
-  Another way to use Label Studio tasks directly instead of CSV files is to create and import them as below: 
+  Another way to use Dataset tasks directly instead of CSV files is to create and import them as below: 
 
   ```json
   {
@@ -222,4 +222,4 @@ Or you can store time series data in tasks directly.
 
 ### Video & audio sync with time series
 
-It's possible to synchronize TimeSeries with video and audio in Label Studio. Right now you can do it using HyperText tag with HTML objects `<audio src="path">`/`<video src="path">` and TimeSeries together. We have some solutions for this in the testing, [ping us](https://join.slack.com/t/label-studio/shared_invite/zt-cr8b7ygm-6L45z7biEBw4HXa5A2b5pw) in Slack to learn more.
+It's possible to synchronize TimeSeries with video and audio in Dataset. Right now you can do it using HyperText tag with HTML objects `<audio src="path">`/`<video src="path">` and TimeSeries together. We have some solutions for this in the testing, [ping us](https://join.slack.com/t/label-studio/shared_invite/zt-cr8b7ygm-6L45z7biEBw4HXa5A2b5pw) in Slack to learn more.

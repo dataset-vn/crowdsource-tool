@@ -1,4 +1,4 @@
-# Label Studio
+# Dataset
 
 This folder holds all the pieces of the new frontend framework.
 

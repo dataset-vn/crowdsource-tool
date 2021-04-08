@@ -3,7 +3,7 @@ title: Ranker
 type: tags
 order: 416
 meta_title: Ranker Tags for Model Ranking
-meta_description: Label Studio Ranker Tags customize Label Studio for model ranking for machine learning and data science projects.
+meta_description: Dataset Ranker Tags customize Dataset for model ranking for machine learning and data science projects.
 ---
 
 Ranker tag, used to ranking models

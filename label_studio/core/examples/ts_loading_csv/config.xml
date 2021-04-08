@@ -16,7 +16,7 @@
 
 3. Add `<Channel>` tags for more columns if needed.
 
-4. After setup you can import your CSV files on Import page and Label Studio will host them OR
+4. After setup you can import your CSV files on Import page and Dataset will host them OR
 upload your CSV to your hosting (e.g.: `https://my.domain.com/time-series.csv`) and
 <a target="_blank" href="https://labelstud.io/guide/tasks.html">prepare LS tasks for them.</a>
 

@@ -2,8 +2,8 @@
 title: Introduction
 type: tags
 order: 201
-meta_title: Tags - Customize the Label Studio User Interface
-meta_description: Label Studio Documentation to easily customize the Label Studio user interface using XML-like tags for machine learning and data science projects.
+meta_title: Tags - Customize the Dataset User Interface
+meta_description: Dataset Documentation to easily customize the Dataset user interface using XML-like tags for machine learning and data science projects.
 ---
 
 Editor configuration is based on XML-like tags. Tags can be divided into three categories:
@@ -32,7 +32,7 @@ Note that in the case above, Label tags are used to label Text tag. There could 
 
 ## Variables
 
-All object tags and some control and visual tags support variables inside their parameters. A variable shall be placed inside `value` property of the tag and start with a `$` sign. The idea is you configure Label Studio once and then provide different data objects for it to load. Here is an example config:
+All object tags and some control and visual tags support variables inside their parameters. A variable shall be placed inside `value` property of the tag and start with a `$` sign. The idea is you configure Dataset once and then provide different data objects for it to load. Here is an example config:
 
 ```html
 <View>

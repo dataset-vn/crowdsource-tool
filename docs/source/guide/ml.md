@@ -3,26 +3,26 @@ title: Set up machine learning with your labeling process
 type: guide
 order: 606
 meta_title: Machine Learning SDK
-meta_description: Label Studio Documentation for connecting Label Studio to machine learning frameworks using the Label Studio machine learning SDK for machine learning and data science projects.
+meta_description: Dataset Documentation for connecting Dataset to machine learning frameworks using the Dataset machine learning SDK for machine learning and data science projects.
 ---
 
-Set up machine learning with your labeling process by setting up a machine learning backend for Label Studio. 
+Set up machine learning with your labeling process by setting up a machine learning backend for Dataset. 
 
-With Label Studio, you can set up your favorite machine learning models to do the following:
+With Dataset, you can set up your favorite machine learning models to do the following:
 - **Pre-labeling** by letting models predict labels and then perform further manual refinements. 
 - **Auto-labeling** by letting models create automatic annotations. 
 - **Online Learning** by simultaneously updating your model while new annotations are created, letting you retrain your model on-the-fly. 
 - **Active Learning** by selecting example tasks that the model is uncertain how to label for your annotators to label. 
 
-With these capabilities, you can use Label Studio as part of a production-ready **Prediction Service**. 
+With these capabilities, you can use Dataset as part of a production-ready **Prediction Service**. 
 
 ## Quickstart
 
-Get started with a machine learning (ML) backend with Label Studio. You need to start both the machine learning backend and Label Studio to start labeling. You can review examples in the [`label-studio-ml/examples` section of the repository](https://github.com/heartexlabs/label-studio-ml/examples).
+Get started with a machine learning (ML) backend with Dataset. You need to start both the machine learning backend and Dataset to start labeling. You can review examples in the [`label-studio-ml/examples` section of the repository](https://github.com/heartexlabs/label-studio-ml/examples).
 
-Follow these steps to set up an example text classifier ML backend with Label Studio:
+Follow these steps to set up an example text classifier ML backend with Dataset:
 
-0. Clone the Label Studio Machine Learning Backend git repository.
+0. Clone the Dataset Machine Learning Backend git repository.
    ```bash
    git clone https://github.com/heartexlabs/label-studio-ml-backend 
    ```
@@ -45,12 +45,12 @@ Follow these steps to set up an example text classifier ML backend with Label St
    label-studio-ml start my_ml_backend
    ```
    
-4. Start Label Studio and connect your project to the running ML backend using the Label Studio UI. 
+4. Start Dataset and connect your project to the running ML backend using the Dataset UI. 
 
 
 ## Tutorials
 
-For other example machine learning model setups with Label Studio, see the following tutorials:
+For other example machine learning model setups with Dataset, see the following tutorials:
 - [Create a simple ML backend](/tutorials/dummy_model.html)
 - [Text classification with Scikit-Learn](/tutorials/sklearn-text-classifier.html)
 - [Transfer learning for images with PyTorch](/tutorials/pytorch-image-transfer-learning.html)
@@ -64,18 +64,18 @@ After connecting a model as a machine learning backend, you see model prediction
 
 For example, for an image classification task, the model pre-selects an image class for data labelers to verify. 
 
-You can also get a prediction for specific data using the API. For example, to get a prediction for task data of `{"text":"some text"}` from a Label Studio installation accessible at `http://localhost:8080`, run the following cURL command: 
+You can also get a prediction for specific data using the API. For example, to get a prediction for task data of `{"text":"some text"}` from a Dataset installation accessible at `http://localhost:8080`, run the following cURL command: 
 
    ```
     curl -X POST -d '{"text":"some text"}' -H "Content-Type: application/json" http://localhost:8080/api/models/predictions
    ```
 
    
-### Train a model with Label Studio 
+### Train a model with Dataset 
 
-After you connect a model to Label Studio as a machine learning backend, you can start model training from the UI or using the API. 
+After you connect a model to Dataset as a machine learning backend, you can start model training from the UI or using the API. 
 
-- On the Label Studio UI, click the **Start Training** button on the `/model` page.
+- On the Dataset UI, click the **Start Training** button on the `/model` page.
 - cURL the API from the command line: 
    ```
    curl -X POST http://localhost:8080/api/models/train
@@ -85,10 +85,10 @@ In development mode, training logs appear in the web browser console.
 In production mode, you can find runtime logs in `my_backend/logs/uwsgi.log` and RQ training logs in `my_backend/logs/rq.log`. 
 
    
-## Set up a machine learning backend for Label Studio with Docker Compose
-Label Studio includes everything you need to set up a production-ready ML backend server powered by Docker. 
+## Set up a machine learning backend for Dataset with Docker Compose
+Dataset includes everything you need to set up a production-ready ML backend server powered by Docker. 
 
-The Label Studio machine learning server uses [uWSGI](https://uwsgi-docs.readthedocs.io/en/latest/) and [supervisord](http://supervisord.org/) and handles background training jobs with [RQ](https://python-rq.org/).
+The Dataset machine learning server uses [uWSGI](https://uwsgi-docs.readthedocs.io/en/latest/) and [supervisord](http://supervisord.org/) and handles background training jobs with [RQ](https://python-rq.org/).
 
 ### Prerequisites
 Perform these prerequisites to make sure your server starts successfully. 
@@ -112,7 +112,7 @@ Perform these prerequisites to make sure your server starts successfully.
     ```
     The machine learning backend server starts listening on port 9090.
 
-3. Connect the machine learning backend to Label Studio on the **Model** page in Label Studio UI, or use the following command on the command line:
+3. Connect the machine learning backend to Dataset on the **Model** page in Dataset UI, or use the following command on the command line:
     ```bash
     label-studio start text_classification_project --init --template text_classification --ml-backends http://localhost:9090
     ```
@@ -128,13 +128,13 @@ See more about active learning sampling in [Set up task sampling for your projec
 
 ## Troubleshooting
 
-When you encounter any error, there are several hints to get more insights. You can investigate most problems using the server console log. The machine learning backend runs as a separate server from Label Studio, so make sure you check the correct server console logs while troubleshooting.
+When you encounter any error, there are several hints to get more insights. You can investigate most problems using the server console log. The machine learning backend runs as a separate server from Dataset, so make sure you check the correct server console logs while troubleshooting.
 
 > Note: When you start an ML backend using Docker Compose, the logs are located in:
 > - main process / inference logs: logs/uwsgi.log
 > - training logs: logs/rq.log
 
-### I launched the ML backend, but it appears as **Disconnected** after adding it in the Label Studio UI
+### I launched the ML backend, but it appears as **Disconnected** after adding it in the Dataset UI
 
 Your ML backend server might not have started properly. 
 

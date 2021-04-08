@@ -3,7 +3,7 @@ title: Choice
 type: tags
 order: 402
 meta_title: Choice Tags for Single Choice Labels
-meta_description: Label Studio Choice Tags customize Label Studio for single choice labels for machine learning and data science projects.
+meta_description: Dataset Choice Tags customize Dataset for single choice labels for machine learning and data science projects.
 ---
 
 Choice tag represents a single choice

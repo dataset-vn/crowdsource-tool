@@ -1,10 +1,10 @@
 ---
-title: Label Studio Release Notes 0.9.0
+title: Dataset Release Notes 0.9.0
 type: blog
 image: /images/release-090/improve_your_datasets_with_labeling.jpg
 order: 98
-meta_title: Label Studio Release Notes 0.9.0
-meta_description: Label Studio Release 0.9.0 includes improvements to data management to help you explore and improve your datasets for machine learning projects.
+meta_title: Dataset Release Notes 0.9.0
+meta_description: Dataset Release 0.9.0 includes improvements to data management to help you explore and improve your datasets for machine learning projects.
 ---
 
 <div style="position: relative; padding-bottom: 62.5%; height: 0;"><iframe src="https://www.loom.com/embed/73b5122859d8478ab5ccb03fb6036208" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>
@@ -58,10 +58,10 @@ You can configure which fields appear for each row of data, which can be helpful
 
 ### Fields available in the data manager
 
-Label Studio displays fields from both the data and system fields from Label Studio itself. In the list view, the fields are used as columns. 
+Dataset displays fields from both the data and system fields from Dataset itself. In the list view, the fields are used as columns. 
 
-The system fields used by Label Studio are as follows:
-- **ID** - An ID is automatically generated for each item uploaded to Label Studio. You can use this ID when using the Label Studio API.
+The system fields used by Dataset are as follows:
+- **ID** - An ID is automatically generated for each item uploaded to Dataset. You can use this ID when using the Dataset API.
 - **Completed** - The date and time that the item was annotated.
 - **Completions** - The number of annotations associated with an item.
 - **Cancelled** - The number of times that this item was skipped during labeling.
@@ -92,4 +92,4 @@ You can label the data in this preview mode, but unlike the labeling stream that
 
 ## Feedback
 
-We made a lot of changes between the 0.8.0 and this 0.9.0 version! We’d love to hear your feedback and more about your experience using Label Studio. You can join our Slack channel or email us at <a href="mailto:hi@labelstud.io">hi@labelstud.io</a>
+We made a lot of changes between the 0.8.0 and this 0.9.0 version! We’d love to hear your feedback and more about your experience using Dataset. You can join our Slack channel or email us at <a href="mailto:hi@labelstud.io">hi@labelstud.io</a>

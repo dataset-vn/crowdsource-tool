@@ -32,7 +32,7 @@ handler500 = 'core.views.custom_500'
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Label Studio API",
+        title="Dataset API",
         default_version='v2',
         contact=openapi.Contact(url="https://labelstud.io"),
         x_logo={"url": "../../static/icons/logo-black.svg"}

@@ -7,6 +7,6 @@ describe("Project creation", () => {
   it("should visit LS and see the title", async () => {
     await page.goto(server.hostname);
 
-    expect(await page.title()).toBe("Label Studio");
+    expect(await page.title()).toBe("Dataset");
   });
 });
