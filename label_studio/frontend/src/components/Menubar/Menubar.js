@@ -1,7 +1,7 @@
 import { createContext, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation } from 'react-router';
 import { StaticContent } from '../../app/StaticContent/StaticContent';
-import { IconBook, IconFolder, IconPersonInCircle, IconPin, IconTerminal, LsDoor, LsGitHub, LsSettings, LsSlack } from '../../assets/icons';
+import { IconBook, IconFolder, IconPersonInCircle, IconPin, IconTerminal, LsDoor, LsGitHub, LsSettings, LsSlack,LsFacebook,IconDataset,IconD } from '../../assets/icons';
 import { useConfig } from '../../providers/ConfigProvider';
 import { useContextComponent } from '../../providers/RoutesProvider';
 import { cn } from '../../utils/bem';
@@ -122,7 +122,7 @@ export const Menubar = ({
             closeOnClickOutside={!sidebarPinned}
           >
             <div className={`${menubarClass.elem('trigger')} main-menu-trigger`}>
-              <img src={absoluteURL("/static/icons/logodataset.svg")} alt="Dataset Logo" height="22"/>
+              <img src={absoluteURL("/static/icons/dts_jsc_logo.svg")} alt="Dataset Logo" height="28" />
               <Hamburger opened={sidebarOpened}/>
             </div>
           </Dropdown.Trigger>
@@ -187,32 +187,22 @@ export const Menubar = ({
 
                 <VersionNotifier showNewVersion/>
 
+                
+                
                 <Menu.Item
-                  label="API"
-                  href="/docs/api"
-                  icon={<IconTerminal/>}
+                  label="Facebook"
+                  href="https://www.facebook.com/dataset.vn"
+                  icon={<LsFacebook/>}
                   target="_blank"
                 />
                 <Menu.Item
-                  label="Docs"
-                  href="https://labelstud.io/guide"
-                  icon={<IconBook/>}
-                  target="_blank"
-                />
-                <Menu.Item
-                  label="GitHub"
-                  href="https://github.com/heartexlabs/label-studio"
-                  icon={<LsGitHub/>}
-                  target="_blank"
-                />
-                <Menu.Item
-                  label="Slack Community"
-                  href="https://join.slack.com/t/label-studio/shared_invite/zt-cr8b7ygm-6L45z7biEBw4HXa5A2b5pw"
-                  icon={<LsSlack/>}
+                  label="Dataset"
+                  href="https://dataset.vn/"
+                  icon={<IconD/>}
                   target="_blank"
                 />
 
-                <VersionNotifier showCurrentVersion/>
+          
 
                 <Menu.Divider/>
 
