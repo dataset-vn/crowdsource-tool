@@ -73,7 +73,7 @@ export const TemplatesList = ({ selectedGroup, selectedRecipe, onCustomTemplate,
         <button type="button" onClick={onCustomTemplate} className={listClass.elem("custom-template")}>Custom template</button>
       </aside>
       <main>
-        {!templates && <Spinner style={{ width: "100%", height: 200 }} />}
+        {!templates && <Spinner style={{ width: "100%",height:"100%"}} />}
         <TemplatesInGroup templates={templates || []} group={selected} onSelectRecipe={onSelectRecipe} />
       </main>
       {/* <footer>
