@@ -27,7 +27,7 @@ export const ErrorWrapper = ({title, message, errorId, stacktrace, validation, v
         <Elem
           tag="img"
           name="heidi"
-          src={absoluteURL("/static/images/opossum_broken.svg")}
+          src={absoluteURL("/static/images/logodataset copy.svg")}
           height="111"
           alt="Heidi's down"
         />

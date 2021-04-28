@@ -21,7 +21,6 @@ export const ProjectsPage = () => {
   const [modal, setModal] = React.useState(false);
   const openModal = setModal.bind(null, true);
   const closeModal = setModal.bind(null, false);
-
   const fetchProjects = async () => {
     setNetworkState('loading');
     const projects = await api.callApi("projects");
