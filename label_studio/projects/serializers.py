@@ -9,7 +9,7 @@ from tasks.models import (Prediction, Q_finished_annotations, Task,
                           Annotation)
 from users.serializers import UserSimpleSerializer
 
-from projects.models import (Project, ProjectOnboarding, ProjectSummary,
+from projects.models import (Project, ProjectMember, ProjectOnboarding, ProjectSummary,
                              ProjectTemplate)
 
 
@@ -91,6 +91,12 @@ class ProjectSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
             # Existing project is updated
             self.instance.validate_config(value)
         return value
+
+
+class ProjectMemberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProjectMember
+        fields = '__all__'
 
 
 class ProjectOnboardingSerializer(serializers.ModelSerializer):

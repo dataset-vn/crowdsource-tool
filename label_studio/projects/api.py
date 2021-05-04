@@ -32,7 +32,7 @@ from projects.models import (
     Project, ProjectSummary, ProjectMember
 )
 from projects.serializers import (
-    ProjectSerializer, ProjectLabelConfigSerializer, ProjectSummarySerializer
+    ProjectSerializer, ProjectMemberSerializer, ProjectLabelConfigSerializer, ProjectSummarySerializer
 )
 from tasks.models import Task, Annotation, Prediction, TaskLock
 from tasks.serializers import TaskSerializer, TaskWithAnnotationsAndPredictionsAndDraftsSerializer
@@ -153,17 +153,18 @@ class ProjectListAPI(generics.ListCreateAPIView):
 
 
 
-class ProjectMemberAPI(generics.RetrieveAPIView):
+class ProjectMemberAPI(generics.ListCreateAPIView):
 
     parser_classes = (JSONParser, FormParser, MultiPartParser)
-    queryset = ProjectMember.objects.all()
+    queryset = ProjectMember.objects.filter()
     permission_classes = (IsAuthenticated, ProjectAPIBasePermission)
+    serializer_class = ProjectMemberSerializer
 
     # redirect_route = 'projects:project-collaborators'
     # redirect_kwarg = 'pk'
 
     def get_object(self):
-        obj = get_object_with_check_and_log(self.request, ProjectMember, pk=self.kwargs['pk'])
+        obj = get_object_with_check_and_log(self.request, ProjectMember, project_id=self.kwargs['pk'])
         self.check_object_permissions(self.request, obj)
         return obj
 
