@@ -29,7 +29,7 @@ from organizations.models import Organization
 from organizations.permissions import *
 from projects.functions import (generate_unique_title, duplicate_project)
 from projects.models import (
-    Project, ProjectSummary
+    Project, ProjectSummary, ProjectMember
 )
 from projects.serializers import (
     ProjectSerializer, ProjectLabelConfigSerializer, ProjectSummarySerializer
@@ -150,6 +150,35 @@ class ProjectListAPI(generics.ListCreateAPIView):
     @swagger_auto_schema(tags=['Projects'], request_body=ProjectSerializer)
     def post(self, request, *args, **kwargs):
         return super(ProjectListAPI, self).post(request, *args, **kwargs)
+
+
+
+class ProjectMemberAPI(generics.RetrieveAPIView):
+
+    parser_classes = (JSONParser, FormParser, MultiPartParser)
+    queryset = ProjectMember.objects.all()
+    permission_classes = (IsAuthenticated, ProjectAPIBasePermission)
+
+    # redirect_route = 'projects:project-collaborators'
+    # redirect_kwarg = 'pk'
+
+    def get_object(self):
+        obj = get_object_with_check_and_log(self.request, ProjectMember, pk=self.kwargs['pk'])
+        self.check_object_permissions(self.request, obj)
+        return obj
+
+    @swagger_auto_schema(tags=['ProjectMember'])
+    def get(self, request, *args, **kwargs):
+        return super(ProjectMemberAPI, self).get(request, *args, **kwargs)
+
+    # def add_member():
+    #     return
+
+    # def add_members():
+    #     return
+
+    # def delete_members():
+    #     return 
 
 
 class ProjectAPI(APIViewVirtualRedirectMixin,
