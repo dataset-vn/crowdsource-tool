@@ -156,21 +156,43 @@ class ProjectListAPI(generics.ListCreateAPIView):
 class ProjectMemberAPI(generics.ListCreateAPIView):
 
     parser_classes = (JSONParser, FormParser, MultiPartParser)
-    queryset = ProjectMember.objects.filter()
+    # queryset = ProjectMember.objects.all()
     permission_classes = (IsAuthenticated, ProjectAPIBasePermission)
     serializer_class = ProjectMemberSerializer
 
     # redirect_route = 'projects:project-collaborators'
     # redirect_kwarg = 'pk'
 
+    def get_queryset(self,):
+        project_id = self.kwargs['pk']
+        return ProjectMember.objects.filter(project=project_id)
+
     def get_object(self):
-        obj = get_object_with_check_and_log(self.request, ProjectMember, project_id=self.kwargs['pk'])
+        obj = get_object_with_check_and_log(self.request, ProjectMember, pk=self.kwargs['pk'])
         self.check_object_permissions(self.request, obj)
         return obj
+
+    def perform_create(self, serializer):
+        # Added by NgDMau
+        # check if logging user is admin of current project
+        # if yes, user can add others to this current project, else cant
+        user_id = self.request.body['user_pk']
+        project_id = self.kwargs['pk']
+        project = Project.objects.filter(id=project_id)
+        self.check_object_permissions(self.request, project)
+        try:
+            project_member = serializer.save(user=user_id, project=project_id)
+        except IntegrityError as e:
+            raise LabelStudioDatabaseException('Database error during project creation. Try again.')
 
     @swagger_auto_schema(tags=['ProjectMember'])
     def get(self, request, *args, **kwargs):
         return super(ProjectMemberAPI, self).get(request, *args, **kwargs)
+
+    @swagger_auto_schema(tags=['ProjectMember'])
+    def post(self, request, *args, **kwargs):
+        return super(ProjectMemberAPI, self).post(request, *args, **kwargs)
+
 
     # def add_member():
     #     return
