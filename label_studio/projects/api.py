@@ -14,6 +14,7 @@ from django.core.exceptions import PermissionDenied
 from django.db import IntegrityError
 from django.db.models.fields import DecimalField
 from django.conf import settings
+from django.shortcuts import get_object_or_404
 from drf_yasg.utils import swagger_auto_schema
 from django.db.models import Q, When, Count, Case, OuterRef, Max, Exists, Value, BooleanField
 from rest_framework import generics, status, filters
@@ -26,6 +27,7 @@ from rest_framework.views import APIView, exception_handler
 from core.utils.common import conditional_atomic, get_organization_from_request
 from core.label_config import parse_config
 from organizations.models import Organization
+from users.models import User
 from organizations.permissions import *
 from projects.functions import (generate_unique_title, duplicate_project)
 from projects.models import (
@@ -153,7 +155,8 @@ class ProjectListAPI(generics.ListCreateAPIView):
 
 
 
-class ProjectMemberAPI(generics.ListCreateAPIView):
+class ProjectMemberAPI(generics.ListCreateAPIView, 
+                       generics.RetrieveUpdateDestroyAPIView):
 
     parser_classes = (JSONParser, FormParser, MultiPartParser)
     # queryset = ProjectMember.objects.all()
@@ -168,7 +171,10 @@ class ProjectMemberAPI(generics.ListCreateAPIView):
         return ProjectMember.objects.filter(project=project_id)
 
     def get_object(self):
-        obj = get_object_with_check_and_log(self.request, ProjectMember, pk=self.kwargs['pk'])
+        queryset = self.get_queryset()
+        #obj = get_object_with_check_and_log(self.request, ProjectMember, pk=self.kwargs['pk'])
+        #obj = get_object_or_404(queryset, user=json.loads(self.request.body)['user_pk'])
+        obj = get_object_or_404(queryset, user=3)
         self.check_object_permissions(self.request, obj)
         return obj
 
@@ -176,14 +182,32 @@ class ProjectMemberAPI(generics.ListCreateAPIView):
         # Added by NgDMau
         # check if logging user is admin of current project
         # if yes, user can add others to this current project, else cant
-        user_id = self.request.body['user_pk']
+        user_id = json.loads(self.request.body)['user_pk']
         project_id = self.kwargs['pk']
-        project = Project.objects.filter(id=project_id)
+
+        project = Project.objects.get(pk=project_id)
+        user = User.objects.get(pk=user_id)
         self.check_object_permissions(self.request, project)
         try:
-            project_member = serializer.save(user=user_id, project=project_id)
+            project_member = serializer.save(user=user, project=project)
         except IntegrityError as e:
             raise LabelStudioDatabaseException('Database error during project creation. Try again.')
+
+    def perform_destroy(self, instance):
+
+        user_id = json.loads(self.request.body)['user_pk']
+        project_id = self.kwargs['pk']
+
+        project = Project.objects.filter(pk=project_id)
+        user = User.objects.filter(pk=user_id)
+
+        self.check_object_permissions(self.request, project)
+
+        try:
+            instance.delete()
+        except IntegrityError as e:
+            logger.error('Fallback to cascase deleting after integrity_error: {}'.format(str(e)))
+            instance.delete()
 
     @swagger_auto_schema(tags=['ProjectMember'])
     def get(self, request, *args, **kwargs):
@@ -192,6 +216,21 @@ class ProjectMemberAPI(generics.ListCreateAPIView):
     @swagger_auto_schema(tags=['ProjectMember'])
     def post(self, request, *args, **kwargs):
         return super(ProjectMemberAPI, self).post(request, *args, **kwargs)
+
+    @swagger_auto_schema(tags=['ProjectMember'])
+    def delete(self, request, *args, **kwargs):
+        # user_id = json.loads(self.request.body)['user_pk']
+        # project_id = self.kwargs['pk']
+
+        # project = Project.objects.get(pk=project_id)
+        # user = User.objects.get(pk=user_id)
+
+        # self.check_object_permissions(self.request, project)
+
+        # project_member = ProjectMember.objects.filter(user=user, project=project).all()
+        # project_member.delete()
+
+        return super(ProjectMemberAPI, self).delete(request, *args, **kwargs)
 
 
     # def add_member():

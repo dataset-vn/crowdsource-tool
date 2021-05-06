@@ -30,7 +30,7 @@ _api_urlpatterns = [
     path('<int:pk>/', api.ProjectAPI.as_view(), name='project-detail'),
 
     # Get project collaborators
-    path('<int:pk>/collaborators', api.ProjectMemberAPI.as_view(), name='project-collaborators'),
+    path('<int:pk>/members', api.ProjectMemberAPI.as_view(), name='project-collaborators'),
 
 
     # Duplicate project

@@ -96,6 +96,7 @@ class ProjectSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
 class ProjectMemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProjectMember
+        extra_kwargs = {'project': {'required': False}, 'user': {'required': False}}
         fields = '__all__'
 
 

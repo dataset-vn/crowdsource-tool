@@ -13,7 +13,10 @@ export const API_CONFIG = {
     updateProject: "PATCH:/projects/:pk",
     createProject: "POST:/projects",
     deleteProject: "DELETE:/projects/:pk",
-    // addProjectMember: ""
+
+    // ProjectMember
+    getProjectMember: "/api/projects/:pk/members",
+    // createProjectMember: ""
 
     // Config and Import
     configTemplates: "/templates",
