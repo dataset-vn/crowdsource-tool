@@ -7,7 +7,7 @@ from core.permissions import (IsBusiness, get_object_with_permissions, view_with
 from core.utils.common import get_object_with_check_and_log, find_editor_files, get_organization_from_request
 from core.version import get_short_version
 from organizations.models import Organization
-from projects.models import Project
+from projects.models import Project, ProjectMember
 
 
 @view_with_auth(['GET'], (IsBusiness,))
@@ -17,9 +17,16 @@ def task_page(request, pk):
     org = get_object_with_permissions(request, Organization, org_pk, 'organizations.view_organization')
     project = get_object_with_check_and_log(request, Project, pk=pk)
 
-    response = {
-        'project': project,
-        'version': get_short_version()
-    }
-    response.update(find_editor_files())
-    return render(request, 'data_manager/data.html', response)
+    # Check if user is member of project, otherwise cant access
+    project_id = project.id
+    user_id = request.user.id
+    if ProjectMember.objects.filter(project=project_id, user=user_id).exists():
+
+        response = {
+            'project': project,
+            'version': get_short_version()
+        }
+        response.update(find_editor_files())
+        return render(request, 'data_manager/data.html', response)
+
+    return render(request, 'data_manager/401.html')
