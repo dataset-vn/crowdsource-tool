@@ -16,7 +16,9 @@ export const API_CONFIG = {
 
     // ProjectMember
     getProjectMember: "/api/projects/:pk/members",
-    // createProjectMember: ""
+    createProjectMember: "POST:/api/projects/:pk/members", // Gui body kem theo user_pk. Vi du body: {user_pk: 2}
+    
+    //deleteProjectMember: "DELETE:/api/projects/:pk/members"
 
     // Config and Import
     configTemplates: "/templates",
