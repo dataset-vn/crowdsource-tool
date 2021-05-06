@@ -6,7 +6,7 @@ from django.conf import settings
 from django.contrib.auth.models import Group
 
 from users.models import User
-from projects.models import Project, ProjectTemplate
+from projects.models import Project, ProjectMember, ProjectTemplate
 from ml.models import MLBackend, MLBackendTrainJob
 from tasks.models import Task, Annotation
 from organizations.models import Organization
@@ -28,6 +28,7 @@ class UserAdminShort(UserAdmin):
 
 admin.site.register(User, UserAdminShort)
 admin.site.register(Project)
+admin.site.register(ProjectMember)
 admin.site.register(ProjectTemplate)
 admin.site.register(MLBackend)
 admin.site.register(MLBackendTrainJob)
