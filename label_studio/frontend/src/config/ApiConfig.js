@@ -15,8 +15,8 @@ export const API_CONFIG = {
     deleteProject: "DELETE:/projects/:pk",
 
     // ProjectMember
-    getProjectMember: "/api/projects/:pk/members",
-    createProjectMember: "POST:/api/projects/:pk/members", // Gui body kem theo user_pk. Vi du body: {user_pk: 2}
+    getProjectMember: "/projects/:pk/members",
+    createProjectMember: "POST:/projects/:pk/members", // Gui body kem theo user_pk. Vi du body: {user_pk: 2}
     
     //deleteProjectMember: "DELETE:/api/projects/:pk/members"
 
