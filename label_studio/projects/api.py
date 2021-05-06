@@ -143,6 +143,14 @@ class ProjectListAPI(generics.ListCreateAPIView):
 
         try:
             project = ser.save(organization=org)
+
+            # NgDMau - create a ProjectMember so that the project creator can be member of the project created above
+            user = self.request.user
+            try:
+                ProjectMember.objects.create(project=project, user=user)
+            except IntegrityError as e:
+                raise LabelStudioDatabaseException('Database error during project member creation. Try again.')
+
         except IntegrityError as e:
             if str(e) == 'UNIQUE constraint failed: project.title, project.created_by_id':
                 raise ProjectExistException('Project with the same name already exists: {}'.
