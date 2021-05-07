@@ -3032,6 +3032,7 @@ body {
   min-width: 650px;
   font-size: 16px;
   border-radius: 4px;
+  margin-top: 16px;
   box-shadow: 0 0 0 1px rgba(0,0,0,0.15) inset;
 }
 .ls-people-list__loading {

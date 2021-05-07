@@ -5,6 +5,8 @@ import { Button, Userpic } from "../../components";
 import { useAPI } from "../../providers/ApiProvider";
 import { Block, Elem } from "../../utils/bem";
 import "./SelectedUser.styl";
+import "./PeoplePage.styl";
+import { Space } from "../../components/Space/Space";
 
 const UserProjectsLinks = ({projects}) => {
   return (
@@ -77,9 +79,20 @@ export const SelectedUser = ({ user, onClose,projectID }) => {
       <Elem tag="p" name="last-active">
         Hoạt động lúc : {format(new Date(user.last_activity), 'dd MMM yyyy, KK:mm a')}
       </Elem>
-      <Button icon={<LsPlus />}  onClick={addPeopleProjects}>
-          Thêm thành viên
-      </Button>
+      <Elem name="controls">
+        <Space spread>
+          <Space></Space>
+
+          <Space>
+          <Button icon={<LsPlus/>}  onClick={addPeopleProjects}>
+              Thêm thành viên
+          </Button>
+          </Space>
+
+
+        </Space>
+      </Elem>
+      
     </Block>
   );
 };
