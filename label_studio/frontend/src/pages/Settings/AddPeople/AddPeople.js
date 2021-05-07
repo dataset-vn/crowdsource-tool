@@ -42,9 +42,10 @@ export const AddPeople = () => {
   const [selectedUser, setSelectedUser] = useState(null);
 
   const {project} = useProject();
-  console.log("----------------",project)
   
   const [link, setLink] = useState();
+  console.log(".....................",project)
+ 
 
   const selectUser = useCallback((user) => {
     setSelectedUser(user);

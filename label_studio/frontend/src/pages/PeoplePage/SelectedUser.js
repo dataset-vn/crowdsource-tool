@@ -31,6 +31,9 @@ export const SelectedUser = ({ user, onClose,projectID }) => {
       }
     })
     console.log("99999999999999999999",projectID)
+    
+      window.location.reload(); 
+    
   }
   return (
     <Block name="user-info">
