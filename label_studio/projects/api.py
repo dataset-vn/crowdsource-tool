@@ -200,6 +200,11 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         project = Project.objects.get(pk=project_id)
         user = User.objects.get(pk=user_id)
         self.check_object_permissions(self.request, project)
+
+        if ProjectMember.objects.filter(user=user_id, project=project_id).exists():
+            print("User is already a member of this project")
+            return
+
         try:
             project_member = serializer.save(user=user, project=project)
         except IntegrityError as e:
