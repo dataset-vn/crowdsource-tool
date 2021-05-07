@@ -85,7 +85,7 @@ export const SelectedUser = ({ user, onClose,projectID }) => {
 
           <Space>
           <Button icon={<LsPlus/>}  onClick={addPeopleProjects}>
-              Thêm thành viên
+              Thêm vào dự án
           </Button>
           </Space>
 
