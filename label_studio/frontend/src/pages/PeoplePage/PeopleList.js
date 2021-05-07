@@ -14,7 +14,6 @@ export const PeopleList = ({onSelect, selectedUser, defaultSelected}) => {
     const result = await api.callApi('memberships', {
       params: {pk: 1},
     });
-
     setUsersList(result);
   }, [api]);
 

@@ -13,18 +13,22 @@ import { PeopleList } from "../../PeoplePage/PeopleList";
 
 import './MachineLearningSettings.styl';
 import './PeopleList.styl';
+import { PeopleListSetting } from '../../PeoplePageSetting/PeopleListSetting';
+import { SelectedUserSetting } from '../../PeoplePageSetting/SelectedUserSetting';
+import { useDraftProject } from '../../CreateProject/utils/useDraftProject';
+import { useProject } from '../../../providers/ProjectProvider';
 
 
-const InvitationModal = ({link}) => {
+const InvitationModal = ({ link }) => {
   return (
     <Block name="invite">
       <Input
         value={link}
-        style={{width: '100%'}}
+        style={{ width: '100%' }}
         readOnly
       />
 
-      <Description style={{width: '70%', marginTop: 16}}>
+      <Description style={{ width: '70%', marginTop: 16 }}>
         Invited members have private accounts. They can register and join to the organization using this link.
       </Description>
     </Block>
@@ -37,22 +41,27 @@ export const AddPeople = () => {
   const config = useConfig();
   const [selectedUser, setSelectedUser] = useState(null);
 
+  const {project} = useProject();
+  
   const [link, setLink] = useState();
+  console.log(".....................",project)
+ 
 
   const selectUser = useCallback((user) => {
-    console.log({user});
     setSelectedUser(user);
 
     localStorage.setItem('selectedUser', user?.id);
+
   }, [setSelectedUser]);
 
   const setInviteLink = useCallback((link) => {
     const hostname = config.hostname || location.origin;
     setLink(`${hostname}${link}`);
+
   }, [config, setLink]);
 
   const updateLink = useCallback(() => {
-    api.callApi('resetInviteLink').then(({invite_url}) => {
+    api.callApi('resetInviteLink').then(({ invite_url }) => {
       setInviteLink(invite_url);
     });
   }, [setInviteLink]);
@@ -61,7 +70,7 @@ export const AddPeople = () => {
     title: "Invite people",
     style: { width: 640, height: 472 },
     body: () => (
-      <InvitationModal link={link}/>
+      <InvitationModal link={link} />
     ),
     footer: () => {
       const [copied, setCopied] = useState(false);
@@ -75,12 +84,12 @@ export const AddPeople = () => {
       return (
         <Space spread>
           <Space>
-            <Button style={{width: 170}} onClick={() => updateLink()}>
+            <Button style={{ width: 170 }} onClick={() => updateLink()}>
               Reset Link
             </Button>
           </Space>
           <Space>
-            <Button primary style={{width: 170}} onClick={copyLink}>
+            <Button primary style={{ width: 170 }} onClick={copyLink}>
               {copied ? "Copied!" : "Copy link"}
             </Button>
           </Space>
@@ -98,8 +107,13 @@ export const AddPeople = () => {
     return localStorage.getItem('selectedUser');
   }, []);
 
+
+
+
   useEffect(() => {
-    api.callApi("inviteLink").then(({invite_url}) => {
+
+
+    api.callApi("inviteLink").then(({ invite_url }) => {
       setInviteLink(invite_url);
     });
   }, []);
@@ -108,84 +122,72 @@ export const AddPeople = () => {
     inviteModal.current?.update(inviteModalProps(link));
   }, [link]);
 
-  const [usersList,setusersList]=useState([{
-    id:1,
-    email:"Huynhphoke@gmail.com",
-    first_name:"Nguyen",
-    last_name:"Duc Huynh",
+  const [usersList, setusersList] = useState([{
+    id: 1,
+    email: "Huynhphoke@gmail.com",
+    first_name: "Nguyen",
+    last_name: "Duc Huynh",
     last_activity: new Date(),
   },
   {
-    id:1,
-    email:"Huynhphoke@gmail.com",
-    first_name:"Nguyen",
-    last_name:"Duc Huynh",
+    id: 1,
+    email: "Huynhphoke@gmail.com",
+    first_name: "Nguyen",
+    last_name: "Duc Huynh",
     last_activity: new Date(),
   },
   {
-    id:1,
-    email:"Huynhphoke@gmail.com",
-    first_name:"Nguyen",
-    last_name:"Duc Huynh",
+    id: 1,
+    email: "Huynhphoke@gmail.com",
+    first_name: "Nguyen",
+    last_name: "Duc Huynh",
     last_activity: new Date(),
   }])
-  
+
   return (
     <>
-    <Block name="people-list">
-       <Elem name="users">
-         {/* <Elem name="header">
-            <Elem name="column" mix="avatar"/>
-            <Elem name="column" mix="email">Email</Elem>
-            <Elem name="column" mix="name">Tên</Elem>
-            <Elem name="column" mix="last-activity">Hoạt động</Elem>
-          </Elem>
-          <Elem name="body">
-            {usersList.map((user) => {
-              // const active = user.id === selectedUser?.id;
-              console.log(user)
-              return (
-                <Elem name="user">
-                  <Elem name="field" mix="avatar">
-                    <Userpic user={user} style={{ width: 28, height: 28 }}/>
-                  </Elem>
-                  <Elem name="field" mix="email">
-                    {user.email}
-                  </Elem>
-                  <Elem name="field" mix="name">
-                    {user.first_name} {user.last_name}
-                  </Elem>
-                  <Elem name="field" mix="last-activity">
-                    {formatDistance(new Date(user.last_activity), new Date(), {addSuffix: true})}
-                  </Elem>
-                </Elem>
-              );
-            })}
-          </Elem> */}
+
+      <Block name="people-list">
+      <Elem name="column" mix="email">Thành viên</Elem>
+        <Elem name="users">
         </Elem>
         <Elem name="content">
-        <PeopleList
-          selectedUser={selectedUser}
-          defaultSelected={defaultSelected}
-          onSelect={(user) => selectUser(user)}
-        />
-
-        {selectedUser && (
-          <SelectedUser
-            user={selectedUser}
-            onClose={() => selectUser(null)}
+          <PeopleList
+            selectedUser={selectedUser}
+            defaultSelected={defaultSelected}
+            onSelect={(user) => selectUser(user)}
+            
           />
-        )}
-      </Elem>
+
+          {selectedUser && (
+            <SelectedUser
+              user={selectedUser}
+              onClose={() => selectUser(null)}
+              projectID={project.id}
+            />
+          )}
+        </Elem>
       </Block>
-            <Space>
-            <Button icon={<LsPlus/>}  onClick={showInvitationModal} >
-              Thêm thành viên
-            </Button>
-          </Space>
+
+
+      <Space >
+        
+      </Space>
+
+      <Block name="people-list">
+      <Elem name="column" mix="email">Thành viên tham gia</Elem>
+        <Elem name="content">
+          <PeopleListSetting
+            selectedUser={selectedUser}
+            defaultSelected={defaultSelected}
+            onSelect={(user) => selectUser(user)}
+            projectID={project.id}
+          />
+        </Elem>
+      </Block>
     </>
   );
 };
 
 AddPeople.title = "Add People";
-AddPeople.path = "/Add-People";
+AddPeople.path = "/add-people";
