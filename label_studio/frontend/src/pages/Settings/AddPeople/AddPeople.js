@@ -148,7 +148,7 @@ export const AddPeople = () => {
     <>
 
       <Block name="people-list">
-      <Elem name="column" mix="email">Thành viên</Elem>
+      <Elem name="column" mix="email">Người dùng hệ thống</Elem>
         <Elem name="users">
         </Elem>
         <Elem name="content">
@@ -175,7 +175,7 @@ export const AddPeople = () => {
       </Space>
 
       <Block name="people-list">
-      <Elem name="column" mix="email">Thành viên tham gia</Elem>
+      <Elem name="column" mix="email">Thành viên dự án</Elem>
         <Elem name="content">
           <PeopleListSetting
             selectedUser={selectedUser}
