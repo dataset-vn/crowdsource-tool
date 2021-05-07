@@ -4,13 +4,15 @@ import { Spinner, Userpic } from "../../components";
 import { useAPI } from "../../providers/ApiProvider";
 import { Block, Elem } from "../../utils/bem";
 import { isDefined } from "../../utils/helpers";
+// import { useDraftProject } from "../CreateProject/utils/useDraftProject";
 import './PeopleList.styl';
 
-export const PeopleListSetting = ({onSelect, selectedUser, defaultSelected}) => {
+export const PeopleListSetting = ({onSelect, selectedUser, defaultSelected,projectID}) => {
   const api = useAPI();
   const [usersList, setUsersList] = useState();
   const [userInProjects, setUserInProjects] = useState(null)
 
+  console.log("",projectID)
 
 
   const fetchUsers = useCallback(async () => {
@@ -20,11 +22,12 @@ export const PeopleListSetting = ({onSelect, selectedUser, defaultSelected}) => 
     });
     const response = await api.callApi("getProjectMember", {
       params: {
-        pk: 2
+        pk: projectID
       }
     })
-     console.log("----------",result)
-     console.log("++++++++++",response)
+    console.log(";;;;;;;;;;;;;;;;;;;",projectID)
+    //  console.log("----------",result)
+    //  console.log("++++++++++",response)
 
     
   

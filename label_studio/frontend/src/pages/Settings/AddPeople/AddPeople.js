@@ -15,6 +15,8 @@ import './MachineLearningSettings.styl';
 import './PeopleList.styl';
 import { PeopleListSetting } from '../../PeoplePageSetting/PeopleListSetting';
 import { SelectedUserSetting } from '../../PeoplePageSetting/SelectedUserSetting';
+import { useDraftProject } from '../../CreateProject/utils/useDraftProject';
+import { useProject } from '../../../providers/ProjectProvider';
 
 
 const InvitationModal = ({ link }) => {
@@ -39,7 +41,9 @@ export const AddPeople = () => {
   const config = useConfig();
   const [selectedUser, setSelectedUser] = useState(null);
 
-
+  const {project} = useProject();
+  console.log("----------------",project)
+  
   const [link, setLink] = useState();
 
   const selectUser = useCallback((user) => {
@@ -141,7 +145,9 @@ export const AddPeople = () => {
 
   return (
     <>
+
       <Block name="people-list">
+      <Elem name="column" mix="email">Thành viên</Elem>
         <Elem name="users">
         </Elem>
         <Elem name="content">
@@ -149,43 +155,33 @@ export const AddPeople = () => {
             selectedUser={selectedUser}
             defaultSelected={defaultSelected}
             onSelect={(user) => selectUser(user)}
+            
           />
 
           {selectedUser && (
             <SelectedUser
               user={selectedUser}
               onClose={() => selectUser(null)}
+              projectID={project.id}
             />
           )}
         </Elem>
       </Block>
-      <Space>
-        <Button icon={<LsPlus />} onClick={showInvitationModal} >
-          Thêm thành viên
-            </Button>
-      </Space>
-   
-      <Space>
-        {JSON.stringify(selectedUser)}
-      </Space>
 
+
+      <Space >
+        
+      </Space>
 
       <Block name="people-list">
-        <Elem name="users">
-        </Elem>
+      <Elem name="column" mix="email">Thành viên tham gia</Elem>
         <Elem name="content">
           <PeopleListSetting
             selectedUser={selectedUser}
             defaultSelected={defaultSelected}
             onSelect={(user) => selectUser(user)}
+            projectID={project.id}
           />
-
-          {selectedUser && (
-            <SelectedUserSetting
-              user={selectedUser}
-              onClose={() => selectUser(null)}
-            />
-          )}
         </Elem>
       </Block>
     </>
@@ -193,4 +189,4 @@ export const AddPeople = () => {
 };
 
 AddPeople.title = "Add People";
-AddPeople.path = "/Add-People";
+AddPeople.path = "/add-people";

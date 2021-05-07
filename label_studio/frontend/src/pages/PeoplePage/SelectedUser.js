@@ -1,7 +1,8 @@
 import { format } from "date-fns";
 import { NavLink } from "react-router-dom";
-import { LsCross } from "../../assets/icons";
+import { LsCross, LsPlus } from "../../assets/icons";
 import { Button, Userpic } from "../../components";
+import { useAPI } from "../../providers/ApiProvider";
 import { Block, Elem } from "../../utils/bem";
 import "./SelectedUser.styl";
 
@@ -17,9 +18,20 @@ const UserProjectsLinks = ({projects}) => {
   );
 };
 
-export const SelectedUser = ({ user, onClose }) => {
+export const SelectedUser = ({ user, onClose,projectID }) => {
   const fullName = [user.first_name, user.last_name].filter(n => !!n).join(" ").trim();
-
+  const api = useAPI();
+  const addPeopleProjects = async ()=>{
+    const response = await api.callApi("createProjectMember", {
+      params: {
+        pk: projectID
+      },
+      body:{
+        user_pk:user.id
+      }
+    })
+    console.log("99999999999999999999",projectID)
+  }
   return (
     <Block name="user-info">
       <Elem name="close" tag={Button} type="link" onClick={onClose}><LsCross/></Elem>
@@ -62,6 +74,9 @@ export const SelectedUser = ({ user, onClose }) => {
       <Elem tag="p" name="last-active">
         Hoạt động lúc : {format(new Date(user.last_activity), 'dd MMM yyyy, KK:mm a')}
       </Elem>
+      <Button icon={<LsPlus />}  onClick={addPeopleProjects}>
+          Thêm thành viên
+      </Button>
     </Block>
   );
 };

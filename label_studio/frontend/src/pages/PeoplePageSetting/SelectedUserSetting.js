@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import { NavLink } from "react-router-dom";
-import { LsCross } from "../../assets/icons";
+import { LsCross, LsPlus } from "../../assets/icons";
 import { Button, Userpic } from "../../components";
 import { Block, Elem } from "../../utils/bem";
 import "./SelectedUser.styl";
@@ -62,6 +62,7 @@ export const SelectedUserSetting = ({ user, onClose }) => {
       <Elem tag="p" name="last-active">
         Hoạt động lúc : {format(new Date(user.last_activity), 'dd MMM yyyy, KK:mm a')}
       </Elem>
+
     </Block>
   );
 };
