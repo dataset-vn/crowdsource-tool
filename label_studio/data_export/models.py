@@ -15,6 +15,8 @@ from core.utils.io import get_temp_dir, read_bytes_stream, get_all_files_from_di
 from core.label_config import parse_config
 from core import version
 from tasks.models import Annotation
+
+from .functions import all_dts_formats
 # Create your models here.
 
 
@@ -58,7 +60,8 @@ class DataExport(object):
         converter = Converter(config=project.get_parsed_config(), project_dir=None)
         formats = []
         supported_formats = set(converter.supported_formats)
-        for format, format_info in converter.all_formats().items():
+        # for format, format_info in converter.all_formats().items():
+        for format, format_info in all_dts_formats().items():
             format_info = deepcopy(format_info)
             format_info['name'] = format.name
             if format.name not in supported_formats:
