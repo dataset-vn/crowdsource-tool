@@ -118,6 +118,7 @@ def user_account(request):
     user = request.user
 
     if user.active_organization is None and 'organization_pk' not in request.session:
+        # print("SOMETHING main")
         return redirect(reverse('main'))
 
     form = forms.UserProfileForm(instance=user)
@@ -127,6 +128,7 @@ def user_account(request):
         form = forms.UserProfileForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
+            # print("SOMETHING post")
             return redirect(reverse('user-account'))
 
     return render(request, 'users/user_account.html', {

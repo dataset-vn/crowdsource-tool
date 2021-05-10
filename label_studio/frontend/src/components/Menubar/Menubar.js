@@ -139,6 +139,7 @@ export const Menubar = ({
                 icon={<LsSettings/>}
                 label="Account & Settings"
                 href={absoluteURL("/user/account")}
+                data-external
               />
               {/* <Menu.Item label="Dark Mode"/> */}
               <Menu.Item
