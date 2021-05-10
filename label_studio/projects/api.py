@@ -180,26 +180,51 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
 
     def get_queryset(self,):
         project_id = self.kwargs['pk']
+        current_user_id = self.request.user.id
+
+        if not ProjectMember.objects.filter(user=current_user_id, project=project_id).exists():
+            print("Operation can only be performed by a project member")
+            return
+            
         return ProjectMember.objects.filter(project=project_id)
 
-    def get_object(self):
-        queryset = self.get_queryset()
-        #obj = get_object_with_check_and_log(self.request, ProjectMember, pk=self.kwargs['pk'])
-        #obj = get_object_or_404(queryset, user=json.loads(self.request.body)['user_pk'])
-        obj = get_object_or_404(queryset, user=3)
-        self.check_object_permissions(self.request, obj)
-        return obj
+    # def get_object(self):
+    #     project_id = self.kwargs['pk']
+    #     current_user_id = self.request.user.id
+
+    #     if not ProjectMember.objects.filter(user=current_user_id, project=project_id).exists():
+    #         print("Operation can only be performed by a project member")
+    #         return
+    #     else:
+    #         print("STill see 'em")
+
+    #     queryset = self.get_queryset()
+    #     obj = get_object_with_check_and_log(self.request, ProjectMember, pk=self.kwargs['pk'])
+    #     #obj = get_object_or_404(queryset, user=json.loads(self.request.body)['user_pk'])
+    #     # obj = get_object_or_404()
+    #     self.check_object_permissions(self.request, obj)
+    #     return obj
 
     def perform_create(self, serializer):
         # Added by NgDMau
         # check if logging user is admin of current project
         # if yes, user can add others to this current project, else cant
-        user_id = json.loads(self.request.body)['user_pk']
+        current_user_id = self.request.user.id
         project_id = self.kwargs['pk']
+
+        if not ProjectMember.objects.filter(user=current_user_id, project=project_id).exists():
+            print("Operation can only be performed by a project member")
+            return
+        
+
+        user_id = json.loads(self.request.body)['user_pk']
+        
 
         project = Project.objects.get(pk=project_id)
         user = User.objects.get(pk=user_id)
         self.check_object_permissions(self.request, project)
+
+        
 
         if ProjectMember.objects.filter(user=user_id, project=project_id).exists():
             print("User is already a member of this project")
@@ -212,13 +237,21 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
 
     def perform_destroy(self, instance):
 
-        user_id = json.loads(self.request.body)['user_pk']
+        current_user_id = self.request.user.id
         project_id = self.kwargs['pk']
+        if not ProjectMember.objects.filter(user=current_user_id, project=project_id).exists():
+            print("Operation can only be performed by a project member")
+            return
+
+        user_id = json.loads(self.request.body)['user_pk']
+        
 
         project = Project.objects.filter(pk=project_id)
         user = User.objects.filter(pk=user_id)
 
         self.check_object_permissions(self.request, project)
+
+        
 
         try:
             instance.delete()
