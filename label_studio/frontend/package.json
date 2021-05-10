@@ -142,6 +142,7 @@
     "browserContext": "default"
   },
   "dependencies": {
+    "react-gif-loader": "^0.6.0",
     "react-page-loading": "^1.0.2"
   }
 }
