@@ -2,7 +2,8 @@
 """
 from core.settings.base import *
 
-DJANGO_DB = get_env('DJANGO_DB', DJANGO_DB_SQLITE)
+# DJANGO_DB = get_env('DJANGO_DB', DJANGO_DB_SQLITE) # (Means the system will use PostgreSQl if system env DJANGO_DB=default)
+DJANGO_DB = 'default' # (Means the system will use PostgreSQL as database)
 DATABASES = {'default': DATABASES_ALL[DJANGO_DB]}
 
 MIDDLEWARE.append('organizations.middleware.DummyGetSessionMiddleware')
