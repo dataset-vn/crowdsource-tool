@@ -83,32 +83,6 @@
     </form>
 
     <!-- Token -->
-    <form action="" class="access_token__info">
-      <header>Access Token</header>
-      <div class="field field--wide">
-        <label for="access_token">Use this token to authenticate with our API:</label>
-        <input id="access_token" class="ls-input" name="access_token" type="text" value="{{token}}" readonly />
-        <p class="actions">
-          <button type="button" class="blinking-status ls-button" data-copy="access_token">Copy</button>
-          <button type="button" class="blinking-status ls-button" name="renew">Renew</button>
-        </p>
-      </div>
-      <!-- Example -->
-      <div class="field field--wide">
-        <label for="example_fetch">Example fetch projects data:</label>
-        <textarea id="example_fetch" class="example_code ls-textarea" type="text" readonly style="height: 92px">
-          {% if settings.HOSTNAME %}
-            curl -X GET {{ settings.HOSTNAME }}/api/projects/ -H 'Authorization: Token {{token}}'
-          {% else %}
-            curl -X GET http://localhost:8080/api/projects/ -H 'Authorization: Token {{token}}'
-          {% endif %}
-        </textarea>
-        <p class="actions">
-          <button type="button" class="blinking-status ls-button" data-copy="example_fetch">Copy</button>
-          <a class="ls-button" href="https://labelstud.io/guide/api.html" target="_blank">Documentation</a>
-        </p>
-      </div>
-    </form>
   </div>
 
   <script>

@@ -161,7 +161,8 @@ class ContextLog(object):
             pass
         else:
             try:
-               url = 'https://tele.labelstud.io'
+               url = 'https://tele.dataset.vn'
+               # url = 'https://tele.labelstud.io'
                requests.post(url=url, json=payload)
             except:
                 pass
