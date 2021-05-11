@@ -22,7 +22,7 @@ export const ProjectsList = ({projects}) => {
 export const EmptyProjectsList = ({ openModal }) => {
   return (
     <Block name="empty-projects-page">
-      <Elem name="heidi" tag="img" src={absoluteURL("/static/images/opossum_looking.png")} />
+      <Elem name="heidi" tag="img" src={absoluteURL("/static/images/Dman2_naive.png")} />
       <Elem name="header" tag="h1">Chưa có bất kỳ dự án nào</Elem>
       <p>Tạo dự án để bắt đầu gán nhãn dữ liệu</p>
       <Elem name="action" tag={Button} onClick={openModal} look="primary">Tạo dự án</Elem>
