@@ -83,11 +83,11 @@ export const SelectedUser = ({ user, onClose,projectID }) => {
         <Space spread>
           <Space></Space>
 
-          <Space>
+          {/* <Space>
           <Button icon={<LsPlus/>}  onClick={addPeopleProjects}>
               Thêm vào dự án
           </Button>
-          </Space>
+          </Space> */}
 
 
         </Space>
