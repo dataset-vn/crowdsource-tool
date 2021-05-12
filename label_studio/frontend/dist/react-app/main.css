@@ -3279,6 +3279,20 @@ body {
   background-color: #f1f1f1;
 }
 
+.ls-people {
+  padding: 0 40px 40px;
+}
+.ls-people__controls {
+  padding: 16px 0;
+}
+.ls-people__content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: min-content;
+  align-items: flex-start;
+  grid-gap: 20px;
+}
+
 .ls-radio-group {
   --radius: 8px;
   --height: 32px;

@@ -160,7 +160,7 @@ export const AddPeople = () => {
           />
 
           {selectedUser && (
-            <SelectedUser
+            <SelectedUserSetting
               user={selectedUser}
               onClose={() => selectUser(null)}
               projectID={project.id}
