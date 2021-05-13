@@ -1,7 +1,7 @@
 import { createContext, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation } from 'react-router';
 import { StaticContent } from '../../app/StaticContent/StaticContent';
-import { IconBook, IconFolder, IconPersonInCircle, IconPin, IconTerminal, LsDoor, LsGitHub, LsSettings, LsSlack,LsFacebook,IconDataset,IconD } from '../../assets/icons';
+import { IconBook,  IconBuilding, IconFolder, IconPersonInCircle, IconPin, IconTerminal, LsDoor, LsGitHub, LsSettings, LsSlack,LsFacebook,IconDataset,IconD } from '../../assets/icons';
 import { useConfig } from '../../providers/ConfigProvider';
 import { useContextComponent } from '../../providers/RoutesProvider';
 import { cn } from '../../utils/bem';
@@ -169,6 +169,13 @@ export const Menubar = ({
               style={{width: 240}}
             >
               <Menu>
+                <Menu.Item
+                  label="Tổ chức"
+                  to="/organizations"
+                  icon={<IconBook/>}
+                  data-external
+                  exact
+                />
                 <Menu.Item
                   label="Dự án"
                   to="/projects"

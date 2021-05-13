@@ -18,6 +18,7 @@ export { default as IconPin } from './pin.svg';
 export { default as IconTerminal } from './terminal.svg';
 export { default as IconUpload } from './upload.svg';
 export { default as IconDataset } from './dataset.svg';
+export { default as IconBuilding } from './Ancient-Building-Icon.svg';
 export { default as IconD } from './d.svg';
 
 
