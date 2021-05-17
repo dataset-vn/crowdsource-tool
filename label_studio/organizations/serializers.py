@@ -49,11 +49,15 @@ class UserSerializerWithProjects(UserSerializer):
 
 class OrganizationMemberUserSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
     """Adds all user properties"""
-    user = UserSerializerWithProjects()
+    # user = UserSerializerWithProjects()
+
+    
 
     class Meta:
         model = OrganizationMember
-        fields = ['id', 'organization', 'user']
+        extra_kwargs = {'organization': {'required': False}, 'user': {'required': False}}
+        # fields = ['id', 'organization', 'user']
+        fields = '__all__'
 
 
 class OrganizationInviteSerializer(serializers.Serializer):

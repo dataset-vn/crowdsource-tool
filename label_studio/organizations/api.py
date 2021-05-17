@@ -54,11 +54,11 @@ class OrganizationListAPI(generics.ListCreateAPIView,
 
         #return Organization.objects.filter(created_by=self.request.user)
 
-    def perform_create(self, idk):
+    def perform_create(self, serializer):
         org_creator = self.request.user
         org_title = json.loads(self.request.body)['title']
 
-        Organization.objects.create(created_by=org_creator, title=org_title)
+        serializer.save(created_by=org_creator, title=org_title)
 
     @swagger_auto_schema(tags=['Organizations'])
     def get(self, request, *args, **kwargs):
@@ -69,7 +69,7 @@ class OrganizationListAPI(generics.ListCreateAPIView,
         return super(OrganizationListAPI, self).post(request, *args, **kwargs)
 
 
-class OrganizationMemberListAPI(generics.ListAPIView):
+class OrganizationMemberListAPI(generics.ListAPIView, generics.ListCreateAPIView):
     """
     get:
     Get organization members list
@@ -86,9 +86,28 @@ class OrganizationMemberListAPI(generics.ListAPIView):
         self.check_object_permissions(self.request, org)
         return org.members
 
+    def perform_create(self, serializer):
+        org_id = self.kwargs['pk']
+        member_id = json.loads(self.request.body)['user_pk']
+        current_user_id = self.request.user.id
+
+        member = User.objects.get(id=member_id)
+        org = Organization.objects.get(id=org_id)
+
+
+        if not OrganizationMember.objects.filter(organization_id=org_id, user_id=current_user_id).exists():
+            print("Only organization member can add new members")
+            return
+
+        serializer.save(user=member, organization=org)
+
     @swagger_auto_schema(tags=['Organizations'])
     def get(self, request, *args, **kwargs):
         return super(OrganizationMemberListAPI, self).get(request, *args, **kwargs)
+
+    @swagger_auto_schema(tags=['Organizations'])
+    def post(self, request, *args, **kwargs):
+        return super(OrganizationMemberListAPI, self).post(request, *args, **kwargs)
 
 
 class OrganizationAPI(APIViewVirtualRedirectMixin,
