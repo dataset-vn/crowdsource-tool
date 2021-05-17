@@ -13,3 +13,10 @@ def organization_people_list(request):
     return render(request, 'organizations/people_list.html', {
         'user': request.user,
     })
+
+@view_with_auth(['GET'], (IsBusiness,))
+@permission_required('organizations.change_organization', fn=Organization.from_request, raise_exception=True)
+def organizations_list(request):
+    return render(request, 'organizations/organizations_list.html', {
+        'user': request.user,
+    })

@@ -25,7 +25,9 @@ _api_urlpattens = [
 
 # TODO: these urlpatterns should be moved in core/urls with include('organizations.urls')
 urlpatterns = [
+    path('organizations/', views.organizations_list, name='organizations-list'),
     path('people/', include(_urlpatterns)),
+
     path('api/organizations/', include((_api_urlpattens, app_name), namespace='api')),
 
     # invite

@@ -1,6 +1,8 @@
 """This file and its contents are licensed under the Apache License 2.0. Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
 """
 import logging
+import json
+from django.http import request
 
 from django.urls import reverse
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
@@ -14,7 +16,8 @@ from core.mixins import APIViewVirtualRedirectMixin, APIViewVirtualMethodMixin
 from core.permissions import IsAuthenticated, BaseRulesPermission
 from core.utils.common import get_object_with_check_and_log
 
-from organizations.models import Organization
+from users.models import User
+from organizations.models import Organization, OrganizationMember
 from organizations.serializers import (
     OrganizationSerializer, OrganizationIdSerializer, OrganizationMemberUserSerializer, OrganizationInviteSerializer
 )
@@ -27,7 +30,8 @@ class OrganizationAPIPermissions(BaseRulesPermission):
     perm = 'organizations.change_organization'
 
 
-class OrganizationListAPI(generics.ListCreateAPIView):
+class OrganizationListAPI(generics.ListCreateAPIView,
+                          generics.RetrieveUpdateDestroyAPIView):
     """
     get:
     List your organizations
@@ -44,13 +48,23 @@ class OrganizationListAPI(generics.ListCreateAPIView):
         return org
 
     def get_queryset(self):
-        return Organization.objects.filter(created_by=self.request.user)
+        user_id = self.request.user.id
+        orgs_id = OrganizationMember.objects.values_list('organization_id', flat=True).filter(user_id=user_id)
+        return Organization.objects.filter(id__in=orgs_id)
+
+        #return Organization.objects.filter(created_by=self.request.user)
+
+    def perform_create(self, idk):
+        org_creator = self.request.user
+        org_title = json.loads(self.request.body)['title']
+
+        Organization.objects.create(created_by=org_creator, title=org_title)
 
     @swagger_auto_schema(tags=['Organizations'])
     def get(self, request, *args, **kwargs):
         return super(OrganizationListAPI, self).get(request, *args, **kwargs)
 
-    @swagger_auto_schema(auto_schema=None)
+    @swagger_auto_schema(tags=['Organizations'])
     def post(self, request, *args, **kwargs):
         return super(OrganizationListAPI, self).post(request, *args, **kwargs)
 
@@ -103,6 +117,13 @@ class OrganizationAPI(APIViewVirtualRedirectMixin,
         org = get_object_with_check_and_log(self.request, Organization, pk=self.kwargs[self.lookup_field])
         self.check_object_permissions(self.request, org)
         return org
+
+    def get_queryset(self):
+        user_id = self.request.user.id
+        orgs_id = OrganizationMember.objects.values_list('organization_id', flat=True).filter(user_id=user_id)
+        return Organization.objects.filter(id__in=orgs_id)
+
+        #return Organization.objects.filter(created_by=self.request.user)
 
     @swagger_auto_schema(tags=['Organizations'])
     def get(self, request, *args, **kwargs):
