@@ -3,6 +3,8 @@
 import logging
 import json
 from django.http import request
+from django.db import IntegrityError
+
 
 from django.urls import reverse
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
@@ -15,6 +17,7 @@ from drf_yasg.utils import swagger_auto_schema
 from core.mixins import APIViewVirtualRedirectMixin, APIViewVirtualMethodMixin
 from core.permissions import IsAuthenticated, BaseRulesPermission
 from core.utils.common import get_object_with_check_and_log
+from core.utils.exceptions import LabelStudioDatabaseException
 
 from users.models import User
 from organizations.models import Organization, OrganizationMember
@@ -58,7 +61,8 @@ class OrganizationListAPI(generics.ListCreateAPIView,
         org_creator = self.request.user
         org_title = json.loads(self.request.body)['title']
 
-        serializer.save(created_by=org_creator, title=org_title)
+        org = serializer.save(created_by=org_creator, title=org_title)
+        OrganizationMember.objects.create(user=org_creator, organization=org)
 
     @swagger_auto_schema(tags=['Organizations'])
     def get(self, request, *args, **kwargs):
@@ -69,7 +73,8 @@ class OrganizationListAPI(generics.ListCreateAPIView,
         return super(OrganizationListAPI, self).post(request, *args, **kwargs)
 
 
-class OrganizationMemberListAPI(generics.ListAPIView, generics.ListCreateAPIView):
+class OrganizationMemberListAPI(generics.ListCreateAPIView,
+                                generics.RetrieveUpdateDestroyAPIView):
     """
     get:
     Get organization members list
@@ -81,10 +86,25 @@ class OrganizationMemberListAPI(generics.ListAPIView, generics.ListCreateAPIView
     permission_classes = (IsAuthenticated, OrganizationAPIPermissions)
     serializer_class = OrganizationMemberUserSerializer
 
+    # def get_object(self):
+    #     queryset = self.get_queryset()
+
+    #     obj = get_object_with_check_and_log(queryset, **filter)
+    #     self.check_object_permissions(self.request, obj)
+    #     return obj
+
     def get_queryset(self):
-        org = get_object_with_check_and_log(self.request, Organization, pk=self.kwargs[self.lookup_field])
-        self.check_object_permissions(self.request, org)
-        return org.members
+        # org = get_object_with_check_and_log(self.request, Organization, pk=self.kwargs[self.lookup_field])
+        # self.check_object_permissions(self.request, org)
+
+        org_id = self.kwargs['pk']
+        current_user_id = self.request.user.id
+
+        if not OrganizationMember.objects.filter(organization_id=org_id, user_id=current_user_id).exists():
+            return
+
+        # org = Organization.objects.get(id=org_id)
+        return OrganizationMember.objects.filter(organization=org_id)
 
     def perform_create(self, serializer):
         org_id = self.kwargs['pk']
@@ -94,12 +114,33 @@ class OrganizationMemberListAPI(generics.ListAPIView, generics.ListCreateAPIView
         member = User.objects.get(id=member_id)
         org = Organization.objects.get(id=org_id)
 
+        # if not OrganizationMember.objects.filter(organization_id=org_id, user_id=current_user_id).exists():
+        #     print("Only organization member can add new members")
+        #     return
 
-        if not OrganizationMember.objects.filter(organization_id=org_id, user_id=current_user_id).exists():
-            print("Only organization member can add new members")
+        try:
+            serializer.save(user=member, organization=org)
+        except IntegrityError as e:
+            raise LabelStudioDatabaseException('Database error during adding member. Try again.')
+
+    def perform_destroy(self, instance):
+        current_user_id = self.request.user.id
+        member_id = json.loads(self.request.body)['user_pk']
+        org_id = self.kwargs['pk']
+
+
+        if not OrganizationMember.objects.filter(user=current_user_id, organization=org_id).exists():
+            print("Operation can only be performed by a organization member")
             return
 
-        serializer.save(user=member, organization=org)
+        try:
+            instance = OrganizationMember.objects.get(user=member_id, organization=org_id)
+            instance.delete()
+        except IntegrityError as e:
+            logger.error('Fallback to cascase deleting after integrity_error: {}'.format(str(e)))
+
+        return
+
 
     @swagger_auto_schema(tags=['Organizations'])
     def get(self, request, *args, **kwargs):
@@ -108,6 +149,10 @@ class OrganizationMemberListAPI(generics.ListAPIView, generics.ListCreateAPIView
     @swagger_auto_schema(tags=['Organizations'])
     def post(self, request, *args, **kwargs):
         return super(OrganizationMemberListAPI, self).post(request, *args, **kwargs)
+
+    @swagger_auto_schema(tags=['Organizations'])
+    def delete(self, request, *args, **kwargs):
+        return super(OrganizationMemberListAPI, self).delete(request, *args, **kwargs)
 
 
 class OrganizationAPI(APIViewVirtualRedirectMixin,

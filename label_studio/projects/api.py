@@ -239,6 +239,7 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
 
         current_user_id = self.request.user.id
         project_id = self.kwargs['pk']
+
         if not ProjectMember.objects.filter(user=current_user_id, project=project_id).exists():
             print("Operation can only be performed by a project member")
             return
@@ -252,7 +253,6 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         self.check_object_permissions(self.request, project)
 
         
-
         try:
             instance.delete()
         except IntegrityError as e:
