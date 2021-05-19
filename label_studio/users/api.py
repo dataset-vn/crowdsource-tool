@@ -1,6 +1,9 @@
 """This file and its contents are licensed under the Apache License 2.0. Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
 """
+from django.http import request
+from label_studio.core.permissions import IsBusiness
 import logging
+import json
 import drf_yasg.openapi as openapi
 
 from django_filters.rest_framework import DjangoFilterBackend
@@ -19,6 +22,8 @@ from users.models import User
 from users.serializers import UserSerializer
 from users.forms import UserProfileForm
 from users.functions import check_avatar
+
+from organizations.models import Organization, OrganizationMember
 
 
 logger = logging.getLogger(__name__)
@@ -132,3 +137,32 @@ class UserWhoAmIAPI(generics.RetrieveAPIView):
     @swagger_auto_schema(tags=['Users'], operation_summary='Retrieve my user')
     def get(self, request, *args, **kwargs):
         return super(UserWhoAmIAPI, self).get(request, *args, **kwargs)
+
+
+class UserActiveOrganizationAPI(generics.RetrieveUpdateDestroyAPIView):
+    parser_classes = (JSONParser, FormParser, MultiPartParser)
+    queryset = User.objects.all()
+    permission_classes = (IsBusiness,)
+    serializer_class = UserSerializer
+
+    def get_object(self):
+        return User.objects.get(id=self.request.user.id)
+
+    def perform_update(self, serializer):
+        new_active_org_id = int(json.loads(self.request.body)['active_organization'])
+        new_active_org = Organization.objects.get(id=new_active_org_id)
+
+        # Check if user is also a member of new active organization
+        if not OrganizationMember.objects.filter(organization_id=new_active_org_id, user_id=self.request.user.id).exists():
+            return 
+
+        return serializer.save(active_organization=new_active_org)
+
+    @swagger_auto_schema(tags=['Users'])
+    def get(self, request, *args, **kwargs):
+        return super(UserActiveOrganizationAPI, self).get(request, *args, **kwargs)
+
+    @swagger_auto_schema(tags=['Users'])
+    def patch(self, request, *args, **kwargs):
+        return super(UserActiveOrganizationAPI, self).patch(request, *args, **kwargs)
+        

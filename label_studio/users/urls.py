@@ -37,4 +37,8 @@ urlpatterns = [
     path('api/current-user/token', api.UserGetTokenAPI.as_view(), name='current-user-token'),
 
     path('api/current-user/whoami', api.UserWhoAmIAPI.as_view(), name='current-user-whoami'),
+    
+    # Active organization
+    path('api/current-user/active-organization', api.UserActiveOrganizationAPI.as_view(), name='current-user-active-organization'),
+
 ]
