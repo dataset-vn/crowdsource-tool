@@ -128,7 +128,9 @@ class ProjectListAPI(generics.ListCreateAPIView):
         user_id = self.request.user.id
         project_ids = ProjectMember.objects.values_list('project', flat=True).filter(user=user_id)
 
-        return Project.objects.filter(id__in=project_ids)
+        active_org_id = self.request.user.active_organization
+
+        return Project.objects.filter(id__in=project_ids, organization_id=active_org_id)
 
     def get_serializer_context(self):
         context = super(ProjectListAPI, self).get_serializer_context()
