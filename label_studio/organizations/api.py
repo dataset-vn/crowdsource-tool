@@ -22,7 +22,7 @@ from core.utils.exceptions import LabelStudioDatabaseException
 from users.models import User
 from organizations.models import Organization, OrganizationMember
 from organizations.serializers import (
-    OrganizationSerializer, OrganizationIdSerializer, OrganizationMemberUserSerializer, OrganizationInviteSerializer
+    OrganizationSerializer, OrganizationIdSerializer, OrganizationMemberUserSerializer, OrganizationMemberSerializer, OrganizationInviteSerializer
 )
 
 
@@ -75,6 +75,31 @@ class OrganizationListAPI(generics.ListCreateAPIView,
 
 class OrganizationMemberListAPI(generics.ListCreateAPIView,
                                 generics.RetrieveUpdateDestroyAPIView):
+
+    """
+    get:
+    Get organization members list
+ 
+    Retrieve a list of the organization members.
+    """
+ 
+    parser_classes = (JSONParser, FormParser, MultiPartParser)
+    permission_classes = (IsAuthenticated, OrganizationAPIPermissions)
+    serializer_class = OrganizationMemberUserSerializer
+ 
+    def get_queryset(self):
+        org = get_object_with_check_and_log(self.request, Organization, pk=self.kwargs[self.lookup_field])
+        self.check_object_permissions(self.request, org)
+        return org.members
+ 
+    @swagger_auto_schema(tags=['Organizations'])
+    def get(self, request, *args, **kwargs):
+        return super(OrganizationMemberListAPI, self).get(request, *args, **kwargs)
+
+
+
+class OrganizationMemberAPI(generics.ListCreateAPIView,
+                                generics.RetrieveUpdateDestroyAPIView):
     """
     get:
     Get organization members list
@@ -84,7 +109,7 @@ class OrganizationMemberListAPI(generics.ListCreateAPIView,
 
     parser_classes = (JSONParser, FormParser, MultiPartParser)
     permission_classes = (IsAuthenticated, OrganizationAPIPermissions)
-    serializer_class = OrganizationMemberUserSerializer
+    serializer_class = OrganizationMemberSerializer
 
     # def get_object(self):
     #     queryset = self.get_queryset()
@@ -144,15 +169,15 @@ class OrganizationMemberListAPI(generics.ListCreateAPIView,
 
     @swagger_auto_schema(tags=['Organizations'])
     def get(self, request, *args, **kwargs):
-        return super(OrganizationMemberListAPI, self).get(request, *args, **kwargs)
+        return super(OrganizationMemberAPI, self).get(request, *args, **kwargs)
 
     @swagger_auto_schema(tags=['Organizations'])
     def post(self, request, *args, **kwargs):
-        return super(OrganizationMemberListAPI, self).post(request, *args, **kwargs)
+        return super(OrganizationMemberAPI, self).post(request, *args, **kwargs)
 
     @swagger_auto_schema(tags=['Organizations'])
     def delete(self, request, *args, **kwargs):
-        return super(OrganizationMemberListAPI, self).delete(request, *args, **kwargs)
+        return super(OrganizationMemberAPI, self).delete(request, *args, **kwargs)
 
 
 class OrganizationAPI(APIViewVirtualRedirectMixin,
