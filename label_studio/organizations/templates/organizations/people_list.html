@@ -81,6 +81,8 @@
       <!-- Created projects -->
       <div class="user-info__section" v-if="selected.created_projects && selected.created_projects.length">
         <h3>Created Projects</h3>
+        <h3>{{ organization.title }}</h3>
+        <h3>{{ organization.id }}</h3>
         <a :href="'/projects/' + project.id" v-for="project in selected.created_projects">{{project.title}}</a>
       </div>
 
@@ -106,7 +108,7 @@
       const API = {
         users: {
           getAll() {
-            return fetch("/api/organizations/1/memberships")
+            return fetch("/api/organizations/" + user.active_organization + "/memberships")
               .then(data => data.json())
               .then(data => data.map(u => Object.assign(u.user, {
                 member_id: u.id,

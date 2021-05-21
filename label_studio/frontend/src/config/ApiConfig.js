@@ -8,8 +8,11 @@ export const API_CONFIG = {
     resetInviteLink: "POST:/invite/reset-token",
     organizations: "GET:/organizations",
     postOrganizations:"POST:/organizations",
-    patchOrganizations: "PATCH:/current-user/active-organization",
-    getchOrganizations: "GET:/current-user/active-organization",
+
+    // Current user
+    patchActiveOrganization: "PATCH:/current-user/active-organization",
+    getActiveOrganization: "GET:/current-user/active-organization",
+
     // Project
     projects: "/projects",
     project: "/projects/:pk",

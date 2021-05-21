@@ -11,8 +11,11 @@ export const PeopleList = ({onSelect, selectedUser, defaultSelected}) => {
   const [usersList, setUsersList] = useState();
 
   const fetchUsers = useCallback(async () => {
+    const currentUser = await api.callApi('getActiveOrganization');
+    const activeOrganizationID = currentUser.active_organization;
+
     const result = await api.callApi('memberships', {
-      params: {pk: 1},
+      params: {pk: activeOrganizationID},
     });
     setUsersList(result);
   }, [api]);

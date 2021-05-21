@@ -113,7 +113,7 @@ export const Menubar = ({
 
   const changeOrganization =async(id)=>{
     console.log("7777777777",id)
-    const response = await api.callApi("patchOrganizations",{
+    const response = await api.callApi("patchActiveOrganization",{
       body:{
         active_organization:id
 
@@ -128,7 +128,7 @@ export const Menubar = ({
     }
     useMenuRef?.current?.close();
     const response = await api.callApi("organizations")
-    const response2 = await api.callApi("getchOrganizations")
+    const response2 = await api.callApi("getActiveOrganization")
     setOrganizations(response)
     console.log("===============", response)
     console.log("+++++++++++++++", response2)
