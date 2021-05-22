@@ -6,7 +6,7 @@ import { IconBook, IconBuilding, IconFolder, IconPersonInCircle, IconPin, IconTe
 import { ApiContext } from '../../providers/ApiProvider';
 import { useConfig } from '../../providers/ConfigProvider';
 import { useContextComponent } from '../../providers/RoutesProvider';
-import { Block, cn } from '../../utils/bem';
+import { Block, cn, Elem } from '../../utils/bem';
 import { absoluteURL } from '../../utils/helpers';
 import { Breadcrumbs } from '../Breadcrumbs/Breadcrumbs';
 import { Dropdown } from "../Dropdown/Dropdown";
@@ -17,6 +17,9 @@ import { VersionNotifier, VersionProvider } from '../VersionNotifier/VersionNoti
 import './Menubar.styl';
 import './MenuContent.styl';
 import './MenuSidebar.styl';
+import './Item.styl';
+
+
 
 export const MenubarContext = createContext();
 
@@ -24,7 +27,8 @@ const LeftContextMenu = ({ className }) => (
   <StaticContent
     id="context-menu-left"
     className={className}
-  >{(template) => <Breadcrumbs fromTemplate={template} />}</StaticContent>
+  >
+    {(template) => <Breadcrumbs fromTemplate={template} />}</StaticContent>
 );
 
 const RightContextMenu = ({ className, ...props }) => {
@@ -64,11 +68,25 @@ export const Menubar = ({
     Component: null,
     props: {},
   });
+
+  const [inputValues, setInputValues] = useState("");
+
+
   const [isChose, setIsChose] = useState(false);
   const menubarClass = cn('menu-header');
   const menubarContext = menubarClass.elem('context');
+  const Itemcss = cn("itemstyle")
+  const ItemBlockcss = cn("blockitemstyle")
   const sidebarClass = cn('sidebar');
+  const inputCss = cn('inputCss');
+
+  
+
   const contentClass = cn('content-wrapper');
+  const menuItemcss = cn('menuItemcss');
+
+  
+
   const contextItem = menubarClass.elem('context-item');
 
   const sidebarPin = useCallback((e) => {
@@ -111,16 +129,16 @@ export const Menubar = ({
     },
   }), [PageContext]);
 
-  const changeOrganization =async(id)=>{
-    console.log("7777777777",id)
-    const response = await api.callApi("patchActiveOrganization",{
-      body:{
-        active_organization:id
+  const changeOrganization = async (id) => {
+    console.log("7777777777", id)
+    const response = await api.callApi("patchActiveOrganization", {
+      body: {
+        active_organization: id
 
       }
     })
-    window.location.reload(); 
-    console.log("66666666666666",response)
+    window.location.reload();
+    console.log("66666666666666", response)
   }
   useEffect(async () => {
     if (!sidebarPinned) {
@@ -134,6 +152,25 @@ export const Menubar = ({
     console.log("+++++++++++++++", response2)
 
   }, [location]);
+  const createOrg = async () => {
+    if(inputValues!==""){
+      const response = await api.callApi("postOrganizations", {
+        body: {
+          title: inputValues
+  
+        }
+      })
+      const resActiveOrg = await api.callApi("patchActiveOrganization", {
+        body: {
+          active_organization: response?.id
+  
+        }
+      })
+      window.location.reload();
+      console.log("88888888888888",response)
+    }
+    
+  }
   return (
     <div className={contentClass}>
       {enabled && (
@@ -190,34 +227,7 @@ export const Menubar = ({
               style={{ width: 240 }}
             >
               <Menu>
-                <Menu.Item
-                  label="Tổ chức"
-                  // to="/organizations"
-                  onClick={() => setIsChose(!isChose)}
-                  icon={<IconBook />}
-                  data-external
-                  exact
-                />
-                {
-                  isChose ?
-                    (
-                      <Block style={{ backgroundColor: "#fff" }}>
-                        {organizations.map((i) => (
-                          <Menu.Item
-                          label={i?.title}
-                          // to="/organizations"
-                          onClick={() => changeOrganization(i.id)}
-                          // icon={<IconBook />}
-                          // data-external
-                          // exact
-                        />
-                        ))}
-                      </Block>
 
-
-
-                    ) : null
-                }
                 <Menu.Item
                   label="Dự án"
                   to="/projects"
@@ -232,7 +242,58 @@ export const Menubar = ({
                   data-external
                   exact
                 />
+                <Menu.Item
+                  label="Tổ chức"
+                  // to="/organizations"
+                  onClick={() => setIsChose(!isChose)}
+                  icon={<IconBook />}
+                  data-external
+                  exact
+                />
 
+                {
+                  isChose ?
+                    (
+                      <Block >
+                        <Elem className={Itemcss} >
+
+                        </Elem>
+                        {organizations.map((i) => (
+                          <Block>
+                            <Menu.Item
+                              label={i?.title}
+                              // to="/organizations"
+                              // style={{ borderBottomColor: 'tomato',
+                              className={menuItemcss} 
+                              onClick={() => changeOrganization(i.id)}
+                            // icon={<IconBook />}
+                            // data-external
+                            // exact
+                            />
+                            <Elem className={Itemcss} >
+
+                            </Elem>
+                          </Block>
+
+                        ))}
+                        
+                        <Block className={inputCss}>
+                        < input type="text" style={{width:"100%"}} onChange={e => setInputValues(e.target.value)}/>
+
+                        </Block>
+                        <Menu.Item
+                          label="Tạo tổ chức"
+                          // className={menuItemcss} 
+                          icon="+"
+                          onClick={createOrg}
+                        />
+                      </Block>
+
+
+                          
+                    ) : null
+                }
+                
                 <Menu.Spacer />
 
                 <VersionNotifier showNewVersion />
