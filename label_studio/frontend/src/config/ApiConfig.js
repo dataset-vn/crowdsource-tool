@@ -9,7 +9,7 @@ export const API_CONFIG = {
     organizations: "GET:/organizations",
     postOrganizations:"POST:/organizations",
 
-    // Current user
+    // Current user's active organization
     patchActiveOrganization: "PATCH:/current-user/active-organization",
     getActiveOrganization: "GET:/current-user/active-organization",
 

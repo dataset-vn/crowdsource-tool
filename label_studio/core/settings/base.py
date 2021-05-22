@@ -316,7 +316,7 @@ TASK_LOCK_TTL = int(get_env('TASK_LOCK_TTL')) if get_env('TASK_LOCK_TTL') else N
 TASK_LOCK_DEFAULT_TTL = int(get_env('TASK_LOCK_DEFAULT_TTL', 3600))
 
 # Email backend
-FROM_EMAIL = 'Dataset <hello@labelstud.io>'
+FROM_EMAIL = 'Dataset <info@dataset.vn>'
 EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 
 """ React Libraries: do not forget to change this dir in /etc/nginx/nginx.conf """

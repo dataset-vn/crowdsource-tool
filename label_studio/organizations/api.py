@@ -39,6 +39,9 @@ class OrganizationListAPI(generics.ListCreateAPIView,
     get:
     List your organizations
 
+    post:
+    Create a new organization
+
     Return a list of the organizations you've created.
     """
     parser_classes = (JSONParser, FormParser, MultiPartParser)
@@ -61,7 +64,12 @@ class OrganizationListAPI(generics.ListCreateAPIView,
         org_creator = self.request.user
         org_title = json.loads(self.request.body)['title']
 
-        org = serializer.save(created_by=org_creator, title=org_title)
+        
+        try:
+            org = serializer.save(created_by=org_creator, title=org_title)
+        except IntegrityError as e:
+            raise LabelStudioDatabaseException("This user is already an admin of another project")
+            
         OrganizationMember.objects.create(user=org_creator, organization=org)
 
     @swagger_auto_schema(tags=['Organizations'])

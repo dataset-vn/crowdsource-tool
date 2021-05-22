@@ -191,6 +191,21 @@ export const Menubar = ({
             >
               <Menu>
                 <Menu.Item
+                  label="Dự án"
+                  to="/projects"
+                  icon={<IconFolder />}
+                  data-external
+                  exact
+                />
+                <Menu.Item
+                  label="Thành viên"
+                  to="/people"
+                  icon={<IconPersonInCircle />}
+                  data-external
+                  exact
+                />
+
+                <Menu.Item
                   label="Tổ chức"
                   // to="/organizations"
                   onClick={() => setIsChose(!isChose)}
@@ -213,31 +228,12 @@ export const Menubar = ({
                         />
                         ))}
                       </Block>
-
-
-
                     ) : null
                 }
-                <Menu.Item
-                  label="Dự án"
-                  to="/projects"
-                  icon={<IconFolder />}
-                  data-external
-                  exact
-                />
-                <Menu.Item
-                  label="Thành viên"
-                  to="/people"
-                  icon={<IconPersonInCircle />}
-                  data-external
-                  exact
-                />
 
                 <Menu.Spacer />
 
                 <VersionNotifier showNewVersion />
-
-
 
                 <Menu.Item
                   label="Facebook"
