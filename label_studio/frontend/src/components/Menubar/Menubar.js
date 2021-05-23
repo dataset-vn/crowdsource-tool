@@ -180,7 +180,7 @@ export const Menubar = ({
 
         window.location.reload();
       } else {
-        setDescript("Bạn chỉ có thể tạo một tổ chức")
+        setDescript("Tài khoản chỉ có thể tạo tối đa 01 tổ chức")
       }
 
       console.log("88888888888888", response)
@@ -303,7 +303,7 @@ export const Menubar = ({
                             
                             <Block className={inputCss}>
                               <Elem style={{ color: "tomato" }}>{descript}</Elem>
-                              < input type="text" style={{ width: "100%" }} placeholder="Tạo tổ chức" onChange={e => setInputValues(e.target.value)} />
+                              < input type="text" style={{ width: "100%" }} placeholder="Tên tổ chức" onChange={e => setInputValues(e.target.value)} />
                             </Block>
                             <Block className={flexRowCss}>
                               <Menu.Item
@@ -316,7 +316,7 @@ export const Menubar = ({
                               />
                             </Block>
                           </Block> : <Menu.Item
-                            label="Tên tổ chức"
+                            label="Tạo tổ chức mới"
                             // className={menuItemcss} 
                             icon="+"
                             onClick={()=>setIsCreate(!isCreate)}
