@@ -165,9 +165,10 @@ export const Menubar = ({
       const response = await api.callApi("postOrganizations", {
         body: {
           title: inputValues
-
         }
       })
+
+      console.log("Response", response);
       if (response) {
         const resActiveOrg = await api.callApi("patchActiveOrganization", {
           body: {
