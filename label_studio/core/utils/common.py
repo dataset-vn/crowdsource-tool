@@ -55,7 +55,7 @@ except (ModuleNotFoundError, ImportError):
     sentry_sdk_loaded = False
 
 from core import version
-from core.utils.exceptions import LabelStudioDatabaseLockedException
+from core.utils.exceptions import DatasetJscDatabaseLockedException
 
 
 # these functions will be included to another modules, don't remove them
@@ -69,7 +69,7 @@ url_validator = URLValidator()
 
 def _override_exceptions(exc):
     if isinstance(exc, OperationalError) and 'database is locked' in str(exc):
-        return LabelStudioDatabaseLockedException()
+        return DatasetJscDatabaseLockedException()
 
     return exc
 

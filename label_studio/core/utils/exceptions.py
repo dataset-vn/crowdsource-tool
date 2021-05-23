@@ -4,24 +4,24 @@ from rest_framework.exceptions import APIException
 from rest_framework import status
 
 
-class LabelStudioError(Exception):
+""" 
+Add exceptions of Dataset's crowdsource-tool
+"""
+
+class DatasetJscError(Exception):
     pass
 
-
-class LabelStudioAPIException(APIException):
+class DatasetJscAPIException(APIException):
     status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
     default_detail = 'Unknown error'
 
-
-class LabelStudioDatabaseException(LabelStudioAPIException):
+class DatasetJscDatabaseException(DatasetJscAPIException):
     default_detail = 'Error executing database query'
 
-
-class LabelStudioDatabaseLockedException(LabelStudioAPIException):
+class DatasetJscDatabaseLockedException(DatasetJscAPIException):
     default_detail = "Sqlite <a href='https://docs.djangoproject.com/en/3.1/ref/databases/#database-is-locked-errors'>doesn't operate well</a> on multiple transactions. \
     Please be patient and try update your pages, or ping us on Slack to  get more about production-ready db"
 
-
-class ProjectExistException(LabelStudioAPIException):
+class ProjectExistException(DatasetJscAPIException):
     status_code = status.HTTP_422_UNPROCESSABLE_ENTITY
     default_detail = 'Project with the same title already exists'

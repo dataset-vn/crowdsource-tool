@@ -243,6 +243,21 @@ export const Menubar = ({
                   exact
                 />
                 <Menu.Item
+                  label="Dự án"
+                  to="/projects"
+                  icon={<IconFolder />}
+                  data-external
+                  exact
+                />
+                <Menu.Item
+                  label="Thành viên"
+                  to="/people"
+                  icon={<IconPersonInCircle />}
+                  data-external
+                  exact
+                />
+
+                <Menu.Item
                   label="Tổ chức"
                   // to="/organizations"
                   onClick={() => setIsChose(!isChose)}
@@ -288,17 +303,21 @@ export const Menubar = ({
                           onClick={createOrg}
                         />
                       </Block>
+<<<<<<< HEAD
 
 
                           
                     ) : null
                 }
                 
+=======
+                    ) : null
+                }
+
+>>>>>>> dev-upgrade-db_exception
                 <Menu.Spacer />
 
                 <VersionNotifier showNewVersion />
-
-
 
                 <Menu.Item
                   label="Facebook"

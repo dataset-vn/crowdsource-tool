@@ -17,7 +17,7 @@ from drf_yasg.utils import swagger_auto_schema
 from core.mixins import APIViewVirtualRedirectMixin, APIViewVirtualMethodMixin
 from core.permissions import IsAuthenticated, BaseRulesPermission
 from core.utils.common import get_object_with_check_and_log
-from core.utils.exceptions import LabelStudioDatabaseException
+from core.utils.exceptions import DatasetJscDatabaseException
 
 from users.models import User
 from organizations.models import Organization, OrganizationMember
@@ -39,6 +39,9 @@ class OrganizationListAPI(generics.ListCreateAPIView,
     get:
     List your organizations
 
+    post:
+    Create a new organization
+
     Return a list of the organizations you've created.
     """
     parser_classes = (JSONParser, FormParser, MultiPartParser)
@@ -55,14 +58,22 @@ class OrganizationListAPI(generics.ListCreateAPIView,
         orgs_id = OrganizationMember.objects.values_list('organization_id', flat=True).filter(user_id=user_id)
         return Organization.objects.filter(id__in=orgs_id)
 
-        #return Organization.objects.filter(created_by=self.request.user)
-
     def perform_create(self, serializer):
         org_creator = self.request.user
         org_title = json.loads(self.request.body)['title']
 
-        org = serializer.save(created_by=org_creator, title=org_title)
-        OrganizationMember.objects.create(user=org_creator, organization=org)
+        
+        try:
+            org = serializer.save(created_by=org_creator, title=org_title)
+            
+        except IntegrityError as e:
+            if 'duplicate key value violates unique constraint \"organization_created_by_id_key\"' in str(e):
+                raise DatasetJscDatabaseException("Each user can create only one organization")
+
+        try:
+            OrganizationMember.objects.create(user=org_creator, organization=org)
+        except IntegrityError as e:
+            raise DatasetJscDatabaseException("Error(s) happened when adding this user to the new organization")
 
     @swagger_auto_schema(tags=['Organizations'])
     def get(self, request, *args, **kwargs):
@@ -146,17 +157,15 @@ class OrganizationMemberAPI(generics.ListCreateAPIView,
         try:
             serializer.save(user=member, organization=org)
         except IntegrityError as e:
-            raise LabelStudioDatabaseException('Database error during adding member. Try again.')
+            raise DatasetJscDatabaseException('Database error when adding member')
 
     def perform_destroy(self, instance):
         current_user_id = self.request.user.id
         member_id = json.loads(self.request.body)['user_pk']
         org_id = self.kwargs['pk']
 
-
         if not OrganizationMember.objects.filter(user=current_user_id, organization=org_id).exists():
-            print("Operation can only be performed by a organization member")
-            return
+            raise DatasetJscDatabaseException("Operation can only be performed by a organization member")
 
         try:
             instance = OrganizationMember.objects.get(user=member_id, organization=org_id)
