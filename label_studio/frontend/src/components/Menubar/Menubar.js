@@ -303,18 +303,12 @@ export const Menubar = ({
                           onClick={createOrg}
                         />
                       </Block>
-<<<<<<< HEAD
 
 
                           
                     ) : null
                 }
                 
-=======
-                    ) : null
-                }
-
->>>>>>> dev-upgrade-db_exception
                 <Menu.Spacer />
 
                 <VersionNotifier showNewVersion />
