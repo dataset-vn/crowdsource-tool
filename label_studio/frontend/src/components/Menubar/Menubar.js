@@ -191,6 +191,10 @@ export const Menubar = ({
     setIsCreate(!isCreate)
     setDescript("")
   }
+  const wrapOtherComponents=()=>{
+    setIsChose(false)
+    setDescript("")
+  }
   return (
     <div className={contentClass}>
       {enabled && (
@@ -251,6 +255,7 @@ export const Menubar = ({
                   label="Dự án"
                   to="/projects"
                   icon={<IconFolder />}
+                  onClick={wrapOtherComponents}
                   data-external
                   exact
                 />
@@ -258,6 +263,7 @@ export const Menubar = ({
                   label="Thành viên"
                   to="/people"
                   icon={<IconPersonInCircle />}
+                  onClick={wrapOtherComponents}
                   data-external
                   exact
                 />
