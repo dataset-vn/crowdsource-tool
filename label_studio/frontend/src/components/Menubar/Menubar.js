@@ -169,7 +169,7 @@ export const Menubar = ({
       })
 
       console.log("Response", response);
-      if (response) {
+      if (response.status!==500) {
         const resActiveOrg = await api.callApi("patchActiveOrganization", {
           body: {
             active_organization: response?.id
@@ -186,6 +186,10 @@ export const Menubar = ({
       console.log("88888888888888", response)
     }
 
+  }
+  const deleteDectipt=()=>{
+    setIsCreate(!isCreate)
+    setDescript("")
   }
   return (
     <div className={contentClass}>
@@ -304,7 +308,7 @@ export const Menubar = ({
                             <Block className={flexRowCss}>
                               <Menu.Item
                                 label="Hủy"
-                                onClick={()=>setIsCreate(!isCreate) }
+                                onClick={()=>deleteDectipt() }
                               />
                               <Menu.Item
                                 label="Tạo"
