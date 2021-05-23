@@ -242,20 +242,6 @@ export const Menubar = ({
                   data-external
                   exact
                 />
-                <Menu.Item
-                  label="Dự án"
-                  to="/projects"
-                  icon={<IconFolder />}
-                  data-external
-                  exact
-                />
-                <Menu.Item
-                  label="Thành viên"
-                  to="/people"
-                  icon={<IconPersonInCircle />}
-                  data-external
-                  exact
-                />
 
                 <Menu.Item
                   label="Tổ chức"
