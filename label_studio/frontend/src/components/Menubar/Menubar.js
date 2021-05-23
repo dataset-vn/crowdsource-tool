@@ -70,22 +70,30 @@ export const Menubar = ({
   });
 
   const [inputValues, setInputValues] = useState("");
+  const [descript, setDescript] = useState("");
+
 
 
   const [isChose, setIsChose] = useState(false);
+  const [isCreate, setIsCreate] = useState(false);
+
+
+
   const menubarClass = cn('menu-header');
   const menubarContext = menubarClass.elem('context');
   const Itemcss = cn("itemstyle")
   const ItemBlockcss = cn("blockitemstyle")
   const sidebarClass = cn('sidebar');
   const inputCss = cn('inputCss');
+  const flexRowCss = cn('flexRowCss');
 
-  
+
+
 
   const contentClass = cn('content-wrapper');
   const menuItemcss = cn('menuItemcss');
 
-  
+
 
   const contextItem = menubarClass.elem('context-item');
 
@@ -153,23 +161,30 @@ export const Menubar = ({
 
   }, [location]);
   const createOrg = async () => {
-    if(inputValues!==""){
+    if (inputValues !== "") {
       const response = await api.callApi("postOrganizations", {
         body: {
           title: inputValues
-  
+
         }
       })
-      const resActiveOrg = await api.callApi("patchActiveOrganization", {
-        body: {
-          active_organization: response?.id
-  
-        }
-      })
-      window.location.reload();
-      console.log("88888888888888",response)
+      if (response) {
+        const resActiveOrg = await api.callApi("patchActiveOrganization", {
+          body: {
+            active_organization: response?.id
+
+          }
+        })
+        console.log("88888888888889", resActiveOrg)
+
+        window.location.reload();
+      } else {
+        setDescript("Bạn chỉ có thể tạo một tổ chức")
+      }
+
+      console.log("88888888888888", response)
     }
-    
+
   }
   return (
     <div className={contentClass}>
@@ -227,7 +242,6 @@ export const Menubar = ({
               style={{ width: 240 }}
             >
               <Menu>
-
                 <Menu.Item
                   label="Dự án"
                   to="/projects"
@@ -242,6 +256,7 @@ export const Menubar = ({
                   data-external
                   exact
                 />
+
                 <Menu.Item
                   label="Tổ chức"
                   // to="/organizations"
@@ -258,13 +273,14 @@ export const Menubar = ({
                         <Elem className={Itemcss} >
 
                         </Elem>
+
                         {organizations.map((i) => (
                           <Block>
                             <Menu.Item
                               label={i?.title}
                               // to="/organizations"
                               // style={{ borderBottomColor: 'tomato',
-                              className={menuItemcss} 
+                              className={menuItemcss}
                               onClick={() => changeOrganization(i.id)}
                             // icon={<IconBook />}
                             // data-external
@@ -276,29 +292,45 @@ export const Menubar = ({
                           </Block>
 
                         ))}
-                        
-                        <Block className={inputCss}>
-                        < input type="text" style={{width:"100%"}} onChange={e => setInputValues(e.target.value)}/>
 
-                        </Block>
-                        <Menu.Item
-                          label="Tạo tổ chức"
-                          // className={menuItemcss} 
-                          icon="+"
-                          onClick={createOrg}
-                        />
+                        {
+                          isCreate ? <Block>
+                            
+                            <Block className={inputCss}>
+                              <Elem style={{ color: "tomato" }}>{descript}</Elem>
+                              < input type="text" style={{ width: "100%" }} placeholder="Tạo tổ chức" onChange={e => setInputValues(e.target.value)} />
+                            </Block>
+                            <Block className={flexRowCss}>
+                              <Menu.Item
+                                label="Hủy"
+                                onClick={()=>setIsCreate(!isCreate) }
+                              />
+                              <Menu.Item
+                                label="Tạo"
+                                onClick={createOrg}
+                              />
+                            </Block>
+                          </Block> : <Menu.Item
+                            label="Tên tổ chức"
+                            // className={menuItemcss} 
+                            icon="+"
+                            onClick={()=>setIsCreate(!isCreate)}
+                          />
+                        }
+
+
+
                       </Block>
 
 
-                          
+
                     ) : null
                 }
-                
+
+
                 <Menu.Spacer />
 
                 <VersionNotifier showNewVersion />
-
-
 
                 <Menu.Item
                   label="Facebook"

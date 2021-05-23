@@ -44,7 +44,7 @@ from core.permissions import (IsAuthenticated, IsBusiness, BaseRulesPermission,
                               get_object_with_permissions)
 from core.utils.common import (
     get_object_with_check_and_log, bool_from_request, paginator, paginator_help)
-from core.utils.exceptions import ProjectExistException, LabelStudioDatabaseException
+from core.utils.exceptions import ProjectExistException, DatasetJscDatabaseException
 from core.utils.io import find_dir, find_file, read_yaml
 
 from data_manager.functions import get_prepared_queryset
@@ -151,13 +151,13 @@ class ProjectListAPI(generics.ListCreateAPIView):
             try:
                 ProjectMember.objects.create(project=project, user=user)
             except IntegrityError as e:
-                raise LabelStudioDatabaseException('Database error during project member creation. Try again.')
+                raise DatasetJscDatabaseException('Database error during project member creation. Try again.')
 
         except IntegrityError as e:
             if str(e) == 'UNIQUE constraint failed: project.title, project.created_by_id':
                 raise ProjectExistException('Project with the same name already exists: {}'.
                                             format(ser.validated_data.get('title', '')))
-            raise LabelStudioDatabaseException('Database error during project creation. Try again.')
+            raise DatasetJscDatabaseException('Database error during project creation. Try again.')
 
     @swagger_auto_schema(tags=['Projects'])
     def get(self, request, *args, **kwargs):
@@ -235,7 +235,7 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         try:
             project_member = serializer.save(user=user, project=project)
         except IntegrityError as e:
-            raise LabelStudioDatabaseException('Database error during project creation. Try again.')
+            raise DatasetJscDatabaseException('Database error during project creation. Try again.')
 
     def perform_destroy(self, instance):
 

@@ -1134,6 +1134,11 @@
   margin-top: 1em;
   width: 12em;
 }
+.ls-flexRowCss {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
 
 .ls-sidebar-menu {
   flex: 1;
