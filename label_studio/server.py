@@ -92,7 +92,7 @@ def _create_project(title, user, label_config=None, sampling=None, description=N
 
 def _create_user(input_args, config):
     from users.models import User
-    from organizations.models import Organization
+    from organizations.models import Organization, OrganizationMember
 
     DEFAULT_USERNAME = 'default_user@localhost'
 
@@ -125,6 +125,10 @@ def _create_user(input_args, config):
     user = User.objects.get(email=username)
     if not Organization.objects.exists():
         Organization.create_organization(created_by=user, title='Dataset')
+    
+    if Organization.objects.exists():
+        org = Organization.objects.first()
+        OrganizationMember.objects.create(user=user, organization=org)
 
     return user
 
