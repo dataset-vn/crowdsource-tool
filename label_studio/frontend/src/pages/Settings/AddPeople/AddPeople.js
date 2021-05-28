@@ -51,7 +51,7 @@ export const AddPeople = () => {
     setSelectedUser(user);
 
     localStorage.setItem('selectedUser', user?.id);
-
+    console.log("userrrrrrrrrrrrrr",user?.id)
   }, [setSelectedUser]);
 
   const setInviteLink = useCallback((link) => {

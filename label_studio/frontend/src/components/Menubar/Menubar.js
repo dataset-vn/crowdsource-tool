@@ -72,7 +72,7 @@ export const Menubar = ({
   const [inputValues, setInputValues] = useState("");
   const [descript, setDescript] = useState("");
 
-
+  const [userID,setUserID]=useState(null)
 
   const [isChose, setIsChose] = useState(false);
   const [isCreate, setIsCreate] = useState(false);
@@ -146,7 +146,6 @@ export const Menubar = ({
       }
     })
     window.location.reload();
-    console.log("66666666666666", response)
   }
   useEffect(async () => {
     if (!sidebarPinned) {
@@ -154,10 +153,12 @@ export const Menubar = ({
     }
     useMenuRef?.current?.close();
     const response = await api.callApi("organizations")
-    const response2 = await api.callApi("getActiveOrganization")
+    const responseGetActive = await api.callApi("getActiveOrganization")
     setOrganizations(response)
+    setUserID(responseGetActive?.id)
     console.log("===============", response)
-    console.log("+++++++++++++++", response2)
+    console.log("+++++++++++++++", responseGetActive)
+
 
   }, [location]);
   const createOrg = async () => {
@@ -289,7 +290,7 @@ export const Menubar = ({
                         {organizations.map((i) => (
                           <Block>
                             <Menu.Item
-                              label={i?.title}
+                              label={userID === i.created_by ? `${i.title}(Admin)` : i.title}
                               // to="/organizations"
                               // style={{ borderBottomColor: 'tomato',
                               className={menuItemcss}
