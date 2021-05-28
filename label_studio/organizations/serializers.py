@@ -13,7 +13,7 @@ from collections import OrderedDict
 class OrganizationIdSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
     class Meta:
         model = Organization
-        fields = ['id', 'title']
+        fields = ['id', 'title', 'created_by']
 
 
 class OrganizationSerializer(DynamicFieldsMixin, serializers.ModelSerializer):

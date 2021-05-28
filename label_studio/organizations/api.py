@@ -56,7 +56,9 @@ class OrganizationListAPI(generics.ListCreateAPIView,
     def get_queryset(self):
         user_id = self.request.user.id
         orgs_id = OrganizationMember.objects.values_list('organization_id', flat=True).filter(user_id=user_id)
-        return Organization.objects.filter(id__in=orgs_id)
+        orgs_list = Organization.objects.filter(id__in=orgs_id)
+        return orgs_list
+        
 
     def perform_create(self, serializer):
         org_creator = self.request.user
