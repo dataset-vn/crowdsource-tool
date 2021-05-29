@@ -27,7 +27,6 @@ export const PeopleListSetting = ({onSelect, selectedUser, defaultSelected,proje
           pk: projectID
         }
       })
-      console.log(";;;;;;;;;;;;;;;;;;;",projectID)
       for(let i=0;i<response.length;i++){
         const selected = result.find( ({user}) => user.id === response[i].user);
         if (selected) data.push(selected);

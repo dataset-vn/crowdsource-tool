@@ -44,14 +44,12 @@ export const AddPeople = () => {
   const {project} = useProject();
   
   const [link, setLink] = useState();
-  console.log(".....................",project)
  
 
   const selectUser = useCallback((user) => {
     setSelectedUser(user);
 
     localStorage.setItem('selectedUser', user?.id);
-    console.log("userrrrrrrrrrrrrr",user?.id)
   }, [setSelectedUser]);
 
   const setInviteLink = useCallback((link) => {

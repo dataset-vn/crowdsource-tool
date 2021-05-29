@@ -72,7 +72,7 @@ export const Menubar = ({
   const [inputValues, setInputValues] = useState("");
   const [descript, setDescript] = useState("");
 
-  const [userID,setUserID]=useState(null)
+  const [userID, setUserID] = useState(null)
 
   const [isChose, setIsChose] = useState(false);
   const [isCreate, setIsCreate] = useState(false);
@@ -138,7 +138,6 @@ export const Menubar = ({
   }), [PageContext]);
 
   const changeOrganization = async (id) => {
-    console.log("7777777777", id)
     const response = await api.callApi("patchActiveOrganization", {
       body: {
         active_organization: id
@@ -147,20 +146,31 @@ export const Menubar = ({
     })
     window.location.reload();
   }
+  var swapOrganizations = (arr, id) => {
+    let newarr = arr.filter(i => i["created_by"] !== id)
+    let k = arr.filter(i => i["created_by"] === id)
+    let res = k.concat(newarr)
+
+return res
+    }
   useEffect(async () => {
     if (!sidebarPinned) {
       menuDropdownRef?.current?.close();
     }
     useMenuRef?.current?.close();
     const response = await api.callApi("organizations")
-    const responseGetActive = await api.callApi("getActiveOrganization")
-    setOrganizations(response)
+    const responseGetActive = await api.callApi("getActiveOrganization");
+  //  debugger
+  
+
+
+
+    setOrganizations(swapOrganizations(response, responseGetActive?.id))
     setUserID(responseGetActive?.id)
-    console.log("===============", response)
-    console.log("+++++++++++++++", responseGetActive)
 
 
   }, [location]);
+
   const createOrg = async () => {
     if (inputValues !== "") {
       const response = await api.callApi("postOrganizations", {
@@ -169,30 +179,27 @@ export const Menubar = ({
         }
       })
 
-      console.log("Response", response);
-      if (response.status!==500) {
+      if (response.status !== 500) {
         const resActiveOrg = await api.callApi("patchActiveOrganization", {
           body: {
             active_organization: response?.id
 
           }
         })
-        console.log("88888888888889", resActiveOrg)
 
         window.location.reload();
       } else {
         setDescript("Tài khoản chỉ có thể tạo tối đa 01 tổ chức")
       }
 
-      console.log("88888888888888", response)
     }
 
   }
-  const deleteDectipt=()=>{
+  const deleteDectipt = () => {
     setIsCreate(!isCreate)
     setDescript("")
   }
-  const wrapOtherComponents=()=>{
+  const wrapOtherComponents = () => {
     setIsChose(false)
     setDescript("")
   }
@@ -206,7 +213,10 @@ export const Menubar = ({
           >
             <div className={`${menubarClass.elem('trigger')} main-menu-trigger`}>
               <img src={absoluteURL("/static/icons/dts_jsc_logo.svg")} alt="Dataset Logo" height="28" />
-              <Hamburger opened={sidebarOpened} />
+              <div onClick={wrapOtherComponents}>
+                <Hamburger opened={sidebarOpened} />
+
+              </div>
             </div>
           </Dropdown.Trigger>
 
@@ -290,7 +300,8 @@ export const Menubar = ({
                         {organizations.map((i) => (
                           <Block>
                             <Menu.Item
-                              label={userID === i.created_by ? `${i.title}(Admin)` : i.title}
+                              label={userID === i.created_by ? `${i.title} (Admin)` : i.title}
+                              style={{color:userID === i.created_by ? "#222f3e" : null}}
                               // to="/organizations"
                               // style={{ borderBottomColor: 'tomato',
                               className={menuItemcss}
@@ -308,7 +319,7 @@ export const Menubar = ({
 
                         {
                           isCreate ? <Block>
-                            
+
                             <Block className={inputCss}>
                               <Elem style={{ color: "tomato" }}>{descript}</Elem>
                               < input type="text" style={{ width: "100%" }} placeholder="Tên tổ chức" onChange={e => setInputValues(e.target.value)} />
@@ -316,7 +327,7 @@ export const Menubar = ({
                             <Block className={flexRowCss}>
                               <Menu.Item
                                 label="Hủy"
-                                onClick={()=>deleteDectipt() }
+                                onClick={() => deleteDectipt()}
                               />
                               <Menu.Item
                                 label="Tạo"
@@ -327,7 +338,7 @@ export const Menubar = ({
                             label="Tạo tổ chức mới"
                             // className={menuItemcss} 
                             icon="+"
-                            onClick={()=>setIsCreate(!isCreate)}
+                            onClick={() => setIsCreate(!isCreate)}
                           />
                         }
 
