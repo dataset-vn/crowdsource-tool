@@ -73,6 +73,7 @@ export const Menubar = ({
   const [descript, setDescript] = useState("");
 
   const [userID, setUserID] = useState(null)
+  const [activeOrgID, setActiveOrgID] = useState(null)
 
   const [isChose, setIsChose] = useState(false);
   const [isCreate, setIsCreate] = useState(false);
@@ -92,6 +93,7 @@ export const Menubar = ({
 
   const contentClass = cn('content-wrapper');
   const menuItemcss = cn('menuItemcss');
+  const menuItemTagCss = cn('menuItemTagCss')
 
 
 
@@ -167,6 +169,7 @@ return res
 
     setOrganizations(swapOrganizations(response, responseGetActive?.id))
     setUserID(responseGetActive?.id)
+    setActiveOrgID(responseGetActive?.active_organization)
 
 
   }, [location]);
@@ -203,6 +206,11 @@ return res
     setIsChose(false)
     setDescript("")
   }
+
+  const generateBoldTextTag = (txt) => {
+
+  }
+
   return (
     <div className={contentClass}>
       {enabled && (
@@ -300,8 +308,8 @@ return res
                         {organizations.map((i) => (
                           <Block>
                             <Menu.Item
-                              label={userID === i.created_by ? `${i.title} (Admin)` : i.title}
-                              style={{color:userID === i.created_by ? "#222f3e" : null}}
+                              label={userID === i.created_by ? <span>{i.title} <b className={menuItemTagCss}>Admin</b></span> : i.title}
+                              style={{color:activeOrgID === i.id ? "#000000" : null}}
                               // to="/organizations"
                               // style={{ borderBottomColor: 'tomato',
                               className={menuItemcss}

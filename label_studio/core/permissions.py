@@ -114,7 +114,7 @@ class IsSuperuser(BasePermission):
             return True
 
         # super user heartex@heartex.net has full read-write access
-        elif user.is_superuser and user.email == 'heidi@labelstud.io':
+        elif user.is_superuser and user.email == 'superuser@dataset.vn':
             return True
 
         return False

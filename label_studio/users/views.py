@@ -21,7 +21,7 @@ logger = logging.getLogger()
 
 
 class FPasswordResetView(auth_views.PasswordResetView):
-    from_email = 'info@labelstud.io'
+    from_email = 'info@dataset.vn'
     template_name = 'password/password_reset_form.html'
 
 

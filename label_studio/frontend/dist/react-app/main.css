@@ -1130,6 +1130,10 @@
 .ls-menuItemcss {
   padding-left: 2.5em;
 }
+.ls-menuItemTagCss {
+  margin-left: 2em;
+  font-size: 9px;
+}
 .ls-inputCss {
   margin-top: 1em;
   width: 12em;

@@ -11,7 +11,7 @@ class MLBackendSerializer(serializers.ModelSerializer):
         url = attrs['url']
         if MLBackend.healthcheck_(url).is_error:
             raise serializers.ValidationError(f'Can\'t connect to ML backend {url}. Is it valid? '
-                                              f'<a href="https://labelstud.io/guide/ml.html>Read more</a>'
+                                              f'<a href="https://dataset.vn/guide/ml.html>Read more</a>'
                                               f' how to set up your code as a ML backend')
         project = attrs['project']
         setup_response = MLBackend.setup_(url, project)

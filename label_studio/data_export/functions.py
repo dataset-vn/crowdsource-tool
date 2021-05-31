@@ -28,69 +28,69 @@ _DATASET_FORMAT_INFO_EN = {
             'title': 'JSON',
             'description': "List of items in raw JSON format stored in one JSON file. Use to export both the data "
                            "and the annotations for a dataset.",
-            'link': 'https://labelstud.io/guide/export.html#JSON'
+            'link': 'https://dataset.vn/guide/export.html#JSON'
         },
         Format.JSON_MIN: {
             'title': 'JSON-MIN',
             'description': 'List of items where only "from_name", "to_name" values from the raw JSON format are '
                            'exported. Use to export only the annotations for a dataset.',
-            'link': 'https://labelstud.io/guide/export.html#JSON-MIN',
+            'link': 'https://dataset.vn/guide/export.html#JSON-MIN',
         },
         Format.CSV: {
             'title': 'CSV',
             'description': 'Results are stored as comma-separated values with the column names specified by the '
                            'values of the "from_name" and "to_name" fields.',
-            'link': 'https://labelstud.io/guide/export.html#CSV'
+            'link': 'https://dataset.vn/guide/export.html#CSV'
         },
         Format.TSV: {
             'title': 'TSV',
             'description': 'Results are stored in tab-separated tabular file with column names specified by '
                            '"from_name" "to_name" values',
-            'link': 'https://labelstud.io/guide/export.html#TSV'
+            'link': 'https://dataset.vn/guide/export.html#TSV'
         },
         Format.CONLL2003: {
             'title': 'CONLL2003',
             'description': 'Popular format used for the CoNLL-2003 named entity recognition challenge.',
-            'link': 'https://labelstud.io/guide/export.html#CONLL2003',
+            'link': 'https://dataset.vn/guide/export.html#CONLL2003',
             'tags': ['sequence labeling', 'text tagging', 'named entity recognition']
         },
         Format.COCO: {
             'title': 'COCO',
             'description': 'Popular machine learning format used by the COCO dataset for object detection and image '
                            'segmentation tasks with polygons and rectangles.',
-            'link': 'https://labelstud.io/guide/export.html#COCO',
+            'link': 'https://dataset.vn/guide/export.html#COCO',
             'tags': ['image segmentation', 'object detection']
         },
         Format.VOC: {
             'title': 'Pascal VOC XML',
             'description': 'Popular XML format used for object detection and polygon image segmentation tasks.',
-            'link': 'https://labelstud.io/guide/export.html#Pascal-VOC-XML',
+            'link': 'https://dataset.vn/guide/export.html#Pascal-VOC-XML',
             'tags': ['image segmentation', 'object detection']
         },
         Format.YOLO: {
             'title': 'YOLO',
             'description': 'Popular TXT format is created for each image file. Each txt file contains annotations for '
                            'the corresponding image file, that is object class, object coordinates, height & width.',
-            'link': 'https://labelstud.io/guide/export.html#YOLO',
+            'link': 'https://dataset.vn/guide/export.html#YOLO',
             'tags': ['image segmentation', 'object detection']
         },
         Format.BRUSH_TO_NUMPY: {
             'title': 'Brush labels to NumPy',
             'description': 'Export your brush labels as NumPy 2d arrays. Each label outputs as one image.',
-            'link': 'https://labelstud.io/guide/export.html#Brush-labels-to-NumPy-amp-PNG',
+            'link': 'https://dataset.vn/guide/export.html#Brush-labels-to-NumPy-amp-PNG',
             'tags': ['image segmentation']
         },
         Format.BRUSH_TO_PNG: {
             'title': 'Brush labels to PNG',
             'description': 'Export your brush labels as PNG images. Each label outputs as one image.',
-            'link': 'https://labelstud.io/guide/export.html#Brush-labels-to-NumPy-amp-PNG',
+            'link': 'https://dataset.vn/guide/export.html#Brush-labels-to-NumPy-amp-PNG',
             'tags': ['image segmentation']
         },
         Format.ASR_MANIFEST: {
             'title': 'ASR Manifest',
             'description': 'Export audio transcription labels for automatic speech recognition as the JSON manifest '
                            'format expected by NVIDIA NeMo models.',
-            'link': 'https://labelstud.io/guide/export.html#ASR-MANIFEST',
+            'link': 'https://dataset.vn/guide/export.html#ASR-MANIFEST',
             'tags': ['speech recognition']
         }
     }
