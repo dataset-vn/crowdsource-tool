@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { SidebarMenu } from '../../components/SidebarMenu/SidebarMenu';
+import { ApiContext } from '../../providers/ApiProvider';
+import { useProject } from '../../providers/ProjectProvider';
 import { AddPeople } from './AddPeople/AddPeople';
 import { DangerZone } from './DangerZone';
 import { GeneralSettings } from './GeneralSettings';
@@ -9,9 +11,23 @@ import { MachineLearningSettings } from './MachineLearningSettings/MachineLearni
 import { StorageSettings } from './StorageSettings/StorageSettings';
 
 export const MenuLayout = ({children, ...routeProps}) => {
+  const api = React.useContext(ApiContext);
+  const [isAdmin, setisAdmin] = useState(false)
+  const {project} = useProject();
+  useEffect(async () => {
+    const responseGetActive = await api.callApi("getActiveOrganization");
+    console.log("+++++++++=++",responseGetActive)
+    console.log("+++=====++=++",project)
+
+    if(project?.created_by?.id===responseGetActive?.id){
+      setisAdmin(true)
+    }
+
+
+  }, [location]);
   return (
     <SidebarMenu
-      menuItems={[
+      menuItems={ isAdmin ?[
         GeneralSettings,
         LabelingSettings,
         InstructionsSettings,
@@ -19,7 +35,7 @@ export const MenuLayout = ({children, ...routeProps}) => {
         StorageSettings,
         DangerZone,
         AddPeople,
-      ]}
+      ] : [InstructionsSettings,AddPeople,]}
       path={routeProps.match.url}
       children={children}
     />
