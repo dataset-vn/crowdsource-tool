@@ -25,7 +25,6 @@ export const MenuLayout = ({children, ...routeProps}) => {
     }else{
       const data = await localStorage.getItem('idProjectLocalStorage')
       if(data == responseGetActive?.id){
-        console.log(";--=-=-=-=-=-=-=-=-")
         setisAdmin(true)
       }
     }
