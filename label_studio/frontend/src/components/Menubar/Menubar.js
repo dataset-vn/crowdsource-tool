@@ -161,8 +161,7 @@ return res
     }
     useMenuRef?.current?.close();
     const response = await api.callApi("organizations")
-    const responseGetActive = await api.callApi("getActiveOrganization");
-  //  debugger
+    const responseGetActive = await api.callApi("getActiveOrganization")
   
 
 

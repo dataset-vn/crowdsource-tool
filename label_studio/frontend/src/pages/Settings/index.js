@@ -16,15 +16,23 @@ export const MenuLayout = ({children, ...routeProps}) => {
   const {project} = useProject();
   useEffect(async () => {
     const responseGetActive = await api.callApi("getActiveOrganization");
-    console.log("+++++++++=++",responseGetActive)
-    console.log("+++=====++=++",project)
-
-    if(project?.created_by?.id===responseGetActive?.id){
-      setisAdmin(true)
+    
+    if(project?.created_by?.id !== undefined){
+      await localStorage.setItem('idProjectLocalStorage', project?.created_by?.id)
+      if(project?.created_by?.id===responseGetActive?.id){
+        setisAdmin(true)
+      }
+    }else{
+      const data = await localStorage.getItem('idProjectLocalStorage')
+      if(data == responseGetActive?.id){
+        console.log(";--=-=-=-=-=-=-=-=-")
+        setisAdmin(true)
+      }
     }
+    
 
 
-  }, [location]);
+  }, []);
   return (
     <SidebarMenu
       menuItems={ isAdmin ?[
