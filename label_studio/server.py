@@ -92,6 +92,7 @@ def _create_project(title, user, label_config=None, sampling=None, description=N
 
 def _create_user(input_args, config):
     from users.models import User
+    from projects.models import Project, ProjectMember
     from organizations.models import Organization, OrganizationMember
 
     DEFAULT_USERNAME = 'default_user@localhost'

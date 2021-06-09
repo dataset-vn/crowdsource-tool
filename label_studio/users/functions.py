@@ -10,6 +10,7 @@ from django.urls import reverse
 from django.core.files.images import get_image_dimensions
 
 from organizations.models import Organization
+from projects.models import Project, ProjectMember
 from core.utils.common import load_func
 
 
@@ -71,6 +72,11 @@ def proceed_registration(request, user_form, organization_form, next_page):
     if Organization.objects.exists():
         org = Organization.objects.first()
         org.add_user(user)
+        
+        projects = Project.objects.filter(organization=org)
+        for project in projects:
+            print("project", project)
+            ProjectMember.objects.create(user=user, project=project)
     else:
         org = Organization.create_organization(created_by=user, title='Dataset')
     user.active_organization = org
