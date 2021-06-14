@@ -12,6 +12,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from core.utils.exceptions import ProjectExistException, DatasetJscDatabaseException
+
 from core.permissions import IsBusiness, get_object_with_permissions
 from core.utils.common import get_object_with_check_and_log, bool_from_request
 from projects.api import ProjectAPIBasePermission
@@ -68,6 +70,11 @@ class DownloadResultsAPI(APIView):
         project = get_object_with_permissions(request, Project, kwargs['pk'], ProjectAPIBasePermission.perm)
         export_type = request.GET.get('exportType')
         is_labeled = not bool_from_request(request.GET, 'download_all_tasks', False)
+
+        requester = request.user
+        project_owner = project.created_by
+        if requester.id != project_owner.id:
+            return Response({"title":"Need permissions", "detail":"You are not allowed to export"}, status=401) 
 
         logger.debug('Get tasks')
         query = Task.objects.filter(project=project, is_labeled=is_labeled)

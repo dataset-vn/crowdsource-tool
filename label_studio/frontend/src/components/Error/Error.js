@@ -1,5 +1,5 @@
 import React, { Fragment, useCallback, useMemo, useState } from 'react';
-import { LsSlack } from '../../assets/icons';
+import { LsSlack, LsFacebook } from '../../assets/icons';
 import { Block, Elem } from '../../utils/bem';
 import { copyText, absoluteURL } from '../../utils/helpers';
 import { Button } from '../Button/Button';
@@ -7,7 +7,7 @@ import { Space } from '../Space/Space';
 import "./Error.styl";
 
 const SLACK_INVITE_URL = "https://join.slack.com/t/label-studio/shared_invite/zt-cr8b7ygm-6L45z7biEBw4HXa5A2b5pw";
-
+const FACEBOOK_PAGE_URL = "https://facebook.com/dataset.vn"
 export const ErrorWrapper = ({title, message, errorId, stacktrace, validation, version, onGoBack, onReload, possum}) => {
   const preparedStackTrace = useMemo(() => {
     return (stacktrace ?? "").trim();
@@ -26,10 +26,10 @@ export const ErrorWrapper = ({title, message, errorId, stacktrace, validation, v
       {possum !== false && (
         <Elem
           tag="img"
-          name="heidi"
+          name="DATASET_error_message"
           src={absoluteURL("/static/images/logodataset copy.svg")}
           height="111"
-          alt="Heidi's down"
+          alt="DATASET_D_letter"
         />
       )}
 
@@ -76,8 +76,8 @@ export const ErrorWrapper = ({title, message, errorId, stacktrace, validation, v
 
       <Elem name="actions">
         <Space spread>
-          <Elem tag={Button} name="action-slack" target="_blank" icon={<LsSlack/>} href={SLACK_INVITE_URL}>
-            Ask on Slack
+          <Elem tag={Button} name="action-slack" target="_blank" icon={<LsFacebook/>} href={FACEBOOK_PAGE_URL}>
+            Ask on Facebook
           </Elem>
 
           <Space size="small">
