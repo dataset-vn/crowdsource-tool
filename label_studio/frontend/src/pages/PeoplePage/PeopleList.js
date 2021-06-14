@@ -9,7 +9,7 @@ import './PeopleList.styl';
 export const PeopleList = ({onSelect, selectedUser, defaultSelected}) => {
   const api = useAPI();
   const [usersList, setUsersList] = useState();
-
+  const [allUser,setAlluser]=useState()
   const fetchUsers = useCallback(async () => {
     const currentUser = await api.callApi('getActiveOrganization');
     const activeOrganizationID = currentUser.active_organization;
@@ -18,6 +18,7 @@ export const PeopleList = ({onSelect, selectedUser, defaultSelected}) => {
       params: {pk: activeOrganizationID},
     });
     setUsersList(result);
+    setAlluser(result)
   }, [api]);
 
   const selectUser = useCallback((user) => {
@@ -38,9 +39,27 @@ export const PeopleList = ({onSelect, selectedUser, defaultSelected}) => {
       if (selected) selectUser(selected.user);
     }
   }, [usersList, defaultSelected]);
-
+  const setInputValues=(email)=>{
+    if(email===""){
+      setUsersList(allUser)
+    }else{
+      let data =[];
+      for (let i = 0; i < allUser.length; i++) {
+        if (
+          allUser[i].user.email.toLowerCase().includes(email.toLowerCase()) === true 
+        ) {
+          data.push(allUser[i]);
+        }
+      }
+      setUsersList(data)
+    }
+    }
   return (
     <Block name="people-list">
+      <Elem name="search">
+      < input type="text" name="search" placeholder="Tìm kiếm" onChange={e => setInputValues(e.target.value)} />
+
+      </Elem>
       {usersList ? (
         <Elem name="users">
           <Elem name="header">

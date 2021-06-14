@@ -40,7 +40,6 @@ export const AddPeople = () => {
   const inviteModal = useRef();
   const config = useConfig();
   const [selectedUser, setSelectedUser] = useState(null);
-
   const {project} = useProject();
   
   const [link, setLink] = useState();
@@ -48,7 +47,6 @@ export const AddPeople = () => {
 
   const selectUser = useCallback((user) => {
     setSelectedUser(user);
-
     localStorage.setItem('selectedUser', user?.id);
   }, [setSelectedUser]);
 
@@ -141,12 +139,13 @@ export const AddPeople = () => {
     last_name: "Duc Huynh",
     last_activity: new Date(),
   }])
-
+    
   return (
     <>
 
       <Block name="people-list">
       <Elem name="column" mix="email">Người dùng hệ thống</Elem>
+      
         <Elem name="users">
         </Elem>
         <Elem name="content">
