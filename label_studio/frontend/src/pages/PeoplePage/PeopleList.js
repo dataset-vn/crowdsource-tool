@@ -39,14 +39,20 @@ export const PeopleList = ({onSelect, selectedUser, defaultSelected}) => {
       if (selected) selectUser(selected.user);
     }
   }, [usersList, defaultSelected]);
+  function removeAccents(str) {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
   const setInputValues=(email)=>{
     if(email===""){
       setUsersList(allUser)
     }else{
       let data =[];
       for (let i = 0; i < allUser.length; i++) {
+        let str =  removeAccents(allUser[i].user.last_name);
+        let em = removeAccents(email);
         if (
-          allUser[i].user.email.toLowerCase().includes(email.toLowerCase()) === true 
+          allUser[i].user.email.toLowerCase().includes(email.toLowerCase()) === true ||
+          str.toLowerCase().includes(em.toLowerCase()) === true 
         ) {
           data.push(allUser[i]);
         }
@@ -57,7 +63,7 @@ export const PeopleList = ({onSelect, selectedUser, defaultSelected}) => {
   return (
     <Block name="people-list">
       <Elem name="search">
-      < input type="text" name="search" placeholder="Tìm kiếm" onChange={e => setInputValues(e.target.value)} />
+      < input type="text" style={{width:"100%"}} placeholder="Tìm kiếm theo tên, email" onChange={e => setInputValues(e.target.value)} />
 
       </Elem>
       {usersList ? (
