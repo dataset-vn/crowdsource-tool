@@ -2849,8 +2849,9 @@ body {
   box-shadow: 0 0 0 1px rgba(0,0,0,0.15) inset;
 }
 .ls-people-list__search {
-  width: 100%;
+  width: 50%;
   display: flex;
+  border: 1px solid !important;
 }
 .ls-people-list__loading {
   width: 100%;
