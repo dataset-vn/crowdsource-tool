@@ -43,17 +43,22 @@ export const PeopleList = ({onSelect, selectedUser, defaultSelected}) => {
     return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   }
   const setInputValues=(email)=>{
+    console.log("input ",email)
     if(email===""){
       setUsersList(allUser)
     }else{
       let data =[];
       for (let i = 0; i < allUser.length; i++) {
-        let str =  removeAccents(allUser[i].user.last_name);
-        let em = removeAccents(email);
+        let fullName = allUser[i].user.first_name+ " " + allUser[i].user.last_name
+        let str =  removeAccents(fullName);
+        
+        let em = removeAccents((email)) ;
         if (
           allUser[i].user.email.toLowerCase().includes(email.toLowerCase()) === true ||
           str.toLowerCase().includes(em.toLowerCase()) === true 
         ) {
+          console.log(str)
+          console.log(em)
           data.push(allUser[i]);
         }
       }
