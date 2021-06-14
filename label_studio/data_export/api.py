@@ -69,6 +69,11 @@ class DownloadResultsAPI(APIView):
         export_type = request.GET.get('exportType')
         is_labeled = not bool_from_request(request.GET, 'download_all_tasks', False)
 
+        requester = request.user
+        project_owner = project.created_by
+        if requester.id != project_owner.id:
+            return Response({"msg":"Operation need permission! Please contact your admin"}, status=401) 
+
         logger.debug('Get tasks')
         query = Task.objects.filter(project=project, is_labeled=is_labeled)
         logger.debug('Serialize tasks for export')
