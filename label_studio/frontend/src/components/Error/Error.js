@@ -27,15 +27,15 @@ export const ErrorWrapper = ({title, message, errorId, stacktrace, validation, v
         <Elem
           tag="img"
           name="DATASET_error_message"
-          src={absoluteURL("/static/images/logodataset copy.svg")}
+          src={absoluteURL("/static/images/Dman2_naive.png")}
           height="111"
           alt="DATASET_D_letter"
         />
       )}
 
-      {title && (
+      {/* {title && (
         <Elem name="title">{title}</Elem>
-      )}
+      )} */}
 
       {message && <Elem name="detail"dangerouslySetInnerHTML={{
         __html: String(message),
@@ -76,7 +76,7 @@ export const ErrorWrapper = ({title, message, errorId, stacktrace, validation, v
 
       <Elem name="actions">
         <Space spread>
-          <Elem tag={Button} name="action-slack" target="_blank" icon={<LsFacebook/>} href={FACEBOOK_PAGE_URL}>
+          <Elem tag={Button} name="action-facebook" target="_blank" icon={<LsFacebook/>} href={FACEBOOK_PAGE_URL}>
             Ask on Facebook
           </Elem>
 

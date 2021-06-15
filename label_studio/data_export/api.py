@@ -74,7 +74,7 @@ class DownloadResultsAPI(APIView):
         requester = request.user
         project_owner = project.created_by
         if requester.id != project_owner.id:
-            return Response({"title":"Need permissions", "detail":"You are not allowed to export"}, status=401) 
+            return Response({"validation_errors":["Need permissions"], "detail":"You are not allowed to export"}, status=401) 
 
         logger.debug('Get tasks')
         query = Task.objects.filter(project=project, is_labeled=is_labeled)
