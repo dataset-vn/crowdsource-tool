@@ -4,43 +4,59 @@
 {% load filters %}
 
 {% block head %}
-<title>Login | Dataset</title>
-<link rel="stylesheet" href="{% static 'css/login.css' %}"/>
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129877673-1"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'UA-129877673-1');
-</script>
+<html>
+<head>
+  <title>Login | Dataset</title>
+  <link rel="stylesheet" href="{% static 'css/login.css' %}"/>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-129877673-1"></script>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-129877673-1');
+  </script>
+</head>
+
 {% endblock %}
 
-{% block content %}
-<div class="login_page">
-  <h1>Dataset Labeling Tool 0.1 {{versions.package.short_verion}}</h1>
-  <h2>Công cụ dán nhãn dữ liệu</h2>
 
-  <img src="{% static 'images/logodataset.svg' %}" height="128px" />
-
-  <div class="toggle">
-    <a href="{{ settings.HOSTNAME }}/user/signup">Sign up</a>
-    <a href="{{ settings.HOSTNAME }}/user/login" class="active">Log in</a>
-  </div>
-
-  <form id="login-form" action="{% url 'user-login' %}{% if next %}?next={{ next }}{% endif %}" method="post">
-    {% csrf_token %}
-    <p><input type="text" class="ls-input" name="email" id="email" placeholder="Email" value="{{ form.data.email }}"></p>
-    <p><input type="password" class="ls-input" name="password" id="password" placeholder="Password"></p>
-    {% if form.non_field_errors %}
-      {% for error in form.non_field_errors %}
-        <p class="error">
-          {{ error }}
-        </p>
-      {% endfor %}
-    {% endif %}
-    <p><button type="submit" aria-label="Log In" class="ls-button ls-button_look_primary">Log in</button></p>
-    <p><u><a href="/password-reset">Forgot password</a></u></p>
-  </form>
+<body style="background: radial-gradient(circle, #555555, #535353, #505050, #4e4e4e, #4c4c4c);">
+  {% block content %}
+  <div class="login_page">
+    <div class="login_container">
+      <!-- <h1>Dataset Labeling Tool 0.1 {{versions.package.short_verion}}</h1> -->
+      <h1>Dataset Labeling Tool 0.1</h1>
+    <h2>Công cụ dán nhãn dữ liệu</h2>
   
-</div>
-{% endblock %}
+    <img src="{% static 'images/logodataset.svg' %}" height="128px" />
+  
+    <!-- <div class="toggle">
+      <a href="{{ settings.HOSTNAME }}/user/signup">Sign up</a>
+      <a href="{{ settings.HOSTNAME }}/user/login" class="active">Log in</a>
+    </div> -->
+  
+    <form id="login-form" action="{% url 'user-login' %}{% if next %}?next={{ next }}{% endif %}" method="post">
+      {% csrf_token %}
+      <p><input type="text" class="ls-input" name="email" id="email" placeholder="Email" value="{{ form.data.email }}"></p>
+      <p><input type="password" class="ls-input" name="password" id="password" placeholder="Password"></p>
+      {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+          <p class="error">
+            {{ error }}
+          </p>
+        {% endfor %}
+      {% endif %}
+      <p><button type="submit" aria-label="Log In" class="ls-button ls-button_look_primary">Log in</button></p>
+      <div style="display: flex; flex-direction: row; align-items: stretch; padding-left: 40px; padding-right: 40px;">
+        <p style="flex: 1; "><u><a href="{{ settings.HOSTNAME }}/password-reset">Forgot password</a></u></p>
+        <p><u><a href="{{ settings.HOSTNAME }}/user/signup">Sign up</a></u></p>
+      </div>
+      
+    </form>
+    </div>
+    
+    
+  </div>
+  {% endblock %}
+</body>
+

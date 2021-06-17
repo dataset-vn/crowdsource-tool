@@ -8,6 +8,7 @@
 }
 .login_page {
   font-weight: 400;
+  background: radial-gradient(circle, #555555, #535353, #505050, #4e4e4e, #4c4c4c);
 }
 .login_page h2 {
   font-size: 16px;

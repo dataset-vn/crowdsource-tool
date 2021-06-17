@@ -20,15 +20,15 @@ gtag('config', 'UA-129877673-1');
 
 {% block content %}
 <div class="login_page">
-  <h1>Dataset Labeling Tool 0.1 {{versions.package.short_version}}</h1>
+  <h1>Dataset Labeling Tool 0.1</h1>
   <h2>Công cụ dán nhãn dữ liệu</h2>
 
   <img src="{% static 'images/logodataset.svg' %}" height="128px" />
 
-  <div class="toggle">
+  <!-- <div class="toggle">
     <a href="{{ settings.HOSTNAME }}/user/signup" class="active">Sign up</a>
     <a href="{{ settings.HOSTNAME }}/user/login">Login</a>
-  </div>
+  </div> -->
 
   <form id="signup-form" action="{% url 'user-signup' %}?{% if next %}&next={{ next }}{% endif %}{% if token %}&token={{ token }}{% endif %}" method="post">
     {% csrf_token %}
@@ -60,6 +60,10 @@ gtag('config', 'UA-129877673-1');
       {% endfor %}
     {% endif %}
     <p><button type="submit" aria-label="Create Account" class="ls-button ls-button_look_primary">Create Account</button></p>
+    <div style="display: flex; flex-direction: row; align-items: stretch; padding-left: 40px; padding-right: 40px;">
+      <p style="flex: 1;"><u><a href="{{ settings.HOSTNAME }}/password-reset">Forgot password</a></u></p>
+      <p><u><a href="{{ settings.HOSTNAME }}/user/login">Log in</a></u></p>
+    </div>
   </form>
 </div>
 {% endblock %}
