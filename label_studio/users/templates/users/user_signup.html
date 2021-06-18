@@ -281,7 +281,7 @@ gtag('config', 'UA-129877673-1');
 	
 	<div class="form-container sign-in-container">
 		<form id="signup-form" action="{% url 'user-signup' %}?{% if next %}&next={{ next }}{% endif %}{% if token %}&token={{ token }}{% endif %}" method="post">
-      <h1>Sign Up</h1>
+      <h1>SIGN UP</h1>
       {% csrf_token %}
       <div>
         <input type="text" class="ls-input" name="email" id="email" placeholder="Email" value="{{ form.data.email }}">
@@ -316,7 +316,7 @@ gtag('config', 'UA-129877673-1');
 	<div class="overlay-container">
 		<div class="overlay">
 			<div class="overlay-panel overlay-right">
-				<h1>Dataset Labeling Tool 0.1 {{versions.package.short_verion}}</h1>
+				<h1>DATASET Labeling Tool 0.1 {{versions.package.short_verion}}</h1>
 				<p>Công cụ dán nhãn dữ liệu</p>
 				<u><a  id="logIn" href="{{ settings.HOSTNAME }}/user/login">Log in</a></u>
         <br>
