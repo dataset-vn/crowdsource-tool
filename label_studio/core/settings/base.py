@@ -316,8 +316,18 @@ TASK_LOCK_TTL = int(get_env('TASK_LOCK_TTL')) if get_env('TASK_LOCK_TTL') else N
 TASK_LOCK_DEFAULT_TTL = int(get_env('TASK_LOCK_DEFAULT_TTL', 3600))
 
 # Email backend
-FROM_EMAIL = 'Dataset <info@dataset.vn>'
-EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = get_env('DTS_SMTP_HOST')
+EMAIL_PORT = get_env('DTS_MAIL_PORT')
+EMAIL_HOST_USER = get_env('DTS_MAIL_HOST')
+EMAIL_HOST_PASSWORD = get_env('DTS_MAIL_PASSWORD')
+EMAIL_USE_SSL = get_env('DTS_MAIL_SSL')
+
+# FROM_EMAIL = 'Dataset <info@dataset.vn>'
+# EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+# EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
+
 
 """ React Libraries: do not forget to change this dir in /etc/nginx/nginx.conf """
 # EDITOR = label-studio-frontend repository

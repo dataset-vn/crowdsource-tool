@@ -92,7 +92,6 @@ def _create_project(title, user, label_config=None, sampling=None, description=N
 
 def _create_user(input_args, config):
     from users.models import User
-    from projects.models import Project, ProjectMember
     from organizations.models import Organization, OrganizationMember
 
     DEFAULT_USERNAME = 'default_user@localhost'
@@ -329,7 +328,7 @@ def main():
 
         # internal port and internal host for server start
         internal_host = input_args.internal_host or config.get('internal_host', '0.0.0.0')
-        internal_port = get_env('PORT') or input_args.port or config.get('port', 8080)
+        internal_port = get_env('TOOL_PORT') or input_args.port or config.get('port', 8080)
         internal_port = int(internal_port)
         internal_port = _get_free_port(internal_port, input_args.debug)
 

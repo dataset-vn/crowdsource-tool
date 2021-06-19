@@ -10,6 +10,8 @@ from django.conf import settings
 from django.core.exceptions import PermissionDenied
 from rest_framework.authtoken.models import Token
 
+from core.utils.params import get_bool_env, get_env
+
 from users import forms
 from core.permissions import view_with_auth, IsBusiness
 from users.functions import proceed_registration
@@ -21,7 +23,7 @@ logger = logging.getLogger()
 
 
 class FPasswordResetView(auth_views.PasswordResetView):
-    from_email = 'info@dataset.vn'
+    from_email = get_env('DTS_MAIL_HOST')
     template_name = 'password/password_reset_form.html'
 
 
