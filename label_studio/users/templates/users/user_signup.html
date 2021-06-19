@@ -281,7 +281,7 @@ gtag('config', 'UA-129877673-1');
 	
 	<div class="form-container sign-in-container">
 		<form id="signup-form" action="{% url 'user-signup' %}?{% if next %}&next={{ next }}{% endif %}{% if token %}&token={{ token }}{% endif %}" method="post">
-      <h1>Sign Up</h1>
+      <h1>SIGN UP</h1>
       {% csrf_token %}
       <div>
         <input type="text" class="ls-input" name="email" id="email" placeholder="Email" value="{{ form.data.email }}">
@@ -320,7 +320,7 @@ gtag('config', 'UA-129877673-1');
 				<p>Công cụ dán nhãn dữ liệu</p>
 				<u><a  id="logIn" href="{{ settings.HOSTNAME }}/user/login">Log in</a></u>
         <br>
-        <u><a  id="forgotPassword" href="{{ settings.HOSTNAME }}/user/password-reset">Forgot password</a></u>
+        <u><a  id="forgotPassword" href="{{ settings.HOSTNAME }}/password-reset">Forgot password</a></u>
 			</div>
 		</div>
 	</div>
