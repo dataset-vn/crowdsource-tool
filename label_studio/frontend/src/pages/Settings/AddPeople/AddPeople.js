@@ -9,31 +9,31 @@ import { useAPI } from '../../../providers/ApiProvider';
 import { useConfig } from '../../../providers/ConfigProvider';
 import { Block, Elem } from '../../../utils/bem';
 import { SelectedUser } from '../../PeoplePage/SelectedUser';
-import { PeopleList } from "../../PeoplePage/PeopleList";
+import { PeopleList } from "./PeopleList";
 
 import './MachineLearningSettings.styl';
-import './PeopleList.styl';
-import { PeopleListSetting } from '../../PeoplePageSetting/PeopleListSetting';
-import { SelectedUserSetting } from '../../PeoplePageSetting/SelectedUserSetting';
+import './AddPeopleSetting.styl';
+import { PeopleListSetting } from './PeopleListSetting';
+import { SelectedUserSetting } from './SelectedUserSetting';
 import { useDraftProject } from '../../CreateProject/utils/useDraftProject';
 import { useProject } from '../../../providers/ProjectProvider';
 
 
-const InvitationModal = ({ link }) => {
-  return (
-    <Block name="invite">
-      <Input
-        value={link}
-        style={{ width: '100%' }}
-        readOnly
-      />
+// const InvitationModal = ({ link }) => {
+//   return (
+//     <Block name="invite">
+//       <Input
+//         value={link}
+//         style={{ width: '100%' }}
+//         readOnly
+//       />
 
-      <Description style={{ width: '70%', marginTop: 16 }}>
-        Invited members have private accounts. They can register and join to the organization using this link.
-      </Description>
-    </Block>
-  );
-};
+//       <Description style={{ width: '70%', marginTop: 16 }}>
+//         Invited members have private accounts. They can register and join to the organization using this link.
+//       </Description>
+//     </Block>
+//   );
+// };
 
 export const AddPeople = () => {
   const api = useAPI();
@@ -50,54 +50,54 @@ export const AddPeople = () => {
     localStorage.setItem('selectedUser', user?.id);
   }, [setSelectedUser]);
 
-  const setInviteLink = useCallback((link) => {
-    const hostname = config.hostname || location.origin;
-    setLink(`${hostname}${link}`);
+  // const setInviteLink = useCallback((link) => {
+  //   const hostname = config.hostname || location.origin;
+  //   setLink(`${hostname}${link}`);
 
-  }, [config, setLink]);
+  // }, [config, setLink]);
 
-  const updateLink = useCallback(() => {
-    api.callApi('resetInviteLink').then(({ invite_url }) => {
-      setInviteLink(invite_url);
-    });
-  }, [setInviteLink]);
+  // const updateLink = useCallback(() => {
+  //   api.callApi('resetInviteLink').then(({ invite_url }) => {
+  //     setInviteLink(invite_url);
+  //   });
+  // }, [setInviteLink]);
 
-  const inviteModalProps = useCallback((link) => ({
-    title: "Invite people",
-    style: { width: 640, height: 472 },
-    body: () => (
-      <InvitationModal link={link} />
-    ),
-    footer: () => {
-      const [copied, setCopied] = useState(false);
+  // const inviteModalProps = useCallback((link) => ({
+  //   title: "Invite people",
+  //   style: { width: 640, height: 472 },
+  //   body: () => (
+  //     <InvitationModal link={link} />
+  //   ),
+  //   footer: () => {
+  //     const [copied, setCopied] = useState(false);
 
-      const copyLink = useCallback(() => {
-        setCopied(true);
-        copyText(link);
-        setTimeout(() => setCopied(false), 1500);
-      }, []);
+  //     const copyLink = useCallback(() => {
+  //       setCopied(true);
+  //       copyText(link);
+  //       setTimeout(() => setCopied(false), 1500);
+  //     }, []);
 
-      return (
-        <Space spread>
-          <Space>
-            <Button style={{ width: 170 }} onClick={() => updateLink()}>
-              Reset Link
-            </Button>
-          </Space>
-          <Space>
-            <Button primary style={{ width: 170 }} onClick={copyLink}>
-              {copied ? "Copied!" : "Copy link"}
-            </Button>
-          </Space>
-        </Space>
-      );
-    },
-    bareFooter: true,
-  }), []);
+  //     return (
+  //       <Space spread>
+  //         <Space>
+  //           <Button style={{ width: 170 }} onClick={() => updateLink()}>
+  //             Reset Link
+  //           </Button>
+  //         </Space>
+  //         <Space>
+  //           <Button primary style={{ width: 170 }} onClick={copyLink}>
+  //             {copied ? "Copied!" : "Copy link"}
+  //           </Button>
+  //         </Space>
+  //       </Space>
+  //     );
+  //   },
+  //   bareFooter: true,
+  // }), []);
 
-  const showInvitationModal = useCallback(() => {
-    inviteModal.current = modal(inviteModalProps(link));
-  }, [inviteModalProps, link]);
+  // const showInvitationModal = useCallback(() => {
+  //   inviteModal.current = modal(inviteModalProps(link));
+  // }, [inviteModalProps, link]);
 
   const defaultSelected = useMemo(() => {
     return localStorage.getItem('selectedUser');
@@ -106,39 +106,39 @@ export const AddPeople = () => {
 
 
 
-  useEffect(() => {
+  // useEffect(() => {
 
 
-    api.callApi("inviteLink").then(({ invite_url }) => {
-      setInviteLink(invite_url);
-    });
-  }, []);
+  //   api.callApi("inviteLink").then(({ invite_url }) => {
+  //     setInviteLink(invite_url);
+  //   });
+  // }, []);
 
-  useEffect(() => {
-    inviteModal.current?.update(inviteModalProps(link));
-  }, [link]);
+  // useEffect(() => {
+  //   inviteModal.current?.update(inviteModalProps(link));
+  // }, [link]);
 
-  const [usersList, setusersList] = useState([{
-    id: 1,
-    email: "Huynhphoke@gmail.com",
-    first_name: "Nguyen",
-    last_name: "Duc Huynh",
-    last_activity: new Date(),
-  },
-  {
-    id: 1,
-    email: "Huynhphoke@gmail.com",
-    first_name: "Nguyen",
-    last_name: "Duc Huynh",
-    last_activity: new Date(),
-  },
-  {
-    id: 1,
-    email: "Huynhphoke@gmail.com",
-    first_name: "Nguyen",
-    last_name: "Duc Huynh",
-    last_activity: new Date(),
-  }])
+  // const [usersList, setusersList] = useState([{
+  //   id: 1,
+  //   email: "Huynhphoke@gmail.com",
+  //   first_name: "Nguyen",
+  //   last_name: "Duc Huynh",
+  //   last_activity: new Date(),
+  // },
+  // {
+  //   id: 1,
+  //   email: "Huynhphoke@gmail.com",
+  //   first_name: "Nguyen",
+  //   last_name: "Duc Huynh",
+  //   last_activity: new Date(),
+  // },
+  // {
+  //   id: 1,
+  //   email: "Huynhphoke@gmail.com",
+  //   first_name: "Nguyen",
+  //   last_name: "Duc Huynh",
+  //   last_activity: new Date(),
+  // }])
     
   return (
     <>
@@ -168,7 +168,6 @@ export const AddPeople = () => {
             selectedUser={selectedUser}
             defaultSelected={defaultSelected}
             onSelect={(user) => selectUser(user)}
-            
           />
 
           {selectedUser && (
