@@ -180,8 +180,6 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         project_id = self.kwargs['pk']
         current_user_id = self.request.user.id
 
-        user_id = json.loads(self.request.body)['user_pk']
-
         if not ProjectMember.objects.filter(user=current_user_id, project=project_id).exists():
             print("Operation can only be performed by a project member")
             return

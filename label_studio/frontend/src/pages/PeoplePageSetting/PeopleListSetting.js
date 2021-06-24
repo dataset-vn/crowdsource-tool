@@ -33,11 +33,6 @@ export const PeopleListSetting = ({onSelect, selectedUser, defaultSelected,proje
       }
     }
     
-    
-  
-        
-      
-    
       setUsersList(data);
   }, [api]);
 

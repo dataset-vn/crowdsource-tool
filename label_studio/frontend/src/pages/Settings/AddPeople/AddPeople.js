@@ -142,8 +142,23 @@ export const AddPeople = () => {
     
   return (
     <>
+      <Block name="project-people-list">
+      <Elem name="column" mix="email">Thành viên dự án</Elem>
+        <Elem name="content">
+          <PeopleListSetting
+            selectedUser={selectedUser}
+            defaultSelected={defaultSelected}
+            onSelect={(user) => selectUser(user)}
+            projectID={project.id}
+          />
+        </Elem>
+      </Block>
 
-      <Block name="people-list">
+      <Space >
+        
+      </Space>
+
+      <Block name="organization-people-list">
       <Elem name="column" mix="email">Người dùng hệ thống</Elem>
       
         <Elem name="users">
@@ -165,23 +180,7 @@ export const AddPeople = () => {
           )}
         </Elem>
       </Block>
-
-
-      <Space >
-        
-      </Space>
-
-      <Block name="people-list">
-      <Elem name="column" mix="email">Thành viên dự án</Elem>
-        <Elem name="content">
-          <PeopleListSetting
-            selectedUser={selectedUser}
-            defaultSelected={defaultSelected}
-            onSelect={(user) => selectUser(user)}
-            projectID={project.id}
-          />
-        </Elem>
-      </Block>
+      
     </>
   );
 };
