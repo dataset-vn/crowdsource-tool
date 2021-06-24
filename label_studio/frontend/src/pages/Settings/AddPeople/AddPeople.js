@@ -158,9 +158,9 @@ export const AddPeople = () => {
         
       </Space>
 
-      <Block name="organization-people-list">
+      <Block name="org-people-list">
       <Elem name="column" mix="email">Người dùng hệ thống</Elem>
-      
+    
         <Elem name="users">
         </Elem>
         <Elem name="content">
