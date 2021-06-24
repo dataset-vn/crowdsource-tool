@@ -173,16 +173,14 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
                        generics.RetrieveUpdateDestroyAPIView):
 
     parser_classes = (JSONParser, FormParser, MultiPartParser)
-    # queryset = ProjectMember.objects.all()
     permission_classes = (IsAuthenticated, ProjectAPIBasePermission)
     serializer_class = ProjectMemberSerializer
-
-    # redirect_route = 'projects:project-collaborators'
-    # redirect_kwarg = 'pk'
 
     def get_queryset(self,):
         project_id = self.kwargs['pk']
         current_user_id = self.request.user.id
+
+        user_id = json.loads(self.request.body)['user_pk']
 
         if not ProjectMember.objects.filter(user=current_user_id, project=project_id).exists():
             print("Operation can only be performed by a project member")
@@ -190,22 +188,36 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
             
         return ProjectMember.objects.filter(project=project_id)
 
-    # def get_object(self):
-    #     project_id = self.kwargs['pk']
-    #     current_user_id = self.request.user.id
+    def get_object(self):
+        current_user_id = self.request.user.id
+        project_id = self.kwargs['pk']
+        user_id = json.loads(self.request.body)['user_pk']
 
-    #     if not ProjectMember.objects.filter(user=current_user_id, project=project_id).exists():
-    #         print("Operation can only be performed by a project member")
-    #         return
-    #     else:
-    #         print("STill see 'em")
+        if not Project.objects.filter(pk=project_id).exists():
+            raise DatasetJscDatabaseException('There is no such project')
 
-    #     queryset = self.get_queryset()
-    #     obj = get_object_with_check_and_log(self.request, ProjectMember, pk=self.kwargs['pk'])
-    #     #obj = get_object_or_404(queryset, user=json.loads(self.request.body)['user_pk'])
-    #     # obj = get_object_or_404()
-    #     self.check_object_permissions(self.request, obj)
-    #     return obj
+        if not User.objects.filter(pk=user_id).exists():
+            raise DatasetJscDatabaseException('There is no such member')
+
+        if not ProjectMember.objects.filter(user=current_user_id, project=project_id).exists():
+            raise DatasetJscDatabaseException("Operation can only be performed by a project member")
+
+        if not ProjectMember.objects.filter(user=user_id, project=project_id).exists():
+            raise DatasetJscDatabaseException('There is no such member in the project')
+
+        project = Project.objects.get(pk=project_id)
+        user = User.objects.get(pk=user_id)
+        
+        queryset = ProjectMember.objects.filter(project=project, user=user)
+
+        obj = get_object_or_404(queryset)
+        self.check_object_permissions(self.request, obj)
+        return obj
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response({'code':200, 'detail': 'Delete project member suceesfully'}, status=status.HTTP_200_OK)
 
     def perform_create(self, serializer):
         # Added by NgDMau
@@ -213,53 +225,37 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         # if yes, user can add others to this current project, else cant
         current_user_id = self.request.user.id
         project_id = self.kwargs['pk']
+        user_id = json.loads(self.request.body)['user_pk']
+
+        if not Project.objects.filter(pk=project_id).exists():
+            raise DatasetJscDatabaseException('There is no such project')
+
+        if not User.objects.filter(pk=user_id).exists():
+            raise DatasetJscDatabaseException('There is no such member')
 
         if not ProjectMember.objects.filter(user=current_user_id, project=project_id).exists():
-            print("Operation can only be performed by a project member")
-            return
-        
-
-        user_id = json.loads(self.request.body)['user_pk']
-        
-
-        project = Project.objects.get(pk=project_id)
-        user = User.objects.get(pk=user_id)
-        self.check_object_permissions(self.request, project)
-
-        
+            raise DatasetJscDatabaseException("Operation can only be performed by a project member")
 
         if ProjectMember.objects.filter(user=user_id, project=project_id).exists():
-            print("User is already a member of this project")
-            return
+            raise DatasetJscDatabaseException('This user is already member of the project')
+        
+        project = Project.objects.get(pk=project_id)
+        user = User.objects.get(pk=user_id)
+
+        self.check_object_permissions(self.request, project)
 
         try:
-            project_member = serializer.save(user=user, project=project)
+            serializer.save(user=user, project=project)
         except IntegrityError as e:
             raise DatasetJscDatabaseException('Database error during project creation. Try again.')
 
     def perform_destroy(self, instance):
-
-        current_user_id = self.request.user.id
-        project_id = self.kwargs['pk']
-
-        if not ProjectMember.objects.filter(user=current_user_id, project=project_id).exists():
-            print("Operation can only be performed by a project member")
-            return
-
-        user_id = json.loads(self.request.body)['user_pk']
-        
-
-        project = Project.objects.filter(pk=project_id)
-        user = User.objects.filter(pk=user_id)
-
-        self.check_object_permissions(self.request, project)
-
-        
         try:
             instance.delete()
         except IntegrityError as e:
             logger.error('Fallback to cascase deleting after integrity_error: {}'.format(str(e)))
             instance.delete()
+
 
     @swagger_auto_schema(tags=['ProjectMember'])
     def get(self, request, *args, **kwargs):
@@ -271,28 +267,7 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
 
     @swagger_auto_schema(tags=['ProjectMember'])
     def delete(self, request, *args, **kwargs):
-        # user_id = json.loads(self.request.body)['user_pk']
-        # project_id = self.kwargs['pk']
-
-        # project = Project.objects.get(pk=project_id)
-        # user = User.objects.get(pk=user_id)
-
-        # self.check_object_permissions(self.request, project)
-
-        # project_member = ProjectMember.objects.filter(user=user, project=project).all()
-        # project_member.delete()
-
         return super(ProjectMemberAPI, self).delete(request, *args, **kwargs)
-
-
-    # def add_member():
-    #     return
-
-    # def add_members():
-    #     return
-
-    # def delete_members():
-    #     return 
 
 
 class ProjectAPI(APIViewVirtualRedirectMixin,

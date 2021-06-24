@@ -2,6 +2,7 @@
 """
 from label_studio.core.settings.base import DJANGO_DB
 from core.settings.base import *
+import os
 
 #DJANGO_DB = get_env('DJANGO_DB', DJANGO_DB_SQLITE) # (Means the system will use PostgreSQl if system env DJANGO_DB=default)
 DJANGO_DB = 'default' # (Means the system will use PostgreSQL as database)
@@ -15,7 +16,8 @@ ADD_DEFAULT_ML_BACKENDS = False
 
 LOGGING['root']['level'] = get_env('LOG_LEVEL', 'DEBUG')
 
-DEBUG = get_bool_env('DEBUG', False)
+# DEBUG = get_bool_env('DEBUG', False)
+DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
 DEBUG_PROPAGATE_EXCEPTIONS = get_bool_env('DEBUG_PROPAGATE_EXCEPTIONS', False)
 
