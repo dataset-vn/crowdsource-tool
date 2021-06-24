@@ -93,33 +93,6 @@
       const CURL_TEMPLATE = "curl -X GET http://localhost:8080/api/projects/ -H 'Authorization: Token'"
       {% endif %}
 
-      document.querySelectorAll('[data-copy]').forEach(button => {
-        button.onclick = e => {
-          const input = document.getElementById(e.target.dataset.copy);
-          input.select();
-          document.execCommand("copy");
-          input.setSelectionRange(0, 0);
-          input.blur();
-          button.classList.add('blink');
-          setTimeout(() => button.classList.remove('blink'))
-        }
-      });
-
-      document.querySelector('[name=renew]').onclick = e => {
-        const button = e.target;
-        const input = document.getElementById("access_token");
-        const example = document.getElementById("example_fetch");
-
-        fetch("{% url 'current-user-reset-token' %}", { method: "POST" })
-          .then(res => res.json())
-          .then(res => {
-            input.value = res.token;
-            example.value = `${CURL_TEMPLATE} ${res.token}`
-            button.classList.add('blink');
-            setTimeout(() => button.classList.remove('blink'))
-          });
-      };
-
       $('[name=avatar]').on('change', async (e) => {
         const formData = new FormData;
 
