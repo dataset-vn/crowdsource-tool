@@ -19,22 +19,6 @@ import { useDraftProject } from '../../CreateProject/utils/useDraftProject';
 import { useProject } from '../../../providers/ProjectProvider';
 
 
-// const InvitationModal = ({ link }) => {
-//   return (
-//     <Block name="invite">
-//       <Input
-//         value={link}
-//         style={{ width: '100%' }}
-//         readOnly
-//       />
-
-//       <Description style={{ width: '70%', marginTop: 16 }}>
-//         Invited members have private accounts. They can register and join to the organization using this link.
-//       </Description>
-//     </Block>
-//   );
-// };
-
 export const AddPeople = () => {
   const api = useAPI();
   const inviteModal = useRef();
@@ -50,98 +34,14 @@ export const AddPeople = () => {
     localStorage.setItem('selectedUser', user?.id);
   }, [setSelectedUser]);
 
-  // const setInviteLink = useCallback((link) => {
-  //   const hostname = config.hostname || location.origin;
-  //   setLink(`${hostname}${link}`);
-
-  // }, [config, setLink]);
-
-  // const updateLink = useCallback(() => {
-  //   api.callApi('resetInviteLink').then(({ invite_url }) => {
-  //     setInviteLink(invite_url);
-  //   });
-  // }, [setInviteLink]);
-
-  // const inviteModalProps = useCallback((link) => ({
-  //   title: "Invite people",
-  //   style: { width: 640, height: 472 },
-  //   body: () => (
-  //     <InvitationModal link={link} />
-  //   ),
-  //   footer: () => {
-  //     const [copied, setCopied] = useState(false);
-
-  //     const copyLink = useCallback(() => {
-  //       setCopied(true);
-  //       copyText(link);
-  //       setTimeout(() => setCopied(false), 1500);
-  //     }, []);
-
-  //     return (
-  //       <Space spread>
-  //         <Space>
-  //           <Button style={{ width: 170 }} onClick={() => updateLink()}>
-  //             Reset Link
-  //           </Button>
-  //         </Space>
-  //         <Space>
-  //           <Button primary style={{ width: 170 }} onClick={copyLink}>
-  //             {copied ? "Copied!" : "Copy link"}
-  //           </Button>
-  //         </Space>
-  //       </Space>
-  //     );
-  //   },
-  //   bareFooter: true,
-  // }), []);
-
-  // const showInvitationModal = useCallback(() => {
-  //   inviteModal.current = modal(inviteModalProps(link));
-  // }, [inviteModalProps, link]);
 
   const defaultSelected = useMemo(() => {
     return localStorage.getItem('selectedUser');
   }, []);
-
-
-
-
-  // useEffect(() => {
-
-
-  //   api.callApi("inviteLink").then(({ invite_url }) => {
-  //     setInviteLink(invite_url);
-  //   });
-  // }, []);
-
-  // useEffect(() => {
-  //   inviteModal.current?.update(inviteModalProps(link));
-  // }, [link]);
-
-  // const [usersList, setusersList] = useState([{
-  //   id: 1,
-  //   email: "Huynhphoke@gmail.com",
-  //   first_name: "Nguyen",
-  //   last_name: "Duc Huynh",
-  //   last_activity: new Date(),
-  // },
-  // {
-  //   id: 1,
-  //   email: "Huynhphoke@gmail.com",
-  //   first_name: "Nguyen",
-  //   last_name: "Duc Huynh",
-  //   last_activity: new Date(),
-  // },
-  // {
-  //   id: 1,
-  //   email: "Huynhphoke@gmail.com",
-  //   first_name: "Nguyen",
-  //   last_name: "Duc Huynh",
-  //   last_activity: new Date(),
-  // }])
     
   return (
     <>
+      <Block>
       <Block name="project-people-list">
       <Elem name="column" mix="email">Thành viên dự án</Elem>
         <Elem name="content">
@@ -154,10 +54,14 @@ export const AddPeople = () => {
         </Elem>
       </Block>
 
-      <Space >
-        
+      <Space >    
+      </Space>
+      <br></br>
+      <br></br>
+      <Space >    
       </Space>
 
+      
       <Block name="org-people-list">
       <Elem name="column" mix="email">Người dùng hệ thống</Elem>
     
@@ -178,6 +82,7 @@ export const AddPeople = () => {
             />
           )}
         </Elem>
+      </Block>
       </Block>
       
     </>
