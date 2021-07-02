@@ -55,8 +55,7 @@ const Footer = () => {
   return (
     <Modal.Footer>
       <IconInfo className={importClass.elem("info-icon")} width="20" height="20" />
-      See the&nbsp;documentation to <a target="_blank" href="https://labelstud.io/guide/predictions.html">import preannotated data</a>{" "}
-      or&nbsp;to <a target="_blank" href="https://labelstud.io/guide/storage.html">sync data from a&nbsp;database or&nbsp;cloud storage</a>.
+      Give a question to <a target="_blank" href="https://facebook.com/dataset.vn"> our facebook</a> if you have any problems{" "}
     </Modal.Footer>
   );
 };

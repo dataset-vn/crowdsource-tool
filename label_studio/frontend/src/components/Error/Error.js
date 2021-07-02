@@ -1,12 +1,12 @@
 import React, { Fragment, useCallback, useMemo, useState } from 'react';
-import { LsSlack } from '../../assets/icons';
+import { DtsFacebook } from '../../assets/icons';
 import { Block, Elem } from '../../utils/bem';
 import { absoluteURL, copyText } from '../../utils/helpers';
 import { Button } from '../Button/Button';
 import { Space } from '../Space/Space';
 import "./Error.styl";
 
-const SLACK_INVITE_URL = "http://slack.labelstud.io.s3-website-us-east-1.amazonaws.com?source=product-error-msg";
+const FACEBOOK_PAGE_URL = "https://facebook.com/dataset.vn"
 
 export const ErrorWrapper = ({title, message, errorId, stacktrace, validation, version, onGoBack, onReload, possum = false}) => {
   const preparedStackTrace = useMemo(() => {
@@ -76,8 +76,8 @@ export const ErrorWrapper = ({title, message, errorId, stacktrace, validation, v
 
       <Elem name="actions">
         <Space spread>
-          <Elem tag={Button} name="action-slack" target="_blank" icon={<LsSlack/>} href={SLACK_INVITE_URL}>
-            Ask on Slack
+          <Elem tag={Button} name="action-slack" target="_blank" icon={<DtsFacebook/>} href={FACEBOOK_PAGE_URL}>
+            Ask on Facebook
           </Elem>
 
           <Space size="small">

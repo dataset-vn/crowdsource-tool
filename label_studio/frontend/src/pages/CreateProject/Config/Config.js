@@ -39,10 +39,6 @@ const configClass = cn("configure");
 const EmptyConfigPlaceholder = () => (
   <div className={configClass.elem("empty-config")}>
     <p>Your labeling configuration is empty. It is required to label your data.</p>
-    <p>
-      Start from one of our predefined templates or create your own config on the Code panel.
-      The labeling config is XML-based and you can <a href="https://labelstud.io/tags/" target="_blank">read about the available tags in our documentation</a>.
-    </p>
   </div>
 );
 
@@ -304,7 +300,7 @@ const Configurator = ({ columns, config, project, template, setTemplate, onBrows
     <p className={configClass.elem('tags-link')}>
       Configure the labeling interface with tags.
       <br/>
-      <a href="https://labelstud.io/tags/" target="_blank">See all available tags</a>
+      <a href="https://dataset.vn/huongdan/tags/" target="_blank">See all tags</a>
       .
     </p>
   );
