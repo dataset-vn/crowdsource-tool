@@ -18,6 +18,26 @@ from organizations.forms import OrganizationSignupForm
 
 logger = logging.getLogger()
 
+from django.contrib.auth import views as auth_views
+from core.utils.params import get_bool_env, get_env
+
+
+class FPasswordResetView(auth_views.PasswordResetView):
+    from_email = get_env('DTS_MAIL_HOST')
+    template_name = 'password/password_reset_form.html'
+
+
+class FPasswordResetDoneView(auth_views.PasswordResetDoneView):
+    template_name = 'password/password_reset_done.html'
+
+
+class FPasswordResetConfirmView(auth_views.PasswordResetConfirmView):
+    template_name = 'password/password_reset_confirm.html'
+
+
+class FPasswordResetCompleteView(auth_views.PasswordResetCompleteView):
+    template_name = 'password/password_reset_complete.html'
+
 
 @login_required
 def logout(request):

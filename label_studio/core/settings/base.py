@@ -322,8 +322,13 @@ TASK_LOCK_TTL = int(get_env('TASK_LOCK_TTL')) if get_env('TASK_LOCK_TTL') else N
 TASK_LOCK_DEFAULT_TTL = int(get_env('TASK_LOCK_DEFAULT_TTL', 3600))
 
 # Email backend
-FROM_EMAIL = get_env('FROM_EMAIL', 'Label Studio <hello@labelstud.io>')
-EMAIL_BACKEND = get_env('EMAIL_BACKEND', 'django.core.mail.backends.dummy.EmailBackend')
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = get_env('DTS_SMTP_HOST')
+EMAIL_PORT = get_env('DTS_MAIL_PORT')
+EMAIL_HOST_USER = get_env('DTS_MAIL_HOST')
+EMAIL_HOST_PASSWORD = get_env('DTS_MAIL_PASSWORD')
+EMAIL_USE_SSL = get_env('DTS_MAIL_SSL')
 
 ENABLE_LOCAL_FILES_STORAGE = get_bool_env('ENABLE_LOCAL_FILES_STORAGE', default=True)
 LOCAL_FILES_SERVING_ENABLED = get_bool_env('LOCAL_FILES_SERVING_ENABLED', default=False)
