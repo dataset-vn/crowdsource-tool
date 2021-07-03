@@ -32,7 +32,7 @@ handler500 = 'core.views.custom_500'
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Label Studio API",
+        title="DATASET API",
         default_version='v2',
         contact=openapi.Contact(url="https://dataset.vn"),
         x_logo={"url": "../../static/icons/dataset_long_logo.svg"}
@@ -44,7 +44,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     re_path(r'^$', views.main, name='main'),
     re_path(r'^favicon\.ico$', RedirectView.as_view(url='/static/images/favicon.ico', permanent=True)),
-    re_path(r'^label-studio-frontend/(?P<path>.*)$', serve, kwargs={'document_root': settings.EDITOR_ROOT, 'show_indexes': True}),
+    re_path(r'^dtsf/(?P<path>.*)$', serve, kwargs={'document_root': settings.EDITOR_ROOT, 'show_indexes': True}),
     re_path(r'^dm/(?P<path>.*)$', serve, kwargs={'document_root': settings.DM_ROOT, 'show_indexes': True}),
     re_path(r'^react-app/(?P<path>.*)$', serve, kwargs={'document_root': settings.REACT_APP_ROOT, 'show_indexes': True}),
     re_path(r'^static/fonts/roboto/roboto.css$', views.static_file_with_host_resolver('static/fonts/roboto/roboto.css', content_type='text/css')),
@@ -64,7 +64,7 @@ urlpatterns = [
 
     re_path(r'data/local-files/', views.localfiles_data, name="localfiles_data"),
 
-    re_path(r'version/', views.version_page, name="version"),  # html page
+    # re_path(r'version/', views.version_page, name="version"),  # html page
     re_path(r'api/version/', views.version_page, name="api-version"),  # json response
 
     re_path(r'health/', views.health, name="health"),
@@ -75,8 +75,8 @@ urlpatterns = [
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 
-    path('docs/api/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    path('docs/', RedirectView.as_view(url='/static/docs/public/guide/introduction.html', permanent=False)),
+    # path('docs/api/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    # path('docs/', RedirectView.as_view(url='/static/docs/public/guide/introduction.html', permanent=False)),
 
     path('admin/', admin.site.urls),
     path('django-rq/', include('django_rq.urls')),

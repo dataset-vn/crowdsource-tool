@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <title>Dataset</title>
+  <!-- <title>Dataset</title> -->
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=0.9, shrink-to-fit=no">
 
@@ -26,8 +26,8 @@
   <script src="{{settings.HOSTNAME}}{% static 'js/helpers.js' %}"></script>
 
   <script>
-    EDITOR_JS = "{{settings.HOSTNAME}}/label-studio-frontend/js/main.js?v={{ versions.lsf.commit }}";
-    EDITOR_CSS = "{{settings.HOSTNAME}}/label-studio-frontend/css/main.css?v={{ versions.lsf.commit }}";
+    EDITOR_JS = "{{settings.HOSTNAME}}/dtsf/js/main.js?v={{ versions.lsf.commit }}";
+    EDITOR_CSS = "{{settings.HOSTNAME}}/dtsf/css/main.css?v={{ versions.lsf.commit }}";
     DM_JS = "{{settings.HOSTNAME}}/dm/js/main.js?v={{ versions.dm2.commit }}";
     DM_CSS = "{{settings.HOSTNAME}}/dm/css/main.css?v={{ versions.dm2.commit }}";
   </script>
@@ -42,7 +42,7 @@
   </script>
 
   {% block head %}
-    <title>Label Studio</title>
+  <title>Dataset - Data Crowdsourcing Platform</title>
   {% endblock %}
 
   {% get_current_language as LANGUAGE_CODE %}
