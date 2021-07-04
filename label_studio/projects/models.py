@@ -612,11 +612,48 @@ class ProjectOnboarding(models.Model):
             self.project.save(recalc=False)
 
 
+# class ProjectOwner(models.Model):
+
+#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='project_ownerships', help_text='User ID')  # noqa
+#     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='owners', help_text='Project ID')
+#     enabled = models.BooleanField(default=True, help_text='Project owner is enabled')
+#     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
+#     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
+
+
+# class ProjectLeader(models.Model):
+
+#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='project_leaderships', help_text='User ID')  # noqa
+#     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='leaders', help_text='Project ID')
+#     enabled = models.BooleanField(default=True, help_text='Project leader is enabled')
+#     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
+#     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
+
+
+# class ProjectReviewer(models.Model):
+
+#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='project_leaderships', help_text='User ID')  # noqa
+#     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='leaders', help_text='Project ID')
+#     enabled = models.BooleanField(default=True, help_text='Project leader is enabled')
+#     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
+#     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
+
+
+# class ProjectAnnotator(models.Model):
+
+#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='project_leaderships', help_text='User ID')  # noqa
+#     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='leaders', help_text='Project ID')
+#     enabled = models.BooleanField(default=True, help_text='Project leader is enabled')
+#     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
+#     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
+
+
 class ProjectMember(models.Model):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='project_memberships', help_text='User ID')  # noqa
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='members', help_text='Project ID')
     enabled = models.BooleanField(default=True, help_text='Project member is enabled')
+    role = models.CharField(default='annotator', max_length=32, help_text='Represents role of member in project')
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
 

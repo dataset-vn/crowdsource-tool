@@ -4,12 +4,14 @@ import drf_yasg.openapi as openapi
 import logging
 import numpy as np
 import pathlib
+import json
 import os
 
 from collections import Counter
 from django.db import IntegrityError
 from django.db.models.fields import DecimalField
 from django.conf import settings
+from django.shortcuts import get_object_or_404
 from drf_yasg.utils import swagger_auto_schema
 from django.utils.decorators import method_decorator
 from django.db.models import Q, When, Count, Case, OuterRef, Max, Exists, Value, BooleanField
@@ -24,19 +26,21 @@ from rest_framework.views import exception_handler
 from core.utils.common import conditional_atomic
 from core.label_config import config_essential_data_has_changed
 from projects.models import (
-    Project, ProjectSummary
+    Project, ProjectSummary, ProjectMember
 )
 from projects.serializers import (
-    ProjectSerializer, ProjectLabelConfigSerializer, ProjectSummarySerializer
+    ProjectSerializer, ProjectMemberSerializer, ProjectLabelConfigSerializer, ProjectSummarySerializer
 )
+
+from users.models import User
 from tasks.models import Task, Annotation, Prediction, TaskLock
 from tasks.serializers import TaskSerializer, TaskWithAnnotationsAndPredictionsAndDraftsSerializer
 
 from core.mixins import APIViewVirtualRedirectMixin, APIViewVirtualMethodMixin
-from core.permissions import all_permissions, ViewClassPermission
+from core.permissions import all_permissions, ViewClassPermission, IsAuthenticated
 from core.utils.common import (
     get_object_with_check_and_log, bool_from_request, paginator, paginator_help)
-from core.utils.exceptions import ProjectExistException, LabelStudioDatabaseException
+from core.utils.exceptions import ProjectExistException, LabelStudioDatabaseException, DatasetJscDatabaseException
 from core.utils.io import find_dir, find_file, read_yaml
 
 from data_manager.functions import get_prepared_queryset
@@ -236,6 +240,133 @@ class ProjectAPI(APIViewVirtualRedirectMixin,
         """,
         responses={200: TaskWithAnnotationsAndPredictionsAndDraftsSerializer()}
     ))
+
+
+class ProjectMemberAPI(generics.ListCreateAPIView, 
+                       generics.RetrieveUpdateDestroyAPIView):
+    parser_classes = (JSONParser, FormParser, MultiPartParser)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ProjectMemberSerializer
+
+    def get_queryset(self,):
+        project_id = self.kwargs['pk']
+        current_user_id = self.request.user.id
+        # TODO: Only Project Leader or above can see member list
+        if not ProjectMember.objects.filter(user=current_user_id, project=project_id).exists():
+            raise("Operation can only be performed by a project member")
+        return ProjectMember.objects.filter(project=project_id)
+
+    def get_object(self):
+        current_user_id = self.request.user.id
+        project_id = self.kwargs['pk']
+        user_id = json.loads(self.request.body)['user_pk']
+
+        if not Project.objects.filter(pk=project_id).exists():
+            raise DatasetJscDatabaseException('There is no such project')
+        if not User.objects.filter(pk=user_id).exists():
+            raise DatasetJscDatabaseException('There is no such member')
+        if not ProjectMember.objects.filter(user=current_user_id, project=project_id).exists():
+            raise DatasetJscDatabaseException("Operation can only be performed by a project member")
+        if not ProjectMember.objects.filter(user=user_id, project=project_id).exists():
+            raise DatasetJscDatabaseException('There is no such member in the project')
+
+        project = Project.objects.get(pk=project_id)
+        user = User.objects.get(pk=user_id)
+        queryset = ProjectMember.objects.filter(project=project, user=user)
+
+        obj = get_object_or_404(queryset)
+        self.check_object_permissions(self.request, obj)
+        return obj
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response({'code':200, 'detail': 'Delete project member successfully'}, status=status.HTTP_200_OK)
+
+    def perform_create(self, serializer):
+        # Added by NgDMau
+        # check if logging user is admin of current project
+        # if yes, user can add others to this current project, else cant
+        current_user_id = self.request.user.id
+        project_id = self.kwargs['pk']
+        user_id = json.loads(self.request.body)['user_pk']
+        role = json.loads(self.request.body)['role']
+
+        roles = ['owner', 'manager', 'reviewer', 'annotator']
+        if role not in roles:
+            role = 'annotator'
+
+        if not Project.objects.filter(pk=project_id).exists():
+            raise DatasetJscDatabaseException('There is no such project')
+        if not User.objects.filter(pk=user_id).exists():
+            raise DatasetJscDatabaseException('There is no such member')
+        if not ProjectMember.objects.filter(user=current_user_id, project=project_id).exists():
+            raise DatasetJscDatabaseException("Operation can only be performed by a project member")
+        if ProjectMember.objects.filter(user=user_id, project=project_id).exists():
+            raise DatasetJscDatabaseException('This user is already in the project')
+        
+        project = Project.objects.get(pk=project_id)
+        user = User.objects.get(pk=user_id)
+        self.check_object_permissions(self.request, project)
+
+        try:
+            serializer.save(user=user, project=project, role=role)
+        except IntegrityError as e:
+            raise DatasetJscDatabaseException('Database error during project creation. Try again.')
+
+    def perform_update(self, serializer):
+        current_user_id = self.request.user.id
+        project_id = self.kwargs['pk']
+        user_id = json.loads(self.request.body)['user_pk']
+        role = json.loads(self.request.body)['role']
+
+        roles = ['owner', 'manager', 'reviewer', 'annotator']
+        if not role in roles:
+            role = 'annotator'
+
+        if not Project.objects.filter(pk=project_id).exists():
+            raise DatasetJscDatabaseException('There is no such project')
+        if not User.objects.filter(pk=user_id).exists():
+            raise DatasetJscDatabaseException('There is no such member')
+        if not ProjectMember.objects.filter(user=current_user_id, project=project_id).exists():
+            raise DatasetJscDatabaseException("Operation can only be performed by a project member")
+        if ProjectMember.objects.filter(user=user_id, project=project_id, role=role).exists():
+            raise DatasetJscDatabaseException('This user is already that role of the project')
+
+        project = Project.objects.get(pk=project_id)
+        user = User.objects.get(pk=user_id)
+        self.check_object_permissions(self.request, project)
+
+        try:
+            serializer.save(user=user, project=project, role=role)
+        except IntegrityError as e:
+            raise DatasetJscDatabaseException('Database error during project creation. Try again.')
+
+    def perform_destroy(self, instance):
+        try:
+            instance.delete()
+        except IntegrityError as e:
+            logger.error('Fallback to cascase deleting after integrity_error: {}'.format(str(e)))
+            instance.delete()
+
+
+    @swagger_auto_schema(tags=['ProjectMember'])
+    def get(self, request, *args, **kwargs):
+        return super(ProjectMemberAPI, self).get(request, *args, **kwargs)
+
+    @swagger_auto_schema(tags=['ProjectMember'])
+    def post(self, request, *args, **kwargs):
+        return super(ProjectMemberAPI, self).post(request, *args, **kwargs)
+
+    @swagger_auto_schema(tags=['ProjectMember'])
+    def update(self, request, *args, **kwargs):
+        return super(ProjectMemberAPI, self).update(request, *args, **kwargs)
+
+    @swagger_auto_schema(tags=['ProjectMember'])
+    def delete(self, request, *args, **kwargs):
+        return super(ProjectMemberAPI, self).delete(request, *args, **kwargs)
+
+
 class ProjectNextTaskAPI(generics.RetrieveAPIView):
     permission_required = all_permissions.tasks_view
     serializer_class = TaskWithAnnotationsAndPredictionsAndDraftsSerializer  # using it for swagger API docs
