@@ -1,9 +1,14 @@
 """This file and its contents are licensed under the Apache License 2.0. Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
 """
 import logging
+import json
 
 from django.urls import reverse
 from django.conf import settings
+
+from django.db import IntegrityError
+
+
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework import generics
 from rest_framework.views import APIView
@@ -16,7 +21,9 @@ from label_studio.core.mixins import APIViewVirtualRedirectMixin, APIViewVirtual
 from label_studio.core.permissions import all_permissions, ViewClassPermission
 from label_studio.core.utils.common import get_object_with_check_and_log
 
-from organizations.models import Organization
+from core.utils.exceptions import DatasetJscDatabaseException
+
+from organizations.models import Organization, OrganizationMember
 from organizations.serializers import (
     OrganizationSerializer, OrganizationIdSerializer, OrganizationMemberUserSerializer, OrganizationInviteSerializer
 )
@@ -51,6 +58,28 @@ class OrganizationListAPI(generics.ListCreateAPIView):
 
     def get_queryset(self):
         return Organization.objects.filter(users=self.request.user).distinct()
+
+
+    def perform_create(self, serializer):
+        org_creator = self.request.user
+        org_title = json.loads(self.request.body)['title']
+
+        try:
+            org = serializer.save(created_by=org_creator, title=org_title)
+        except IntegrityError as e:
+            if 'duplicate key value violates unique constraint \"organization_created_by_id_key\"' in str(e):
+                raise DatasetJscDatabaseException("Each user can create only one organization")
+
+        try:
+            OrganizationMember.objects.create(user=org_creator, organization=org)
+        except IntegrityError as e:
+            raise DatasetJscDatabaseException("Error(s) happened when adding this user to the new organization")
+
+
+
+
+
+
 
     def get(self, request, *args, **kwargs):
         return super(OrganizationListAPI, self).get(request, *args, **kwargs)
