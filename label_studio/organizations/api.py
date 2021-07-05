@@ -40,7 +40,11 @@ logger = logging.getLogger(__name__)
         """
     ))
 class OrganizationListAPI(generics.ListCreateAPIView):
+    """
+    GET get the list of organizations that current user is in.
 
+    POST create a new organization which the current user is its owner.
+    """
     parser_classes = (JSONParser, FormParser, MultiPartParser)
     permission_required = ViewClassPermission(
         GET=all_permissions.organizations_view,
