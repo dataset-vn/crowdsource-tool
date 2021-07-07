@@ -1296,6 +1296,29 @@
   }
 }
 
+.ls-form-validation {
+  margin-top: 32px;
+}
+.ls-form-validation__group {
+  padding: 7px 14px;
+  border-radius: 5px;
+  background-color: rgba(204,0,0,0.04);
+}
+.ls-form-validation__group + .ls-form-validation__group {
+  margin-top: 5px;
+}
+.ls-form-validation__field {
+  font-size: 14px;
+  font-weight: bold;
+}
+.ls-form-validation__messages {
+  margin-top: 3px;
+}
+.ls-form-validation__message {
+  font-size: 12px;
+  color: rgba(0,0,0,0.7);
+}
+
 .ls-toggle-items {
   display: flex;
   justify-content: stretch;
@@ -1349,29 +1372,6 @@
 }
 .ls-description:not(.ls-description_noOffset).ls-description_size_large {
   margin: 40px 0;
-}
-
-.ls-form-validation {
-  margin-top: 32px;
-}
-.ls-form-validation__group {
-  padding: 7px 14px;
-  border-radius: 5px;
-  background-color: rgba(204,0,0,0.04);
-}
-.ls-form-validation__group + .ls-form-validation__group {
-  margin-top: 5px;
-}
-.ls-form-validation__field {
-  font-size: 14px;
-  font-weight: bold;
-}
-.ls-form-validation__messages {
-  margin-top: 3px;
-}
-.ls-form-validation__message {
-  font-size: 12px;
-  color: rgba(0,0,0,0.7);
 }
 
 .ls-label {

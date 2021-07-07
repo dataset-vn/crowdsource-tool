@@ -1,4 +1,5 @@
 import React from 'react';
+import { BoxLoading } from 'react-loadingg';
 import { useParams as useRouterParams } from 'react-router';
 import { Redirect } from 'react-router-dom';
 import { Button } from '../../components';
@@ -45,7 +46,7 @@ export const ProjectsPage = () => {
     <Block name="projects-page">
       <Oneof value={networkState}>
         <Elem name="loading" case="loading">
-          <Spinner size={64}/>
+          <Spinner/>
         </Elem>
         <Elem name="content" case="loaded">
           {projectsList.length
