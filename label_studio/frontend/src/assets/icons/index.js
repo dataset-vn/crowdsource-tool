@@ -26,4 +26,5 @@ export { default as LsThumbsUp } from './thumbs-up.svg';
 export { default as IconUpload } from './upload.svg';
 
 export { default as DtsFacebook } from './facebook_icon.svg';
+export { default as DtsBuilding } from './new_org.svg';
 
