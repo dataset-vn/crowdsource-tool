@@ -41,6 +41,16 @@
     window.exports = () => {};
   </script>
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9XGTY26P4L"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-9XGTY26P4L');
+  </script>
+
   {% block head %}
   <title>Dataset - Data Crowdsourcing Platform</title>
   {% endblock %}
