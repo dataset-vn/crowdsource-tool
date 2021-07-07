@@ -127,7 +127,15 @@ class ProjectListAPI(generics.ListCreateAPIView):
     ordering = ['-created_at']
 
     def get_queryset(self):
-        return Project.objects.with_counts().filter(organization=self.request.user.active_organization)
+        # TODO:
+        #1. 
+        #2. Get all ID of projects inside this active organization of which current user is member (using ProjectMember)
+        #3. return all projects that its id is in IDs list from step 2
+        user_id = self.request.user.id
+        project_ids = ProjectMember.objects.values_list('project', flat=True).filter(user=user_id)
+        active_org_id = self.request.user.active_organization
+
+        return Project.objects.with_counts().filter(id__in=project_ids, organization_id=active_org_id)
 
     def get_serializer_context(self):
         context = super(ProjectListAPI, self).get_serializer_context()
