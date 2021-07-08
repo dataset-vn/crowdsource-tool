@@ -143,8 +143,16 @@ class ProjectListAPI(generics.ListCreateAPIView):
         return context
 
     def perform_create(self, ser):
+        user_id = self.request.user.id
+        
         try:
             project = ser.save(organization=self.request.user.active_organization)
+            # Also make that curent user owner of the project
+            try:
+                ProjectMember.objects.create(user_id=user_id, project_id=project.id, role='owner')
+            except IntegrityError as e:
+                raise DatasetJscDatabaseException('Database error during project member creation. Try again.')
+                
         except IntegrityError as e:
             if str(e) == 'UNIQUE constraint failed: project.title, project.created_by_id':
                 raise ProjectExistException('Project with the same name already exists: {}'.
