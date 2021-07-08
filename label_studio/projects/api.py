@@ -152,7 +152,7 @@ class ProjectListAPI(generics.ListCreateAPIView):
                 ProjectMember.objects.create(user_id=user_id, project_id=project.id, role='owner')
             except IntegrityError as e:
                 raise DatasetJscDatabaseException('Database error during project member creation. Try again.')
-                
+
         except IntegrityError as e:
             if str(e) == 'UNIQUE constraint failed: project.title, project.created_by_id':
                 raise ProjectExistException('Project with the same name already exists: {}'.
@@ -308,11 +308,15 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         current_user_id = self.request.user.id
         project_id = self.kwargs['pk']
         user_id = json.loads(self.request.body)['user_pk']
-        role = json.loads(self.request.body)['role']
+        user_role = json.loads(self.request.body)['role']
+        current_user_role = ProjectMember.objects.filter(project_id=project_id, user_id=current_user_id)[0].role
+        
+        if current_user_role != 'owner' and user_role == 'owner':
+            raise DatasetJscDatabaseException('Operation can only be performed by a project owner')
 
         roles = ['owner', 'manager', 'reviewer', 'annotator']
-        if role not in roles:
-            role = 'annotator'
+        if user_role not in roles:
+            user_role = 'annotator'
 
         if not Project.objects.filter(pk=project_id).exists():
             raise DatasetJscDatabaseException('There is no such project')
@@ -329,24 +333,29 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         self.check_object_permissions(self.request, project)
 
         try:
-            serializer.save(user=user, project=project, role=role)
+            serializer.save(user=user, project=project, role=user_role)
         except IntegrityError as e:
             raise DatasetJscDatabaseException('Database error during project creation. Try again.')
 
     def perform_update(self, serializer):
-        current_user_id = self.request.user.id
+        current_user_id=self.request.user.id
         project_id = self.kwargs['pk']
         user_id = json.loads(self.request.body)['user_pk']
-        role = json.loads(self.request.body)['role']
+        user_role = json.loads(self.request.body)['role']
         roles = ['owner', 'manager', 'reviewer', 'annotator']
-        if not role in roles:
-            role = 'annotator'
+        current_user_role = ProjectMember.objects.filter(project_id=project_id, user_id=current_user_id)[0].role
+
+        if current_user_role != 'owner' and user_role == 'owner':
+            raise DatasetJscDatabaseException('Operation can only be performed by a project owner')
+
+        if not user_role in roles:
+            user_role = 'annotator'
 
         project = Project.objects.get(pk=project_id)
         user = User.objects.get(pk=user_id)
         self.check_object_permissions(self.request, project)
         try:
-            serializer.save(user=user, project=project, role=role)
+            serializer.save(user=user, project=project, role=user_role)
         except IntegrityError as e:
             raise DatasetJscDatabaseException('Database error during project creation. Try again.')
 
