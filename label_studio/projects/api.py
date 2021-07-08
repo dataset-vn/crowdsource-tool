@@ -260,8 +260,9 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         project_id = self.kwargs['pk']
         current_user_id = self.request.user.id
         # TODO: Only Project Leader or above can see member list
-        if not ProjectMember.objects.filter(user=current_user_id, project=project_id).exists():
-            raise("Operation can only be performed by a project member")
+        # TODO: use django permission instead of directly checking if role is manager as below
+        if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner']).exists():
+            raise DatasetJscDatabaseException("Operation can only be performed by a project manager or project owner")
         return ProjectMember.objects.filter(project=project_id)
 
     def get_object(self):
@@ -273,8 +274,9 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
             raise DatasetJscDatabaseException('There is no such project')
         if not User.objects.filter(pk=user_id).exists():
             raise DatasetJscDatabaseException('There is no such member')
-        if not ProjectMember.objects.filter(user=current_user_id, project=project_id).exists():
-            raise DatasetJscDatabaseException("Operation can only be performed by a project member")
+        # TODO: use django permission instead of directly checking if role is manager as below
+        if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner']).exists():
+            raise DatasetJscDatabaseException("Operation can only be performed by a project manager or project owner")
         if not ProjectMember.objects.filter(user=user_id, project=project_id).exists():
             raise DatasetJscDatabaseException('There is no such member in the project')
 
@@ -308,8 +310,9 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
             raise DatasetJscDatabaseException('There is no such project')
         if not User.objects.filter(pk=user_id).exists():
             raise DatasetJscDatabaseException('There is no such member')
-        if not ProjectMember.objects.filter(user=current_user_id, project=project_id).exists():
-            raise DatasetJscDatabaseException("Operation can only be performed by a project member")
+        # TODO: use django permission instead of directly checking if role is manager as below
+        if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner']).exists():
+            raise DatasetJscDatabaseException("Operation can only be performed by a project manager or project owner")
         if ProjectMember.objects.filter(user=user_id, project=project_id).exists():
             raise DatasetJscDatabaseException('This user is already in the project')
         
@@ -327,24 +330,13 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         project_id = self.kwargs['pk']
         user_id = json.loads(self.request.body)['user_pk']
         role = json.loads(self.request.body)['role']
-
         roles = ['owner', 'manager', 'reviewer', 'annotator']
         if not role in roles:
             role = 'annotator'
 
-        if not Project.objects.filter(pk=project_id).exists():
-            raise DatasetJscDatabaseException('There is no such project')
-        if not User.objects.filter(pk=user_id).exists():
-            raise DatasetJscDatabaseException('There is no such member')
-        if not ProjectMember.objects.filter(user=current_user_id, project=project_id).exists():
-            raise DatasetJscDatabaseException("Operation can only be performed by a project member")
-        if ProjectMember.objects.filter(user=user_id, project=project_id, role=role).exists():
-            raise DatasetJscDatabaseException('This user is already that role of the project')
-
         project = Project.objects.get(pk=project_id)
         user = User.objects.get(pk=user_id)
         self.check_object_permissions(self.request, project)
-
         try:
             serializer.save(user=user, project=project, role=role)
         except IntegrityError as e:
