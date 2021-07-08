@@ -45,6 +45,10 @@ class Task(TaskMixin, models.Model):
                                'ML during training/predicting steps.')
     project = models.ForeignKey('projects.Project', related_name='tasks', on_delete=models.CASCADE, null=True,
                                 help_text='Project ID for this task')
+    annotator_assigned = models.ForeignKey('users.User', related_name='assignees', on_delete=models.CASCADE, null=True,
+                                help_text='ID of annotator assigned for this task')
+    reviewer_assigned = models.ForeignKey('users.User', related_name='reviewers', on_delete=models.CASCADE, null=True,
+                                help_text='ID of reviewer assigned for this task')                            
     created_at = models.DateTimeField(_('created at'), auto_now_add=True, help_text='Time a task was created')
     updated_at = models.DateTimeField(_('updated at'), auto_now=True, help_text='Last time a task was updated')
     is_labeled = models.BooleanField(_('is_labeled'), default=False,

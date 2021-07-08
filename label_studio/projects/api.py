@@ -577,7 +577,7 @@ class ProjectNextTaskAPI(generics.RetrieveAPIView):
 
             # ordered by data manager
             if assigned_flag:
-                next_task = not_solved_tasks.first()
+                next_task = not_solved_tasks.filter(annotator_assigned=user).first()
                 if not next_task:
                     raise NotFound('No more tasks found')
                 return self._make_response(next_task, request, use_task_lock=False)

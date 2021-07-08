@@ -17,6 +17,7 @@ def next_task(project, queryset, **kwargs):
     kwargs['pk'] = project.pk
     api = ProjectNextTaskAPI(kwargs=kwargs)
     api.prepared_tasks = queryset
+    api.assignee_flag = 2
 
     response = api.get(request=kwargs['request'])
     result = response.data
