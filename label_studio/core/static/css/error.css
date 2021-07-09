@@ -6,6 +6,10 @@
   display: block;
   margin: 32px auto;
 }
+.ls-global-error__dman {
+  display: block;
+  margin: 32px auto;
+}
 .ls-global-error h1 {
   text-transform: uppercase;
   text-align: center;
