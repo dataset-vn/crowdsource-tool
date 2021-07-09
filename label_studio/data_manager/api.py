@@ -16,8 +16,9 @@ from ordered_set import OrderedSet
 
 from core.utils.common import get_object_with_check_and_log, int_from_request, bool_from_request
 from core.permissions import all_permissions, ViewClassPermission
+from core.utils.exceptions import ProjectExistException, LabelStudioDatabaseException, DatasetJscDatabaseException
 from core.decorators import permission_required
-from projects.models import Project
+from projects.models import Project, ProjectMember
 from projects.serializers import ProjectSerializer
 from tasks.models import Task, Annotation
 
@@ -83,6 +84,14 @@ class ViewAPI(viewsets.ModelViewSet):
         PUT=all_permissions.tasks_change,
         DELETE=all_permissions.tasks_delete,
     )
+
+    def get_queryset(self):
+        # project_id = self.kwargs['project']
+        project_id = self.request.GET.get('project')
+        current_user_id = self.request.user.id
+        if not ProjectMember.objects.filter(user=current_user_id, project=project_id).exists():
+            raise DatasetJscDatabaseException("Operation can only be performed by a project member")
+        return View.objects.filter(user_id=current_user_id)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
