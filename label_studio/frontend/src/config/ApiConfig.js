@@ -6,11 +6,19 @@ export const API_CONFIG = {
     users: "/users",
     me: "/current-user/whoami",
 
-    // Organization
+    // ProjectMember
+    getProjectMember: "/projects/:pk/members",
+    createProjectMember: "POST:/projects/:pk/members",
+
+    // OrganizationS
     memberships: "/organizations/:pk/memberships",
     inviteLink: "/invite",
     resetInviteLink: "POST:/invite/reset-token",
 
+    // Current user's active organization
+    patchActiveOrganization: "PATCH:/current-user/active-organization",
+    getActiveOrganization: "GET:/current-user/active-organization",
+    
     // Project
     projects: "/projects",
     project: "/projects/:pk",
