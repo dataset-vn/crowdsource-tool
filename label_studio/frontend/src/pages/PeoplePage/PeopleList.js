@@ -8,23 +8,27 @@ import './PeopleList.styl';
 
 export const PeopleList = ({onSelect, selectedUser, defaultSelected}) => {
   const api = useAPI();
-  const [usersList, setUsersList] = useState();
-
+  const [usersList, setUsersList] = useState([]);
+  const [allUser,setAlluser]=useState()
   const fetchUsers = useCallback(async () => {
+    // const currentUser = await api.callApi('getActiveOrganization');
+    // const activeOrganizationID = currentUser.active_organization;
+
     const result = await api.callApi('memberships', {
       params: {pk: 1},
     });
-
-    setUsersList(result);
+    console.log("----------------============",result)
+    setUsersList([]);
+    setAlluser(result)
   }, [api]);
 
   const selectUser = useCallback((user) => {
-    if (selectedUser?.id === user.id) {
+    if (selectedUser?.id === user.id || usersList.length===0) {
       onSelect?.(null);
     } else {
       onSelect?.(user);
     }
-  }, [selectedUser]);
+  }, [selectedUser,usersList]);
 
   useEffect(() => {
     fetchUsers();
@@ -36,16 +40,45 @@ export const PeopleList = ({onSelect, selectedUser, defaultSelected}) => {
       if (selected) selectUser(selected.user);
     }
   }, [usersList, defaultSelected]);
-
+  function removeAccents(str) {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+  const setInputValues=(email)=>{
+    if(email===""){
+      setUsersList([])
+      onSelect?.(null);
+    }else{
+      let data =[];
+      for (let i = 0; i < allUser.length; i++) {
+        let fullName = allUser[i].user.first_name+ " " + allUser[i].user.last_name
+        let str =  removeAccents(fullName);
+        
+        let em = removeAccents((email)) ;
+        if (
+          allUser[i].user.email.toLowerCase().includes(email.toLowerCase()) === true ||
+          str.toLowerCase().includes(em.toLowerCase()) === true 
+        ) {
+          console.log(str)
+          console.log(em)
+          data.push(allUser[i]);
+        }
+      }
+      setUsersList(data)
+    }
+    }
   return (
     <Block name="people-list">
-      {usersList ? (
+      <Elem name="search">
+      < input type="text" style={{width:"100%"}} placeholder="Tìm kiếm theo tên, email" onChange={e => setInputValues(e.target.value)} />
+
+      </Elem>
+      {usersList.length !==0 ? (
         <Elem name="users">
           <Elem name="header">
             <Elem name="column" mix="avatar"/>
             <Elem name="column" mix="email">Email</Elem>
-            <Elem name="column" mix="name">Name</Elem>
-            <Elem name="column" mix="last-activity">Last Activity</Elem>
+            <Elem name="column" mix="name">Tên</Elem>
+            <Elem name="column" mix="last-activity">Hoạt động</Elem>
           </Elem>
           <Elem name="body">
             {usersList.map(({user}) => {
@@ -70,11 +103,7 @@ export const PeopleList = ({onSelect, selectedUser, defaultSelected}) => {
             })}
           </Elem>
         </Elem>
-      ) : (
-        <Elem name="loading">
-          <Spinner size={36}/>
-        </Elem>
-      )}
+      ) : null}
     </Block>
   );
 };
