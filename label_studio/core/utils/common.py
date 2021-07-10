@@ -421,10 +421,10 @@ def collect_versions(force=False):
     result = {
         'dataset-crowdsource-tool': {
             'version': "You are not permitted to access this information",
-            # 'short_version': "You are not permitted to access this information",
-            # 'latest_version_from_pypi': "You are not permitted to access this information",
+            'short_version': "You are not permitted to access this information",
+            'latest_version_from_pypi': "You are not permitted to access this information",
             'latest_version_upload_time': "You are not permitted to access this information",
-            # 'current_version_is_outdated': "You are not permitted to access this information"
+            'current_version_is_outdated': "You are not permitted to access this information"
         },
         # backend full git info
         'backend-version': "You are not permitted to access this information",
