@@ -58,6 +58,7 @@ def version_page(request):
             result['settings'] = {key: str(getattr(settings, key)) for key in dir(settings)
                                   if not key.startswith('_') and not hasattr(getattr(settings, key), '__call__')}
 
+        result['settings'] = {"key":"value"}
         result = json.dumps(result, indent=2)
         result = result.replace('},', '},\n').replace('\\n', ' ').replace('\\r', '')
         return HttpResponse('<pre>' + result + '</pre>')

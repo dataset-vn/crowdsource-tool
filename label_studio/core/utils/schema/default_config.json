@@ -1,5 +1,5 @@
 {
-  "title": "Label Studio",
+  "title": "DataSet JSC Tool",
   "description": "Description",
   "host": "",
   "internal_host": "0.0.0.0",
@@ -8,7 +8,7 @@
   "label_config": null,
   "input_path": null,
   "output_dir": "completions",
-  "instruction": "<img src='static/images/ls_logo.png'><br> Type some <b>hypertext</b> for annotators here!<br> <a href='https://labelstud.io/guide/labeling.html'>Read more</a> about the labeling interface.",
+  "instruction": "Contact us at <a href='https://facebook.com/dataset.vn'>Facebook</a>",
   "allow_delete_completions": true,
   "templates_dir": "examples",
   "editor": {

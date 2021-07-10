@@ -405,64 +405,81 @@ def collect_versions(force=False):
         return settings.VERSIONS
 
     # main pypi package
+    # result = {
+    #     'label-studio-os-package': {
+    #         'version': label_studio.__version__,
+    #         'short_version': '.'.join(label_studio.__version__.split('.')[:2]),
+    #         'latest_version_from_pypi': label_studio.__latest_version__,
+    #         'latest_version_upload_time': label_studio.__latest_version_upload_time__,
+    #         'current_version_is_outdated': label_studio.__current_version_is_outdated__
+    #     },
+    #     # backend full git info
+    #     'label-studio-os-backend': version.get_git_commit_info(),
+    #     'release': label_studio.__version__
+    # }
+
     result = {
-        'label-studio-os-package': {
-            'version': label_studio.__version__,
-            'short_version': '.'.join(label_studio.__version__.split('.')[:2]),
-            'latest_version_from_pypi': label_studio.__latest_version__,
-            'latest_version_upload_time': label_studio.__latest_version_upload_time__,
-            'current_version_is_outdated': label_studio.__current_version_is_outdated__
+        'dataset-crowdsource-tool': {
+            'version': "You are not permitted to access this information",
+            # 'short_version': "You are not permitted to access this information",
+            # 'latest_version_from_pypi': "You are not permitted to access this information",
+            'latest_version_upload_time': "You are not permitted to access this information",
+            # 'current_version_is_outdated': "You are not permitted to access this information"
         },
         # backend full git info
-        'label-studio-os-backend': version.get_git_commit_info(),
-        'release': label_studio.__version__
+        'backend-version': "You are not permitted to access this information",
+        'release': "You are not permitted to access this information"
     }
 
     # label studio frontend
     try:
         with open(os.path.join(settings.EDITOR_ROOT, 'version.json')) as f:
             lsf = json.load(f)
-        result['label-studio-frontend'] = lsf
+        # result['label-studio-frontend'] = lsf
+        result["frontend-version"] = "You are not permitted to access this information"
     except:
         pass
 
     # data manager
     try:
-        with open(os.path.join(settings.DM_ROOT, 'version.json')) as f:
-            dm = json.load(f)
-        result['dm2'] = dm
+        # with open(os.path.join(settings.DM_ROOT, 'version.json')) as f:
+        #     dm = json.load(f)
+        # result['dm2'] = dm
+        result["manager-version"] = "You are not permitted to access this information"
     except:
         pass
 
     # converter
     try:
-        import label_studio_converter
-        result['label-studio-converter'] = {'version': label_studio_converter.__version__}
+        # import label_studio_converter
+        # result['label-studio-converter'] = {'version': label_studio_converter.__version__}
+        result["converter-version"] = "You are not permitted to access this information"
     except Exception as e:
         pass
 
     # ml
     try:
-        import label_studio_ml
-        result['label-studio-ml'] = {'version': label_studio_ml.__version__}
+        # import label_studio_ml
+        # result['label-studio-ml'] = {'version': label_studio_ml.__version__}
+        result["ml-version"] = "You are not permitted to access this information"
     except Exception as e:
         pass
 
-    result.update(settings.COLLECT_VERSIONS(result=result))
+    # result.update(settings.COLLECT_VERSIONS(result=result))
 
-    for key in result:
-        if 'message' in result[key] and len(result[key]['message']) > 70:
-            result[key]['message'] = result[key]['message'][0:70] + ' ...'
+    # for key in result:
+    #     if 'message' in result[key] and len(result[key]['message']) > 70:
+    #         result[key]['message'] = result[key]['message'][0:70] + ' ...'
 
     if settings.SENTRY_DSN:
         import sentry_sdk
         sentry_sdk.set_context("versions", copy.deepcopy(result))
 
-        for package in result:
-            if 'version' in result[package]:
-                sentry_sdk.set_tag('version-' + package, result[package]['version'])
-            if 'commit' in result[package]:
-                sentry_sdk.set_tag('commit-' + package, result[package]['commit'])
+        # for package in result:
+        #     if 'version' in result[package]:
+        #         sentry_sdk.set_tag('version-' + package, result[package]['version'])
+        #     if 'commit' in result[package]:
+        #         sentry_sdk.set_tag('commit-' + package, result[package]['commit'])
 
     settings.VERSIONS = result
     return result
