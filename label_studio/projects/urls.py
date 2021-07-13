@@ -26,6 +26,9 @@ _api_urlpatterns = [
     # Project members
     path('<int:pk>/members', api.ProjectMemberAPI.as_view(), name='project-members'),
 
+    # Project statistics
+    path('<int:pk>/statistics', api.ProjectStatisticsAPI.as_view(), name='project-statistics'),
+
     # Get next task
     path('<int:pk>/next/', api.ProjectNextTaskAPI.as_view(), name='project-next'),
 

@@ -14,7 +14,7 @@ from django.conf import settings
 from django.shortcuts import get_object_or_404
 from drf_yasg.utils import swagger_auto_schema
 from django.utils.decorators import method_decorator
-from django.db.models import Q, When, Count, Case, OuterRef, Max, Exists, Value, BooleanField
+from django.db.models import Q, When, Count, Case, OuterRef, Max, Exists, Value, BooleanField, Avg
 from rest_framework.views import APIView
 from rest_framework import generics, status, filters
 from rest_framework.exceptions import NotFound, ValidationError as RestValidationError
@@ -33,8 +33,8 @@ from projects.serializers import (
 )
 
 from users.models import User
-from tasks.models import Task, Annotation, Prediction, TaskLock
-from tasks.serializers import TaskSerializer, TaskWithAnnotationsAndPredictionsAndDraftsSerializer
+from tasks.models import Task, Annotation, Prediction, TaskLock, Q_task_finished_annotations
+from tasks.serializers import TaskSerializer, AnnotationSerializer, TaskWithAnnotationsAndPredictionsAndDraftsSerializer
 
 from core.mixins import APIViewVirtualRedirectMixin, APIViewVirtualMethodMixin
 from core.permissions import all_permissions, ViewClassPermission, IsAuthenticated
@@ -257,6 +257,28 @@ class ProjectAPI(APIViewVirtualRedirectMixin,
         responses={200: TaskWithAnnotationsAndPredictionsAndDraftsSerializer()}
     ))
 
+class ProjectStatisticsAPI(generics.ListCreateAPIView, 
+                       generics.RetrieveUpdateDestroyAPIView):
+    parser_classes = (JSONParser, FormParser, MultiPartParser)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ProjectMemberSerializer
+
+    def get_queryset(self,):
+        project_id = self.kwargs['pk']
+        current_user_id = self.request.user.id
+        # TODO: Only Project Leader or above can see member list
+        # TODO: use django permission instead of directly checking if role is manager as below
+        if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner']).exists():
+            raise DatasetJscDatabaseException("Operation can only be performed by a project manager or project owner")
+        current_project = Project.objects.get(id=project_id)
+        annotators = current_project.annotators()
+        q = Q(annotations__task__project=current_project) & Q_task_finished_annotations
+        member = ProjectMember.objects.filter(project_id=project_id)[0]
+        member.total_done = member.get_statistics()
+        member.save()
+        return ProjectMember.objects.filter(project_id=project_id).annotate(score=Avg('project__tasks__tasks__annatations__lead_time'))
+        # return annotators.annotate(annotation_count=Count('annotations', filter=q, distinct=True))
+        # return Annotation.objects.filter(completed_by_id=current_user_id)
 
 class ProjectMemberAPI(generics.ListCreateAPIView, 
                        generics.RetrieveUpdateDestroyAPIView):
@@ -271,6 +293,8 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         # TODO: use django permission instead of directly checking if role is manager as below
         if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner']).exists():
             raise DatasetJscDatabaseException("Operation can only be performed by a project manager or project owner")
+        # current_project = Project.objects.get(id=project_id)
+        # return current_project.annotators()
         return ProjectMember.objects.filter(project=project_id)
 
     def get_object(self):

@@ -657,6 +657,13 @@ class ProjectMember(models.Model):
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
 
+    def get_statistics(self):
+        avg_lead_time = Annotation.objects.filter(completed_by=self.user).aggregate(total_lead_time=Avg('lead_time'))
+        total_assigned_tasks = 0
+        total_done_tasks = Annotation.objects.filter(completed_by=self.user).count()
+
+        return total_done_tasks 
+
 
 class ProjectSummary(models.Model):
 
