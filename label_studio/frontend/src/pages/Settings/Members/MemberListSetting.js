@@ -12,8 +12,6 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
   const [usersList, setUsersList] = useState();
   const [userInProjects, setUserInProjects] = useState(null)
   const { project } = useProject();
-  // console.log("9999999999999999",projectID,project.id)
-
 
   const fetchUsers = useCallback(async (projectID) => {
     let data = [];
@@ -26,14 +24,12 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
           pk: projectID
         }
       })
-    console.log("//////////////////",response)
 
       for (let i = 0; i < response.length; i++) {
         const selected = result.find(({ user }) => user.id === response[i].user);
         if (selected) data.push({...selected,role : response[i].role});
       }
     }
-    console.log("0000000000000000",data)
     setUsersList(data);
   }, [api]);
   const checkUserMember = (idProject) => {
