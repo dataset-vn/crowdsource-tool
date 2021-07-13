@@ -38,7 +38,6 @@ export const SelectedMemberSetting = ({ user, onClose, projectID }) => {
         role: role
       }
     })
-    console.log("99999999999999999999", response)
 
     window.location.reload();
 
