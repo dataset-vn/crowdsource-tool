@@ -11,14 +11,11 @@ export const PeopleList = ({onSelect, selectedUser, defaultSelected}) => {
   const [usersList, setUsersList] = useState([]);
   const [allUser,setAlluser]=useState()
   const fetchUsers = useCallback(async () => {
-    // const currentUser = await api.callApi('getActiveOrganization');
-    // const activeOrganizationID = currentUser.active_organization;
 
     const result = await api.callApi('memberships', {
       params: {pk: 1},
     });
-    console.log("----------------============",result)
-    setUsersList([]);
+    setUsersList(result);
     setAlluser(result)
   }, [api]);
 
@@ -45,8 +42,7 @@ export const PeopleList = ({onSelect, selectedUser, defaultSelected}) => {
   }
   const setInputValues=(email)=>{
     if(email===""){
-      setUsersList([])
-      onSelect?.(null);
+      setUsersList(allUser)
     }else{
       let data =[];
       for (let i = 0; i < allUser.length; i++) {

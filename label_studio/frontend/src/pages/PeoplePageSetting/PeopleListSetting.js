@@ -5,43 +5,38 @@ import { useAPI } from "../../providers/ApiProvider";
 import { useProject } from "../../providers/ProjectProvider";
 import { Block, Elem } from "../../utils/bem";
 import { isDefined } from "../../utils/helpers";
-// import { useDraftProject } from "../CreateProject/utils/useDraftProject";
 import './PeopleList.styl';
 
-export const PeopleListSetting = ({onSelect, selectedUser, defaultSelected,projectID}) => {
+export const PeopleListSetting = ({ onSelect, selectedUser, defaultSelected, projectID }) => {
   const api = useAPI();
   const [usersList, setUsersList] = useState();
   const [userInProjects, setUserInProjects] = useState(null)
-  const {project} = useProject();
+  const { project } = useProject();
   // console.log("9999999999999999",projectID,project.id)
 
 
   const fetchUsers = useCallback(async (projectID) => {
-    let data=[];
+    let data = [];
     const result = await api.callApi('memberships', {
-      params: {pk: 1},
+      params: { pk: 1 },
     });
-    if(projectID){
+    if (projectID) {
       const response = await api.callApi("getProjectMember", {
         params: {
           pk: projectID
         }
       })
-      for(let i=0;i<response.length;i++){
-        const selected = result.find( ({user}) => user.id === response[i].user);
-        if (selected) data.push(selected);
+    console.log("//////////////////",response)
+
+      for (let i = 0; i < response.length; i++) {
+        const selected = result.find(({ user }) => user.id === response[i].user);
+        if (selected) data.push({...selected,role : response[i].role});
       }
     }
-    
-    
-  
-        
-      
-    // console.log("------------------------------",data)
-    
-      setUsersList(data);
+    console.log("0000000000000000",data)
+    setUsersList(data);
   }, [api]);
-  const checkUserMember=(idProject)=>{
+  const checkUserMember = (idProject) => {
 
   }
   const selectUser = useCallback((user) => {
@@ -59,42 +54,44 @@ export const PeopleListSetting = ({onSelect, selectedUser, defaultSelected,proje
 
   useEffect(() => {
     if (isDefined(defaultSelected) && usersList) {
-      const selected = usersList.find(({user}) => user.id === Number(defaultSelected));
+      const selected = usersList.find(({ user }) => user.id === Number(defaultSelected));
       if (selected) selectUser(selected.user);
     }
   }, [usersList, defaultSelected]);
 
   return (
     <Block name="people-list">
-     
+
       {usersList ? (
         <Elem name="users">
           <Elem name="header">
-            <Elem name="column" mix="avatar"/>
+            <Elem name="column" mix="avatar" />
             <Elem name="column" mix="email">Email</Elem>
             <Elem name="column" mix="name">Tên</Elem>
+            <Elem name="column" mix="name">Role</Elem>
+
             <Elem name="column" mix="last-activity">Hoạt động</Elem>
           </Elem>
           <Elem name="body">
-            {usersList.map(({user}) => {
-              const active = user.id === selectedUser?.id;
+            {usersList.map(( i ) => {
+              const active = i.user.id === selectedUser?.id;
 
               return (
-                <Elem key={`user-${user.id}`} name="user" mod={{active}} onClick={() => selectUser(user)}>
+                <Elem key={`user-${i.user.id}`} name="user" mod={{ active }} onClick={() => selectUser(i.user)}>
                   <Elem name="field" mix="avatar">
-                    <Userpic user={user} style={{ width: 28, height: 28 }}/>
+                    <Userpic user={i.user} style={{ width: 28, height: 28 }} />
                   </Elem>
                   <Elem name="field" mix="email">
-                    {user.email}
+                    {i.user.email}
                   </Elem>
                   <Elem name="field" mix="name">
-                    {user.first_name} {user.last_name}
+                    {i.user.first_name} {i.user.last_name}
                   </Elem>
                   <Elem name="field" mix="name">
-                    {user.first_name} {user.last_name}
+                    {i.role}
                   </Elem>
                   <Elem name="field" mix="last-activity">
-                    {formatDistance(new Date(user.last_activity), new Date(), {addSuffix: true})}
+                    {formatDistance(new Date(i.user.last_activity), new Date(), { addSuffix: true })}
                   </Elem>
                 </Elem>
               );
@@ -103,7 +100,7 @@ export const PeopleListSetting = ({onSelect, selectedUser, defaultSelected,proje
         </Elem>
       ) : (
         <Elem name="loading">
-          <Spinner size={36}/>
+          <Spinner size={36} />
         </Elem>
       )}
     </Block>

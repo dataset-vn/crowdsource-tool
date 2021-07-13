@@ -8,15 +8,14 @@ import { Space } from '../../../components/Space/Space';
 import { useAPI } from '../../../providers/ApiProvider';
 import { useConfig } from '../../../providers/ConfigProvider';
 import { Block, Elem } from '../../../utils/bem';
-import { SelectedUser } from '../../PeoplePage/SelectedUser';
-import { PeopleList } from "../../PeoplePage/PeopleList";
 
 import './MachineLearningSettings.styl';
 import './PeopleList.styl';
 import { PeopleListSetting } from '../../PeoplePageSetting/PeopleListSetting';
 import { SelectedUserSetting } from '../../PeoplePageSetting/SelectedUserSetting';
-import { useDraftProject } from '../../CreateProject/utils/useDraftProject';  
 import { useProject } from '../../../providers/ProjectProvider';
+import { PeopleListSearchSetting } from '../../PeoplePageSetting/PeopleListSearchSetting';
+import { SelectedUser } from '../../PeoplePage/SelectedUser';
 
 
 const InvitationModal = ({ link }) => {
@@ -40,6 +39,8 @@ export const Members = () => {
   const inviteModal = useRef();
   const config = useConfig();
   const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedMemberProject, setSelectedMemberProject] = useState(null);
+
   const {project} = useProject();
   
   const [link, setLink] = useState();
@@ -49,6 +50,11 @@ export const Members = () => {
     setSelectedUser(user);
     localStorage.setItem('selectedUser', user?.id);
   }, [setSelectedUser]);
+
+  const selectMemberProject = useCallback((user) => {
+    setSelectedMemberProject(user);
+    localStorage.setItem('selectedMemberProject', user?.id);
+  }, [setSelectedMemberProject]);
 
   const setInviteLink = useCallback((link) => {
     const hostname = config.hostname || location.origin;
@@ -103,6 +109,10 @@ export const Members = () => {
     return localStorage.getItem('selectedUser');
   }, []);
 
+  const defaultSelected2 = useMemo(() => {
+    return localStorage.getItem('selectedMemberProject');
+  }, []);
+
 
 
 
@@ -128,7 +138,7 @@ export const Members = () => {
         <Elem name="users">
         </Elem>
         <Elem name="content">
-          <PeopleList
+          <PeopleListSearchSetting
             selectedUser={selectedUser}
             defaultSelected={defaultSelected}
             onSelect={(user) => selectUser(user)}
@@ -154,11 +164,18 @@ export const Members = () => {
       <Elem name="column" mix="email">Thành viên dự án</Elem>
         <Elem name="content">
           <PeopleListSetting
-            selectedUser={selectedUser}
-            defaultSelected={defaultSelected}
-            onSelect={(user) => selectUser(user)}
+            selectedUser={selectedMemberProject}
+            defaultSelected={defaultSelected2}
+            onSelect={(user) => selectMemberProject(user)}
             projectID={project.id}
           />
+          {selectedMemberProject && (
+            <SelectedUserSetting
+              user={selectedMemberProject}
+              onClose={() => selectMemberProject(null)}
+              projectID={project.id}
+            />
+          )}
         </Elem>
       </Block>
     </>
