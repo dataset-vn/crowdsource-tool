@@ -1,13 +1,13 @@
 import { formatDistance } from "date-fns";
 import { useCallback, useEffect, useState } from "react";
-import { Spinner, Userpic } from "../../components";
-import { useAPI } from "../../providers/ApiProvider";
-import { useProject } from "../../providers/ProjectProvider";
-import { Block, Elem } from "../../utils/bem";
-import { isDefined } from "../../utils/helpers";
-import './PeopleList.styl';
+import { Spinner, Userpic } from "../../../components";
+import { useAPI } from "../../../providers/ApiProvider";
+import { useProject } from "../../../providers/ProjectProvider";
+import { Block, Elem } from "../../../utils/bem";
+import { isDefined } from "../../../utils/helpers";
+import './MemberListSetting.styl';
 
-export const PeopleListSetting = ({ onSelect, selectedUser, defaultSelected, projectID }) => {
+export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, projectID }) => {
   const api = useAPI();
   const [usersList, setUsersList] = useState();
   const [userInProjects, setUserInProjects] = useState(null)

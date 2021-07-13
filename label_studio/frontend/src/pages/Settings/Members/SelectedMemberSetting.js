@@ -1,13 +1,13 @@
 import { format } from "date-fns";
 import { NavLink } from "react-router-dom";
-import { LsCross, LsPlus } from "../../assets/icons";
-import { Button, Userpic } from "../../components";
-import { useAPI } from "../../providers/ApiProvider";
-import { Block, Elem } from "../../utils/bem";
-import "./SelectedUser.styl";
-import "./PeoplePage.styl";
-import { Space } from "../../components/Space/Space";
-import { ROLE_MEMBER } from "../../utils/constant";
+import { LsCross, LsPlus } from "../../../assets/icons";
+import { Button, Userpic } from "../../../components";
+import { useAPI } from "../../../providers/ApiProvider";
+import { Block, Elem } from "../../../utils/bem";
+import "./SelectedMemberSetting.styl";
+import "./MemberSetting.styl";
+import { Space } from "../../../components/Space/Space";
+import { ROLE_MEMBER } from "../../../utils/constant";
 import { useEffect, useState } from "react";
 
 const UserProjectsLinks = ({ projects }) => {
@@ -22,7 +22,7 @@ const UserProjectsLinks = ({ projects }) => {
   );
 };
 
-export const SelectedUserSetting = ({ user, onClose, projectID }) => {
+export const SelectedMemberSetting = ({ user, onClose, projectID }) => {
   const fullName = [user.first_name, user.last_name].filter(n => !!n).join(" ").trim();
   const [role, setRole] = useState('annotator')
   const api = useAPI();

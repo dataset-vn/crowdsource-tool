@@ -1,21 +1,16 @@
-import { formatDistance } from 'date-fns';
-import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { LsPlus } from '../../../assets/icons';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Button, Userpic } from '../../../components';
 import { Description } from '../../../components/Description/Description';
-import { Form, Input, Label, TextArea, Toggle } from '../../../components/Form';
+import { Input } from '../../../components/Form';
 import { Space } from '../../../components/Space/Space';
 import { useAPI } from '../../../providers/ApiProvider';
 import { useConfig } from '../../../providers/ConfigProvider';
 import { Block, Elem } from '../../../utils/bem';
-
-import './MachineLearningSettings.styl';
-import './PeopleList.styl';
-import { PeopleListSetting } from '../../PeoplePageSetting/PeopleListSetting';
-import { SelectedUserSetting } from '../../PeoplePageSetting/SelectedUserSetting';
 import { useProject } from '../../../providers/ProjectProvider';
-import { PeopleListSearchSetting } from '../../PeoplePageSetting/PeopleListSearchSetting';
-import { SelectedUser } from '../../PeoplePage/SelectedUser';
+import { MemberListSetting } from './MemberListSetting';
+import { SelectedMemberSetting } from './SelectedMemberSetting';
+import { MemberListSearchSetting } from './MemberListSearchSetting';
+import './Members.styl';
 
 
 const InvitationModal = ({ link }) => {
@@ -41,10 +36,10 @@ export const Members = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [selectedMemberProject, setSelectedMemberProject] = useState(null);
 
-  const {project} = useProject();
-  
+  const { project } = useProject();
+
   const [link, setLink] = useState();
- 
+
 
   const selectUser = useCallback((user) => {
     setSelectedUser(user);
@@ -128,25 +123,25 @@ export const Members = () => {
     inviteModal.current?.update(inviteModalProps(link));
   }, [link]);
 
- 
+
   return (
     <>
 
       <Block name="people-list">
-      <Elem name="column" mix="email">Add Members</Elem>
-      
+        <Elem name="column" mix="email">Add Members</Elem>
+
         <Elem name="users">
         </Elem>
         <Elem name="content">
-          <PeopleListSearchSetting
+          <MemberListSearchSetting
             selectedUser={selectedUser}
             defaultSelected={defaultSelected}
             onSelect={(user) => selectUser(user)}
-            
+
           />
 
           {selectedUser && (
-            <SelectedUserSetting
+            <SelectedMemberSetting
               user={selectedUser}
               onClose={() => selectUser(null)}
               projectID={project.id}
@@ -157,20 +152,20 @@ export const Members = () => {
 
 
       <Space >
-        
+
       </Space>
 
       <Block name="people-list">
-      <Elem name="column" mix="email">Thành viên dự án</Elem>
+        <Elem name="column" mix="email">Thành viên dự án</Elem>
         <Elem name="content">
-          <PeopleListSetting
+          <MemberListSetting
             selectedUser={selectedMemberProject}
             defaultSelected={defaultSelected2}
             onSelect={(user) => selectMemberProject(user)}
             projectID={project.id}
           />
           {selectedMemberProject && (
-            <SelectedUserSetting
+            <SelectedMemberSetting
               user={selectedMemberProject}
               onClose={() => selectMemberProject(null)}
               projectID={project.id}
