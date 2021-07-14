@@ -93,10 +93,24 @@ class ProjectSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
 
 
 class ProjectMemberSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = ProjectMember
         extra_kwargs = {'project': {'required': False}, 'user': {'required': False}}
         fields = '__all__'
+
+
+class ProjectMemberStatisticsSerializer(serializers.ModelSerializer):
+    num_annotations=serializers.IntegerField(read_only=True)
+    class Meta:
+        model = ProjectMember
+        extra_kwargs = {'project': {'required': False}, 'user': {'required': False}}
+        fields = (
+            'user',
+            'project',
+            'role',
+            'num_annotations',
+        )
 
 
 class ProjectOnboardingSerializer(serializers.ModelSerializer):

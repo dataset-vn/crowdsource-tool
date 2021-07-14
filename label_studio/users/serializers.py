@@ -31,13 +31,26 @@ class BaseUserSerializer(serializers.ModelSerializer):
             'initials',
             'phone',
             'active_organization',
+            
         )
 
 
 class UserSimpleSerializer(BaseUserSerializer):
+    num_annotations=serializers.IntegerField(read_only=True)
+
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name', 'email', 'avatar')
+        fields = ('id', 'first_name', 'last_name', 'email', 'avatar', 'num_annotations')
+
+class UserStatisticsSerializer(BaseUserSerializer):
+    num_tasks = serializers.IntegerField(read_only=True)
+    num_annotations= serializers.IntegerField(read_only=True)
+    num_skips= serializers.IntegerField(read_only=True)
+    avg_lead_time= serializers.IntegerField(read_only=True)
+    
+    class Meta:
+        model = User
+        fields = ('id', 'first_name', 'last_name', 'email', 'avatar', 'num_tasks', 'num_annotations', 'num_skips', 'avg_lead_time')
 
 
 UserSerializer = load_func(settings.USER_SERIALIZER)

@@ -7,6 +7,7 @@ import pathlib
 import json
 import os
 
+from datetime import datetime
 from collections import Counter
 from django.db import IntegrityError
 from django.db.models.fields import DecimalField
@@ -29,10 +30,11 @@ from projects.models import (
     Project, ProjectSummary, ProjectMember
 )
 from projects.serializers import (
-    ProjectSerializer, ProjectMemberSerializer, ProjectLabelConfigSerializer, ProjectSummarySerializer
+    ProjectSerializer, ProjectMemberSerializer, ProjectLabelConfigSerializer, ProjectSummarySerializer, ProjectMemberStatisticsSerializer
 )
 
 from users.models import User
+from users.serializers import UserStatisticsSerializer
 from tasks.models import Task, Annotation, Prediction, TaskLock, Q_task_finished_annotations
 from tasks.serializers import TaskSerializer, AnnotationSerializer, TaskWithAnnotationsAndPredictionsAndDraftsSerializer
 
@@ -261,24 +263,26 @@ class ProjectStatisticsAPI(generics.ListCreateAPIView,
                        generics.RetrieveUpdateDestroyAPIView):
     parser_classes = (JSONParser, FormParser, MultiPartParser)
     permission_classes = (IsAuthenticated,)
-    serializer_class = ProjectMemberSerializer
+    serializer_class = UserStatisticsSerializer
 
     def get_queryset(self,):
+        
         project_id = self.kwargs['pk']
         current_user_id = self.request.user.id
+        # time_point = json.loads(self.request.body)['time_point']
+        # if time_point is None:
+        #     time_point = "2021-01-27 00:00:00+07"
         # TODO: Only Project Leader or above can see member list
         # TODO: use django permission instead of directly checking if role is manager as below
         if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner']).exists():
             raise DatasetJscDatabaseException("Operation can only be performed by a project manager or project owner")
         current_project = Project.objects.get(id=project_id)
-        annotators = current_project.annotators()
-        q = Q(annotations__task__project=current_project) & Q_task_finished_annotations
-        member = ProjectMember.objects.filter(project_id=project_id)[0]
-        member.total_done = member.get_statistics()
-        member.save()
-        return ProjectMember.objects.filter(project_id=project_id).annotate(score=Avg('project__tasks__tasks__annatations__lead_time'))
-        # return annotators.annotate(annotation_count=Count('annotations', filter=q, distinct=True))
-        # return Annotation.objects.filter(completed_by_id=current_user_id)
+        time_point = "2021-07-13 00:00:00+07"
+        return User.objects.filter(project_memberships__project_id=project_id).annotate(num_tasks=Count('annotations__task', filter=Q(annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)), 
+                                                                                        num_annotations=Count('annotations', filter=Q(annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)),
+                                                                                        num_skips=Count('annotations', filter=Q(annotations__was_cancelled=True) & Q(annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)),
+                                                                                        avg_lead_time=Avg('annotations__lead_time', filter=Q(annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)))
+
 
 class ProjectMemberAPI(generics.ListCreateAPIView, 
                        generics.RetrieveUpdateDestroyAPIView):

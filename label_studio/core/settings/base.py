@@ -355,6 +355,8 @@ VERSION_EDITION = 'Community Edition'
 LATEST_VERSION_CHECK = True
 VERSIONS_CHECK_TIME = 0
 
+SYSTEM_FIRST_START_TIME = "2021-01-27 00:00:00+07"
+
 CREATE_ORGANIZATION = 'organizations.functions.create_organization'
 GET_OBJECT_WITH_CHECK_AND_LOG = 'core.utils.get_object.get_object_with_check_and_log'
 SAVE_USER = 'users.functions.save_user'
