@@ -6,6 +6,8 @@ import { useProject } from "../../../providers/ProjectProvider";
 import { Block, Elem } from "../../../utils/bem";
 import { isDefined } from "../../../utils/helpers";
 import './MemberListSetting.styl';
+import React from 'react';
+
 
 export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, projectID }) => {
   const api = useAPI();
@@ -55,6 +57,31 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
     }
   }, [usersList, defaultSelected]);
 
+  const compare =(a, b) => {
+    // you can access the relevant property like this a.props[by]
+    // depending whether you are sorting by tilte or year, you can write a compare function here, 
+    a.user.props[by] - b.user.props[by]
+  }
+  const Sort= ({children, by})=> {
+    if (!by) {
+    // If no 'sort by property' provided, return original list
+    return children
+    }
+    return React.Children.toArray(children).sort(compare)
+    
+    }
+
+  function compareStrings(a, b) {
+    // Assuming you want case-insensitive comparison
+    let roles = ['owner', 'manager', 'reviewer', 'annotator']
+    // console.log("a",a)
+    // console.log("b",b)
+    a = roles.indexOf(a)
+    b = roles.indexOf(b)
+  
+    return (a < b) ? -1 : (a > b) ? 1 : 0;
+  }
+
   return (
     <Block name="people-list">
 
@@ -64,12 +91,12 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
             <Elem name="column" mix="avatar" />
             <Elem name="column" mix="email">Email</Elem>
             <Elem name="column" mix="name">Tên</Elem>
-            <Elem name="column" mix="name">Role</Elem>
-
+            <Elem name="column" mix="name">Quyền</Elem>
             <Elem name="column" mix="last-activity">Hoạt động</Elem>
           </Elem>
           <Elem name="body">
-            {usersList.map(( i ) => {
+           
+            {usersList.sort((a, b) => compareStrings(a.role, b.role)).map(( i ) => {
               const active = i.user.id === selectedUser?.id;
 
               return (
@@ -92,6 +119,7 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
                 </Elem>
               );
             })}
+            
           </Elem>
         </Elem>
       ) : (
