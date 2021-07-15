@@ -259,7 +259,7 @@ class ProjectAPI(APIViewVirtualRedirectMixin,
         responses={200: TaskWithAnnotationsAndPredictionsAndDraftsSerializer()}
     ))
 
-class ProjectStatisticsAPI(generics.ListCreateAPIView, 
+class ProjectMemberStatisticsAPI(generics.ListCreateAPIView, 
                        generics.RetrieveUpdateDestroyAPIView):
     parser_classes = (JSONParser, FormParser, MultiPartParser)
     permission_classes = (IsAuthenticated,)
