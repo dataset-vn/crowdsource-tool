@@ -292,6 +292,7 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
 
     def get_queryset(self,):
         project_id = self.kwargs['pk']
+        user_id = self.request.GET.get("user")
         current_user_id = self.request.user.id
         # TODO: Only Project Leader or above can see member list
         # TODO: use django permission instead of directly checking if role is manager as below
@@ -299,6 +300,8 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
             raise DatasetJscDatabaseException("Operation can only be performed by a project manager or project owner")
         # current_project = Project.objects.get(id=project_id)
         # return current_project.annotators()
+        if user_id != None:
+            return ProjectMember.objects.filter(project=project_id, user=user_id)
         return ProjectMember.objects.filter(project=project_id)
 
     def get_object(self):
