@@ -11,14 +11,14 @@ export const CurrentUserProvider = ({children}) => {
     api.callApi('me').then(user => {
       setUser(user);
     });
-  }, [api.callApi]);
+  }, [api]);
 
   useEffect(() => {
     fetch();
   }, [fetch]);
 
   return (
-    <CurrentUserContext.Provider value={{user, fetch}}>
+    <CurrentUserContext.Provider value={{user: user, fetch}}>
       {children}
     </CurrentUserContext.Provider>
   );
