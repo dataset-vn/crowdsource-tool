@@ -3,7 +3,7 @@ title: Video Classifier
 type: templates
 order: 501
 meta_title: Video Classification Data Labeling Template
-meta_description: Label Studio Video Classification Template for machine learning and data science data labeling projects.
+meta_description: Dataset Video Classification Template for machine learning and data science data labeling projects.
 ---
 
 You can build simple video classifier using HyperText tag.

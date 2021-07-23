@@ -12,6 +12,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from core.utils.exceptions import ProjectExistException, DatasetJscDatabaseException
+
 from core.permissions import IsBusiness, get_object_with_permissions
 from core.utils.common import get_object_with_check_and_log, bool_from_request
 from projects.api import ProjectAPIBasePermission
@@ -69,6 +71,11 @@ class DownloadResultsAPI(APIView):
         export_type = request.GET.get('exportType')
         is_labeled = not bool_from_request(request.GET, 'download_all_tasks', False)
 
+        requester = request.user
+        project_owner = project.created_by
+        if requester.id != project_owner.id:
+            return Response({"validation_errors":["Need permissions"], "detail":"You are not allowed to export"}, status=401) 
+
         logger.debug('Get tasks')
         query = Task.objects.filter(project=project, is_labeled=is_labeled)
         logger.debug('Serialize tasks for export')
@@ -87,7 +94,7 @@ class ProjectExportFiles(APIView):
     get:
     Export files
 
-    List of files exported from the Label Studio UI using the Export button on the Data Manager page.
+    List of files exported from the Dataset UI using the Export button on the Data Manager page.
     """
     permission_classes = (IsBusiness, ProjectAPIBasePermission)
 

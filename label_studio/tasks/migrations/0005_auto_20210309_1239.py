@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='task',
             name='data',
-            field=models.JSONField(help_text='User imported or uploaded data for a task. Data is formatted according to the project label config. You can find examples of data for your project on the Import page in the Label Studio Data Manager UI.', verbose_name='data'),
+            field=models.JSONField(help_text='User imported or uploaded data for a task. Data is formatted according to the project label config. You can find examples of data for your project on the Import page in the Dataset Data Manager UI.', verbose_name='data'),
         ),
         migrations.AlterField(
             model_name='task',

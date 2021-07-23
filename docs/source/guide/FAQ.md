@@ -1,29 +1,29 @@
 ---
-title: Troubleshoot Label Studio
+title: Troubleshoot Dataset
 type: guide
 order: 203
 meta_title: Troubleshooting
-meta_description: Label Studio Documentation for troubleshooting your machine learning or data science data labeling project.
+meta_description: Dataset Documentation for troubleshooting your machine learning or data science data labeling project.
 ---
 
-If you encounter an issue using Label Studio, use this page to troubleshoot it. 
+If you encounter an issue using Dataset, use this page to troubleshoot it. 
 
 ## Blank page when loading a project
 
-After starting Label Studio and opening a project, you see a blank page. Several possible issues could be the cause.
+After starting Dataset and opening a project, you see a blank page. Several possible issues could be the cause.
 
 ### Cause: Host not recognized
 
-If you specify a host without a protocol such as `http://` or `https://` when starting Label Studio, Label Studio can fail to locate the correct files to load the project page. 
+If you specify a host without a protocol such as `http://` or `https://` when starting Dataset, Dataset can fail to locate the correct files to load the project page. 
 
-To resolve this issue, update the host specified as an environment variable or when starting Label Studio. See [Start Label Studio](start.html)
+To resolve this issue, update the host specified as an environment variable or when starting Dataset. See [Start Dataset](start.html)
 
 
 ## Slowness while labeling
 
 If you're using the SQLite database and another user imports a large volume of data, labeling might slow down for other users on the server due to the database load. 
 
-If you want to upload a large volume of data (thousands of items), consider doing that at a time when people are not labeling or use a different database backend such as PostgreSQL or Redis. You can run Docker Compose from the root directory of Label Studio to use PostgreSQL: `docker-compose up -d`, or see [Sync data from cloud or database storage](storage.html). 
+If you want to upload a large volume of data (thousands of items), consider doing that at a time when people are not labeling or use a different database backend such as PostgreSQL or Redis. You can run Docker Compose from the root directory of Dataset to use PostgreSQL: `docker-compose up -d`, or see [Sync data from cloud or database storage](storage.html). 
 
 
 ## Image/audio/resource loading error while labeling

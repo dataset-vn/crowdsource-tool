@@ -3,9 +3,9 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Label Studio
+title: Dataset
 subtitle: Data labeling, annotation and exploration tool
-description: Label Studio is a multi-type data labeling and annotation tool with standardized output format
+description: Dataset is a multi-type data labeling and annotation tool with standardized output format
 keywords: computer-vision, deep-learning, image-annotation, annotation-tool, annotation, labeling, labeling-tool, image-labeling, image-labeling-tool, boundingbox, image-classification, annotations, imagenet, semantic-segmentation, dataset, datasets, label-studio, label-region, data-labeling, text-annotation
 author: Heartex
 language: en
@@ -30,7 +30,7 @@ code_dir: downloads/code
 i18n_dir: :lang
 skip_render:
     source/playground/render.html
-favicon: images/favicon.ico
+favicon: images/logodataset.svg
 
 # Writing
 new_post_name: :title.md # File name of new posts

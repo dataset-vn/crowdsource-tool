@@ -1,24 +1,24 @@
 ---
-title: Export results from Label Studio
+title: Export results from Dataset
 type: guide
 order: 402
 meta_title: Export Annotations
-meta_description: Label Studio Documentation for exporting data labeling annotations for machine learning and data science projects.
+meta_description: Dataset Documentation for exporting data labeling annotations for machine learning and data science projects.
 ---
 
-## Export data from Label Studio
+## Export data from Dataset
 
-Export your completed annotations from Label Studio. Label Studio stores your annotations in a raw JSON format in the SQLite database backend or whichever cloud or database storage you specify as target storage. Cloud storage buckets contain one file per labeled task named as `task_id.json`. 
+Export your completed annotations from Dataset. Dataset stores your annotations in a raw JSON format in the SQLite database backend or whichever cloud or database storage you specify as target storage. Cloud storage buckets contain one file per labeled task named as `task_id.json`. 
 
-You can convert the raw JSON completed annotations stored by Label Studio into a more common format and export that data in several different ways:
+You can convert the raw JSON completed annotations stored by Dataset into a more common format and export that data in several different ways:
 
-- Export from the Label Studio UI on the [/export](http://localhost:8080/export) page.
-- Call the API to export data. See the Label Studio [API documentation](api.html).
-- For versions of Label Studio earlier than 1.0.0, run the relevant [converter tool](https://github.com/heartexlabs/label-studio-converter) on the directory of completed annotations using the command line or Python. You can also run the relevant converter tool on exported JSON from version 1.0.0. 
+- Export from the Dataset UI on the [/export](http://localhost:8080/export) page.
+- Call the API to export data. See the Dataset [API documentation](api.html).
+- For versions of Dataset earlier than 1.0.0, run the relevant [converter tool](https://github.com/heartexlabs/label-studio-converter) on the directory of completed annotations using the command line or Python. You can also run the relevant converter tool on exported JSON from version 1.0.0. 
 
-## Export formats supported by Label Studio
+## Export formats supported by Dataset
 
-Label Studio supports many common and standard formats for exporting completed labeling tasks. If you don't see a format that works for you, you can contribute one. See the [GitHub repository for the Label Studio Converter tool](https://github.com/heartexlabs/label-studio-converter).
+Dataset supports many common and standard formats for exporting completed labeling tasks. If you don't see a format that works for you, you can contribute one. See the [GitHub repository for the Dataset Converter tool](https://github.com/heartexlabs/label-studio-converter).
 
 ### JSON
 
@@ -83,7 +83,7 @@ Export audio transcription labels for automatic speech recognition as the JSON m
 
 ## Raw JSON format of completed tasks 
 
-When you annotate data, Label Studio stores the output in JSON format. The raw JSON structure of each completed task follows this example: 
+When you annotate data, Dataset stores the output in JSON format. The raw JSON structure of each completed task follows this example: 
 
 ```json
 {
@@ -186,12 +186,12 @@ Review the full list of JSON properties in the [API documentation](api.html).
 | --- | --- | 
 | id | Identifier for the labeling task from the dataset. |
 | data | Data copied from the input data task format. See the documentation for [Task Format](tasks.html#Basic-Label-Studio-JSON-format). |
-| project | Identifier for a specific project in Label Studio. |
+| project | Identifier for a specific project in Dataset. |
 | annotations | Array containing the labeling results for the task. |
 | annotations.id | Identifier for the completed task. |
 | annotations.lead_time | Time in seconds to label the task. |
 | annotations.result | Array containing the results of the labeling or annotation task. |
-| annotations.completed_by | User ID of the user that created the annotation. Matches the list order of users on the People page on the Label Studio UI. | 
+| annotations.completed_by | User ID of the user that created the annotation. Matches the list order of users on the People page on the Dataset UI. | 
 | result.id | Identifier for the specific annotation result for this task.|
 | result.from_name | Name of the tag used to label the region. See [control tags](/tags). |
 | result.to_name | Name of the object tag that provided the region to be labeled. See [object tags](/tags). |

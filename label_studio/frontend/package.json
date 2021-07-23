@@ -116,7 +116,9 @@
           "<rootDir>/test/integration/**/*.test.ts",
           "<rootDir>/test/integration/**/*.test.tsx"
         ],
-        "setupFilesAfterEnv": ["expect-puppeteer"]
+        "setupFilesAfterEnv": [
+          "expect-puppeteer"
+        ]
       },
       {
         "displayName": "unit",
@@ -138,5 +140,9 @@
       "headless": false
     },
     "browserContext": "default"
+  },
+  "dependencies": {
+    "react-gif-loader": "^0.6.0",
+    "react-page-loading": "^1.0.2"
   }
 }

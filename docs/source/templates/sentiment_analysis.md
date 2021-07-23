@@ -3,7 +3,7 @@ title: Text Sentiment Analysis
 type: templates
 order: 202
 meta_title: Sentiment Analysis Data Labeling Template
-meta_description: Label Studio Sentiment Analysis Template for machine learning and data science data labeling projects.
+meta_description: Dataset Sentiment Analysis Template for machine learning and data science data labeling projects.
 ---
 
 Classify sentiment of reviews for musical instruments found on Amazon

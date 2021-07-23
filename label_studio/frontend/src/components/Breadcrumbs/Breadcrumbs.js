@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { ApiContext } from '../../providers/ApiProvider';
 import { useConfig } from '../../providers/ConfigProvider';
 import { useBreadcrumbs } from '../../providers/RoutesProvider';
 import { BemWithSpecifiContext } from '../../utils/bem';
@@ -10,16 +11,26 @@ import './Breadcrumbs.styl';
 const {Block, Elem} = BemWithSpecifiContext();
 
 export const Breadcrumbs = () => {
+  const api = React.useContext(ApiContext);
   const config = useConfig();
   const reactBreadcrumbs = useBreadcrumbs();
   const [breadcrumbs, setBreadcrumbs] = useState(reactBreadcrumbs);
-
-  useEffect(() => {
+  const [org ,setOrg]=useState("")
+  useEffect(async() => {
     if (reactBreadcrumbs.length) {
       setBreadcrumbs(reactBreadcrumbs);
     } else if (config.breadcrumbs) {
       setBreadcrumbs(config.breadcrumbs);
     }
+    const resAllorg = await api.callApi("organizations")
+    const resActiveOrg = await api.callApi("getActiveOrganization")
+    for(let i=0;i<resAllorg.length;i++){
+      if(resAllorg[i].id===resActiveOrg.active_organization){
+        console.log(";;;;;;;;;;;;;;;;;",resAllorg[i])
+        setOrg(resAllorg[i].title)
+      }
+    }
+   
   }, [reactBreadcrumbs, config]);
 
   return (
@@ -34,7 +45,7 @@ export const Breadcrumbs = () => {
 
           const title = (
             <Elem tag="span" name="label" mod={{faded: index === item.length - 1}}>
-              {item.title}
+              {index===0? `${org} | ${item.title}` : `${item.title}`}
             </Elem>
           );
 

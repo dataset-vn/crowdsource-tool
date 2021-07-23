@@ -3,7 +3,7 @@ title: Image Classification
 type: templates
 order: 101
 meta_title: Image Classification Data Labeling Template
-meta_description: Label Studio Image Classification Template for machine learning and data science data labeling projects.
+meta_description: Dataset Image Classification Template for machine learning and data science data labeling projects.
 ---
 
 Image classification with checkboxes.

@@ -14,6 +14,7 @@ from django.core.exceptions import PermissionDenied
 from django.db import IntegrityError
 from django.db.models.fields import DecimalField
 from django.conf import settings
+from django.shortcuts import get_object_or_404
 from drf_yasg.utils import swagger_auto_schema
 from django.db.models import Q, When, Count, Case, OuterRef, Max, Exists, Value, BooleanField
 from rest_framework import generics, status, filters
@@ -26,13 +27,14 @@ from rest_framework.views import APIView, exception_handler
 from core.utils.common import conditional_atomic, get_organization_from_request
 from core.label_config import parse_config
 from organizations.models import Organization
+from users.models import User
 from organizations.permissions import *
 from projects.functions import (generate_unique_title, duplicate_project)
 from projects.models import (
-    Project, ProjectSummary
+    Project, ProjectSummary, ProjectMember
 )
 from projects.serializers import (
-    ProjectSerializer, ProjectLabelConfigSerializer, ProjectSummarySerializer
+    ProjectSerializer, ProjectMemberSerializer, ProjectLabelConfigSerializer, ProjectSummarySerializer
 )
 from tasks.models import Task, Annotation, Prediction, TaskLock
 from tasks.serializers import TaskSerializer, TaskWithAnnotationsAndPredictionsAndDraftsSerializer
@@ -42,7 +44,7 @@ from core.permissions import (IsAuthenticated, IsBusiness, BaseRulesPermission,
                               get_object_with_permissions)
 from core.utils.common import (
     get_object_with_check_and_log, bool_from_request, paginator, paginator_help)
-from core.utils.exceptions import ProjectExistException, LabelStudioDatabaseException
+from core.utils.exceptions import ProjectExistException, DatasetJscDatabaseException
 from core.utils.io import find_dir, find_file, read_yaml
 
 from data_manager.functions import get_prepared_queryset
@@ -122,7 +124,13 @@ class ProjectListAPI(generics.ListCreateAPIView):
         org_pk = get_organization_from_request(self.request)
         org = get_object_with_check_and_log(self.request, Organization, pk=org_pk)
         self.check_object_permissions(self.request, org)
-        return Project.objects.all()
+
+        user_id = self.request.user.id
+        project_ids = ProjectMember.objects.values_list('project', flat=True).filter(user=user_id)
+
+        active_org_id = self.request.user.active_organization
+
+        return Project.objects.filter(id__in=project_ids, organization_id=active_org_id)
 
     def get_serializer_context(self):
         context = super(ProjectListAPI, self).get_serializer_context()
@@ -137,11 +145,19 @@ class ProjectListAPI(generics.ListCreateAPIView):
 
         try:
             project = ser.save(organization=org)
+
+            # NgDMau - create a ProjectMember so that the project creator can be member of the project created above
+            user = self.request.user
+            try:
+                ProjectMember.objects.create(project=project, user=user)
+            except IntegrityError as e:
+                raise DatasetJscDatabaseException('Database error during project member creation. Try again.')
+
         except IntegrityError as e:
             if str(e) == 'UNIQUE constraint failed: project.title, project.created_by_id':
                 raise ProjectExistException('Project with the same name already exists: {}'.
                                             format(ser.validated_data.get('title', '')))
-            raise LabelStudioDatabaseException('Database error during project creation. Try again.')
+            raise DatasetJscDatabaseException('Database error during project creation. Try again.')
 
     @swagger_auto_schema(tags=['Projects'])
     def get(self, request, *args, **kwargs):
@@ -150,6 +166,133 @@ class ProjectListAPI(generics.ListCreateAPIView):
     @swagger_auto_schema(tags=['Projects'], request_body=ProjectSerializer)
     def post(self, request, *args, **kwargs):
         return super(ProjectListAPI, self).post(request, *args, **kwargs)
+
+
+
+class ProjectMemberAPI(generics.ListCreateAPIView, 
+                       generics.RetrieveUpdateDestroyAPIView):
+
+    parser_classes = (JSONParser, FormParser, MultiPartParser)
+    # queryset = ProjectMember.objects.all()
+    permission_classes = (IsAuthenticated, ProjectAPIBasePermission)
+    serializer_class = ProjectMemberSerializer
+
+    # redirect_route = 'projects:project-collaborators'
+    # redirect_kwarg = 'pk'
+
+    def get_queryset(self,):
+        project_id = self.kwargs['pk']
+        current_user_id = self.request.user.id
+
+        if not ProjectMember.objects.filter(user=current_user_id, project=project_id).exists():
+            print("Operation can only be performed by a project member")
+            return
+            
+        return ProjectMember.objects.filter(project=project_id)
+
+    # def get_object(self):
+    #     project_id = self.kwargs['pk']
+    #     current_user_id = self.request.user.id
+
+    #     if not ProjectMember.objects.filter(user=current_user_id, project=project_id).exists():
+    #         print("Operation can only be performed by a project member")
+    #         return
+    #     else:
+    #         print("STill see 'em")
+
+    #     queryset = self.get_queryset()
+    #     obj = get_object_with_check_and_log(self.request, ProjectMember, pk=self.kwargs['pk'])
+    #     #obj = get_object_or_404(queryset, user=json.loads(self.request.body)['user_pk'])
+    #     # obj = get_object_or_404()
+    #     self.check_object_permissions(self.request, obj)
+    #     return obj
+
+    def perform_create(self, serializer):
+        # Added by NgDMau
+        # check if logging user is admin of current project
+        # if yes, user can add others to this current project, else cant
+        current_user_id = self.request.user.id
+        project_id = self.kwargs['pk']
+
+        if not ProjectMember.objects.filter(user=current_user_id, project=project_id).exists():
+            print("Operation can only be performed by a project member")
+            return
+        
+
+        user_id = json.loads(self.request.body)['user_pk']
+        
+
+        project = Project.objects.get(pk=project_id)
+        user = User.objects.get(pk=user_id)
+        self.check_object_permissions(self.request, project)
+
+        
+
+        if ProjectMember.objects.filter(user=user_id, project=project_id).exists():
+            print("User is already a member of this project")
+            return
+
+        try:
+            project_member = serializer.save(user=user, project=project)
+        except IntegrityError as e:
+            raise DatasetJscDatabaseException('Database error during project creation. Try again.')
+
+    def perform_destroy(self, instance):
+
+        current_user_id = self.request.user.id
+        project_id = self.kwargs['pk']
+
+        if not ProjectMember.objects.filter(user=current_user_id, project=project_id).exists():
+            print("Operation can only be performed by a project member")
+            return
+
+        user_id = json.loads(self.request.body)['user_pk']
+        
+
+        project = Project.objects.filter(pk=project_id)
+        user = User.objects.filter(pk=user_id)
+
+        self.check_object_permissions(self.request, project)
+
+        
+        try:
+            instance.delete()
+        except IntegrityError as e:
+            logger.error('Fallback to cascase deleting after integrity_error: {}'.format(str(e)))
+            instance.delete()
+
+    @swagger_auto_schema(tags=['ProjectMember'])
+    def get(self, request, *args, **kwargs):
+        return super(ProjectMemberAPI, self).get(request, *args, **kwargs)
+
+    @swagger_auto_schema(tags=['ProjectMember'])
+    def post(self, request, *args, **kwargs):
+        return super(ProjectMemberAPI, self).post(request, *args, **kwargs)
+
+    @swagger_auto_schema(tags=['ProjectMember'])
+    def delete(self, request, *args, **kwargs):
+        # user_id = json.loads(self.request.body)['user_pk']
+        # project_id = self.kwargs['pk']
+
+        # project = Project.objects.get(pk=project_id)
+        # user = User.objects.get(pk=user_id)
+
+        # self.check_object_permissions(self.request, project)
+
+        # project_member = ProjectMember.objects.filter(user=user, project=project).all()
+        # project_member.delete()
+
+        return super(ProjectMemberAPI, self).delete(request, *args, **kwargs)
+
+
+    # def add_member():
+    #     return
+
+    # def add_members():
+    #     return
+
+    # def delete_members():
+    #     return 
 
 
 class ProjectAPI(APIViewVirtualRedirectMixin,

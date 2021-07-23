@@ -1,10 +1,10 @@
 ---
-title: Label Studio Release Notes 0.8.0 - Time Series Support 
+title: Dataset Release Notes 0.8.0 - Time Series Support 
 type: blog
 order: 99
 ---
 
-## What problems does Label Studio solve with Time Series Labeling?
+## What problems does Dataset solve with Time Series Labeling?
 
 Time Series analysis is widely used in medical and robotics areas.  
 
@@ -12,7 +12,7 @@ Time Series analysis is widely used in medical and robotics areas.
 
 ## Quickstart 
 
-1. You need to install and run Label Studio (LS) first. It could be done by many ways using [pip](https://labelstud.io/guide/#Running-with-pip)
+1. You need to install and run Dataset (LS) first. It could be done by many ways using [pip](https://labelstud.io/guide/#Running-with-pip)
 `pip install label-studio && label-studio start my_project --init` 
 or using [Docker](https://labelstud.io/guide/#Running-with-Docker), [Github sources](https://labelstud.io/guide/#Running-from-source) and [one-click-deploy](https://github.com/heartexlabs/label-studio#one-click-deploy) button.
 
@@ -34,4 +34,4 @@ If you want to use multiple time series tags in one labeling config then you nee
 
 ### Video & audio sync with time series
 
-It's possible to synchronize TimeSeries with video and audio in Label Studio. Right now you can do it using HyperText tag with html objects `<audio src="path">`/`<video src="path">` and TimeSeries together. We have some solutions for this in testing stage and we can share it with you [by request in slack](https://join.slack.com/t/label-studio/shared_invite/zt-cr8b7ygm-6L45z7biEBw4HXa5A2b5pw).
+It's possible to synchronize TimeSeries with video and audio in Dataset. Right now you can do it using HyperText tag with html objects `<audio src="path">`/`<video src="path">` and TimeSeries together. We have some solutions for this in testing stage and we can share it with you [by request in slack](https://join.slack.com/t/label-studio/shared_invite/zt-cr8b7ygm-6L45z7biEBw4HXa5A2b5pw).

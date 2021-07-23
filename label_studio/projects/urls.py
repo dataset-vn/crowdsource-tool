@@ -19,6 +19,8 @@ _urlpatterns = [
     path('<int:pk>/settings/ml', views.project_settings, name='project-settings-ml'),
     path('<int:pk>/settings/storage', views.project_settings, name='project-settings-storage'),
     path('<int:pk>/settings/danger-zone', views.project_settings, name='project-danger-zone'),
+    path('<int:pk>/settings/add-people', views.project_settings, name='project-add-people'),
+
 
     path('upload-example/', views.upload_example_using_config, name='project-upload-example-using-config'),
 ]
@@ -28,6 +30,10 @@ _api_urlpatterns = [
     # CRUD
     path('', api.ProjectListAPI.as_view(), name='project-list'),
     path('<int:pk>/', api.ProjectAPI.as_view(), name='project-detail'),
+
+    # Get project collaborators
+    path('<int:pk>/members', api.ProjectMemberAPI.as_view(), name='project-collaborators'),
+
 
     # Duplicate project
     path('<int:pk>/duplicate/', api.ProjectDuplicateAPI.as_view(), name='project-duplicate'),

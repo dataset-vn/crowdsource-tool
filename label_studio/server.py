@@ -92,7 +92,7 @@ def _create_project(title, user, label_config=None, sampling=None, description=N
 
 def _create_user(input_args, config):
     from users.models import User
-    from organizations.models import Organization
+    from organizations.models import Organization, OrganizationMember
 
     DEFAULT_USERNAME = 'default_user@localhost'
 
@@ -124,7 +124,11 @@ def _create_user(input_args, config):
 
     user = User.objects.get(email=username)
     if not Organization.objects.exists():
-        Organization.create_organization(created_by=user, title='Label Studio')
+        Organization.create_organization(created_by=user, title='Dataset')
+    
+    if Organization.objects.exists():
+        org = Organization.objects.first()
+        OrganizationMember.objects.create(user=user, organization=org)
 
     return user
 
@@ -193,7 +197,7 @@ def _get_free_port(port, debug):
             if port - original_port >= 1000:
                 raise ConnectionError(
                     '\n*** WARNING! ***\n Could not find an available port\n'
-                    + ' to launch label studio. \n Last tested port was '
+                    + ' to launch Dataset. \n Last tested port was '
                     + str(port)
                     + '\n****************\n'
                 )
@@ -253,7 +257,7 @@ def main():
     # print version
     if input_args.command == 'version':
         from label_studio import __version__
-        print('\nLabel Studio version:', __version__, '\n')
+        print('\nDataset version:', __version__, '\n')
         print(json.dumps(versions, indent=4))
 
     # init
@@ -261,7 +265,7 @@ def main():
         _init(input_args, config)
 
         print('')
-        print('Label Studio has been successfully initialized.')
+        print('Dataset has been successfully initialized.')
         if input_args.command != 'start':
             print('Start the server: label-studio start ' + input_args.project_name)
             return
@@ -296,7 +300,7 @@ def main():
                 print(
                     Fore.LIGHTYELLOW_EX +
                     '\n*** WARNING! ***\n'
-                    + f'Project {input_args.project_name} migrated to Label Studio Database\n'
+                    + f'Project {input_args.project_name} migrated to Dataset Database\n'
                     + "YOU DON'T NEED THIS FOLDER ANYMORE"
                     + '\n****************\n' +
                     Fore.WHITE
@@ -310,7 +314,7 @@ def main():
                 )
                 return
 
-    # on `start` command, launch browser if --no-browser is not specified and start label studio server
+    # on `start` command, launch browser if --no-browser is not specified and start Dataset server
     if input_args.command == 'start' or input_args.command is None:
         from label_studio.core.utils.common import start_browser
 
@@ -318,13 +322,13 @@ def main():
         cert_file = input_args.cert_file or config.get('cert')
         key_file = input_args.key_file or config.get('key')
         if cert_file or key_file:
-            logger.error("Label Studio doesn't support SSL web server with cert and key.\n"
+            logger.error("Dataset doesn't support SSL web server with cert and key.\n"
                          'Use nginx or other servers for it.')
             return
 
         # internal port and internal host for server start
         internal_host = input_args.internal_host or config.get('internal_host', '0.0.0.0')
-        internal_port = get_env('PORT') or input_args.port or config.get('port', 8080)
+        internal_port = get_env('TOOL_PORT') or input_args.port or config.get('port', 8080)
         internal_port = int(internal_port)
         internal_port = _get_free_port(internal_port, input_args.debug)
 

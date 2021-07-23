@@ -55,7 +55,7 @@ except (ModuleNotFoundError, ImportError):
     sentry_sdk_loaded = False
 
 from core import version
-from core.utils.exceptions import LabelStudioDatabaseLockedException
+from core.utils.exceptions import DatasetJscDatabaseLockedException
 
 
 # these functions will be included to another modules, don't remove them
@@ -69,7 +69,7 @@ url_validator = URLValidator()
 
 def _override_exceptions(exc):
     if isinstance(exc, OperationalError) and 'database is locked' in str(exc):
-        return LabelStudioDatabaseLockedException()
+        return DatasetJscDatabaseLockedException()
 
     return exc
 
@@ -344,7 +344,7 @@ def paginator_help(objects_name, tag):
 
 
 def find_editor_files():
-    """ Find label studio files
+    """ Find Dataset files
     """
 
     # playground uses another LSF build
@@ -615,7 +615,7 @@ def collect_versions(force=False):
         'backend': version.get_git_commit_info()
     }
 
-    # label studio frontend
+    # Dataset frontend
     try:
         lsf = json.load(open(os.path.join(settings.EDITOR_ROOT, 'version.json')))
         result['label-studio-frontend'] = lsf

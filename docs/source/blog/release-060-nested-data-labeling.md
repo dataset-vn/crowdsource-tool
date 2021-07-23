@@ -1,9 +1,9 @@
 ---
-title: Label Studio Release Notes 0.6.0 - Nested Data Labeling
+title: Dataset Release Notes 0.6.0 - Nested Data Labeling
 type: blog
 order: 101
-meta_title: Label Studio Release Notes 0.6.0 - Nested Data Labeling
-meta_description: Label Studio Release 0.6.0 includes nested data labeling, per-region labeling, updates to machine learning backend integration, filtering, and more.
+meta_title: Dataset Release Notes 0.6.0 - Nested Data Labeling
+meta_description: Dataset Release 0.6.0 includes nested data labeling, per-region labeling, updates to machine learning backend integration, filtering, and more.
 ---
 
 Two months in the baking, this release features the evolution of the labeling interface into supporting not only multiple data types and labeling scenarios, but also exploring the path of bringing additional dimensions into the labeling task. Along with that purely UI work a major update to the model assisted labeling.
@@ -41,7 +41,7 @@ New ML page in UI, where you can specify URLs to connect ML backends, manually t
 
 ### Multiple Backends
 
-Label Studio now supports multiple ML backends connected together. You can simultaneously get multiple predictions for each task and do comparative performance analysis for different models or different hyperparameters of a single model. It's possible to connect as many backends as you want by using `--ml-backend url1 url2 ...` command-line option or adding them via UI.
+Dataset now supports multiple ML backends connected together. You can simultaneously get multiple predictions for each task and do comparative performance analysis for different models or different hyperparameters of a single model. It's possible to connect as many backends as you want by using `--ml-backend url1 url2 ...` command-line option or adding them via UI.
 
 ### Connecting models
 

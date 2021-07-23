@@ -61,9 +61,11 @@ export const ApiProvider = forwardRef(({children}, ref) => {
       const shouldCatchError = errorFilter?.(result) === false;
 
       if (!errorFilter || shouldCatchError){
-        setError(result);
-        handleError(result, contextValue.showModal);
-        return null;
+        //setError(result);
+        //handleError(result, contextValue.showModal);
+        // return null
+        // Return result to temporarily handle the error noti on the Sidemenu
+        return result;
       }
     }
 

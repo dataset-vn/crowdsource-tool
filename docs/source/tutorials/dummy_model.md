@@ -3,12 +3,12 @@ title:
 type: blog
 order: 10
 meta_title: Integrating with Machine Learning Backend Tutorial
-meta_description: Label Studio tutorial for creating and integrating your Machine Learning backend with Label Studio.
+meta_description: Dataset tutorial for creating and integrating your Machine Learning backend with Dataset.
 ---
 
 ## Create the simplest Machine Learning backend
 
-It explains the basics of Machine Learning (ML) backend usage within Label Studio. For the sake of simplicity, a _dummy model_ is served and actually does nothing but produces the random predictions.
+It explains the basics of Machine Learning (ML) backend usage within Dataset. For the sake of simplicity, a _dummy model_ is served and actually does nothing but produces the random predictions.
 It is compatible with any classication task, i.e. where `<Choices>` tag is used.
 
 For example, let's consider this labeling config: 
@@ -24,11 +24,11 @@ For example, let's consider this labeling config:
 
 ### Create dummy model script
 
-If you create ML backend by using Label Studio's ML SDK, you have to follow the rules:
+If you create ML backend by using Dataset's ML SDK, you have to follow the rules:
 
 - created model class should be inherited from `label_studio.ml.LabelStudioMLBase`
 - 2 methods should be overrided:
-    - `predict()` takes [input tasks](/guide/tasks.html#Basic-format) and outputs [predictions](/guide/export.html#predictions) in a Label Studio format
+    - `predict()` takes [input tasks](/guide/tasks.html#Basic-format) and outputs [predictions](/guide/export.html#predictions) in a Dataset format
     - `fit()` receives [completions](/guide/export.html#Basic-format) iterable and returns dictionary with created links and resources. This dictionary will be later used for model loading via `self.train_output` field.
 
 Create a file `model.py` with the following content:
@@ -76,7 +76,7 @@ class DummyModel(LabelStudioMLBase):
 
 ### Create ML backend configs & scripts
 
-Label Studio can automatically create all necessary configs and scripts needed to run ML backend from your newly created model.
+Dataset can automatically create all necessary configs and scripts needed to run ML backend from your newly created model.
 
 Let's call ML backend `my_backend` and initialize ML backend directory `./my_backend`:
 
@@ -116,9 +116,9 @@ docker-compose up
 
 Now you can explore runtime logs in `my_backend/logs/uwsgi.log` and RQ training logs in `my_backend/logs/rq.log`
 
-### Using ML backend with Label Studio
+### Using ML backend with Dataset
 
-Initialize and start new Label Studio project connecting to the running ML backend:
+Initialize and start new Dataset project connecting to the running ML backend:
 
 ```bash
 label-studio start my_project --init --ml-backends http://localhost:9090

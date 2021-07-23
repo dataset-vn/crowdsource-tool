@@ -1,7 +1,7 @@
 """This file and its contents are licensed under the Apache License 2.0. Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
 """
 """
-Django Base settings for Label Studio.
+Django Base settings for Dataset.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/3.1/topics/settings/
@@ -39,7 +39,7 @@ if HOSTNAME:
 SECRET_KEY = '$(fefwefwef13;LFK{P!)@#*!)kdsjfWF2l+i5e3t(8a1n'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = get_bool_env('DEBUG', True)
+DEBUG = get_bool_env('DEBUG', False)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -316,8 +316,18 @@ TASK_LOCK_TTL = int(get_env('TASK_LOCK_TTL')) if get_env('TASK_LOCK_TTL') else N
 TASK_LOCK_DEFAULT_TTL = int(get_env('TASK_LOCK_DEFAULT_TTL', 3600))
 
 # Email backend
-FROM_EMAIL = 'Label Studio <hello@labelstud.io>'
-EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = get_env('DTS_SMTP_HOST')
+EMAIL_PORT = get_env('DTS_MAIL_PORT')
+EMAIL_HOST_USER = get_env('DTS_MAIL_HOST')
+EMAIL_HOST_PASSWORD = get_env('DTS_MAIL_PASSWORD')
+EMAIL_USE_SSL = get_env('DTS_MAIL_SSL')
+
+# FROM_EMAIL = 'Dataset <info@dataset.vn>'
+# EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+# EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
+
 
 """ React Libraries: do not forget to change this dir in /etc/nginx/nginx.conf """
 # EDITOR = label-studio-frontend repository

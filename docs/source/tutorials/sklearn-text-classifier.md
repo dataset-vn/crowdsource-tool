@@ -3,13 +3,13 @@ title:
 type: blog
 order: 20
 meta_title: Text Classification with Scikit-Learn Tutorial
-meta_description: Label Studio tutorial for text classification using Scikit-Learn and Label Studio.
+meta_description: Dataset tutorial for text classification using Scikit-Learn and Dataset.
 
 ---
 
 ## Text classification with Scikit-Learn
 
-It explains the basics of Machine Learning (ML) backend usage within Label Studio. 
+It explains the basics of Machine Learning (ML) backend usage within Dataset. 
 We'll take a simple text classification model powered by [scikit-learn](https://scikit-learn.org/stable/) library.
 It is compatible with text classication task, i.e. where `<Choices>` control tag is used with `<Text>` object tag. The example of a label config:
 
@@ -27,11 +27,11 @@ It is compatible with text classication task, i.e. where `<Choices>` control tag
 
 ### Create a model script
 
-If you create ML backend by using Label Studio's ML SDK, you have to follow the rules:
+If you create ML backend by using Dataset's ML SDK, you have to follow the rules:
 
 - created model class should be inherited from `label_studio.ml.LabelStudioMLBase`
 - 2 methods should be overrided:
-    - `predict()` takes [input tasks](/guide/tasks.html#Basic-format) and outputs [predictions](/guide/export.html#predictions) in a Label Studio format
+    - `predict()` takes [input tasks](/guide/tasks.html#Basic-format) and outputs [predictions](/guide/export.html#predictions) in a Dataset format
     - `fit()` receives [completions](/guide/export.html#Basic-format) iterable and returns dictionary with created links and resources. This dictionary will be later used for model loading via `self.train_output` field.
 
 Create a file `model.py` with the following content:
@@ -146,7 +146,7 @@ class SimpleTextClassifier(LabelStudioMLBase):
 
 ### Create ML backend configs & scripts
 
-Label Studio can automatically create all necessary configs and scripts needed to run ML backend from your newly created model.
+Dataset can automatically create all necessary configs and scripts needed to run ML backend from your newly created model.
 
 Let's call ML backend `my_backend` and initialize ML backend directory `./my_backend`:
 
@@ -186,9 +186,9 @@ docker-compose up
 
 Now you can explore runtime logs in `my_backend/logs/uwsgi.log` and RQ training logs in `my_backend/logs/rq.log`
 
-### Using ML backend with Label Studio
+### Using ML backend with Dataset
 
-Initialize and start new Label Studio project connecting to the running ML backend:
+Initialize and start new Dataset project connecting to the running ML backend:
 
 ```bash
 label-studio start my_project --init --ml-backends http://localhost:9090

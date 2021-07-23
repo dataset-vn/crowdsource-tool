@@ -13,7 +13,7 @@ from collections import OrderedDict
 class OrganizationIdSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
     class Meta:
         model = Organization
-        fields = ['id', 'title']
+        fields = ['id', 'title', 'created_by']
 
 
 class OrganizationSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
@@ -51,9 +51,25 @@ class OrganizationMemberUserSerializer(DynamicFieldsMixin, serializers.ModelSeri
     """Adds all user properties"""
     user = UserSerializerWithProjects()
 
+    
+
     class Meta:
         model = OrganizationMember
-        fields = ['id', 'organization', 'user']
+        #extra_kwargs = {'organization': {'required': False}, 'user': {'required': False}}
+        # fields = ['id', 'organization', 'user']
+        fields = '__all__'
+
+class OrganizationMemberSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
+    """Adds all user properties"""
+    #user = UserSerializerWithProjects()
+
+    
+
+    class Meta:
+        model = OrganizationMember
+        extra_kwargs = {'organization': {'required': False}, 'user': {'required': False}}
+        # fields = ['id', 'organization', 'user']
+        fields = '__all__' 
 
 
 class OrganizationInviteSerializer(serializers.Serializer):

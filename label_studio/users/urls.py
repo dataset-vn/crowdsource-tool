@@ -24,8 +24,10 @@ urlpatterns = [
     # Password reset
     url(r'^password-reset/$', views.FPasswordResetView.as_view(), name='password_reset'),
     url(r'^password-reset/done/$', views.FPasswordResetDoneView.as_view(), name='password_reset_done'),
-    url(r'^password-reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
-        views.FPasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    # url(r'^password-reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+    #     views.FPasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path(r'reset/<uidb64>/<token>', views.FPasswordResetConfirmView.as_view(), name ='password_reset_confirm'),
+
     url(r'^password-reset/complete/$', views.FPasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
     # avatars
@@ -37,4 +39,8 @@ urlpatterns = [
     path('api/current-user/token', api.UserGetTokenAPI.as_view(), name='current-user-token'),
 
     path('api/current-user/whoami', api.UserWhoAmIAPI.as_view(), name='current-user-whoami'),
+    
+    # Active organization
+    path('api/current-user/active-organization', api.UserActiveOrganizationAPI.as_view(), name='current-user-active-organization'),
+
 ]

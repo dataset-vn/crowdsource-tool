@@ -3,13 +3,13 @@ title: Frontend reference
 type: guide
 order: 905
 meta_title: Frontend Library Reference
-meta_description: Label Studio Documentation reference for integrating Label Studio in your own application to streamline data labeling and annotation for machine learning and data science projects.
+meta_description: Dataset Documentation reference for integrating Dataset in your own application to streamline data labeling and annotation for machine learning and data science projects.
 ---
 
-Label Studio Frontend (LSF) includes a number of UI options and callbacks that you can use when implementing the frontend with a custom labeling backend, or when customizing the Label Studio interface.
+Dataset Frontend (LSF) includes a number of UI options and callbacks that you can use when implementing the frontend with a custom labeling backend, or when customizing the Dataset interface.
 
 ## Updates to LSF in version 1.0.0 
-LSF version 1.0.0 is not compatible with earlier versions of Label Studio. If you use LSF with a custom backend, you must make changes to the API callbacks that you use as follows:
+LSF version 1.0.0 is not compatible with earlier versions of Dataset. If you use LSF with a custom backend, you must make changes to the API callbacks that you use as follows:
 
 | Callback in 0.9.1 and earlier | Renamed callback in 1.0.0 |
 | --- | --- |
@@ -17,16 +17,16 @@ LSF version 1.0.0 is not compatible with earlier versions of Label Studio. If yo
 | onUpdateCompletion | onUpdateAnnotation |
 | onDeleteCompletion | onDeleteAnnotation | 
 
-If you rely on specific formatting of Label Studio completed tasks, [Label Studio's annotation format](export.html#Raw-JSON-format-of-completed-tasks) has also been updated. 
+If you rely on specific formatting of Dataset completed tasks, [Dataset's annotation format](export.html#Raw-JSON-format-of-completed-tasks) has also been updated. 
 
-## Implement the Label Studio Frontend
+## Implement the Dataset Frontend
 
 
 ```javascript
 var labelStudio = new LabelStudio('editor', options);
 ```
 
-The following options are recognized when initializing a Label Studio instance version 1.0.0.
+The following options are recognized when initializing a Dataset instance version 1.0.0.
 
 ## Options
 
@@ -177,7 +177,7 @@ Callbacks can be used to execute actions based on user interaction with the inte
 
 Type data: `function`
 
-Called when the `submit` button is pressed. `ls` is label studio instance, `annotation` is the value of the current annotation.
+Called when the `submit` button is pressed. `ls` is Dataset instance, `annotation` is the value of the current annotation.
 
 #### Example
 
@@ -191,7 +191,7 @@ onSubmitAnnotation: function(ls, annotation) {
 
 Type data: `function`
 
-Called when the `update` button is pressed. `ls` is label studio instance, `annotation` is the value of the current annotation.
+Called when the `update` button is pressed. `ls` is Dataset instance, `annotation` is the value of the current annotation.
 
 #### Example
 
@@ -205,7 +205,7 @@ onUpdateAnnotation: function(ls, annotation) {
 
 Type data: `function`
 
-Called when the `delete` button is pressed. `ls` is label studio instance, `annotation` is value of current annotation.
+Called when the `delete` button is pressed. `ls` is Dataset instance, `annotation` is value of current annotation.
 
 #### Example
 
@@ -247,7 +247,7 @@ onEntityDelete: function(region) {
 
 Type data: `function`
 
-Called when the `skip` button is pressed. `ls` is label studio instance.
+Called when the `skip` button is pressed. `ls` is Dataset instance.
 
 #### Example
 
@@ -261,7 +261,7 @@ onSkipTask: function(ls) {
 
 Type data: `function`
 
-Called when Label Studio has fully loaded and is ready for labeling. `ls` is the label studio instance
+Called when Dataset has fully loaded and is ready for labeling. `ls` is the Dataset instance
 
 #### Example
 

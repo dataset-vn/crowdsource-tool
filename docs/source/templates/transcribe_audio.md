@@ -3,7 +3,7 @@ title: Audio Transcription
 type: templates
 order: 303
 meta_title: Audio Transcription Data Labeling Template
-meta_description: Label Studio Audio Transcription Template for machine learning and data science data labeling projects.
+meta_description: Dataset Audio Transcription Template for machine learning and data science data labeling projects.
 
 ---
 

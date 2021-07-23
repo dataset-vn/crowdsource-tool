@@ -3,7 +3,7 @@ title: Shortcut
 type: tags
 order: 422
 meta_title: Shortcut Tags to Define Shortcuts
-meta_description: Label Studio Shortcut Tags customize Label Studio to define keyboard shortcuts and hotkeys for machine learning and data science projects.
+meta_description: Dataset Shortcut Tags customize Dataset to define keyboard shortcuts and hotkeys for machine learning and data science projects.
 ---
 
 Shortcut tag can be used to define a shortcut, which adds a predefined object

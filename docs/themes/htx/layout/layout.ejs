@@ -7,17 +7,17 @@
   <head>
       <% var titlePrefix;
           if (isBlog) {
-            titlePrefix = 'Label Studio Blog';
+            titlePrefix = 'Dataset Blog';
           } else if (isGuide) {
-            titlePrefix = 'Label Studio Documentation';
+            titlePrefix = 'Dataset Documentation';
           } else {
-            titlePrefix = 'Label Studio';
+            titlePrefix = 'Dataset';
           }
       %>
       <% if (page.meta_title) { %>
       <title><%- titlePrefix + ' — ' + page.meta_title %></title>
       <% } else { %>
-      <title><%- page.title ? page.title + ' — ' : titlePrefix %>Label Studio — Data Labeling</title>
+      <title><%- page.title ? page.title + ' — ' : titlePrefix %>Dataset — Data Labeling</title>
       <% } %>
       <meta charset="utf-8">
       <meta name="description" content="<%- page.meta_description ? page.meta_description : theme.site_description %>">
@@ -52,7 +52,7 @@
       <meta name="msapplication-TileColor" content="#4fc08d">
       <meta name="theme-color" content="#4fc08d">
 
-      <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"/>
+      <link rel="shortcut icon" type="image/x-icon" href="/images/logodataset.svg"/>
 
       <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
       <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">

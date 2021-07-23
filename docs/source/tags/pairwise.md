@@ -3,10 +3,10 @@ title: Pairwise
 type: tags
 order: 412
 meta_title: Pairwise Tags to Compare Objects
-meta_description: Label Studio Pairwise Tags customize Label Studio with pairwise to compare objects for machine learning and data science projects.
+meta_description: Dataset Pairwise Tags customize Dataset with pairwise to compare objects for machine learning and data science projects.
 ---
 
-Pairwise element. Compare two different objects, works with any label studio object
+Pairwise element. Compare two different objects, works with any Dataset object
 
 ### Parameters
 **Params**: <code>string</code> [leftClass=left]  - class name of the left object  

@@ -6,6 +6,12 @@ export const API_CONFIG = {
     memberships: "/organizations/:pk/memberships",
     inviteLink: "/invite",
     resetInviteLink: "POST:/invite/reset-token",
+    organizations: "GET:/organizations",
+    postOrganizations:"POST:/organizations",
+
+    // Current user's active organization
+    patchActiveOrganization: "PATCH:/current-user/active-organization",
+    getActiveOrganization: "GET:/current-user/active-organization",
 
     // Project
     projects: "/projects",
@@ -13,6 +19,12 @@ export const API_CONFIG = {
     updateProject: "PATCH:/projects/:pk",
     createProject: "POST:/projects",
     deleteProject: "DELETE:/projects/:pk",
+
+    // ProjectMember
+    getProjectMember: "/projects/:pk/members",
+    createProjectMember: "POST:/projects/:pk/members", // Gui body kem theo user_pk. Vi du body: {user_pk: 2}
+    
+    //deleteProjectMember: "DELETE:/api/projects/:pk/members"
 
     // Config and Import
     configTemplates: "/templates",

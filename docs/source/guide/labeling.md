@@ -1,12 +1,12 @@
 ---
-title: Label and annotate data in Label Studio
+title: Label and annotate data in Dataset
 type: guide
 order: 401
 meta_title: Labeling Interface
-meta_description: Label Studio Documentation for labeling and annotating various types of data and labeling tasks for machine learning and data science projects.
+meta_description: Dataset Documentation for labeling and annotating various types of data and labeling tasks for machine learning and data science projects.
 ---
 
-Label and annotate your data with the open source data labeling tool, Label Studio. After you [set up your project](setup.hmtl) and [import your data](tasks.html), you can start labeling and annotating your data.  
+Label and annotate your data with the open source data labeling tool, Dataset. After you [set up your project](setup.hmtl) and [import your data](tasks.html), you can start labeling and annotating your data.  
 
 1. Inside a project, click **Label** to start labeling.
 2. Use keyboard shortcuts or your mouse to label the data and submit your annotations.

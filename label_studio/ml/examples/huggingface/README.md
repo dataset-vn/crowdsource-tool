@@ -3,11 +3,11 @@ title:
 type: blog
 order: 50
 meta_title: Chatbot and GPT-based Text Generator Tutorial
-meta_description: Label Studio tutorial for creating chatbots and GPT-based text generators with the HuggingFace Transformers Library.
+meta_description: Dataset tutorial for creating chatbots and GPT-based text generators with the HuggingFace Transformers Library.
 ---
 
 If you're going to build a new chatbot, or just want to play with GPT-based text generators, this [Machine Learning backend](https://labelstud.io/guide/ml.html) is for you! Powered by [HuggingFace's Transformers library](https://github.com/huggingface/transformers), 
-it connects GPT2-like language model to Label Studio UI, giving you an opportunity to explore different text responses based on the chat history.
+it connects GPT2-like language model to Dataset UI, giving you an opportunity to explore different text responses based on the chat history.
 
 
 Check this installation guide and then play around them. 
@@ -28,7 +28,7 @@ Collect your next superpower chatbot dataset by edit, remove or add new phrases!
 
 2. Create Dialog generation setup - go to **Setup** page and select _Chatbot_ template
 
-3. Run Label Studio, then go to the **Model** page. Paste the selected ML backend URL then click on **Add Backend**.
+3. Run Dataset, then go to the **Model** page. Paste the selected ML backend URL then click on **Add Backend**.
 
 
 Now you can import your chat dialogs in the input format of [`<Paragraphs>` object tag](/tags/paragraphs.html), or use sample task import just for give it a try.

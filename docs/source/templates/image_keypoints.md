@@ -3,7 +3,7 @@ title: Image Key Points
 type: templates
 order: 103
 meta_title: Image Keypoints Data Labeling Template
-meta_description: Label Studio Image Keypoints Template for machine learning and data science data labeling projects.
+meta_description: Dataset Image Keypoints Template for machine learning and data science data labeling projects.
 ---
 
 Key Points labeling for the images

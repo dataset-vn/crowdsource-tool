@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block divider %}
+{% endblock %}
+
+{% block frontend_settings %}
+  {
+    breadcrumbs: [
+      {
+        title: "Organizations"
+      }
+    ],
+  }
+{% endblock %}
+
+{% block content %}
+<p>Organization list:</p>
+<ol>
+    <li>Project 001</li>
+    <li>Project 002</li>
+    <li>Project 003</li>
+  </ol>
+{% endblock %}
