@@ -14,10 +14,10 @@ export const MenuLayout = ({children, ...routeProps}) => {
       menuItems={[
         // GeneralSettings,
         // LabelingSettings,
-        InstructionsSettings,
-        MachineLearningSettings,
-        StorageSettings,
-        DangerZone,
+        // InstructionsSettings,
+        // MachineLearningSettings,
+        // StorageSettings,
+        // DangerZone,
         Members,
       ]}
       path={routeProps.match.url}
@@ -33,11 +33,11 @@ export const SettingsPage = {
   layout: MenuLayout,
   component: GeneralSettings,
   pages: {
-    InstructionsSettings,
-    LabelingSettings,
-    MachineLearningSettings,
-    StorageSettings,
-    DangerZone,
+    // InstructionsSettings,
+    // LabelingSettings,
+    // MachineLearningSettings,
+    // StorageSettings,
+    // DangerZone,
     Members,
   },
 };
