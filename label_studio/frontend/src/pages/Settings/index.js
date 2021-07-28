@@ -15,40 +15,51 @@ export const MenuLayout = ({children, ...routeProps}) => {
   
   const api = useAPI();
   const {project} = useProject();
-  const currentSettingProjectOwner = localStorage.getItem('currentSettingProjectOwner')
-  const currentSettingProjectId = localStorage.getItem('currentSettingProjectId')
-  if (currentSettingProjectOwner == undefined) localStorage.setItem('currentSettingProjectOwner', project.created_by_id);
-  if (currentSettingProjectId == undefined) localStorage.setItem('currentSettingProjectId', project.id);
+  var currentSettingProjectOwner = undefined
+  var currentSettingProjectId = undefined
   console.log("project ", project)
-  console.log('currentSettingProjectOwner ', currentSettingProjectOwner)
-  console.log('currentSettingProjectId ', currentSettingProjectId)
+  console.log("project keys", Object.keys(project))
+  if (currentSettingProjectOwner == undefined) localStorage.setItem('currentSettingProjectOwner', project.created_by.id);
+  if (currentSettingProjectId == undefined) localStorage.setItem('currentSettingProjectId', project.id);
+  currentSettingProjectOwner = localStorage.getItem('currentSettingProjectOwner')
+  currentSettingProjectId = localStorage.getItem('currentSettingProjectId')
+  
+  
+  // console.log('currentSettingProjectOwner ', currentSettingProjectOwner)
+  // console.log('currentSettingProjectId ', currentSettingProjectId)
 
   var [user, setUser] = useState();
   const [userRole, setUserRole] = useState('annotator');
 
   // Get ProjectMember object whose user is the current (requesting) user
-  const fetchUserProjectMember = useCallback( async () => {
+  const fetchUserProjectMember =  async () => {
 
     user = await api.callApi('me');
 
     if(user.id === currentSettingProjectOwner) user.role = 'owner';
 
-    var settingProject = localStorage.getItem('currentSettingProject')
+    // var settingProject = localStorage.getItem('currentSettingProject')
 
-    console.log("settingProject ", settingProject)
+    // console.log("settingProject ", settingProject)
 
     setUser(user)
-    console.log("project", project)
-    console.log("user", user)
-    let projectMember = await api.callApi('getOneProjectMember', {
+    // console.log("project", project)
+    // console.log("user", user)
+
+    api.callApi('getOneProjectMember', {
       params: {
         pk: currentSettingProjectId,
         user: user.id,
       }
-    });
-    console.log("projectMember1222", projectMember);
-    setUserRole(projectMember[0].role);
-  })
+    })
+    .then(ProjectMemberList => ProjectMemberList[0]) 
+    .then((projectMember) => {
+      // console.log(Object.keys(projectMember));
+      // console.log("projectMember1222", projectMember);
+      setUserRole(projectMember.role);
+    })
+  }
+  
 
   useEffect(() => {
     // fetchThisUser();
@@ -74,7 +85,13 @@ export const MenuLayout = ({children, ...routeProps}) => {
   const getVisibleComponents = (role) => {
     if (role == 'owner') return ownerVisibleComponents;
     if (role == 'manager') return managerVisibleComponents;
-    return [InstructionsSettings]
+    return [GeneralSettings,
+      LabelingSettings,
+      InstructionsSettings,
+      MachineLearningSettings,
+      StorageSettings,
+      DangerZone,
+      Members]
   }
 
   return (

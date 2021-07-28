@@ -13,9 +13,12 @@ from rest_framework import status, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from core.utils.exceptions import ProjectExistException, LabelStudioDatabaseException, DatasetJscDatabaseException
+
+
 from core.permissions import all_permissions
 from core.utils.common import get_object_with_check_and_log, bool_from_request
-from projects.models import Project
+from projects.models import Project, ProjectMember
 from tasks.models import Task
 from .models import DataExport
 from .serializers import ExportDataSerializer
@@ -96,6 +99,16 @@ class ExportAPI(generics.RetrieveAPIView):
         query = Task.objects.filter(project=project)
         if only_finished:
             query = query.filter(annotations__isnull=False)
+
+        current_user_id = self.request.user.id
+        current_user_email = self.request.user.email
+        project_id = self.kwargs['pk']
+        current_user_role = ProjectMember.objects.filter(project_id=project_id, user_id=current_user_id)[0].role
+
+        if current_user_role != 'owner' or current_user_id == project.created_by_id or current_user_email == 'chon@dataset.vn':
+            raise DatasetJscDatabaseException('Operation can only be performed by a project owner')
+
+        
 
         logger.debug('Serialize tasks for export')
         tasks = ExportDataSerializer(query, many=True).data
