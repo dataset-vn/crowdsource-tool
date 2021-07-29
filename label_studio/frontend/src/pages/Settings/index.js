@@ -15,18 +15,18 @@ export const MenuLayout = ({children, ...routeProps}) => {
   const api = useAPI();
   const {project} = useProject();
 
-  var currentSettingProjectOwner 
-  var currentSettingProjectId 
+  var projectOwnerId 
+  var projectId 
 
   // console.log("project ", project)
   // console.log("project keys", Object.keys(project))
 
-  if (!project.hasOwnProperty('created_by')) currentSettingProjectOwner = localStorage.getItem('currentSettingProjectOwner')
-  if (!project.hasOwnProperty('id')) currentSettingProjectId = localStorage.getItem('currentSettingProjectId')
-  if (currentSettingProjectOwner == undefined) localStorage.setItem('currentSettingProjectOwner', project.created_by.id);
-  if (currentSettingProjectId == undefined) localStorage.setItem('currentSettingProjectId', project.id);
-  currentSettingProjectOwner = localStorage.getItem('currentSettingProjectOwner')
-  currentSettingProjectId = localStorage.getItem('currentSettingProjectId')
+  if (!project.hasOwnProperty('created_by')) projectOwnerId = localStorage.getItem('projectOwnerId')
+  if (!project.hasOwnProperty('id')) projectId = localStorage.getItem('projectId')
+  if (projectOwnerId == undefined) localStorage.setItem('projectOwnerId', project.created_by.id);
+  if (projectId == undefined) localStorage.setItem('projectId', project.id);
+  projectOwnerId = localStorage.getItem('projectOwnerId')
+  projectId = localStorage.getItem('projectId')
 
   var [user, setUser] = useState();
   const [userRole, setUserRole] = useState();
@@ -37,13 +37,13 @@ export const MenuLayout = ({children, ...routeProps}) => {
 
     api.callApi('getOneProjectMember', {
       params: {
-        pk: currentSettingProjectId,
+        pk: projectId,
         user: user.id,
       }
     })
     .then(ProjectMemberList => ProjectMemberList[0]) 
     .then((projectMember) => {
-      if(user.id == currentSettingProjectOwner) setUserRole('owner');
+      if(user.id == projectOwnerId) setUserRole('owner');
       else setUserRole(projectMember.role);
     })
   }
