@@ -308,7 +308,10 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
                        generics.RetrieveUpdateDestroyAPIView):
     parser_classes = (JSONParser, FormParser, MultiPartParser)
     permission_classes = (IsAuthenticated,)
+    filter_backends = [filters.SearchFilter]
     serializer_class = ProjectMemberSerializer
+
+    search_fields = ['user__username', 'user__email', 'user__first_name', 'user__last_name']
 
     def get_queryset(self,):
         project_id = self.kwargs['pk']
@@ -316,17 +319,22 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         if 'user' in self.kwargs:
             user_id = self.kwargs['user']
         current_user_id = self.request.user.id
+        project = Project.objects.get(id=project_id)
         # TODO: Only Project Leader or above can see member list
         # TODO: use django permission instead of directly checking if role is manager as below
         if user_id != None and user_id == current_user_id:
             return ProjectMember.objects.filter(project=project_id, user=user_id)
 
-        if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner']).exists():
+        if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner']).exists() and current_user_id != project.created_by_id:
             raise DatasetJscDatabaseException("Operation can only be performed by a project manager or project owner")
         # current_project = Project.objects.get(id=project_id)
         # return current_project.annotators()
         
-        return ProjectMember.objects.filter(project=project_id)
+        members = ProjectMember.objects.filter(project=project_id)
+
+        if self.request.query_params.get('search'):
+            return members
+        return paginator(members, self.request)
 
     def get_object(self):
         current_user_id = self.request.user.id
