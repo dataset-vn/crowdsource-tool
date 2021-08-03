@@ -210,7 +210,7 @@ class ProjectAPI(APIViewVirtualRedirectMixin,
         project = Project.objects.get(id=project_id)
         current_user_role = ProjectMember.objects.filter(project_id=project_id, user_id=current_user_id)[0].role
 
-        if current_user_role != 'owner' or current_user_id == project.created_by_id or current_user_email == 'chon@dataset.vn':
+        if current_user_role != 'owner' and current_user_id != project.created_by_id and current_user_email != 'chon@dataset.vn':
             raise DatasetJscDatabaseException('Operation can only be performed by a project owner')
 
         return super(ProjectAPI, self).delete(request, *args, **kwargs)
