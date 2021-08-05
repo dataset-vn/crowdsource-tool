@@ -242,6 +242,74 @@ class OrganizationAPI(APIViewVirtualRedirectMixin,
         return super(OrganizationAPI, self).put(request, *args, **kwargs)
 
 
+class MyOrganizationAPI(APIViewVirtualRedirectMixin,
+                      APIViewVirtualMethodMixin,
+                      generics.RetrieveUpdateAPIView):
+    parser_classes = (JSONParser, FormParser, MultiPartParser)
+    queryset = Organization.objects.all()
+    permission_classes = (IsAuthenticated, OrganizationAPIPermissions)
+    serializer_class = OrganizationSerializer
+
+    redirect_route = 'organizations-dashboard'
+    redirect_kwarg = 'pk'
+
+    def get_object(self):
+        org = get_object_with_check_and_log(self.request, Organization, pk=self.kwargs[self.lookup_field])
+        self.check_object_permissions(self.request, org)
+        return org
+
+    def get_queryset(self):
+        user_id = self.request.user.id
+        orgs_id = OrganizationMember.objects.values_list('organization_id', flat=True).filter(user_id=user_id)
+        return Organization.objects.filter(id__in=orgs_id)
+
+    def perform_create(self, ser):
+        try:
+            organization = ser.save()
+            user = self.request.user
+            try:
+                OrganizationMember.objects.create(organization=organization, user=user)
+            except IntegrityError as e:
+                raise DatasetJscDatabaseException('Database error during organization member creation. Try again.')
+
+        except IntegrityError as e:
+            raise DatasetJscDatabaseException('Database error during organization creation. Try again.')
+
+    def perform_destroy(self, instance):
+        current_user_id = self.request.user.id
+        member_id = json.loads(self.request.body)['user_pk']
+        org_id = self.kwargs['pk']
+
+        if not OrganizationMember.objects.filter(user=current_user_id, organization=org_id).exists():
+            raise DatasetJscDatabaseException("Operation can only be performed by a organization member")
+
+        try:
+            for member in OrganizationMember.objects.get(organization=org_id):
+                member.delete()
+            instance = Organization.objects.get(organization=org_id)
+            instance.delete()
+        except IntegrityError as e:
+            logger.error('Fallback to cascase deleting after integrity_error: {}'.format(str(e)))
+
+        return
+
+    @swagger_auto_schema(tags=['Organizations'])
+    def get(self, request, *args, **kwargs):
+        return super(MyOrganizationAPI, self).get(request, *args, **kwargs)
+
+    @swagger_auto_schema(tags=['Organizations'])
+    def patch(self, request, *args, **kwargs):
+        return super(MyOrganizationAPI, self).patch(request, *args, **kwargs)
+
+    @swagger_auto_schema(auto_schema=None)
+    def post(self, request, *args, **kwargs):
+        return super(MyOrganizationAPI, self).post(request, *args, **kwargs)
+
+    @swagger_auto_schema(auto_schema=None)
+    def put(self, request, *args, **kwargs):
+        return super(MyOrganizationAPI, self).put(request, *args, **kwargs)
+
+
 class OrganizationInviteAPI(APIView):
     parser_classes = (JSONParser,)
     permission_classes = (IsAuthenticated,)
