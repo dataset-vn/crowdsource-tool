@@ -284,8 +284,6 @@ class MyOrganizationAPI(APIViewVirtualRedirectMixin,
             raise DatasetJscDatabaseException("Operation can only be performed by a organization member")
 
         try:
-            for member in OrganizationMember.objects.get(organization=org_id):
-                member.delete()
             instance = Organization.objects.get(organization=org_id)
             instance.delete()
         except IntegrityError as e:
