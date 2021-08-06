@@ -1,5 +1,6 @@
 """This file and its contents are licensed under the Apache License 2.0. Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
 """
+from label_studio import organizations
 import logging
 import json
 from django.http import request
@@ -9,6 +10,7 @@ from django.db import IntegrityError
 from django.urls import reverse
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework import generics
+from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -194,17 +196,7 @@ class OrganizationMemberAPI(generics.ListCreateAPIView,
 class OrganizationAPI(APIViewVirtualRedirectMixin,
                       APIViewVirtualMethodMixin,
                       generics.RetrieveUpdateAPIView):
-    """
-    get:
-    Get organization settings
-
-    Retrieve the settings for a specific organization.
-
-    patch:
-    Update organization settings
-
-    Update the settings for a specific organization.
-    """
+    ""
     parser_classes = (JSONParser, FormParser, MultiPartParser)
     queryset = Organization.objects.all()
     permission_classes = (IsAuthenticated, OrganizationAPIPermissions)
@@ -225,6 +217,15 @@ class OrganizationAPI(APIViewVirtualRedirectMixin,
 
         #return Organization.objects.filter(created_by=self.request.user)
 
+    def perform_destroy(self, instance):
+        org_id = self.kwargs['pk']
+
+        try:
+          instance = Organization.objects.get(organization = org_id)
+          instance.delete()
+        except IntegrityError as e:
+          logger.error('Deletion failed')
+
     @swagger_auto_schema(tags=['Organizations'])
     def get(self, request, *args, **kwargs):
         return super(OrganizationAPI, self).get(request, *args, **kwargs)
@@ -240,6 +241,10 @@ class OrganizationAPI(APIViewVirtualRedirectMixin,
     @swagger_auto_schema(auto_schema=None)
     def put(self, request, *args, **kwargs):
         return super(OrganizationAPI, self).put(request, *args, **kwargs)
+
+    # @swagger_auto_schema(auto_schema=None)
+    # def delete(self, request, *args, **kwargs):
+    #     return super(OrganizationAPI, self).delete(request, *args, **kwargs)
 
 
 class OrganizationInviteAPI(APIView):

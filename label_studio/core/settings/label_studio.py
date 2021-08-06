@@ -1,6 +1,6 @@
 """This file and its contents are licensed under the Apache License 2.0. Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
 """
-from label_studio.core.settings.base import DJANGO_DB
+from core.settings.base import DJANGO_DB
 from core.settings.base import *
 
 #DJANGO_DB = get_env('DJANGO_DB', DJANGO_DB_SQLITE) # (Means the system will use PostgreSQl if system env DJANGO_DB=default)
