@@ -58,7 +58,6 @@ class OrganizationListAPI(generics.ListCreateAPIView,
         orgs_id = OrganizationMember.objects.values_list('organization_id', flat=True).filter(user_id=user_id)
         orgs_list = Organization.objects.filter(id__in=orgs_id)
         return orgs_list
-        
 
     def perform_create(self, serializer):
         org_creator = self.request.user
@@ -85,7 +84,6 @@ class OrganizationListAPI(generics.ListCreateAPIView,
     def post(self, request, *args, **kwargs):
         return super(OrganizationListAPI, self).post(request, *args, **kwargs)
 
-
 class OrganizationMemberListAPI(generics.ListCreateAPIView,
                                 generics.RetrieveUpdateDestroyAPIView):
 
@@ -110,9 +108,8 @@ class OrganizationMemberListAPI(generics.ListCreateAPIView,
         return super(OrganizationMemberListAPI, self).get(request, *args, **kwargs)
 
 
-
 class OrganizationMemberAPI(generics.ListCreateAPIView,
-                                generics.RetrieveUpdateDestroyAPIView):
+                            generics.RetrieveUpdateDestroyAPIView):
     """
     get:
     Get organization members list

@@ -12,7 +12,6 @@ from core.utils.common import create_hash, get_object_with_check_and_log, get_or
 
 logger = logging.getLogger(__name__)
 
-
 class OrganizationMember(models.Model):
     """
     """

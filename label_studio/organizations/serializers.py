@@ -15,18 +15,15 @@ class OrganizationIdSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
         model = Organization
         fields = ['id', 'title', 'created_by']
 
-
 class OrganizationSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
     class Meta:
         model = Organization
         fields = '__all__'
 
-
-class OrganizationMemberSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
+class OrganizationXSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
     class Meta:
-        model = OrganizationMember
-        fields = ['id', 'organization', 'user']
-
+        model = Organization
+        fields = '__all__'
 
 class UserSerializerWithProjects(UserSerializer):
     created_projects = serializers.SerializerMethodField(read_only=True)

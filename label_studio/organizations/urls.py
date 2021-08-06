@@ -1,8 +1,8 @@
 """This file and its contents are licensed under the Apache License 2.0. Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
 """
 from django.urls import include, path
-
-from organizations import api, views
+from organizations import api, api2, views
+from organizations.router import router
 
 app_name = 'organizations'
 
@@ -28,8 +28,10 @@ _api_urlpattens = [
 # TODO: these urlpatterns should be moved in core/urls with include('organizations.urls')
 urlpatterns = [
     path('organizations/', views.organizations_list, name='organizations-list'),
+    path('organizationschangeid/', api2.OrganizationChangeId.as_view(), name = 'organization-change-id'),
+    path('organizationschangeid/<int:pk>', api2.OrganizationChangeIdDetail.as_view(), name = 'organization-change-id'),
+    path('api2/', include(router.urls)),
     path('people/', include(_urlpatterns)),
-
     path('api/organizations/', include((_api_urlpattens, app_name), namespace='api')),
 
     # invite
