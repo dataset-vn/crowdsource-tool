@@ -263,17 +263,22 @@ class MyOrganizationAPI(APIViewVirtualRedirectMixin,
         orgs_id = OrganizationMember.objects.values_list('organization_id', flat=True).filter(user_id=user_id)
         return Organization.objects.filter(id__in=orgs_id)
 
-    def perform_create(self, ser):
-        try:
-            organization = ser.save()
-            user = self.request.user
-            try:
-                OrganizationMember.objects.create(organization=organization, user=user)
-            except IntegrityError as e:
-                raise DatasetJscDatabaseException('Database error during organization member creation. Try again.')
+    #def perform_create(self, serializer):
+    #   org_creator = self.request.user
+    #   org_title = json.loads(self.request.body)['title']
 
-        except IntegrityError as e:
-            raise DatasetJscDatabaseException('Database error during organization creation. Try again.')
+        
+    #    try:
+    #        org = serializer.save(created_by=org_creator, title=org_title)
+            
+    #    except IntegrityError as e:
+    #        if 'duplicate key value violates unique constraint \"organization_created_by_id_key\"' in str(e):
+    #            raise DatasetJscDatabaseException("Each user can create only one organization")
+
+    #    try:
+    #        OrganizationMember.objects.create(user=org_creator, organization=org)
+    #    except IntegrityError as e:
+    #        raise DatasetJscDatabaseException("Error(s) happened when adding this user to the new organization")
 
     def perform_destroy(self, instance):
         current_user_id = self.request.user.id
