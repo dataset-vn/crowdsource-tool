@@ -151,6 +151,7 @@
     "browserContext": "default"
   },
   "dependencies": {
-    "react-loadingg": "^1.7.2"
+    "react-loadingg": "^1.7.2",
+    "react-paginate": "^7.1.3"
   }
 }

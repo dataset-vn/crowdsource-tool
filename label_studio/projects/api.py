@@ -327,14 +327,15 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
 
         if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner']).exists() and current_user_id != project.created_by_id:
             raise DatasetJscDatabaseException("Operation can only be performed by a project manager or project owner")
-        # current_project = Project.objects.get(id=project_id)
-        # return current_project.annotators()
         
         members = ProjectMember.objects.filter(project=project_id)
+        members = members.extra(select={'total_records': members.count()}) # This extra total_records will temporarily help frontend to paginate members list 
 
         if self.request.query_params.get('search'):
             return members
-        return paginator(members, self.request)
+
+        paginated_members = paginator(members, self.request)
+        return paginated_members
 
     def get_object(self):
         current_user_id = self.request.user.id
