@@ -64,7 +64,7 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
   var handlePageClick = (data) => {
     let selectedPage = (data.selected + 1) || 1;
     console.log("selectedPage", selectedPage)
-    fetchUsers(projectID, 2, selectedPage);
+    fetchUsers(projectID, pageSize, selectedPage);
   }
 
   const selectUser = useCallback((user) => {
