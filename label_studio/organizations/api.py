@@ -311,6 +311,14 @@ class MyOrganizationAPI(APIViewVirtualRedirectMixin,
     @swagger_auto_schema(auto_schema=None)
     def put(self, request, *args, **kwargs):
         return super(MyOrganizationAPI, self).put(request, *args, **kwargs)
+    
+    @swagger_auto_schema(tags=['Organizations'])
+    def delete(self, request, *args, **kwargs):
+        super(MyOrganizationAPI, self).delete(request, *args, **kwargs)
+        stt=status.HTTP_200_OK
+        data = resContent(id = self.kwargs['pk'], status_code = stt, version = '1.0.1', detail = 'Organization has been deleted from system', exc_info = 'null')
+        rescontent = resContentSerializer(data)
+        return Response(rescontent.data, stt)
 
 
 class OrganizationInviteAPI(APIView):
