@@ -2,6 +2,8 @@
 """
 import logging
 
+from rest_framework import serializers
+
 from django.db import models, transaction
 from django.conf import settings
 from django.db.models import Q, Count
@@ -135,3 +137,20 @@ class Organization(models.Model):
 
     class Meta:
         db_table = 'organization'
+
+        
+class resContent(models.Model):
+    def __init__(self, id, status_code, version, detail, exc_info):
+        self.id = id
+        self.status_code = status_code
+        self.version = version
+        self.detail = detail
+        self.exc_info = exc_info
+
+
+class resContentSerializer(serializers.Serializer):
+    id = serializers.CharField()
+    status_code = serializers.CharField()
+    version = serializers.CharField()
+    detail = serializers.CharField()
+    exc_info = serializers.CharField()
