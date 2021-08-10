@@ -72,3 +72,10 @@ class OrganizationMemberSerializer(DynamicFieldsMixin, serializers.ModelSerializ
 class OrganizationInviteSerializer(serializers.Serializer):
     token = serializers.CharField(required=False)
     invite_url = serializers.CharField(required=False)
+
+class reMessageSerializer(serializers.Serializer):
+    id = serializers.CharField()
+    status_code = serializers.CharField()
+    version = serializers.CharField()
+    detail = serializers.CharField()
+    exc_info = serializers.CharField()

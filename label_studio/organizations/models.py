@@ -134,3 +134,11 @@ class Organization(models.Model):
 
     class Meta:
         db_table = 'organization'
+
+class reMessage(models.Model):
+    def __init__(self, id, status_code, version, detail, exc_info):
+        self.id = id
+        self.status_code = status_code
+        self.version = version
+        self.detail = detail
+        self.exc_info = exc_info

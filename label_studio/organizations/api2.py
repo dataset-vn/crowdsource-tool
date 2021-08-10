@@ -1,11 +1,11 @@
-from organizations.serializers import OrganizationXSerializer
+from organizations.serializers import OrganizationXSerializer, reMessageSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework import mixins
 from rest_framework.permissions import AllowAny
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
-from organizations.models import Organization, OrganizationMember
+from organizations.models import Organization, OrganizationMember, reMessage
 from rest_framework import status
 from django.http import Http404
 
@@ -61,4 +61,6 @@ class OrganizationChangeIdDetail(APIView):
     def delete(self, request, pk, format=None):
         organizationchangeid = self.get_object(pk)
         organizationchangeid.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        data = reMessage(id = self.kwargs['pk'], status_code=status.HTTP_200_OK, version = '1.0.1', detail = 'Organization Delete Succesfully', exc_info = 'null')
+        remessage = reMessageSerializer(data)
+        return Response(remessage.data, status=status.HTTP_200_OK)
