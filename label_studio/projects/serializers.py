@@ -95,13 +95,13 @@ class ProjectSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
 
 class ProjectMemberSerializer(serializers.ModelSerializer):
     
-    first_name = serializers.CharField(source='user.first_name')
-    last_name = serializers.CharField(source='user.last_name')
-    email = serializers.CharField(source='user.email')
-    phone = serializers.CharField(source='user.phone')
-    date_joined = serializers.CharField(source='user.date_joined')
-    activity_at = serializers.CharField(source='user.activity_at')
-    avatar = serializers.CharField(source='user.avatar')
+    first_name = serializers.CharField(source='user.first_name', required = False)
+    last_name = serializers.CharField(source='user.last_name', required = False)
+    email = serializers.CharField(source='user.email', required = False)
+    phone = serializers.CharField(source='user.phone', required = False)
+    date_joined = serializers.CharField(source='user.date_joined', required = False)
+    activity_at = serializers.CharField(source='user.activity_at', required = False)
+    avatar = serializers.CharField(source='user.avatar', required = False)
     total_records = serializers.IntegerField(read_only=True)
     
 
