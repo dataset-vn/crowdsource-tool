@@ -365,6 +365,15 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         self.perform_destroy(instance)
         return Response({'code':200, 'detail': 'Delete project member successfully'}, status=status.HTTP_200_OK)
 
+    def get_project_member_role(self, project_id: str, user_id: str) -> str:
+        """
+            Returns role of specific user in a project by id.
+            Returns `None` if that user doesn't exist
+        """
+        current_user = ProjectMember.objects.filter(project_id=project_id, user_id=user_id).first()
+
+        return None if current_user is None else current_user.role
+
     def perform_create(self, serializer):
         # Added by NgDMau
         # check if logging user is admin of current project
@@ -373,8 +382,13 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         project_id = self.kwargs['pk']
         user_id = json.loads(self.request.body)['user_pk']
         user_role = json.loads(self.request.body)['role']
-        current_user_role = ProjectMember.objects.filter(project_id=project_id, user_id=current_user_id)[0].role
-        
+
+        current_user_role = self.get_project_member_role(project_id, user_id)
+
+        # Error handling
+        if current_user_role is None:
+            raise DatasetJscDatabaseException('User is not a member of project!')
+
         if current_user_role != 'owner' and user_role == 'owner':
             raise DatasetJscDatabaseException('Operation can only be performed by a project owner')
 
@@ -407,7 +421,12 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         user_id = json.loads(self.request.body)['user_pk']
         user_role = json.loads(self.request.body)['role']
         roles = ['owner', 'manager', 'reviewer', 'annotator']
-        current_user_role = ProjectMember.objects.filter(project_id=project_id, user_id=current_user_id)[0].role
+
+        current_user_role = self.get_project_member_role(project_id, user_id)
+
+        # Error handling
+        if current_user_role is None:
+            raise DatasetJscDatabaseException('User is not a member of project!')
 
         if current_user_role != 'owner' and user_role == 'owner':
             raise DatasetJscDatabaseException('Operation can only be performed by a project owner')
