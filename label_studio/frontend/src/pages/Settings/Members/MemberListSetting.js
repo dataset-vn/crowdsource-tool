@@ -16,55 +16,57 @@ import { Space } from "../../../components/Space/Space";
 export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, projectID, orgID=1 }) => {
   const defaultPageSize = 15
   const api = useAPI();
-  const [totalRecords, setTotalRecords] = useState()
+  const [totalRecords, setTotalRecords] = useState(0)
   const [pageSize, setPageSize] = useState(defaultPageSize)
   const [pageCount, setPageCount] = useState()
   const [usersList, setUsersList] = useState();
   const { project } = useProject();
 
   const fetchUsers = useCallback(async (projectID, page_size=pageSize, page=1) => {
-    let data = [];
-    let resTotalRecords = 0;
-
+    let users = []
     if (projectID) {
-      const response = await api.callApi("getProjectMember", {
+      const projectMembers = await api.callApi("getProjectMember", {
         params: {
           pk: projectID,
           page_size: page_size,
           page: page
         }
       })
-      resTotalRecords = response[0].total_records
-      setTotalRecords(resTotalRecords)
-
-      for (let i = 0; i < response.length; i++) {
-        let memberData = {
-          id: response[i].id,
-          organization: null,
-          user: {
-            id: response[i].user,
-            first_name: response[i].first_name,
-            last_name: response[i].last_name,
-            username: response[i].username,
-            email: response[i].email,
-            phone: response[i].phone,
-            last_activity: response[i].activity_at,
-            created_projects: [],
-            contributed_to_projects: [],
-            avatar: response[i].avatar,
-          },
-          role: response[i].role
-        }
-        data.push(memberData)
-      }
+      setTotalRecords(projectMembers[0].total_records)
+      users = convertProjectMember2User(projectMembers) // as ProjectMember and User are 2 different objects
     }
-    setUsersList(data);
+    setUsersList(users);
   }, [api]);
 
   var handlePageClick = (data) => {
     let selectedPage = (data.selected + 1) || 1;
     console.log("selectedPage", selectedPage)
     fetchUsers(projectID, pageSize, selectedPage);
+  }
+
+  const convertProjectMember2User = (projectMembers) => {
+    let users = [];
+    for (let i = 0; i < projectMembers.length; i++) {
+      let memberData = {
+        id: projectMembers[i].id,
+        organization: null,
+        user: {
+          id: projectMembers[i].user,
+          first_name: projectMembers[i].first_name,
+          last_name: projectMembers[i].last_name,
+          username: projectMembers[i].username,
+          email: projectMembers[i].email,
+          phone: projectMembers[i].phone,
+          last_activity: projectMembers[i].activity_at,
+          created_projects: [],
+          contributed_to_projects: [],
+          avatar: projectMembers[i].avatar,
+        },
+        role: projectMembers[i].role
+      }
+      users.push(memberData)
+    }
+    return users
   }
 
   const selectUser = useCallback((user) => {
