@@ -370,20 +370,28 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
             Returns role of specific user in a project by id.
             Returns `None` if that user doesn't exist
         """
+        current_project = Project.objects.get(id=project_id)
         current_user = ProjectMember.objects.filter(project_id=project_id, user_id=user_id).first()
 
-        return None if current_user is None else current_user.role
-
+        if not hasattr(current_user, 'role'):
+            return None
+        if current_user.role is not None:
+            return current_user.role
+        if current_project.created_by_id == user_id:
+            return 'owner'
+        return 'annotator'
+        
     def perform_create(self, serializer):
         # Added by NgDMau
         # check if logging user is admin of current project
         # if yes, user can add others to this current project, else cant
         current_user_id = self.request.user.id
         project_id = self.kwargs['pk']
+
         user_id = json.loads(self.request.body)['user_pk']
         user_role = json.loads(self.request.body)['role']
 
-        current_user_role = self.get_project_member_role(project_id, user_id)
+        current_user_role = self.get_project_member_role(project_id, current_user_id)
 
         # Error handling
         if current_user_role is None:
@@ -394,7 +402,7 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
 
         roles = ['owner', 'manager', 'reviewer', 'annotator']
         if user_role not in roles:
-            user_role = 'annotator'
+            user_role = 'annotator' # In case body content changed unexpectedly
 
         if not Project.objects.filter(pk=project_id).exists():
             raise DatasetJscDatabaseException('There is no such project')
