@@ -4,7 +4,7 @@ import './Spinner.styl';
 // import { DtsLoading } from '../../assets/images';
 import { required } from '../Form/Validation/Validators';
 
-export const Spinner = ({ className, style, size = 32, stopped = false }) => {
+export const Spinner = ({ className, style, size = 32, stopped = false, content='LOADING......' }) => {
   const rootClass = cn('spinner');
 
   const sizeWithUnit = typeof size === 'number' ? `${size}px` : size;
@@ -19,6 +19,6 @@ export const Spinner = ({ className, style, size = 32, stopped = false }) => {
     //   </div>
     // </div>
     // <img src={required('../../assets/images/dataset_loading.gif')}></img>
-    <div>LOADING.....</div>
+    <div>Loading......</div>
   );
 };

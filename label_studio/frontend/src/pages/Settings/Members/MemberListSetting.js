@@ -108,7 +108,7 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
             <Elem name="column" mix="avatar" />
             <Elem name="column" mix="email">Email</Elem>
             <Elem name="column" mix="name">Tên</Elem>
-            <Elem name="column" mix="name">Quyền</Elem>
+            <Elem name="column" mix="role">Quyền</Elem>
             <Elem name="column" mix="last-activity">Hoạt động</Elem>
           </Elem>
           <Elem name="body">

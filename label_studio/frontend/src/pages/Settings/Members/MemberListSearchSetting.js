@@ -11,7 +11,21 @@ export const MemberListSearchSetting = ({onSelect, selectedUser, defaultSelected
   const [usersList, setUsersList] = useState([]);
   const [searchInput, setSearchInput] = useState('')
 
-  const fetchUsers = useCallback(async (searchValue) => {
+  // const fetchUsers = useCallback(async (searchValue) => {
+  //   if (searchValue != "") {
+  //     const result = await api.callApi('memberships', {
+  //       params: {
+  //         pk: 1, // hardcode must be replaced by User's active_organization in the future
+  //         search: searchValue
+  //       },
+  //     });
+  //     console.log("--> APPLIED searchInput: " + searchInput + " <--")
+  //     console.log("--> NEW members number: " + usersList.length + " <--")
+  //     setUsersList(result);
+  //   }
+  // }, []);
+
+  const fetchMembers = async function (searchValue) {
     if (searchValue != "") {
       const result = await api.callApi('memberships', {
         params: {
@@ -19,9 +33,23 @@ export const MemberListSearchSetting = ({onSelect, selectedUser, defaultSelected
           search: searchValue
         },
       });
-      setUsersList(result);
+      console.log("--> APPLIED search: " + searchValue + " <--")
+      console.log("--> FETCHED members: " + result.length + " <--")
+      console.log("--> searchINPUT: " + searchInput + "<--\n")
+      setUsersList(result);      
     }
-  }, [api]);
+  }
+
+  const handleSearchInputChange = function (input) {
+    if (input.length < 3) {
+      setSearchInput('');
+      setUsersList([]);
+    } 
+    
+    if (input.length >= 3) {
+      setSearchInput(input);
+    }
+  }
 
   const selectUser = useCallback((user) => {
     if (selectedUser?.id === user.id || usersList.length===0) {
@@ -32,7 +60,17 @@ export const MemberListSearchSetting = ({onSelect, selectedUser, defaultSelected
   }, [selectedUser,usersList]);
 
   useEffect(() => {
-    fetchUsers(searchInput);
+    // console.log("--> NEW search: " + searchInput + " <--")
+    // console.log("--> CURRENT members: " + usersList.length + " <--\n")
+    // fetchMembers(searchInput);
+    if (searchInput == "") {setUsersList([])}
+
+    const delayDebounceFn =  setTimeout(() => {
+      console.log(searchInput);
+      fetchMembers(searchInput);
+    }, 2000);
+
+    return () => clearTimeout(delayDebounceFn);
   }, [searchInput]);
 
   useEffect(() => {
@@ -46,7 +84,7 @@ export const MemberListSearchSetting = ({onSelect, selectedUser, defaultSelected
   return (
     <Block name="people-list">
       <Elem name="search">
-        < input type="text" style={{width:"100%"}} placeholder="Tìm kiếm theo tên, email" onChange={e => setSearchInput(e.target.value)} />
+        < input type="text" style={{width:"100%"}} placeholder="Tìm kiếm theo tên, email" onChange={e => handleSearchInputChange(e.target.value)} />
       </Elem>
       {usersList.length !==0 ? (
         <Elem name="users">

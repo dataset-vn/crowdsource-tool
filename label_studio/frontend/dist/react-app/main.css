@@ -3150,7 +3150,7 @@ __user_active::before {
 }
 .ls-people-list__field.ls-email,
 .ls-people-list__column.ls-email {
-  width: 200px;
+  width: 300px;
 }
 .ls-people-list__field.ls-last-activity,
 .ls-people-list__column.ls-last-activity {
