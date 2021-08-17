@@ -5,6 +5,7 @@ import { useAPI } from "../../providers/ApiProvider";
 import { Block, Elem } from '../../utils/bem';
 import './VersionNotifier.styl';
 import { IconBell } from '../../assets/icons';
+import { useTranslation } from "react-i18next";
 
 const VersionContext = createContext();
 
@@ -46,6 +47,7 @@ export const VersionProvider = ({children}) => {
 export const VersionNotifier = ({showNewVersion, showCurrentVersion}) => {
   const url = "https://pypi.org/project/label-studio/#history";
   const {newVersion, updateTime, latestVersion, version } = useContext(VersionContext) ?? {};
+  const { t } = useTranslation();
 
   return (newVersion && showNewVersion) ? (
     <Block tag="li" name="version-notifier">
@@ -55,10 +57,10 @@ export const VersionNotifier = ({showNewVersion, showCurrentVersion}) => {
         </Elem>
         <Elem name="content">
           <Elem name="title" data-date={updateTime}>
-            {latestVersion} Available
+            {latestVersion} { t('VersionNotifier.status') /*Available*/ }
           </Elem>
           <Elem name="description">
-            Current version: {version}
+          { t('VersionNotifier.version') /*Current version:*/ } {version}
           </Elem>
         </Elem>
       </a>

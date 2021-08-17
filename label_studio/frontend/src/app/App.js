@@ -16,6 +16,7 @@ import './App.styl';
 import { AsyncPage } from './AsyncPage/AsyncPage';
 import ErrorBoundary from './ErrorBoundary';
 import { RootPage } from './RootPage';
+import "../i18n";
 
 const baseURL = new URL(APP_SETTINGS.hostname || location.origin);
 

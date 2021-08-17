@@ -5,6 +5,7 @@ import { absoluteURL, copyText } from '../../utils/helpers';
 import { Button } from '../Button/Button';
 import { Space } from '../Space/Space';
 import "./Error.styl";
+import { useTranslation } from "react-i18next";
 
 const FACEBOOK_PAGE_URL = "https://facebook.com/dataset.vn"
 
@@ -20,6 +21,8 @@ export const ErrorWrapper = ({title, message, errorId, stacktrace, validation, v
     copyText(preparedStackTrace);
     setTimeout(() => setCopied(false), 1200);
   }, [preparedStackTrace]);
+
+  const { t } = useTranslation();
 
   return (
     <Block name="error-message">
@@ -77,15 +80,17 @@ export const ErrorWrapper = ({title, message, errorId, stacktrace, validation, v
       <Elem name="actions">
         <Space spread>
           <Elem tag={Button} name="action-slack" target="_blank" icon={<DtsFacebook/>} href={FACEBOOK_PAGE_URL}>
-            Ask on Facebook
+          /*{
+            t('ErrorWrapper.content') // Ask on Facebook
+          }*/
           </Elem>
 
           <Space size="small">
             {preparedStackTrace && <Button disabled={copied} onClick={copyStacktrace} style={{width: 180}}>
               {copied ? "Copied" : "Copy Stacktrace"}
             </Button>}
-            {onGoBack && <Button onClick={onGoBack}>Go Back</Button>}
-            {onReload && <Button onClick={onReload}>Reload</Button>}
+            {onGoBack && <Button onClick={onGoBack}>{ t('ErrorWrapper.button1')  /*Go Back*/ } </Button>}
+            {onReload && <Button onClick={onReload}>{ t('ErrorWrapper.button2') /*Reload*/ }</Button>}
           </Space>
         </Space>
       </Elem>
@@ -93,6 +98,7 @@ export const ErrorWrapper = ({title, message, errorId, stacktrace, validation, v
     </Block>
   );
 };
+
 
 
 

@@ -1,0 +1,24 @@
+{
+    "ErrorWrapper":
+    {
+        "content": "Hỏi đáp trên Facebook",
+        "button1": "Trở lại",
+        "button2": "Tải lại trang"
+    },
+
+    "Spinner":
+    {
+        "loading": "ĐANG TẢI....."
+    },
+
+    "VersionNotifier":
+    {
+        "status": "Đã sẵn sàng",
+        "version": "Phiên bản hiện tại:"
+    },
+
+    "Projectempty":
+    {
+        "header": "Hiện tại không có dự án nào cả"
+    }
+}

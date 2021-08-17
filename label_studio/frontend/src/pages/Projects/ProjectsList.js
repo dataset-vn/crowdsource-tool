@@ -7,6 +7,7 @@ import { LsBulb, LsCheck, LsEllipsis, LsMinus } from '../../assets/icons';
 import { Button, Dropdown, Menu, Userpic } from '../../components';
 import { Block, Elem } from '../../utils/bem';
 import { absoluteURL } from '../../utils/helpers';
+import { useTranslation } from "react-i18next";
 
 export const ProjectsList = ({projects}) => {
   const history = useHistory();
@@ -20,10 +21,11 @@ export const ProjectsList = ({projects}) => {
 };
 
 export const EmptyProjectsList = ({ openModal }) => {
+  const { t } = useTranslation();
   return (
     <Block name="empty-projects-page">
       <Elem name="heidi" tag="img" src={absoluteURL("/static/images/Dman2_naive.png")} />
-      <Elem name="header" tag="h1">There is no project here</Elem>
+      <Elem name="header" tag="h1">{t('ProjectEmpty.header') /*There is no project here*/}</Elem>
       <p>Create one and start labeling your data</p>
       <Elem name="action" tag={Button} onClick={openModal} look="primary">Create Project</Elem>
     </Block>
