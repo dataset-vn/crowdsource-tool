@@ -27,4 +27,5 @@ export { default as IconUpload } from './upload.svg';
 
 export { default as DtsFacebook } from './facebook_icon.svg';
 export { default as DtsBuilding } from './new_org.svg';
+export { default as DtsTrash } from './trash_400.svg';
 

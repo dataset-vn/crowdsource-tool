@@ -11,20 +11,6 @@ export const MemberListSearchSetting = ({onSelect, selectedUser, defaultSelected
   const [usersList, setUsersList] = useState([]);
   const [searchInput, setSearchInput] = useState('')
 
-  // const fetchUsers = useCallback(async (searchValue) => {
-  //   if (searchValue != "") {
-  //     const result = await api.callApi('memberships', {
-  //       params: {
-  //         pk: 1, // hardcode must be replaced by User's active_organization in the future
-  //         search: searchValue
-  //       },
-  //     });
-  //     console.log("--> APPLIED searchInput: " + searchInput + " <--")
-  //     console.log("--> NEW members number: " + usersList.length + " <--")
-  //     setUsersList(result);
-  //   }
-  // }, []);
-
   const fetchMembers = async function (searchValue) {
     if (searchValue != "") {
       const result = await api.callApi('memberships', {
@@ -33,9 +19,9 @@ export const MemberListSearchSetting = ({onSelect, selectedUser, defaultSelected
           search: searchValue
         },
       });
-      console.log("--> APPLIED search: " + searchValue + " <--")
-      console.log("--> FETCHED members: " + result.length + " <--")
-      console.log("--> searchINPUT: " + searchInput + "<--\n")
+      // console.log("--> APPLIED search: " + searchValue + " <--")
+      // console.log("--> FETCHED members: " + result.length + " <--")
+      // console.log("--> searchINPUT: " + searchInput + "<--\n")
       setUsersList(result);      
     }
   }
@@ -60,9 +46,6 @@ export const MemberListSearchSetting = ({onSelect, selectedUser, defaultSelected
   }, [selectedUser,usersList]);
 
   useEffect(() => {
-    // console.log("--> NEW search: " + searchInput + " <--")
-    // console.log("--> CURRENT members: " + usersList.length + " <--\n")
-    // fetchMembers(searchInput);
     if (searchInput == "") {setUsersList([])}
 
     const delayDebounceFn =  setTimeout(() => {

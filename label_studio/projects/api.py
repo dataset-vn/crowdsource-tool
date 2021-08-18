@@ -328,7 +328,7 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner']).exists() and current_user_id != project.created_by_id:
             raise DatasetJscDatabaseException("Operation can only be performed by a project manager or project owner")
         
-        members = ProjectMember.objects.filter(project=project_id)
+        members = ProjectMember.objects.filter(project=project_id).order_by('-role')
         members = members.extra(select={'total_records': members.count()}) # This extra total_records will temporarily help frontend to paginate members list 
 
         if self.request.query_params.get('search'):
@@ -362,8 +362,10 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
-        self.perform_destroy(instance)
-        return Response({'code':200, 'detail': 'Delete project member successfully'}, status=status.HTTP_200_OK)
+        result, detail = self.perform_destroy(instance)
+        if result == True:
+            return Response({'code':200, 'detail': detail}, status=status.HTTP_200_OK)
+        raise DatasetJscDatabaseException(detail)
 
     def get_project_member_role(self, project_id: str, user_id: str) -> str:
         """
@@ -451,11 +453,28 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
             raise DatasetJscDatabaseException('Database error during project creation. Try again.')
 
     def perform_destroy(self, instance):
+        body = json.loads(self.request.body)
+        if 'user_pk' not in body:
+            return False, "Member not found"
+
+        project_id = self.kwargs['pk']
+        member_id = body['user_pk']
+        member_role = self.get_project_member_role(project_id, member_id)
+        operator_id = self.request.user.id
+        operator_role = self.get_project_member_role(project_id, operator_id)
+        
+        if operator_role not in ["manager", "owner"]:
+            return False, "Operation can only be performed by a project manager or project owner"
+
+        if member_role == "owner":
+            return False, "Could not remove owner from the project"
+
         try:
             instance.delete()
+            return True, "Removed member successfully"
         except IntegrityError as e:
             logger.error('Fallback to cascase deleting after integrity_error: {}'.format(str(e)))
-            instance.delete()
+            return False, "Removed member failed"
 
 
     @swagger_auto_schema(tags=['ProjectMember'])

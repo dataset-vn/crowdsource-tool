@@ -10,6 +10,7 @@ export const API_CONFIG = {
     getProjectMember: "/projects/:pk/members",
     getOneProjectMember: "/projects/:pk/members/:user",
     createProjectMember: "POST:/projects/:pk/members",
+    removeProjectMember: "DELETE:/projects/:pk/members",
 
     // OrganizationS
     memberships: "/organizations/:pk/memberships",
