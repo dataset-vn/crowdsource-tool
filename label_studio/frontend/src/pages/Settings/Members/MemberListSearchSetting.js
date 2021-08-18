@@ -12,6 +12,7 @@ export const MemberListSearchSetting = ({onSelect, selectedUser, defaultSelected
   const [searchInput, setSearchInput] = useState('')
 
   const fetchMembers = async function (searchValue) {
+    // console.log("fetchMembers")
     if (searchValue != "") {
       const result = await api.callApi('memberships', {
         params: {
@@ -19,17 +20,50 @@ export const MemberListSearchSetting = ({onSelect, selectedUser, defaultSelected
           search: searchValue
         },
       });
-      // console.log("--> APPLIED search: " + searchValue + " <--")
-      // console.log("--> FETCHED members: " + result.length + " <--")
-      // console.log("--> searchINPUT: " + searchInput + "<--\n")
+      if (result.length == 0) setSearchNoti("<b>Không tìm thấy người dùng nào!</b>")
+      else setSearchNoti("<b>Có " + result.length + " kết quả:</b>");
       setUsersList(result);      
     }
   }
 
+  const setSearchNoti = (content) => {
+    let searchNotiElem = document.getElementById("search-noti");
+    searchNotiElem.innerHTML = content;
+    // return
+  }
+
+  // const startSearchLoader = () => {
+  //   let loader = document.getElementById("loader");
+  //   loader.style.border = "8px solid #f3f3f3";
+  //   loader.style.borderTop = "8px solid #3498db"; /* Blue */
+  //   loader.style.borderRadius = "50%";
+  //   loader.style.width = "5px";
+  //   loader.style.height = "5px";
+  //   loader.style.animation = "spin 2s linear infinite";
+  //   loader.style.paddingLeft = "auto";
+
+  //   let cssAnimation = document.createElement('style');
+  //   // cssAnimation.type = 'text/css';
+  //   var rules = document.createTextNode('@keyframes spin {'+
+  //                                       '0% { transform: rotate(0deg); }'+
+  //                                       '100% { transform: rotate(360deg); }'+
+  //                                       '}');
+  //   cssAnimation.appendChild(rules);
+  //   document.getElementsByTagName("head")[0].appendChild(cssAnimation);
+  // }
+ 
+
   const handleSearchInputChange = function (input) {
+    if (input == "") setSearchNoti("")
+    else {
+      setSearchNoti("<b>Đang tìm kiếm......</b>")
+      // console.log("handleSearchInputChange")
+    }
+    onSelect?.(null);
+    setUsersList([]);
+
     if (input.length < 3) {
       setSearchInput('');
-      setUsersList([]);
     } 
     
     if (input.length >= 3) {
@@ -43,16 +77,17 @@ export const MemberListSearchSetting = ({onSelect, selectedUser, defaultSelected
     } else {
       onSelect?.(user);
     }
-  }, [selectedUser,usersList]);
+  }, [selectedUser, usersList]);
+
 
   useEffect(() => {
-    if (searchInput == "") {setUsersList([])}
-
+    if (searchInput == "") {
+      setUsersList([])
+    }
     const delayDebounceFn =  setTimeout(() => {
-      console.log(searchInput);
+      // console.log(searchInput);
       fetchMembers(searchInput);
     }, 2000);
-
     return () => clearTimeout(delayDebounceFn);
   }, [searchInput]);
 
@@ -67,7 +102,9 @@ export const MemberListSearchSetting = ({onSelect, selectedUser, defaultSelected
   return (
     <Block name="people-list">
       <Elem name="search">
-        < input type="text" style={{width:"100%"}} placeholder="Tìm kiếm theo tên, email" onChange={e => handleSearchInputChange(e.target.value)} />
+        < input type="text" style={{width:"30%", border: "2px solid"}} placeholder="Tìm kiếm theo tên, email" onChange={e => handleSearchInputChange(e.target.value)} />
+        <div style={{paddingLeft: "20px", paddingTop:"10px", paddingBottom:"10px"}} id='search-noti' ></div>
+        {/* <div id='loader' ></div> */}
       </Elem>
       {usersList.length !==0 ? (
         <Elem name="users">

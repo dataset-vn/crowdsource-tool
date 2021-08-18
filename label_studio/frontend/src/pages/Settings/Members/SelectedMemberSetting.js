@@ -51,7 +51,7 @@ export const SelectedMemberSetting = ({ user, onClose, projectID }) => {
       }
     });
 
-    console.log("delete response: ", response)
+    // console.log("delete response: ", response)
     if (response.code == 200) {
       window.alert(response.detail);
       window.location.reload();
