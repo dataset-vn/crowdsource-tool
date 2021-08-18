@@ -56,7 +56,7 @@ const ProjectCard = ({project, history}) => {
       '--background-color': chr(color).alpha(0.2).css(),
     } : {};
   }, [color]);
-
+  const { t } = useTranslation();
   return (
     <Elem tag={NavLink} name="link" to={`/projects/${project.id}/data`} data-external>
       <Block name="project-card" mod={{colored: !!color}} style={projectColors}>
