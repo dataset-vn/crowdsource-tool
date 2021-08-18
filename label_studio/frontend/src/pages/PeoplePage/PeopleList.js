@@ -5,6 +5,7 @@ import { useAPI } from "../../providers/ApiProvider";
 import { Block, Elem } from "../../utils/bem";
 import { isDefined } from "../../utils/helpers";
 import './PeopleList.styl';
+import { useTranslation } from "react-i18next";
 
 export const PeopleList = ({onSelect, selectedUser, defaultSelected}) => {
   const api = useAPI();
@@ -62,19 +63,20 @@ export const PeopleList = ({onSelect, selectedUser, defaultSelected}) => {
       setUsersList(data)
     }
     }
+  const { t } = useTranslation();
   return (
     <Block name="people-list">
       <Elem name="search">
-      < input type="text" style={{width:"100%"}} placeholder="Tìm kiếm theo tên, email" onChange={e => setInputValues(e.target.value)} />
+      < input type="text" style={{width:"100%"}} placeholder= { t('peopleList.placeholder') } onChange={e => setInputValues(e.target.value)} />
 
       </Elem>
       {usersList.length !==0 ? (
         <Elem name="users">
           <Elem name="header">
             <Elem name="column" mix="avatar"/>
-            <Elem name="column" mix="email">Email</Elem>
-            <Elem name="column" mix="name">Tên</Elem>
-            <Elem name="column" mix="last-activity">Hoạt động</Elem>
+            <Elem name="column" mix="email">{ t('peopleList.email') }</Elem>
+            <Elem name="column" mix="name">{ t('peopleList.name') }</Elem>
+            <Elem name="column" mix="last-activity">{ t('peopleList.active') }</Elem>
           </Elem>
           <Elem name="body">
             {usersList.map(({user}) => {

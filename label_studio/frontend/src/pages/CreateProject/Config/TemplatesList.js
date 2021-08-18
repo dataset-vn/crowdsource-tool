@@ -6,6 +6,7 @@ import { useAPI } from '../../../providers/ApiProvider';
 import { cn } from '../../../utils/bem';
 import './Config.styl';
 import { IconInfo } from '../../../assets/icons';
+import { useTranslation } from "react-i18next";
 
 
 const listClass = cn("templates-list");
@@ -51,7 +52,7 @@ export const TemplatesList = ({ selectedGroup, selectedRecipe, onCustomTemplate,
   }, []);
 
   const selected = selectedGroup || groups[0];
-
+  const { t } = useTranslation();
   return (
     <div className={listClass}>
       <aside className={listClass.elem("sidebar")}>
@@ -70,7 +71,7 @@ export const TemplatesList = ({ selectedGroup, selectedRecipe, onCustomTemplate,
             </li>
           ))}
         </ul>
-        <button type="button" onClick={onCustomTemplate} className={listClass.elem("custom-template")}>Custom template</button>
+        <button type="button" onClick={onCustomTemplate} className={listClass.elem("custom-template")}>{ t('template.custom') }</button>
       </aside>
       <main>
         {!templates && <Spinner style={{ width: "100%", height: 200 }} />}

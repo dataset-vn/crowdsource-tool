@@ -1,0 +1,138 @@
+{
+    "projectCard":
+    {
+        "setting": "Cài Đặt",
+        "label": "Dán nhãn"
+    },
+
+    "projectEmpty":
+    {
+        "header": "Chưa có bất kỳ dự án nào",
+        "content": "Tạo dự án để bắt đầu gán nhãn dữ liệu",
+        "action": "Tạo dự án"
+    },
+
+    "projectItem":
+    {
+        "action": "Tạo dự án" 
+    },
+
+    "projectPage":
+    {
+        "title": "Dự án"
+    },
+    
+    "peopleList":
+    {
+        "placeholder": "Tìm kiếm theo tên, email",
+        "email": "Email",
+        "name": "Tên",
+        "active": "Hoạt động"
+    },
+
+    "invitationModal":
+    {
+        "description": "Mời thêm thành viên tham gia Dataset",
+        "title": "Mời thêm thành viên",
+        "reset": "Đặt lại đường dẫn",
+        "copy": "Sao chép đường dẫn",
+        "copied": "Đã sao chép!",
+        "action": "Thêm thành viên"
+    },
+
+    "selectedUser":
+    {
+        "created": "Dự án đã tạo",
+        "contributed": "Dự án đóng góp"
+    },
+
+    "export":
+    {
+        "waitmess": "Tệp tin đang được chuẩn bị. Vui lòng đợi."
+    },
+
+    "formatInfo":
+    {
+        "info": "Có thể xuất bộ dữ liệu dựa trên những định dạng sau:",
+        "feedback": "Không tìm thấy định đạng phù hợp?"
+    },
+
+    "initDataMan":
+    {
+        "error": "Giao diện của Label Studio không tồn tại"
+    },
+
+    "dataMan":
+    {
+        "info": "Dự án đã bị xóa hoặc chưa được tạo ra",
+        "fallback": "Trở về dự án"
+    },
+
+    "labelInstruc":
+    {
+        "title": "Hướng dẫn",
+        "action": "Hướng dẫn"
+    },
+
+    "projectCreate":
+    {
+        "name": "Tên dự án",
+        "description": "Mô tả",
+        "import": "Nhập dữ liệu",
+        "delete": "Xóa",
+        "save": "Lưu"
+    },
+
+    "importFooter":
+    {
+        "content1": "Đặt câu hỏi tới",
+        "content2": "facebook của chúng tôi",
+        "content3": "nếu bạn có bất kỳ vấn đề nào"
+    },
+
+    "importPage":
+    {
+        "errormess": "Tệp tải lên có dung lượng quá lớn",
+        "addurl": "Thêm URL",
+        "button1": "Tải lên",
+        "button2": "tệp tin",
+        "csv_tsv": "Coi tệp CSV/TSV như",
+        "listOfTask": "Danh sách công việc",
+        "timeSeries": "Chuỗi thời gian",
+        "header1": "Kéo và thả tệp ở đây",
+        "header2": "hoặc ấn vào trình duyêt",
+        "text": "Văn bản",
+        "audio": "Âm thanh",
+        "images": "Hình ảnh",
+        "commonFormats": "Định dạng chung"
+    },
+
+    "importModal":
+    {
+        "title": "Nhập dữ liệu",
+        "cancel": "Hủy",
+        "import": "Nhập"
+    },
+
+    "preview":
+    {
+        "UI": "Xem trước giao diện người dùng"
+    },
+
+    "config":
+    {
+        "empty": "Cấu hình ghi nhãn của bạn trống. Nó được yêu cầu để gắn nhãn dữ liệu của bạn.",
+        "setting": "Configure settings",
+        "confData": "Configure data",
+        "objError1": "his template requires more data then you have for now",
+        "objError2": "To select which field(s) to label you need to upload the data. Alternatively, you can provide it using Code mode.",
+        "confLI": "Configure the labeling interface with tags.",
+        "showtags": "See all tags",
+        "browseTemp": "Browse Templates"
+    },
+
+    "template":
+    {
+        "custom": "Tùy chỉnh mẫu"
+    }
+}

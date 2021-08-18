@@ -13,8 +13,10 @@ import "./PeopleInvitation.styl";
 import { PeopleList } from "./PeopleList";
 import "./PeoplePage.styl";
 import { SelectedUser } from "./SelectedUser";
+import { useTranslation } from "react-i18next";
 
 const InvitationModal = ({link}) => {
+  const { t } = useTranslation();
   return (
     <Block name="invite">
       <Input
@@ -24,7 +26,7 @@ const InvitationModal = ({link}) => {
       />
 
       <Description style={{width: '70%', marginTop: 16}}>
-        Invite people to join DataSet.
+        { t('invitationModal.description') }
       </Description>
     </Block>
   );
@@ -56,7 +58,7 @@ export const PeoplePage = () => {
   }, [setInviteLink]);
 
   const inviteModalProps = useCallback((link) => ({
-    title: "Invite people",
+    title:  t('invitationModal.title') ,
     style: { width: 640, height: 472 },
     body: () => (
       <InvitationModal link={link}/>
@@ -74,12 +76,12 @@ export const PeoplePage = () => {
         <Space spread>
           <Space>
             <Button style={{width: 170}} onClick={() => updateLink()}>
-              Reset Link
+              { t('invitationModal.reset') }
             </Button>
           </Space>
           <Space>
             <Button primary style={{width: 170}} onClick={copyLink}>
-              {copied ? "Copied!" : "Copy link"}
+              {copied ? t('invitationModal.copied') : t('invitationModal.copy')}
             </Button>
           </Space>
         </Space>
@@ -114,7 +116,7 @@ export const PeoplePage = () => {
 
           <Space>
             <Button icon={<LsPlus/>} primary onClick={showInvitationModal}>
-              Add People
+              { t('invitationModal.action') }
             </Button>
           </Space>
         </Space>
