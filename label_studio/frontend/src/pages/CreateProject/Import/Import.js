@@ -52,14 +52,14 @@ function getFiles(files) {
   });
 }
 
-const Footer = () => 
-  (
+const Footer = () => {
+  return (
     <Modal.Footer>
       <IconInfo className={importClass.elem("info-icon")} width="20" height="20" />
       Give a question to <a target="_blank" href="https://facebook.com/dataset.vn"> our Facebook </a> if you have any problems{" "}
     </Modal.Footer>
   );
-
+};
 
 const Upload = ({ children, sendFiles }) => {
   const [hovered, setHovered] = useState(false);
@@ -174,7 +174,7 @@ export const ImportPage = ({
     const { t } = useTranslation();
     // @todo workaround for error about input size in a wrong html format
     if (typeof err === "string" && err.includes("RequestDataTooBig")) {
-      const message = t('importPage.errormess');
+      const message = "Imported file is too big";
       const extra = err.match(/"exception_value">(.*)<\/pre>/)?.[1];
       err = { message, extra };
     }
