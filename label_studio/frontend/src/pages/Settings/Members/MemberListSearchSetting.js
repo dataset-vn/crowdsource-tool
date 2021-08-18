@@ -6,7 +6,7 @@ import { Block, Elem } from "../../../utils/bem";
 import { isDefined } from "../../../utils/helpers";
 import './MemberListSetting.styl';
 
-export const MemberListSearchSetting = ({onSelect, selectedUser, defaultSelected}) => {
+export const MemberListSearchSetting = ({onSelect, selectedUser, defaultSelected, projectID}) => {
   const api = useAPI();
   const [usersList, setUsersList] = useState([]);
   const [searchInput, setSearchInput] = useState('')
@@ -71,11 +71,27 @@ export const MemberListSearchSetting = ({onSelect, selectedUser, defaultSelected
     }
   }
 
+  const isUserMember = async (userID, projectID) => {
+    let response = await api.callApi("getOneProjectMember", {
+      params: {
+        pk: projectID,
+        user: userID
+      }
+    })
+    // console.log("response check User Member: ", response.length)
+    if (response.length == 1) return true
+    return false
+  }
+
   const selectUser = useCallback((user) => {
     if (selectedUser?.id === user.id || usersList.length===0) {
       onSelect?.(null);
     } else {
-      onSelect?.(user);
+      isUserMember(user.id, projectID)
+      .then((res) => {
+        user.isMember = res;
+        onSelect?.(user);
+      })
     }
   }, [selectedUser, usersList]);
 

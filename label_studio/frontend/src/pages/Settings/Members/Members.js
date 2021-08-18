@@ -50,6 +50,7 @@ export const Members = () => {
             selectedUser={selectedUser}
             defaultSelected={defaultSelected}
             onSelect={(user) => selectUser(user)}
+            projectID={project.id}
           />
           {selectedUser && (
             <SelectedMemberSetting

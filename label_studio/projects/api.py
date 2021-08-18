@@ -320,9 +320,11 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
             user_id = self.kwargs['user']
         current_user_id = self.request.user.id
         project = Project.objects.get(id=project_id)
+
+        current_user_role = self.get_project_member_role(project_id, current_user_id)
         # TODO: Only Project Leader or above can see member list
         # TODO: use django permission instead of directly checking if role is manager as below
-        if user_id != None and user_id == current_user_id:
+        if user_id != None and (user_id == current_user_id or current_user_role in ["manager", "owner"]):
             return ProjectMember.objects.filter(project=project_id, user=user_id)
 
         if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner']).exists() and current_user_id != project.created_by_id:

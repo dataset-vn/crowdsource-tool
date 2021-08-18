@@ -10,17 +10,6 @@ import { Space } from "../../../components/Space/Space";
 import { ROLE_MEMBER } from "../../../utils/constant";
 import { useEffect, useState } from "react";
 
-// const UserProjectsLinks = ({ projects }) => {
-//   return (
-//     <Elem name="links-list">
-//       {projects.map((project) => (
-//         <Elem tag={NavLink} name="project-link" key={`project-${project.id}`} to={`/projects/${project.id}`} data-external>
-//           {project.title}
-//         </Elem>
-//       ))}
-//     </Elem>
-//   );
-// };
 
 export const SelectedMemberSetting = ({ user, onClose, projectID }) => {
   const fullName = [user.first_name, user.last_name].filter(n => !!n).join(" ").trim();
@@ -70,15 +59,13 @@ export const SelectedMemberSetting = ({ user, onClose, projectID }) => {
       // console.log("-=-=-=-=", user)
     }
   }, [])
-  const checkUserMember = (user, userList) => {
-    const selected = userList.filter((i) => i.user === user.id);
-    if (selected.length!==0) {
-      return true
-    }
 
-    return false
+  const checkUserMember =  (user) => {
+    // console.log("is User Member: " + user.isMember)
+    return user.isMember;
   }
-  return (
+
+  return  (
     <Block name="user-info">
       <Elem name="close" tag={Button} type="link" onClick={onClose}><LsCross /></Elem>
 
@@ -126,7 +113,7 @@ export const SelectedMemberSetting = ({ user, onClose, projectID }) => {
 
           <Space>
             {
-              checkUserMember(user, userList) ? 
+              checkUserMember(user) ? 
               <>
               <Button icon={<DtsTrash/>} onClick={removeProjectMember}>
                 Xóa khỏi dự án
