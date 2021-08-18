@@ -52,15 +52,14 @@ function getFiles(files) {
   });
 }
 
-const Footer = () => {
-  const { t } = useTranslation();
-  return (
+const Footer = () => 
+  (
     <Modal.Footer>
       <IconInfo className={importClass.elem("info-icon")} width="20" height="20" />
-      { t('importFooter.content1') } <a target="_blank" href="https://facebook.com/dataset.vn"> { t('importFooter.content2') }</a> { t('importFooter.content3') }{" "}
+      Give a question to <a target="_blank" href="https://facebook.com/dataset.vn"> our Facebook </a> if you have any problems{" "}
     </Modal.Footer>
   );
-};
+
 
 const Upload = ({ children, sendFiles }) => {
   const [hovered, setHovered] = useState(false);

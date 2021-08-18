@@ -13,7 +13,7 @@ import { useDraftProject } from './utils/useDraftProject';
 import { useTranslation } from "react-i18next";
 
 
-const ProjectName = ({ name, setName, onSaveName, onSubmit, error, description, setDescription, show = true }) => {!show ? null :(
+const ProjectName = ({ name, setName, onSaveName, onSubmit, error, description, setDescription, show = true }) => !show ? null :(
   <form className={cn("project-name")} onSubmit={e => { e.preventDefault(); onSubmit(); }}>
     <div className="field field--wide">
       <label htmlFor="project_name">Project Name</label>
@@ -32,7 +32,7 @@ const ProjectName = ({ name, setName, onSaveName, onSubmit, error, description, 
       />
     </div>
   </form>
-)};
+);
 
 export const CreateProject = ({ onClose }) => {
   const { t } = useTranslation();
@@ -123,7 +123,7 @@ export const CreateProject = ({ onClose }) => {
           <ToggleItems items={steps} active={step} onSelect={setStep} />
 
           <Space>
-            <Button look="danger" size="compact" onClick={onDelete} waiting={waiting}>{ t('projectCreate.delelte') }</Button>
+            <Button look="danger" size="compact" onClick={onDelete} waiting={waiting}>{ t('projectCreate.delete') }</Button>
             <Button look="primary" size="compact" onClick={onCreate} waiting={waiting || uploading} disabled={!project || uploadDisabled || error}>{ t('projectCreate.save') }</Button>
           </Space>
         </Modal.Header>

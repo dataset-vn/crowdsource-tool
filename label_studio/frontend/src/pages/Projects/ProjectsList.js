@@ -72,8 +72,8 @@ const ProjectCard = ({project, history}) => {
             }}>
               <Dropdown.Trigger content={(
                 <Menu>
-                  <Menu.Item href={`/projects/${project.id}/settings`}>{t('ProjectCard.setting')}</Menu.Item>
-                  <Menu.Item href={`/projects/${project.id}/data?labeling=1`}>{t('ProjectCard.label')}</Menu.Item>
+                  <Menu.Item href={`/projects/${project.id}/settings`}>{t('projectCard.setting')}</Menu.Item>
+                  <Menu.Item href={`/projects/${project.id}/data?labeling=1`}>{t('projectCard.label')}</Menu.Item>
                 </Menu>
               )}>
                 <Button size="small" type="text" icon={<LsEllipsis/>}/>
