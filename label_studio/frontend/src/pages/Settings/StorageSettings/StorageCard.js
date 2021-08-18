@@ -4,8 +4,10 @@ import { Button, Card, Dropdown, Menu } from "../../../components";
 import { Space } from "../../../components/Space/Space";
 import { ApiContext } from "../../../providers/ApiProvider";
 import { StorageSummary } from "./StorageSummary";
+import { useTranslation } from "react-i18next";
 
 export const StorageCard = ({rootClass, target, storage, onEditStorage, onDeleteStorage}) => {
+  const { t } = useTranslation();
   const [syncing, setSyncing] = useState(false);
   const api = useContext(ApiContext);
   const [storageData, setStorageData] = useState({...storage});
@@ -41,8 +43,8 @@ export const StorageCard = ({rootClass, target, storage, onEditStorage, onDelete
       extra={(
         <Dropdown.Trigger align="right" content={(
           <Menu size="compact" style={{width: 110}}>
-            <Menu.Item onClick={() => onEditStorage(storageData)}>Edit</Menu.Item>
-            <Menu.Item onClick={() => onDeleteStorage(storageData)}>Delete</Menu.Item>
+            <Menu.Item onClick={() => onEditStorage(storageData)}>{ t("StorageCard.edit") /*Edit*/ }</Menu.Item>
+            <Menu.Item onClick={() => onDeleteStorage(storageData)}>{ t("StorageCard.delete") /*Delete*/ }</Menu.Item>
           </Menu>
         )}>
           <Button type="link" style={{width: 32, height: 32, marginRight: -10}} icon={<FaEllipsisV/>}/>
@@ -59,7 +61,7 @@ export const StorageCard = ({rootClass, target, storage, onEditStorage, onDelete
         <div className={rootClass.elem('sync')}>
           <Space size="small">
             <Button waiting={syncing} onClick={startSync}>
-              Sync Storage
+            { t("StorageCard.sync") /*Sync Storage*/ }
             </Button>
 
             {synced !== null ? (

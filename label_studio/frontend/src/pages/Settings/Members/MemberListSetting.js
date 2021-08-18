@@ -7,10 +7,12 @@ import { Block, Elem } from "../../../utils/bem";
 import { isDefined } from "../../../utils/helpers";
 import './MemberListSetting.styl';
 import React from 'react';
+import { useTranslation } from "react-i18next";
 
 
 export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, projectID }) => {
   const api = useAPI();
+  const { t } = useTranslation();
   const [usersList, setUsersList] = useState();
   const [userInProjects, setUserInProjects] = useState(null)
   const { project } = useProject();
@@ -89,10 +91,10 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
         <Elem name="users">
           <Elem name="header">
             <Elem name="column" mix="avatar" />
-            <Elem name="column" mix="email">Email</Elem>
-            <Elem name="column" mix="name">Tên</Elem>
-            <Elem name="column" mix="name">Quyền</Elem>
-            <Elem name="column" mix="last-activity">Hoạt động</Elem>
+            <Elem name="column" mix="email">{t("MemberLSetting2.email") /*Email*/ }</Elem>
+            <Elem name="column" mix="name">{t("MemberLSetting2.name") /*Tên*/ }</Elem>
+            <Elem name="column" mix="name">{t("MemberLSetting2.rights") /*Quyền*/ }</Elem>
+            <Elem name="column" mix="last-activity">{t("MemberLSetting2.activity") /*Hoạt động*/ }</Elem>
           </Elem>
           <Elem name="body">
            

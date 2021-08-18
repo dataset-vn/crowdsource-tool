@@ -21,4 +21,4 @@ i18n
   if(locale == "vi")
     i18n.changeLanguage("vi");
   else 
-	i18n.changeLanguage("en");
+	  i18n.changeLanguage("en");

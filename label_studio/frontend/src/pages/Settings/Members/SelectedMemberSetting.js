@@ -9,6 +9,7 @@ import "./MemberSetting.styl";
 import { Space } from "../../../components/Space/Space";
 import { ROLE_MEMBER } from "../../../utils/constant";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const UserProjectsLinks = ({ projects }) => {
   return (
@@ -23,6 +24,7 @@ const UserProjectsLinks = ({ projects }) => {
 };
 
 export const SelectedMemberSetting = ({ user, onClose, projectID }) => {
+  const { t } = useTranslation();
   const fullName = [user.first_name, user.last_name].filter(n => !!n).join(" ").trim();
   const [role, setRole] = useState('annotator')
   const api = useAPI();
@@ -87,7 +89,7 @@ export const SelectedMemberSetting = ({ user, onClose, projectID }) => {
 
       {!!user.created_projects.length && (
         <Elem name="section">
-          <Elem name="section-title">Created Projects</Elem>
+          <Elem name="section-title">{ t("SelectedMember.create") /*Created Projects*/ }</Elem>
 
           <UserProjectsLinks projects={user.created_projects} />
         </Elem>
@@ -95,14 +97,14 @@ export const SelectedMemberSetting = ({ user, onClose, projectID }) => {
 
       {!!user.contributed_to_projects.length && (
         <Elem name="section">
-          <Elem name="section-title">Contributed to</Elem>
+          <Elem name="section-title">{ t("SelectedMember.contribute") /*Contributed to*/ }</Elem>
 
           <UserProjectsLinks projects={user.contributed_to_projects} />
         </Elem>
       )}
 
       <Elem tag="p" name="last-active">
-        Hoạt động lúc : {format(new Date(user.last_activity), 'dd MMM yyyy, KK:mm a')}
+      { t("SelectedMember.time") /*Hoạt động lúc :*/ } {format(new Date(user.last_activity), 'dd MMM yyyy, KK:mm a')}
       </Elem>
       <Elem name="controls">
         <Space spread>
@@ -111,7 +113,7 @@ export const SelectedMemberSetting = ({ user, onClose, projectID }) => {
           <Space>
             {
               checkUserMember(user, userList) ? <Elem tag="p" name="last-active">
-                Đã là thành viên dự án
+                { t("SelectedMember.already") /*Đã là thành viên dự án*/ }
             </Elem> : <>
                 <select id="cars" className="ls-button ls-button_look_ " onChange={(e) => setRole(e.target.value)} name="role_member">
                   {Object.keys(ROLE_MEMBER).map(
@@ -121,7 +123,7 @@ export const SelectedMemberSetting = ({ user, onClose, projectID }) => {
                   )}
                 </select>
                 <Button icon={<LsPlus />} onClick={addPeopleProjects}>
-                  Thêm vào dự án
+                { t("SelectedMember.addproject") /*Thêm vào dự án*/ }
           </Button>
               </> 
 

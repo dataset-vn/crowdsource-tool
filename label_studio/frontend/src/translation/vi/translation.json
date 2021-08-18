@@ -20,5 +20,61 @@
     "Projectempty":
     {
         "header": "Hiện tại không có dự án nào cả"
+    },
+
+    "MemberLSetting":
+    {
+        "email": "Email",
+        "name": "Tên",
+        "activity": "Hoạt động"
+    },
+    "MemberLSetting2":
+    {
+        "email": "Email",
+        "name": "Tên",
+        "rights": "Quyền",
+        "activity": "Hoạt động"
+    },
+
+    "Member":
+    {
+        "invite": "Các thành viên được mời sẽ có tài khoản cá nhân. Họ có thể đăng ký và tham gia vào tổ chức bằng cách sử dụng đường link này.",
+        "link": "Reset Link",
+        "add": "Thêm thành viên",
+        "project": "Thành viên dự án"
+    },
+
+    "SelectedMember":
+    {
+        "create": "Project đã tạo",
+        "contribute": "Đóng góp đến",
+        "time": "Hoạt động lúc :",
+        "already": "Đã là thành viên dự án",
+        "addproject": "Thêm vào dự án"
+    },
+
+    "StorageCard":
+    {
+        "edit": "Chỉnh sửa",
+        "delete": "Xóa",
+        "sync": "Đồng bộ hóa bộ nhớ"
+    },
+
+    "StorageForm":
+    {
+        "success": "kết nối thành công!",
+        "fail": "Kết nối thất bại",
+        "check": "Kiểm tra kết nối"
+    },
+
+    "StoragSet":
+    {
+        "save": "Lưu các nhãn dán đã hoàn thành vào Amazon S3, Google Cloud, Microsoft Azure hoặc Redis.",
+        "see": "Xem thêm trong tài liệu tham khảo"
+    },
+    
+    "StorageSettings":
+    {
+        "use": "Sử dụng lưu trữ đám mây hoặc cơ sở dữ liệu làm nguồn cho các tác vụ gắn nhãn hoặc các nhãn dán đã hoàn thành của bạn."
     }
 }

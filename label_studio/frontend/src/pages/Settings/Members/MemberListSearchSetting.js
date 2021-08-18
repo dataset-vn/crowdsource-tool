@@ -5,6 +5,7 @@ import { Spinner, Userpic } from "../../../components";
 import { Block, Elem } from "../../../utils/bem";
 import { isDefined } from "../../../utils/helpers";
 import './MemberListSetting.styl';
+import { useTranslation } from "react-i18next";
 
 export const MemberListSearchSetting = ({onSelect, selectedUser, defaultSelected}) => {
   const api = useAPI();
@@ -63,6 +64,7 @@ export const MemberListSearchSetting = ({onSelect, selectedUser, defaultSelected
       setUsersList(data)
     }
     }
+  const { t } = useTranslation();
   return (
     <Block name="people-list">
       <Elem name="search">
@@ -73,9 +75,9 @@ export const MemberListSearchSetting = ({onSelect, selectedUser, defaultSelected
         <Elem name="users">
           <Elem name="header">
             <Elem name="column" mix="avatar"/>
-            <Elem name="column" mix="email">Email</Elem>
-            <Elem name="column" mix="name">Tên</Elem>
-            <Elem name="column" mix="last-activity">Hoạt động</Elem>
+            <Elem name="column" mix="email">{ t('MemberLSetting.email') /*Email*/ }</Elem>
+            <Elem name="column" mix="name">{ t('MemberLSetting.name') /*Tên*/ }</Elem>
+            <Elem name="column" mix="last-activity">{ t('MemberLSetting.activity') /*Hoạt động*/ }</Elem>
           </Elem>
           <Elem name="body">
             {usersList.map(({user}) => {

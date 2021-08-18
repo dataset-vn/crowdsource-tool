@@ -11,9 +11,11 @@ import { MemberListSetting } from './MemberListSetting';
 import { SelectedMemberSetting } from './SelectedMemberSetting';
 import { MemberListSearchSetting } from './MemberListSearchSetting';
 import './Members.styl';
+import { useTranslation } from "react-i18next";
 
 
 const InvitationModal = ({ link }) => {
+  const { t } = useTranslation();
   return (
     <Block name="invite">
       <Input
@@ -23,7 +25,7 @@ const InvitationModal = ({ link }) => {
       />
 
       <Description style={{ width: '70%', marginTop: 16 }}>
-        Invited members have private accounts. They can register and join to the organization using this link.
+        { t("Member.invite") /*Invited members have private accounts. They can register and join to the organization using this link.*/ }
       </Description>
     </Block>
   );
@@ -82,7 +84,7 @@ export const Members = () => {
         <Space spread>
           <Space>
             <Button style={{ width: 170 }} onClick={() => updateLink()}>
-              Reset Link
+              { t("Member.link") /*Reset Link*/ }
             </Button>
           </Space>
           <Space>
@@ -123,12 +125,12 @@ export const Members = () => {
     inviteModal.current?.update(inviteModalProps(link));
   }, [link]);
 
-
+  const { t } = useTranslation();
   return (
     <>
 
       <Block name="people-list">
-        <Elem name="column" mix="email">Add Members</Elem>
+        <Elem name="column" mix="email"> { t("Member.add") /*Add Members*/ }</Elem>
 
         <Elem name="users">
         </Elem>
@@ -156,7 +158,7 @@ export const Members = () => {
       </Space>
 
       <Block name="people-list">
-        <Elem name="column" mix="email">Thành viên dự án</Elem>
+        <Elem name="column" mix="email"> { t("Member.project") /*Thành viên dự án*/ }</Elem>
         <Elem name="content">
           <MemberListSetting
             selectedUser={selectedMemberProject}
