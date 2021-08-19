@@ -147,7 +147,7 @@ export const ExportPage = () => {
         const search = location.search;
         history.replace(`${path}${search !== '?' ? search : ''}`);
       }}
-      title="Export data"
+      title= { t('export.title') }
       style={{width: 720}}
       closeOnClickOutside={false}
       allowClose={!downloading}
@@ -200,6 +200,7 @@ export const ExportPage = () => {
 };
 
 const FormatInfo = ({availableFormats, selected, onClick}) => {
+  const{ t } = useTranslation();
   return (
     <Block name="formats">
       <Elem name="info">{ t('formatInfo.info') }</Elem>
@@ -231,7 +232,7 @@ const FormatInfo = ({availableFormats, selected, onClick}) => {
       <Elem name="feedback">
         { t('formatInfo.feedback') }
         <br/>
-        Contact us over <a className="no-go" href="https://facebook.com/dataset.vn">Facebook</a>
+        { t('formatInfo.contact') }<a className="no-go" href="https://facebook.com/dataset.vn">Facebook</a>
       </Elem>
     </Block>
   );

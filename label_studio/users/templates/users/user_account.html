@@ -13,7 +13,7 @@
   {
     breadcrumbs: [
       {
-        title: "Account & Settings"
+        title: "Account & Settings" <!--{% translate 'Account & Settings' %} -->
       }
     ],
   }
@@ -27,14 +27,14 @@
     <form action="{% url 'user-detail' pk=user.pk %}" method="patch" class="user__info">
       <input type="hidden" name="_method" value="patch"/>
 
-      <header>{% translate 'Account info' %}'</header>
+      <header>{% translate 'Account info' %}</header>
       <ul>
         <li class="field">
           <label for="">E-mail</label>
           <input type="text" class="ls-input" value="{{user.email}}" disabled />
         </li>
         <li class="field">
-          <label for="">{% translate 'First Name' %}'</label>
+          <label for="">{% translate 'First Name' %}</label>
           <input type="text" class="ls-input" name="first_name" value="{{user.first_name}}" />
         </li>
         <li class="field">

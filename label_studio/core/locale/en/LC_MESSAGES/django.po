@@ -676,6 +676,10 @@ msgstr ""
 msgid "Your Email"
 msgstr ""
 
+#: .\label_studio\users\templates\users\user_account.html:16
+msgid "Account & Settings"
+msgstr "Account & Settings"
+
 #: .\label_studio\users\templates\users\user_account.html:30
 msgid "Account info"
 msgstr ""

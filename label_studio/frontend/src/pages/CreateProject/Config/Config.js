@@ -240,7 +240,7 @@ const Configurator = ({ columns, config, project, template, setTemplate, onBrows
   const [data, setData] = React.useState();
   const debounceTimer = React.useRef();
   const api = useAPI();
-
+  const { t } = useTranslation();
   React.useEffect(() => {
     // config may change during init, so wait for that, but for a very short time only
     debounceTimer.current = window.setTimeout(() => setConfigToCheck(config), configToCheck ? 500 : 30);
@@ -301,9 +301,9 @@ const Configurator = ({ columns, config, project, template, setTemplate, onBrows
 
   const extra = (
     <p className={configClass.elem('tags-link')}>
-      Configure the labeling interface with tags.
+      { t('config.confLI') }
       <br/>
-      <a href="https://dataset.vn/huongdan/tags/" target="_blank">See all tags</a>
+      <a href="https://dataset.vn/huongdan/tags/" target="_blank">{ t('config.showtags') }</a>
       .
     </p>
   );
@@ -312,7 +312,7 @@ const Configurator = ({ columns, config, project, template, setTemplate, onBrows
     <div className={configClass}>
       <div className={configClass.elem("container")}>
         <header>
-          <button onClick={onBrowse}>Browse Templates</button>
+          <button onClick={onBrowse}>{ t('config.browseTemp') }</button>
           <ToggleItems items={{ code: "Code", visual: "Visual" }} active={configure} onSelect={onSelect} />
         </header>
         <div className={configClass.elem('editor')}>
@@ -340,7 +340,7 @@ const Configurator = ({ columns, config, project, template, setTemplate, onBrows
         {disableSaveButton !== true && onSaveClick && (
           <Form.Actions size="small" extra={configure === "code" && extra} valid>
             <Button look="primary" size="compact" style={{width: 120}} onClick={onSave} waiting={waiting}>
-              Save
+              { t('config.save') }
             </Button>
           </Form.Actions>
         )}

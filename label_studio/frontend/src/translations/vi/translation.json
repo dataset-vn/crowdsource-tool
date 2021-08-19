@@ -48,13 +48,15 @@
 
     "export":
     {
-        "waitmess": "Tệp tin đang được chuẩn bị. Vui lòng đợi."
+        "waitmess": "Tệp tin đang được chuẩn bị. Vui lòng đợi.",
+        "title": "Xuất dữ liệu"
     },
 
     "formatInfo":
     {
         "info": "Có thể xuất bộ dữ liệu dựa trên những định dạng sau:",
-        "feedback": "Không tìm thấy định đạng phù hợp?"
+        "feedback": "Không tìm thấy định đạng phù hợp?",
+        "contact": "Liên hệ với chúng tôi qua "
     },
 
     "initDataMan":
@@ -82,7 +84,8 @@
         "delete": "Xóa",
         "save": "Lưu",
         "config": "Thiết lập nhãn",
-        "title": "Tạo dự án"
+        "title": "Tạo dự án",
+        "placeholder": "Thêm mô tả về dự án của bạn"
     },
 
     "importFooter":
@@ -96,9 +99,11 @@
     {
         "errormess": "Tệp tải lên có dung lượng quá lớn",
         "addurl": "Thêm URL",
+        "placeholder": "Dataset URL",
+        "or": "hoặc",
         "button1": "Tải lên",
         "button2": "tệp tin",
-        "csv_tsv": "Coi tệp CSV/TSV như",
+        "csv/tsv": "Coi tệp CSV/TSV như",
         "listOfTask": "Danh sách công việc",
         "timeSeries": "Chuỗi thời gian",
         "header1": "Kéo và thả tệp ở đây",
@@ -124,13 +129,14 @@
     "config":
     {
         "empty": "Cấu hình ghi nhãn của bạn trống. Nó được yêu cầu để gắn nhãn dữ liệu của bạn.",
-        "setting": "Configure settings",
-        "confData": "Configure data",
-        "objError1": "his template requires more data then you have for now",
-        "objError2": "To select which field(s) to label you need to upload the data. Alternatively, you can provide it using Code mode.",
-        "confLI": "Configure the labeling interface with tags.",
-        "showtags": "See all tags",
-        "browseTemp": "Browse Templates"
+        "setting": "Cấu hình cài đặt",
+        "confData": "Cấu hình dữ liệu",
+        "objError1": "Bản mẫu này yêu cầu nhiều dữ liệu hơn số lượng dữ liệu mà bạn hiện có",
+        "objError2": "Để có thể lựa chọn To select which trường để dán nhãn bạn cần nhập dữ liệu. Ngoài ra, bạn có thể sử dụng chế độ mã.",
+        "confLI": "Cấu hình giao diện dán nhãn với các thẻ.",
+        "showtags": "Hiển thị tất cả các thẻ",
+        "browseTemp": "Hiển thị các mẫu",
+        "save": "Lưu"
     },
 
     "template":
@@ -293,5 +299,20 @@
         "saved": "Đã lưu!",
         "save": "Lưu",
         "color": "Màu sắc"
+    },
+
+    "menuBar":
+    {
+        "logout": "Đăng xuất",
+        "acc&set": "Cài đặt tài khoản"
+    },
+
+    "sideBar":
+    {
+        "projects": "Dự án",
+        "members": "Thành viên",
+        "organizations": "Tổ chức",
+        "pin": "Ghim menu",
+        "unpin": "Bỏ ghim"
     }
 }

@@ -48,13 +48,15 @@
 
     "export":
     {
-        "waitmess": "Files are being prepared. It might take some time."
+        "waitmess": "Files are being prepared. It might take some time.",
+        "title": "Export Data"
     },
 
     "formatInfo":
     {
         "info": "You can export dataset in one of the following formats:",
-        "feedback": "Can't find an export format?"
+        "feedback": "Can't find an export format?",
+        "contact": "Contact us over "
     },
 
     "initDataMan":
@@ -82,7 +84,8 @@
         "delete": "Delete",
         "save": "Save",
         "config": "Labeling Setup",
-        "title": "Create"
+        "title": "Create",
+        "placeholder": "Optional description of your project"
     },
 
     "importFooter":
@@ -97,6 +100,7 @@
         "errormess": "Imported file is too big",
         "addurl": "Add URL",
         "placeholder": "Dataset URL",
+        "or": "or",
         "button1": "Upload",
         "button2": "Files",
         "csv/tsv": "Treat CSV/TSV as",
@@ -107,7 +111,6 @@
         "text": "Text",
         "audio": "Audio",
         "images": "Images",
-        "HTML": "HTML",
         "commonFormats": "Common Formats"
     },
 
@@ -128,11 +131,12 @@
         "empty": "Your labeling configuration is empty. It is required to label your data.",
         "setting": "Configure settings",
         "confData": "Configure data",
-        "objError1": "his template requires more data then you have for now",
+        "objError1": "This template requires more data then you have for now",
         "objError2": "To select which field(s) to label you need to upload the data. Alternatively, you can provide it using Code mode.",
         "confLI": "Configure the labeling interface with tags.",
         "showtags": "See all tags",
-        "browseTemp": "Browse Templates"
+        "browseTemp": "Browse Templates",
+        "save": "Save"
     },
 
     "template":
@@ -295,5 +299,20 @@
         "saved": "Saved!",
         "save": "Save",
         "color": "Color"
+    },
+
+    "menuBar":
+    {
+        "logout": "Log Out",
+        "acc&set": "Account & Settings"
+    },
+
+    "sideBar":
+    {
+        "projects": "Projects",
+        "members": "Members",
+        "organizations": "Organizations",
+        "pin": "Pin menu",
+        "unpin": "Unpin menu"
     }
 }

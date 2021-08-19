@@ -678,6 +678,10 @@ msgstr "Nhập email bạn đang sử dụng cho tài khoản."
 msgid "Your Email"
 msgstr "Email của bạn"
 
+#: .\label_studio\users\templates\users\user_account.html:16
+msgid "Account & Settings"
+msgstr "Cài đặt tài khoản"
+
 #: .\label_studio\users\templates\users\user_account.html:30
 msgid "Account info"
 msgstr "Thông tin tài khoản"

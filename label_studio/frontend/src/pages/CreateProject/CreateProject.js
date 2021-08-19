@@ -28,7 +28,7 @@ const ProjectName = ({ name, setName, onSaveName, onSubmit, error, description, 
       <textarea
         name="description"
         id="project_description"
-        placeholder="Optional description of your project"
+        placeholder= { t('projectCreate.placeholder') }
         rows="4"
         value={description}
         onChange={e => setDescription(e.target.value)}
@@ -123,7 +123,7 @@ export const CreateProject = ({ onClose }) => {
     <Modal onHide={() => history.push("/projects")} fullscreen visible bare closeOnClickOutside={false}>
       <div className={rootClass}>
         <Modal.Header>
-          <h1>Create Project</h1>
+          <h1>{ t('projectCreate.title') }</h1>
           <ToggleItems items={steps} active={step} onSelect={setStep} />
 
           <Space>

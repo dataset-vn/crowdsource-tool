@@ -276,7 +276,7 @@ export const ImportPage = ({
           <input placeholder="Dataset URL" name="url" ref={urlRef} />
           <button type="submit">{ t('importPage.addurl') }</button>
         </form>
-        <span>or</span>
+        <span>{ t('importPage.or') }</span>
         <button onClick={() => document.getElementById('file-input').click()} className={importClass.elem("upload-button")}>
           <IconUpload width="16" height="16" className={importClass.elem("upload-icon")} />
           { t('importPage.button1') } {files.uploaded.length ? "More " : ""}{ t('importPage.button2') } 
