@@ -4,6 +4,7 @@ import { LsCross } from "../../assets/icons";
 import { Button, Userpic } from "../../components";
 import { Block, Elem } from "../../utils/bem";
 import "./SelectedUser.styl";
+import { useTranslation } from "react-i18next";
 
 const UserProjectsLinks = ({projects}) => {
   return (
@@ -19,7 +20,7 @@ const UserProjectsLinks = ({projects}) => {
 
 export const SelectedUser = ({ user, onClose }) => {
   const fullName = [user.first_name, user.last_name].filter(n => !!n).join(" ").trim();
-
+  const { t } = useTranslation();
   return (
     <Block name="user-info">
       <Elem name="close" tag={Button} type="link" onClick={onClose}><LsCross/></Elem>
@@ -45,7 +46,7 @@ export const SelectedUser = ({ user, onClose }) => {
 
       {!!user.created_projects.length && (
         <Elem name="section">
-          <Elem name="section-title">Created Projects</Elem>
+          <Elem name="section-title">{ t('selectedUser.created') }</Elem>
 
           <UserProjectsLinks projects={user.created_projects}/>
         </Elem>
@@ -53,7 +54,7 @@ export const SelectedUser = ({ user, onClose }) => {
 
       {!!user.contributed_to_projects.length && (
         <Elem name="section">
-          <Elem name="section-title">Contributed to</Elem>
+          <Elem name="section-title">{ t('selectedUser.contributed') }</Elem>
 
           <UserProjectsLinks projects={user.contributed_to_projects}/>
         </Elem>

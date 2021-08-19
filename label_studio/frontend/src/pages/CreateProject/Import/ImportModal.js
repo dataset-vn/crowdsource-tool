@@ -10,6 +10,7 @@ import { Elem } from '../../../utils/bem';
 import { useRefresh } from '../../../utils/hooks';
 import { ImportPage } from './Import';
 import { useImportPage } from './useImportPage';
+import { useTranslation } from "react-i18next";
 
 export const Inner = () => {
   const history = useHistory();
@@ -50,7 +51,7 @@ export const Inner = () => {
     if (!imported) return;
     backToDM();
   }, [backToDM, finishUpload]);
-
+  const { t } = useTranslation();
   return (
     <Modal
       title="Import data"
@@ -62,12 +63,12 @@ export const Inner = () => {
       bare
     >
       <Modal.Header divided>
-        <Elem block="modal" name="title">Import Data</Elem>
+        <Elem block="modal" name="title">{ t('importModal.title') }</Elem>
 
         <Space>
-          <Button waiting={waiting} onClick={onCancel}>Cancel</Button>
+          <Button waiting={waiting} onClick={onCancel}>{ t('importModal.cancel') }</Button>
           <Button look="primary" onClick={onFinish} waiting={waiting || uploading} disabled={uploadDisabled}>
-            Import
+          { t('importModal.import') }
           </Button>
         </Space>
       </Modal.Header>
