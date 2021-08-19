@@ -18,7 +18,7 @@ i18n
      }
    }
  });
-  /*var locale = navigator.language;
+  var locale = navigator.language;
   if(locale == "vi"){
     i18n.changeLanguage("vi")
   }
@@ -28,6 +28,6 @@ i18n
   else
   {
     i18n.changeLanguage("en");
-  }*/
+  }
 
-i18n.changeLanguage("vi");
+//i18n.changeLanguage("vi");

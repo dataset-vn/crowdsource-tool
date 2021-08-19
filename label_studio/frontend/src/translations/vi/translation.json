@@ -209,7 +209,7 @@
         "add": "Thêm bộ nhớ"
     },
 
-    "StoragSet":
+    "StorageSet":
     {
         "save": "Lưu các nhãn dán đã hoàn thành vào Amazon S3, Google Cloud, Microsoft Azure hoặc Redis.",
         "see": "Xem thêm trong tài liệu tham khảo",
