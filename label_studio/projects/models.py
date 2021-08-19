@@ -38,15 +38,15 @@ class ProjectManager(models.Manager):
             num_tasks_with_annotations=Count(
                 'tasks__id', distinct=True,
                 filter=Q(tasks__annotations__isnull=False) &
-                    Q(tasks__annotations__ground_truth=False) &
-                    Q(tasks__annotations__was_cancelled=False) &
-                    Q(tasks__annotations__result__isnull=False)
+                       Q(tasks__annotations__ground_truth=False) &
+                       Q(tasks__annotations__was_cancelled=False) &
+                       Q(tasks__annotations__result__isnull=False)
             ),
             useful_annotation_number=Count(
                 'tasks__annotations__id', distinct=True,
                 filter=Q(tasks__annotations__was_cancelled=False) &
-                    Q(tasks__annotations__ground_truth=False) &
-                    Q(tasks__annotations__result__isnull=False)
+                       Q(tasks__annotations__ground_truth=False) &
+                       Q(tasks__annotations__result__isnull=False)
             ),
             ground_truth_number=Count(
                 'tasks__annotations__id', distinct=True,

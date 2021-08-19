@@ -10,7 +10,8 @@ from django.db import IntegrityError
 
 
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
-from rest_framework import generics
+from rest_framework import generics, status, filters
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -107,6 +108,10 @@ class OrganizationMemberListAPI(generics.ListAPIView):
         PATCH=all_permissions.organizations_change,
         DELETE=all_permissions.organizations_change,
     )
+    
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['user__username', 'user__email', 'user__first_name', 'user__last_name']
+
     serializer_class = OrganizationMemberUserSerializer
 
     def get_queryset(self):

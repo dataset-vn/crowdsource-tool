@@ -1,5 +1,6 @@
 """This file and its contents are licensed under the Apache License 2.0. Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
 """
+from django.db.models.base import Model
 from core.label_config import generate_sample_task_without_check
 from drf_dynamic_fields import DynamicFieldsMixin
 from rest_framework import serializers
@@ -94,10 +95,34 @@ class ProjectSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
 
 class ProjectMemberSerializer(serializers.ModelSerializer):
     
+    first_name = serializers.CharField(source='user.first_name', required = False)
+    last_name = serializers.CharField(source='user.last_name', required = False)
+    email = serializers.CharField(source='user.email', required = False)
+    phone = serializers.CharField(source='user.phone', required = False)
+    date_joined = serializers.CharField(source='user.date_joined', required = False)
+    activity_at = serializers.CharField(source='user.activity_at', required = False)
+    avatar = serializers.CharField(source='user.avatar', required = False)
+    total_records = serializers.IntegerField(read_only=True)
+    
+
     class Meta:
         model = ProjectMember
         extra_kwargs = {'project': {'required': False}, 'user': {'required': False}}
-        fields = '__all__'
+        fields = (
+            'id',
+            'role',
+            'enabled',
+            'user',
+            'project',
+            'first_name',
+            'last_name',
+            'email',
+            'phone',
+            'date_joined',
+            'activity_at',
+            'avatar',
+            'total_records'
+        )
 
 
 class ProjectMemberStatisticsSerializer(serializers.ModelSerializer):
