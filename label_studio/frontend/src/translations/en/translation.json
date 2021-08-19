@@ -80,7 +80,9 @@
         "description": "Description",
         "import": "Import Data",
         "delete": "Delete",
-        "save": "Save"
+        "save": "Save",
+        "config": "Labeling Setup",
+        "title": "Create"
     },
 
     "importFooter":
@@ -136,5 +138,162 @@
     "template":
     {
         "custom": "Custom template"
+    },
+
+    "ErrorWrapper":
+    {
+        "content": "Ask on Facebook",
+        "button1": "Go back",
+        "button2": "Reload"
+    },
+
+    "Spinner":
+    {
+        "loading": "LOADING....."
+    },
+
+    "VersionNotifier":
+    {
+        "status": "Available",
+        "version": "Current version"
+    },
+
+    "Projectempty":
+    {
+        "header": "There is no project here"
+    },
+
+    "MemberLSetting":
+    {
+        "search":"Search by name, email",
+        "email": "Email",
+        "name": "Name",
+        "activity": "Activities"
+    },
+    "MemberLSetting2":
+    {
+        "email": "Email",
+        "name": "Name",
+        "rights": "Rights",
+        "activity": "Activities"
+    },
+
+    "Member":
+    {
+        "invite": "Invited members have private accounts. They can register and join to the organization using this link.",
+        "link": "Reset Link",
+        "add": "Add Members",
+        "project": "Project Members",
+        "menu": "Member"
+    },
+
+    "SelectedMember":
+    {
+        "create": "Created Project",
+        "contribute": "Contributed to",
+        "time": "Active at :",
+        "already": "Already a project member",
+        "addproject": "Add to project"
+    },
+
+    "StorageCard":
+    {
+        "edit": "Edit",
+        "delete": "Delete",
+        "sync": "Sync Storage"
+    },
+
+    "StorageForm":
+    {
+        "success": "Successfully connected!",
+        "fail": "Connection failed",
+        "check": "Check Connection",
+        "add": "Add Storage"
+    },
+
+    "StorageSet":
+    {
+        "save": "Save completed annotations to Amazon S3, Google Cloud, Microsoft Azure, or Redis.",
+        "see": "See more in the documentation",
+        "delete": "Deleting storage",
+        "message": "This action cannot be undone. Are you sure?"
+    },
+    
+    "StorageSettings":
+    {
+        "use": "Use cloud or database storage as the source for your labeling tasks or the target of your completed annotations.",
+        "source": "Source Cloud Storage",
+        "addsource": "Add Source Storage",
+        "target": "Target Cloud Storage",
+        "addtarget": "Add Target Storage"
+    },
+
+    "MLList":
+    {
+        "delete": "Delete ML Backend",
+        "message": "This action cannot be undone. Are you sure?",
+        "edit": "Edit",
+        "delete2": "Delete",
+        "disconnected": "Disconnected",
+        "connected": "Connected",
+        "error": "Error",
+        "training": "Training",
+        "predicting": "Predicting"
+    },
+
+    "MLSettings":
+    {
+        "edit": "Edit",
+        "add": "Add",
+        "title": "Title",
+        "MLmodel": "ML Model",
+        "description": "Description",
+        "validate": "Validate and Save",
+        "message": "Add one or more machine learning models to predict labels for your data.To import predictions without connecting a model,",
+        "see": "see the documentation",
+        "add2": "Add model",
+        "assisted": "ML-Assisted Labeling",
+        "start": "Start model training after any annotations are submitted or updated",
+        "retrieve": "Retrieve predictions when loading a task automatically",
+        "show": "Show predictions to annotators in the Label Stream and Quick View"   
+    },
+
+    "Instructions":
+    {
+        "label": "Labeling Instructions",
+        "show": "Show before labeling",
+        "write": "Write instructions to help users complete labeling tasks.",
+        "saved": "Saved!",
+        "save": "Save"
+    },
+
+    "DangerZone":
+    {
+        "confirm": "Action confirmation",
+        "message": "You're about to delete all things. This action cannot be undone.",
+        "proceed": "Proceed",
+        "drop": "Drop All Tabs",
+        "delete": "Delete Project",
+        "list": "Delete Annotations, Tasks, or Project",
+        "message2": "Perform these actions at your own risk. Actions you take on this page can't be reverted. Make sure your data is backed up."
+    },
+
+    "LabelSettings":
+    {
+        "save": "Save"
+    },
+
+    "GeneralSettings":
+    {
+        "sequential": "Sequential",
+        "random": "Random",
+        "sampling": "Tasks are ordered by Data manager ordering",
+        "sampling2": "Tasks are chosen with uniform random",
+        "name": "Project Name",
+        "des": "Description",
+        "task": "Task Sampling",
+        "saved": "Saved!",
+        "save": "Save",
+        "color": "Color"
     }
 }

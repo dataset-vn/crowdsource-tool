@@ -75,8 +75,8 @@ export const StorageSet = ({title, target, rootClass, buttonLabel}) => {
 
   const onDeleteStorage = useCallback(async (storage) => {
     confirm({
-      title: "Deleting storage",
-      body: "This action cannot be undone. Are you sure?",
+      title: t('StorageSet.delete') /*"Deleting storage"*/,
+      body: t('StorageSet.message') /*"This action cannot be undone. Are you sure?"*/,
       buttonLook: "destructive",
       onOk: async () => {
         const response = await api.callApi('deleteStorage', {

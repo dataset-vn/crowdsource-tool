@@ -18,15 +18,15 @@ export const StorageSettings = () => {
 
       <Columns count={2} gap="40px" size="320px" className={rootClass}>
         <StorageSet
-          title="Source Cloud Storage"
-          buttonLabel="Add Source Storage"
+          title= {t('StorageSettings.source') /*"Source Cloud Storage"*/}
+          buttonLabel= {t('StorageSettings.addsource') /*"Add Source Storage"*/}
           rootClass={rootClass}
         />
 
         <StorageSet
-          title="Target Cloud Storage"
+          title= {t('StorageSettings.target') /*"Target Cloud Storage"*/}
           target="export"
-          buttonLabel="Add Target Storage"
+          buttonLabel= {t('StorageSettings.addtarget') /*"Add Target Storage"*/}
           rootClass={rootClass}
         />
       </Columns>

@@ -68,7 +68,7 @@ export const MemberListSearchSetting = ({onSelect, selectedUser, defaultSelected
   return (
     <Block name="people-list">
       <Elem name="search">
-      < input type="text" style={{width:"100%"}} placeholder="Tìm kiếm theo tên, email" onChange={e => setInputValues(e.target.value)} />
+      < input type="text" style={{width:"100%"}} placeholder={ t('MemberLSetting.search') /*"Tìm kiếm theo tên, email"*/ }onChange={e => setInputValues(e.target.value)} />
 
       </Elem>
       {usersList.length !==0 ? (

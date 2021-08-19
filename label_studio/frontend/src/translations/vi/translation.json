@@ -80,7 +80,9 @@
         "description": "Mô tả",
         "import": "Nhập dữ liệu",
         "delete": "Xóa",
-        "save": "Lưu"
+        "save": "Lưu",
+        "config": "Thiết lập nhãn",
+        "title": "Tạo dự án"
     },
 
     "importFooter":
@@ -134,5 +136,162 @@
     "template":
     {
         "custom": "Tùy chỉnh mẫu"
+    },
+
+    "ErrorWrapper":
+    {
+        "content": "Hỏi đáp trên Facebook",
+        "button1": "Trở lại",
+        "button2": "Tải lại trang"
+    },
+
+    "Spinner":
+    {
+        "loading": "ĐANG TẢI....."
+    },
+
+    "VersionNotifier":
+    {
+        "status": "Đã sẵn sàng",
+        "version": "Phiên bản hiện tại:"
+    },
+
+    "Projectempty":
+    {
+        "header": "Hiện tại không có dự án nào cả"
+    },
+
+    "MemberLSetting":
+    {
+        "search":"Tìm kiếm theo tên, email",
+        "email": "Email",
+        "name": "Tên",
+        "activity": "Hoạt động"
+    },
+    "MemberLSetting2":
+    {
+        "email": "Email",
+        "name": "Tên",
+        "rights": "Quyền",
+        "activity": "Hoạt động"
+    },
+
+    "Member":
+    {
+        "invite": "Các thành viên được mời sẽ có tài khoản cá nhân. Họ có thể đăng ký và tham gia vào tổ chức bằng cách sử dụng đường link này.",
+        "link": "Reset Link",
+        "add": "Thêm thành viên",
+        "project": "Thành viên dự án",
+        "menu": "Cài đặt thành viên"
+    },
+
+    "SelectedMember":
+    {
+        "create": "Project đã tạo",
+        "contribute": "Đóng góp đến",
+        "time": "Hoạt động lúc :",
+        "already": "Đã là thành viên dự án",
+        "addproject": "Thêm vào dự án"
+    },
+
+    "StorageCard":
+    {
+        "edit": "Chỉnh sửa",
+        "delete": "Xóa",
+        "sync": "Đồng bộ hóa bộ nhớ"
+    },
+
+    "StorageForm":
+    {
+        "success": "kết nối thành công!",
+        "fail": "Kết nối thất bại",
+        "check": "Kiểm tra kết nối",
+        "add": "Thêm bộ nhớ"
+    },
+
+    "StoragSet":
+    {
+        "save": "Lưu các nhãn dán đã hoàn thành vào Amazon S3, Google Cloud, Microsoft Azure hoặc Redis.",
+        "see": "Xem thêm trong tài liệu tham khảo",
+        "delete": "Xóa bộ nhớ",
+        "message": "Hành động này không được hoàn tác. Bạn có chắc không?"
+    },
+    
+    "StorageSettings":
+    {
+        "use": "Sử dụng lưu trữ đám mây hoặc cơ sở dữ liệu làm nguồn cho các tác vụ gắn nhãn hoặc các nhãn dán đã hoàn thành của bạn.",
+        "source": "Nguồn lưu trữ đám mây",
+        "addsource": "Thêm Nguồn lưu trữ",
+        "target": "Xác định Nguồn lưu trữ đám mây",
+        "addtarget": "Thêm nguồn lưu trữ mục tiêu"
+    },
+
+    "MLList":
+    {
+        "delete": "Xóa BackEnd ML",
+        "message": "Hành động này không được hoàn tác. Bạn có chắc không?",
+        "edit": "Chỉnh sửa",
+        "delete2": "Xóa",
+        "disconnected": "Mất kết nối",
+        "connected": "Đã kết nối",
+        "error": "Lỗi",
+        "training": "Đang đào tạo",
+        "predicting": "Đang dự đoán"
+    },
+
+    "MLSettings":
+    {
+        "edit": "Chỉnh sửa",
+        "add": "Bổ sung",
+        "title": "Tiêu đề",
+        "MLmodel": "Mô hình Machine Learning",
+        "description": "Mô tả",
+        "validate": "Xác nhận và lưu",
+        "message": "Thêm một hoặc nhiều mô hình học máy để dự đoán nhãn dán cho dữ liệu của bạn. Để nhập dự đoán mà không cần kết nối mô hình,",
+        "see": "xem tài liệu sau đây",
+        "add2": "Thêm mô hình",
+        "assisted": "ML-Hỗ trợ gán nhãn",
+        "start": "Bắt đầu đào tạo mô hình sau khi bất kỳ chú thích nào được gửi hoặc cập nhật",
+        "retrieve": "Trả lại dự đoán khi tải một công việc tự động",
+        "show": "Hiển thị gợi ý cho người dùng trong Luồng nhãn dãn và Chế độ xem nhanh"
+    },
+
+    "Instructions":
+    {
+        "label": "Hướng dẫn dán nhãn",
+        "show": "Hiển thị trước khi dán nhãn",
+        "write": "Viết hướng dẫn để giúp người dùng hoàn thành các tác vụ ghi nhãn.",
+        "saved": "Đã lưu!",
+        "save": "Lưu"
+    },
+
+    "DangerZone":
+    {
+        "confirm": "Xác nhận hành động",
+        "message": "Bạn sắp xóa tất cả mọi thứ. Hành động này không thể được hoàn tác.",
+        "proceed": "Tiếp tục",
+        "drop": "Xoá hết Tabs",
+        "delete": "Xóa dự án",
+        "list": "Xóa chú thích, công việc hoặc dự án",
+        "message2": "Thực hiện những hành động này có nguy cơ cho chính bạn. Không thể hoàn tác hành động bạn thực hiện trên trang này. Hãy đảm bảo dữ liệu của bạn đã được sao lưu."
+    },
+
+    "LabelSettings":
+    {
+        "save": "Lưu"
+    },
+
+    "GeneralSettings":
+    {
+        "sequential": "Tuần tự",
+        "random": "Ngẫu nhiên",
+        "sampling": "Các nhiệm vụ được sắp xếp theo thứ tự của Người quản lý dữ liệu",
+        "sampling2": "Nhiệm vụ được chọn ngẫu nhiên đồng nhất",
+        "name": "Tên dự án",
+        "des": "Mô tả",
+        "task": "Lấy mẫu tác vụ",
+        "saved": "Đã lưu!",
+        "save": "Lưu",
+        "color": "Màu sắc"
     }
 }

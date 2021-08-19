@@ -13,15 +13,18 @@ import { useDraftProject } from './utils/useDraftProject';
 import { useTranslation } from "react-i18next";
 
 
-const ProjectName = ({ name, setName, onSaveName, onSubmit, error, description, setDescription, show = true }) => !show ? null :(
+const ProjectName = ({ name, setName, onSaveName, onSubmit, error, description, setDescription, show = true }) => {
+  if (!show) return null;
+  const { t } = useTranslation(); 
+  return(
   <form className={cn("project-name")} onSubmit={e => { e.preventDefault(); onSubmit(); }}>
     <div className="field field--wide">
-      <label htmlFor="project_name">Project Name</label>
+      <label htmlFor="project_name">{ t('projectCreate.name') /*Project Name*/ }</label>
       <input name="name" id="project_name" value={name} onChange={e => setName(e.target.value)} onBlur={onSaveName} />
       {error && <span className="error">{error}</span>}
     </div>
     <div className="field field--wide">
-      <label htmlFor="project_description">Description</label>
+      <label htmlFor="project_description">{ t('projectCreate.description') /*Description*/ }</label>
       <textarea
         name="description"
         id="project_description"
@@ -33,6 +36,7 @@ const ProjectName = ({ name, setName, onSaveName, onSubmit, error, description, 
     </div>
   </form>
 );
+};
 
 export const CreateProject = ({ onClose }) => {
   const { t } = useTranslation();
@@ -57,7 +61,7 @@ export const CreateProject = ({ onClose }) => {
   const steps = {
     name: <span className={tabClass.mod({ disabled: !!error })}>{ t('projectCreate.name') }</span>,
     import: <span className={tabClass.mod({ disabled: uploadDisabled })}>{ t('projectCreate.import') }</span>,
-    config: "Labeling Setup",
+    config:  t('projectCreate.config') /*"Labeling Setup"*/,
   };
 
   // name intentionally skipped from deps:

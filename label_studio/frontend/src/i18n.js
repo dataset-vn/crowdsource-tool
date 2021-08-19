@@ -1,10 +1,6 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from"i18next-browser-languagedetector";
-import TRANSLATIONS_VI from "./translation/vi/translation.json";
-import TRANSLATIONS_EN from "./translation/en/translation.json";
-
-import LanguageDetector from "i18next-browser-languagedetector";
 import  TRANSLATIONS_VI from "./translations/vi/translation.json";
 import  TRANSLATIONS_EN from "./translations/en/translation.json";
 
@@ -22,7 +18,7 @@ i18n
      }
    }
  });
-  var locale = navigator.language;
+  /*var locale = navigator.language;
   if(locale == "vi"){
     i18n.changeLanguage("vi")
   }
@@ -32,6 +28,6 @@ i18n
   else
   {
     i18n.changeLanguage("en");
-  }
+  }*/
 
-//i18n.changeLanguage("en");
+i18n.changeLanguage("vi");
