@@ -91,7 +91,7 @@ export const SettingsPage = {
   path: "/settings",
   exact: true,
   layout: MenuLayout,
-  component: InstructionsSettings,
+  // component: InstructionsSettings,
   pages: {
     InstructionsSettings,
     GeneralSettings,

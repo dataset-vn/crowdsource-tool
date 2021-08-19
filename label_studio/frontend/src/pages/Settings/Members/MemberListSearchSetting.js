@@ -130,7 +130,7 @@ export const MemberListSearchSetting = ({onSelect, selectedUser, defaultSelected
             <Elem name="column" mix="name">Tên</Elem>
             <Elem name="column" mix="last-activity">Hoạt động</Elem>
           </Elem>
-          <Elem name="body">
+          <Elem name="body" style={{maxHeight: "500px", overflowY: "scroll"}}>
             {usersList.map(({user}) => {
               const active = user.id === selectedUser?.id;
 
