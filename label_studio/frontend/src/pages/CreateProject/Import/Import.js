@@ -53,10 +53,11 @@ function getFiles(files) {
 }
 
 const Footer = () => {
+  const { t } = useTranslation();
   return (
     <Modal.Footer>
       <IconInfo className={importClass.elem("info-icon")} width="20" height="20" />
-      Give a question to <a target="_blank" href="https://facebook.com/dataset.vn"> our Facebook </a> if you have any problems{" "}
+      { t('importFooter.content1') } <a target="_blank" href="https://facebook.com/dataset.vn"> { t('importFooter.content2') }</a> { t('importFooter.content3') }{" "}
     </Modal.Footer>
   );
 };
@@ -123,7 +124,8 @@ export const ImportPage = ({
   const [error, setError] = useState();
   const [ids, _setIds] = useState([]);
   const api = useAPI();
-
+  
+  const { t } = useTranslation();
   const processFiles = (state, action) => {
     if (action.sending) {
       return {...state, uploading: [...action.sending, ...state.uploading]};
@@ -171,10 +173,10 @@ export const ImportPage = ({
   };
   const onError = err => {
     console.error(err);
-    const { t } = useTranslation();
     // @todo workaround for error about input size in a wrong html format
     if (typeof err === "string" && err.includes("RequestDataTooBig")) {
-      const message = "Imported file is too big";
+      const { t } = useTranslation();
+      const message =  t('importPage.errormess') ;
       const extra = err.match(/"exception_value">(.*)<\/pre>/)?.[1];
       err = { message, extra };
     }
@@ -264,8 +266,6 @@ export const ImportPage = ({
     type: "radio",
     onChange: e => setCsvHandling(e.target.value),
   };
-
-  const { t } = useTranslation();
   return (
     <div className={importClass}>
       {highlightCsvHandling && <div className={importClass.elem("csv-splash")}/>}
