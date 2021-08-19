@@ -13,6 +13,7 @@ import { Preview } from './Preview';
 import { DEFAULT_COLUMN, EMPTY_CONFIG, isEmptyConfig, Template } from './Template';
 import { TemplatesList } from './TemplatesList';
 import { useAPI } from '../../../providers/ApiProvider';
+import { useTranslation } from "react-i18next";
 
 // don't do this, kids
 const formatXML = (xml) => {
@@ -36,12 +37,14 @@ const formatXML = (xml) => {
 const wizardClass = cn("wizard");
 const configClass = cn("configure");
 
-const EmptyConfigPlaceholder = () => (
+const EmptyConfigPlaceholder = () => {
+  const { t }= useTranslation();
+  return (
   <div className={configClass.elem("empty-config")}>
-    <p>Your labeling configuration is empty. It is required to label your data.</p>
+    <p>{ t('config.empty') }</p>
   </div>
-);
-
+  );
+};
 const Label = ({ label, template, color }) => {
   const value = label.getAttribute("value");
 
@@ -173,11 +176,11 @@ const ConfigureSettings = ({ template }) => {
 
   // check for active settings
   if (!items.filter(Boolean).length) return null;
-
+  const { t } = useTranslation();
   return (
     <ul className={configClass.elem("settings")}>
       <li>
-        <h4>Configure settings</h4>
+        <h4>{ t('config.setting') }</h4>
         <ul className={configClass.elem("object-settings")}>
           {items}
         </ul>
@@ -194,16 +197,16 @@ const ConfigureColumns = ({ columns, template }) => {
   };
 
   if (!template.objects.length) return null;
-
+  const { t } = useTranslation();
   return (
     <div className={configClass.elem("object")}>
-      <h4>Configure data</h4>
+      <h4>{ t('config.confData') }</h4>
       {template.objects.length > 1 && columns?.length > 0 && columns.length < template.objects.length && (
-        <p className={configClass.elem("object-error")}>This template requires more data then you have for now</p>
+        <p className={configClass.elem("object-error")}>{ t('config.objError1') }</p>
       )}
       {columns?.length === 0 && (
         <p className={configClass.elem("object-error")}>
-          To select which field(s) to label you need to upload the data. Alternatively, you can provide it using Code mode.
+          { t('config.objError2') }
         </p>
       )}
       {template.objects.map(obj => (
