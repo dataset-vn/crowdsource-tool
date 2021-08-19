@@ -4,6 +4,11 @@ import LanguageDetector from"i18next-browser-languagedetector";
 import TRANSLATIONS_VI from "./translation/vi/translation.json";
 import TRANSLATIONS_EN from "./translation/en/translation.json";
 
+import LanguageDetector from "i18next-browser-languagedetector";
+import  TRANSLATIONS_VI from "./translations/vi/translation.json";
+import  TRANSLATIONS_EN from "./translations/en/translation.json";
+
+
 i18n
  .use(LanguageDetector)
  .use(initReactI18next)
@@ -18,7 +23,15 @@ i18n
    }
  });
   var locale = navigator.language;
-  if(locale == "vi")
-    i18n.changeLanguage("vi");
-  else 
-	  i18n.changeLanguage("en");
+  if(locale == "vi"){
+    i18n.changeLanguage("vi")
+  }
+  else if(locale == null){
+    i18n.changeLanguage("vi")
+  }
+  else
+  {
+    i18n.changeLanguage("en");
+  }
+
+//i18n.changeLanguage("en");

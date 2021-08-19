@@ -1,0 +1,140 @@
+{
+    "projectCard":
+    {
+        "setting": "Settings",
+        "label": "Label"
+    },
+
+    "projectEmpty":
+    {
+        "header": "You dont have any project at the moment",
+        "content": "Please create a project for labeling data",
+        "action": "Create Project"
+    },
+
+    "projectItem":
+    {
+        "action": "Create" 
+    },
+
+    "projectPage":
+    {
+        "title": "Project"
+    },
+    
+    "peopleList":
+    {
+        "placeholder": "Search for name, email",
+        "email": "Email",
+        "name": "Name",
+        "active": "Active since"
+    },
+
+    "invitationModal":
+    {
+        "description": "Invite people to join DataSet.",
+        "title": "Invite people",
+        "reset": "Reset Link",
+        "copy": "Copy Link",
+        "copied": "Copied!",
+        "action": "Add people"
+    },
+
+    "selectedUser":
+    {
+        "created": "Created Project",
+        "contributed": "Contributed to"
+    },
+
+    "export":
+    {
+        "waitmess": "Files are being prepared. It might take some time."
+    },
+
+    "formatInfo":
+    {
+        "info": "You can export dataset in one of the following formats:",
+        "feedback": "Can't find an export format?"
+    },
+
+    "initDataMan":
+    {
+        "error": "Label Studio Frontend doesn't exist on the page"
+    },
+
+    "dataMan":
+    {
+        "info": "Project was deleted or not yet created",
+        "fallback": "Back to projects"
+    },
+
+    "labelInstruc":
+    {
+        "title": "Instructions",
+        "action": "Instructions"
+    },
+
+    "projectCreate":
+    {
+        "name": "Project Name",
+        "description": "Description",
+        "import": "Import Data",
+        "delete": "Delete",
+        "save": "Save"
+    },
+
+    "importFooter":
+    {
+        "content1": "Give a question to",
+        "content2": "our facebook",
+        "content3": "if you have any problems"
+    },
+
+    "importPage":
+    {
+        "errormess": "Imported file is too big",
+        "addurl": "Add URL",
+        "placeholder": "Dataset URL",
+        "button1": "Upload",
+        "button2": "Files",
+        "csv/tsv": "Treat CSV/TSV as",
+        "listOfTask": " List of tasks",
+        "timeSeries": " Time Series",
+        "header1": "Drag & drop files here",
+        "header2": "or click to browse",
+        "text": "Text",
+        "audio": "Audio",
+        "images": "Images",
+        "HTML": "HTML",
+        "commonFormats": "Common Formats"
+    },
+
+    "importModal":
+    {
+        "title": "Import Data",
+        "cancel": "Cancel",
+        "import": "Import"
+    },
+
+    "preview":
+    {
+        "UI": "UI Preview"
+    },
+
+    "config":
+    {
+        "empty": "Your labeling configuration is empty. It is required to label your data.",
+        "setting": "Configure settings",
+        "confData": "Configure data",
+        "objError1": "his template requires more data then you have for now",
+        "objError2": "To select which field(s) to label you need to upload the data. Alternatively, you can provide it using Code mode.",
+        "confLI": "Configure the labeling interface with tags.",
+        "showtags": "See all tags",
+        "browseTemp": "Browse Templates"
+    },
+
+    "template":
+    {
+        "custom": "Custom template"
+    }
+}

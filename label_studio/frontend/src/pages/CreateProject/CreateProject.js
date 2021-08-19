@@ -10,6 +10,7 @@ import "./CreateProject.styl";
 import { ImportPage } from './Import/Import';
 import { useImportPage } from './Import/useImportPage';
 import { useDraftProject } from './utils/useDraftProject';
+import { useTranslation } from "react-i18next";
 
 
 const ProjectName = ({ name, setName, onSaveName, onSubmit, error, description, setDescription, show = true }) => !show ? null :(
@@ -34,6 +35,7 @@ const ProjectName = ({ name, setName, onSaveName, onSubmit, error, description, 
 );
 
 export const CreateProject = ({ onClose }) => {
+  const { t } = useTranslation();
   const [step, setStep] = React.useState("name"); // name | import | config
   const [waiting, setWaitingStatus] = React.useState(false);
 
@@ -49,12 +51,12 @@ export const CreateProject = ({ onClose }) => {
   React.useEffect(() => { setError(null); }, [name]);
 
   const { columns, uploading, uploadDisabled, finishUpload, pageProps } = useImportPage(project);
-
+  
   const rootClass = cn("create-project");
   const tabClass = rootClass.elem("tab");
   const steps = {
-    name: <span className={tabClass.mod({ disabled: !!error })}>Project Name</span>,
-    import: <span className={tabClass.mod({ disabled: uploadDisabled })}>Data Import</span>,
+    name: <span className={tabClass.mod({ disabled: !!error })}>{ t('projectCreate.name') }</span>,
+    import: <span className={tabClass.mod({ disabled: uploadDisabled })}>{ t('projectCreate.import') }</span>,
     config: "Labeling Setup",
   };
 
@@ -121,8 +123,8 @@ export const CreateProject = ({ onClose }) => {
           <ToggleItems items={steps} active={step} onSelect={setStep} />
 
           <Space>
-            <Button look="danger" size="compact" onClick={onDelete} waiting={waiting}>Delete</Button>
-            <Button look="primary" size="compact" onClick={onCreate} waiting={waiting || uploading} disabled={!project || uploadDisabled || error}>Save</Button>
+            <Button look="danger" size="compact" onClick={onDelete} waiting={waiting}>{ t('projectCreate.delete') }</Button>
+            <Button look="primary" size="compact" onClick={onCreate} waiting={waiting || uploading} disabled={!project || uploadDisabled || error}>{ t('projectCreate.save') }</Button>
           </Space>
         </Modal.Header>
         <ProjectName
