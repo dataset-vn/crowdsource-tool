@@ -5,38 +5,70 @@ import { useAPI } from "../../../providers/ApiProvider";
 import { useProject } from "../../../providers/ProjectProvider";
 import { Block, Elem } from "../../../utils/bem";
 import { isDefined } from "../../../utils/helpers";
+
+import ReactPaginate from 'react-paginate';
+
 import './MemberListSetting.styl';
-import React from 'react';
 
+import React, { Component } from 'react';
+import { Space } from "../../../components/Space/Space";
 
-export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, projectID }) => {
+export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, projectID, orgID=1 }) => {
+  const defaultPageSize = 15
   const api = useAPI();
+  const [totalRecords, setTotalRecords] = useState(0)
+  const [pageSize, setPageSize] = useState(defaultPageSize)
+  const [pageCount, setPageCount] = useState()
   const [usersList, setUsersList] = useState();
-  const [userInProjects, setUserInProjects] = useState(null)
   const { project } = useProject();
 
-  const fetchUsers = useCallback(async (projectID) => {
-    let data = [];
-    const result = await api.callApi('memberships', {
-      params: { pk: 1 },
-    });
+  const fetchUsers = useCallback(async (projectID, page_size=pageSize, page=1) => {
+    let users = []
     if (projectID) {
-      const response = await api.callApi("getProjectMember", {
+      const projectMembers = await api.callApi("getProjectMember", {
         params: {
-          pk: projectID
+          pk: projectID,
+          page_size: page_size,
+          page: page
         }
       })
-
-      for (let i = 0; i < response.length; i++) {
-        const selected = result.find(({ user }) => user.id === response[i].user);
-        if (selected) data.push({...selected,role : response[i].role});
-      }
+      setTotalRecords(projectMembers[0].total_records)
+      users = convertProjectMember2User(projectMembers) // as ProjectMember and User are 2 different objects
     }
-    setUsersList(data);
+    setUsersList(users);
   }, [api]);
-  const checkUserMember = (idProject) => {
 
+  var handlePageClick = (data) => {
+    let selectedPage = (data.selected + 1) || 1;
+    console.log("selectedPage", selectedPage)
+    fetchUsers(projectID, pageSize, selectedPage);
   }
+
+  const convertProjectMember2User = (projectMembers) => {
+    let users = [];
+    for (let i = 0; i < projectMembers.length; i++) {
+      let memberData = {
+        id: projectMembers[i].id,
+        organization: null,
+        user: {
+          id: projectMembers[i].user,
+          first_name: projectMembers[i].first_name,
+          last_name: projectMembers[i].last_name,
+          username: projectMembers[i].username,
+          email: projectMembers[i].email,
+          phone: projectMembers[i].phone,
+          last_activity: projectMembers[i].activity_at,
+          created_projects: [],
+          contributed_to_projects: [],
+          avatar: projectMembers[i].avatar,
+        },
+        role: projectMembers[i].role
+      }
+      users.push(memberData)
+    }
+    return users
+  }
+
   const selectUser = useCallback((user) => {
     if (selectedUser?.id === user.id) {
       onSelect?.(null);
@@ -49,6 +81,9 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
     fetchUsers(projectID);
   }, [project]);
 
+  useEffect(() => {
+    setPageCount(Math.ceil(totalRecords/pageSize))
+  }, [totalRecords])
 
   useEffect(() => {
     if (isDefined(defaultSelected) && usersList) {
@@ -57,28 +92,10 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
     }
   }, [usersList, defaultSelected]);
 
-  const compare =(a, b) => {
-    // you can access the relevant property like this a.props[by]
-    // depending whether you are sorting by tilte or year, you can write a compare function here, 
-    a.user.props[by] - b.user.props[by]
-  }
-  const Sort= ({children, by})=> {
-    if (!by) {
-    // If no 'sort by property' provided, return original list
-    return children
-    }
-    return React.Children.toArray(children).sort(compare)
-    
-    }
-
   function compareStrings(a, b) {
-    // Assuming you want case-insensitive comparison
     let roles = ['owner', 'manager', 'reviewer', 'annotator']
-    // console.log("a",a)
-    // console.log("b",b)
     a = roles.indexOf(a)
     b = roles.indexOf(b)
-  
     return (a < b) ? -1 : (a > b) ? 1 : 0;
   }
 
@@ -100,30 +117,48 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
               const active = i.user.id === selectedUser?.id;
 
               return (
-                <Elem key={`user-${i.user.id}`} name="user" mod={{ active }} onClick={() => selectUser(i.user)}>
-                  <Elem name="field" mix="avatar">
+                <Elem key={"member_" + i.user.id} name="user" mod={{ active }} onClick={() => selectUser(i.user)}>
+                  <Elem key={"avatar_" + i.user.id} name="field" mix="avatar">
                     <Userpic user={i.user} style={{ width: 28, height: 28 }} />
                   </Elem>
-                  <Elem name="field" mix="email">
+                  <Elem key={"email_" + i.user.id} name="field" mix="email">
                     {i.user.email}
                   </Elem>
-                  <Elem name="field" mix="name">
+                  <Elem key={"name_" + i.user.id} name="field" mix="name">
                     {i.user.first_name} {i.user.last_name}
                   </Elem>
-                  <Elem name="field" mix="name">
+                  <Elem key={"role_" + i.user.id} name="field" mix="role">
                     {i.role}
                   </Elem>
-                  <Elem name="field" mix="last-activity">
+                  <Elem key={"last_activity_" + i.user.id} name="field" mix="last-activity">
                     {formatDistance(new Date(i.user.last_activity), new Date(), { addSuffix: true })}
                   </Elem>
                 </Elem>
               );
             })}
-            
+          </Elem>
+
+          <Space>
+          </Space>
+
+          <Elem >
+            <ReactPaginate 
+              previousLabel={'<<'}
+              nextLabel={'>>'}
+              breakLabel={'...'}
+              breakClassName={'break-me'}
+              pageCount={pageCount}
+              marginPagesDisplayed={2}
+              pageRangeDisplayed={5}
+              onPageChange={handlePageClick}
+              containerClassName={'pagination'}
+              pageLinkClassName={'page_link'}
+              activeClassName={'active_page'}
+            />
           </Elem>
         </Elem>
       ) : (
-        <Elem name="loading">
+        <Elem name="Loading...">
           <Spinner size={36} />
         </Elem>
       )}

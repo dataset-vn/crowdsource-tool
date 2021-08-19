@@ -9,15 +9,15 @@ import { Block, Elem } from '../../utils/bem';
 import { absoluteURL } from '../../utils/helpers';
 import { useTranslation } from "react-i18next";
 
-export const ProjectsList = ({projects}) => {
-  const history = useHistory();
-  return (
-    <Elem name="list">
-      {projects.map(project => (
-        <ProjectCard key={project.id} project={project} history={history}/>
-      ))}
-    </Elem>
-  );
+export const ProjectsList = ({ projects }) => {
+	const history = useHistory();
+	return (
+		<Elem name='list'>
+			{projects.map((project) => (
+				<ProjectCard key={project.id} project={project} history={history} />
+			))}
+		</Elem>
+	);
 };
 
 export const EmptyProjectsList = ({ openModal }) => { 
@@ -50,21 +50,28 @@ const ProjectCard = ({project, history}) => {
     return project.color === '#FFFFFF' ? null : project.color;
   }, [project]);
 
-  const projectColors = useMemo(() => {
-    return color ? {
-      '--header-color': color,
-      '--background-color': chr(color).alpha(0.2).css(),
-    } : {};
-  }, [color]);
+	const projectColors = useMemo(() => {
+		return color
+			? {
+					"--header-color": color,
+					"--background-color": chr(color).alpha(0.2).css(),
+			  }
+			: {};
+	}, [color]);
 
-  return (
-    <Elem tag={NavLink} name="link" to={`/projects/${project.id}/data`} data-external>
-      <Block name="project-card" mod={{colored: !!color}} style={projectColors}>
-        <Elem name="header">
-          <Elem name="title">
-            <Elem name="title-text">
-              {project.title ?? "New project"}
-            </Elem>
+	return (
+		<Elem
+			tag={NavLink}
+			name='link'
+			to={`/projects/${project.id}/data`}
+			data-external>
+			<Block
+				name='project-card'
+				mod={{ colored: !!color }}
+				style={projectColors}>
+				<Elem name='header'>
+					<Elem name='title'>
+						<Elem name='title-text'>{project.title ?? "New project"}</Elem>
 
             <Elem name="menu" onClick={(e) => {
               e.stopPropagation();

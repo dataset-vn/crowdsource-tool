@@ -9,14 +9,18 @@ import './MemberListSetting.styl';
 export const MemberListSearchSetting = ({onSelect, selectedUser, defaultSelected}) => {
   const api = useAPI();
   const [usersList, setUsersList] = useState([]);
-  const [allUser,setAlluser]=useState()
-  const fetchUsers = useCallback(async () => {
+  const [searchInput, setSearchInput] = useState('')
 
-    const result = await api.callApi('memberships', {
-      params: {pk: 1},
-    });
-    setUsersList([]);
-    setAlluser(result)
+  const fetchUsers = useCallback(async (searchValue) => {
+    if (searchValue != "") {
+      const result = await api.callApi('memberships', {
+        params: {
+          pk: 1, // hardcode must be replaced by User's active_organization in the future
+          search: searchValue
+        },
+      });
+      setUsersList(result);
+    }
   }, [api]);
 
   const selectUser = useCallback((user) => {
@@ -28,8 +32,8 @@ export const MemberListSearchSetting = ({onSelect, selectedUser, defaultSelected
   }, [selectedUser,usersList]);
 
   useEffect(() => {
-    fetchUsers();
-  }, []);
+    fetchUsers(searchInput);
+  }, [searchInput]);
 
   useEffect(() => {
     if (isDefined(defaultSelected) && usersList) {
@@ -37,37 +41,12 @@ export const MemberListSearchSetting = ({onSelect, selectedUser, defaultSelected
       if (selected) selectUser(selected.user);
     }
   }, [usersList, defaultSelected]);
-  function removeAccents(str) {
-    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  }
-  const setInputValues=(email)=>{
-    if(email===""){
-      setUsersList([])
-      onSelect?.(null);
-    }else{
-      let data =[];
-      for (let i = 0; i < allUser.length; i++) {
-        let fullName = allUser[i].user.first_name+ " " + allUser[i].user.last_name
-        let str =  removeAccents(fullName);
-        
-        let em = removeAccents((email)) ;
-        if (
-          allUser[i].user.email.toLowerCase().includes(email.toLowerCase()) === true ||
-          str.toLowerCase().includes(em.toLowerCase()) === true 
-        ) {
-          console.log(str)
-          console.log(em)
-          data.push(allUser[i]);
-        }
-      }
-      setUsersList(data)
-    }
-    }
+
+
   return (
     <Block name="people-list">
       <Elem name="search">
-      < input type="text" style={{width:"100%"}} placeholder="Tìm kiếm theo tên, email" onChange={e => setInputValues(e.target.value)} />
-
+        < input type="text" style={{width:"100%"}} placeholder="Tìm kiếm theo tên, email" onChange={e => setSearchInput(e.target.value)} />
       </Elem>
       {usersList.length !==0 ? (
         <Elem name="users">

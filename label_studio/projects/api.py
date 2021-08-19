@@ -308,7 +308,10 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
                        generics.RetrieveUpdateDestroyAPIView):
     parser_classes = (JSONParser, FormParser, MultiPartParser)
     permission_classes = (IsAuthenticated,)
+    filter_backends = [filters.SearchFilter]
     serializer_class = ProjectMemberSerializer
+
+    search_fields = ['user__username', 'user__email', 'user__first_name', 'user__last_name']
 
     def get_queryset(self,):
         project_id = self.kwargs['pk']
@@ -316,17 +319,23 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         if 'user' in self.kwargs:
             user_id = self.kwargs['user']
         current_user_id = self.request.user.id
+        project = Project.objects.get(id=project_id)
         # TODO: Only Project Leader or above can see member list
         # TODO: use django permission instead of directly checking if role is manager as below
         if user_id != None and user_id == current_user_id:
             return ProjectMember.objects.filter(project=project_id, user=user_id)
 
-        if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner']).exists():
+        if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner']).exists() and current_user_id != project.created_by_id:
             raise DatasetJscDatabaseException("Operation can only be performed by a project manager or project owner")
-        # current_project = Project.objects.get(id=project_id)
-        # return current_project.annotators()
         
-        return ProjectMember.objects.filter(project=project_id)
+        members = ProjectMember.objects.filter(project=project_id)
+        members = members.extra(select={'total_records': members.count()}) # This extra total_records will temporarily help frontend to paginate members list 
+
+        if self.request.query_params.get('search'):
+            return members
+
+        paginated_members = paginator(members, self.request)
+        return paginated_members
 
     def get_object(self):
         current_user_id = self.request.user.id
@@ -356,6 +365,15 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         self.perform_destroy(instance)
         return Response({'code':200, 'detail': 'Delete project member successfully'}, status=status.HTTP_200_OK)
 
+    def get_project_member_role(self, project_id: str, user_id: str) -> str:
+        """
+            Returns role of specific user in a project by id.
+            Returns `None` if that user doesn't exist
+        """
+        current_user = ProjectMember.objects.filter(project_id=project_id, user_id=user_id).first()
+
+        return None if current_user is None else current_user.role
+
     def perform_create(self, serializer):
         # Added by NgDMau
         # check if logging user is admin of current project
@@ -364,8 +382,13 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         project_id = self.kwargs['pk']
         user_id = json.loads(self.request.body)['user_pk']
         user_role = json.loads(self.request.body)['role']
-        current_user_role = ProjectMember.objects.filter(project_id=project_id, user_id=current_user_id)[0].role
-        
+
+        current_user_role = self.get_project_member_role(project_id, user_id)
+
+        # Error handling
+        if current_user_role is None:
+            raise DatasetJscDatabaseException('User is not a member of project!')
+
         if current_user_role != 'owner' and user_role == 'owner':
             raise DatasetJscDatabaseException('Operation can only be performed by a project owner')
 
@@ -398,7 +421,12 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         user_id = json.loads(self.request.body)['user_pk']
         user_role = json.loads(self.request.body)['role']
         roles = ['owner', 'manager', 'reviewer', 'annotator']
-        current_user_role = ProjectMember.objects.filter(project_id=project_id, user_id=current_user_id)[0].role
+
+        current_user_role = self.get_project_member_role(project_id, user_id)
+
+        # Error handling
+        if current_user_role is None:
+            raise DatasetJscDatabaseException('User is not a member of project!')
 
         if current_user_role != 'owner' and user_role == 'owner':
             raise DatasetJscDatabaseException('Operation can only be performed by a project owner')

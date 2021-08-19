@@ -283,7 +283,7 @@
 	
 	<div class="form-container sign-in-container">
 		<form id="signup-form" action="{% url 'user-signup' %}?{% if next %}&next={{ next }}{% endif %}{% if token %}&token={{ token }}{% endif %}" method="post">
-      <h1>SIGN UP</h1>
+      <h1>{% translate 'SIGN UP' %}</h1>
       {% csrf_token %}
       <div>
         <input type="text" class="ls-input" name="email" id="email" placeholder="Email" value="{{ form.data.email }}">
@@ -296,7 +296,7 @@
         {% endif %}
         </div>
       <div>
-        <input type="password" class="ls-input" name="password" id="password" placeholder="Password">
+        <input type="password" class="ls-input" name="password" id="password" placeholder="{% translate 'Password' %}">
         {% if user_form.errors.password %}
           <ul class="field_errors">
             {% for error in user_form.errors.password %}
@@ -312,7 +312,7 @@
           </p>
         {% endfor %}
       {% endif %}
-      <p><button type="submit" aria-label="Create Account" class="ls-button ls-button_look_primary">Create Account</button></p>
+      <p><button type="submit" aria-label="Create Account" class="ls-button ls-button_look_primary">{% translate 'Create Account' %}</button></p>
     </form>
 	</div>
 	<div class="overlay-container">
@@ -320,9 +320,9 @@
 			<div class="overlay-panel overlay-right">
 				<h1>Dataset Labeling Tool 0.1 {{versions.package.short_verion}}</h1>
 				<p>Công cụ dán nhãn dữ liệu</p>
-				<u><a  id="logIn" href="{{ settings.HOSTNAME }}/user/login">Log in</a></u>
+				<u><a  id="logIn" href="{{ settings.HOSTNAME }}/user/login">{% translate 'Log in' %}</a></u>
         <br>
-        <u><a  id="forgotPassword" href="{{ settings.HOSTNAME }}/password-reset">Forgot password</a></u>
+        <u><a  id="forgotPassword" href="{{ settings.HOSTNAME }}/password-reset">{% translate 'Forgot password' %}</a></u>
 			</div>
 		</div>
 	</div>
