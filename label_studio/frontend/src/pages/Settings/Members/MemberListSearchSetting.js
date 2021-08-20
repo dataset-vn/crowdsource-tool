@@ -29,43 +29,19 @@ export const MemberListSearchSetting = ({onSelect, selectedUser, defaultSelected
   const setSearchNoti = (content) => {
     let searchNotiElem = document.getElementById("search-noti");
     searchNotiElem.innerHTML = content;
-    // return
   }
 
-  // const startSearchLoader = () => {
-  //   let loader = document.getElementById("loader");
-  //   loader.style.border = "8px solid #f3f3f3";
-  //   loader.style.borderTop = "8px solid #3498db"; /* Blue */
-  //   loader.style.borderRadius = "50%";
-  //   loader.style.width = "5px";
-  //   loader.style.height = "5px";
-  //   loader.style.animation = "spin 2s linear infinite";
-  //   loader.style.paddingLeft = "auto";
-
-  //   let cssAnimation = document.createElement('style');
-  //   // cssAnimation.type = 'text/css';
-  //   var rules = document.createTextNode('@keyframes spin {'+
-  //                                       '0% { transform: rotate(0deg); }'+
-  //                                       '100% { transform: rotate(360deg); }'+
-  //                                       '}');
-  //   cssAnimation.appendChild(rules);
-  //   document.getElementsByTagName("head")[0].appendChild(cssAnimation);
-  // }
- 
 
   const handleSearchInputChange = function (input) {
     if (input == "") setSearchNoti("")
     else {
       setSearchNoti("<b>Đang tìm kiếm......</b>")
-      // console.log("handleSearchInputChange")
     }
-    onSelect?.(null);
-    setUsersList([]);
-
+    onSelect?.(null); // undisplay the previous selected user
+    setUsersList([]); // undisplay the previous users list
     if (input.length < 3) {
       setSearchInput('');
     } 
-    
     if (input.length >= 3) {
       setSearchInput(input);
     }
@@ -78,7 +54,6 @@ export const MemberListSearchSetting = ({onSelect, selectedUser, defaultSelected
         user: userID
       }
     })
-    // console.log("response check User Member: ", response.length)
     if (response.length == 1) return true
     return false
   }

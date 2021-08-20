@@ -26,6 +26,7 @@ export const Members = () => {
   }, [setSelectedUser]);
 
   const selectMemberProject = useCallback((user) => {
+    if (user) user.isMember = true;
     setSelectedMemberProject(user);
     localStorage.setItem('selectedMemberProject', user?.id);
   }, [setSelectedMemberProject]);
@@ -47,8 +48,6 @@ export const Members = () => {
         </Elem>
         <Elem name="content">
           <MemberListSearchSetting
-            
-
             selectedUser={selectedUser}
             defaultSelected={defaultSelected}
             onSelect={(user) => selectUser(user)}

@@ -44,6 +44,7 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
     fetchUsers(projectID, pageSize, selectedPage);
   }
 
+
   const convertProjectMember2User = (projectMembers) => {
     let users = [];
     for (let i = 0; i < projectMembers.length; i++) {
@@ -70,11 +71,8 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
   }
 
   const selectUser = useCallback((user) => {
-    if (selectedUser?.id === user.id) {
-      onSelect?.(null);
-    } else {
-      onSelect?.(user);
-    }
+    if (selectedUser?.id === user.id) onSelect?.(null);
+    else onSelect?.(user);
   }, [selectedUser]);
 
   useEffect(() => {
