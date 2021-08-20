@@ -15,7 +15,8 @@ from django.apps import apps
 from rest_framework.permissions import IsAuthenticated, SAFE_METHODS, BasePermission
 from rest_framework.exceptions import PermissionDenied as DRFPermissionDenied
 
-from core.utils.common import get_object_with_check_and_log
+from core.utils.common import get_object_with_check_and_log, get_project
+from projects.models import Project, ProjectMember
 from users.models import User
 logger = logging.getLogger(__name__)
 
@@ -124,8 +125,8 @@ class IsSuperuser(BasePermission):
         if user.is_superuser and hasattr(request, 'method') and request.method == 'GET':
             return True
 
-        # super user heartex@heartex.net has full read-write access
-        elif user.is_superuser and user.email == 'heidi@labelstud.io':
+        # super user god@dataset.vn has full read-write access
+        elif user.is_superuser and user.email == 'god@dataset.vn':
             return True
 
         return False
@@ -138,15 +139,24 @@ class IsUserProjectOwner(BasePermission):
     """ Check: is user owner of this project, task or task annotation
     """
     def has_object_permission(self, request, view, obj):
+        # Check if method is not DELETE which means its not deleting something
+        if request.method in ["GET", "POST", "PATCH"]:
+            return True
         user = request.user
-        project = project_from_obj(obj, request)
+        
+        # TODO: Consider this get_object function to take in 'request' as another argument. 
+        # If that happens, we can check if user is project member in the get_object function.
+        project = get_project(obj)
         if not project:
             return False
 
-        org_pk = project.organization.pk
+        member = ProjectMember.objects.get(project=project, user=user)
+        # If this user is not project member, then deny 
+        if not member.exists():
+            return False 
 
-        # business
-        if project.created_by == user:
+        # Check if user is project's creator
+        if member.role == "owner" or project.created_by == user:
             return True
 
         return False
