@@ -84,10 +84,6 @@ urlpatterns = [
     re_path(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
 
-urlpatterns += i18n_patterns (
-    path('', include('users.urls'))
-)
-
 if settings.DEBUG:
     try:
         import debug_toolbar
