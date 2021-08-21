@@ -67,7 +67,10 @@
     "dataMan":
     {
         "info": "Dự án đã bị xóa hoặc chưa được tạo ra",
-        "fallback": "Trở về dự án"
+        "fallback": "Trở về dự án",
+        "setting": "Cài đặt",
+        "import": "Nhập",
+        "export": "Xuất"
     },
 
     "labelInstruc":

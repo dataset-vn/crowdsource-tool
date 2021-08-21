@@ -67,7 +67,10 @@
     "dataMan":
     {
         "info": "Project was deleted or not yet created",
-        "fallback": "Back to projects"
+        "fallback": "Back to projects",
+        "setting": "Settings",
+        "import": "Import",
+        "export": "Export"
     },
 
     "labelInstruc":

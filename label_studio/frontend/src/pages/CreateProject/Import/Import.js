@@ -282,7 +282,7 @@ export const ImportPage = ({
           { t('importPage.button1') } {files.uploaded.length ? "More " : ""}{ t('importPage.button2') } 
         </button>
         <div className={importClass.elem("csv-handling").mod({ highlighted: highlightCsvHandling, hidden: !csvHandling })}>
-          <span>{ t('importPage.csv_tsv') } </span>
+          <span>{ t('importPage.csv/tsv') } </span>
           <label><input {...csvProps} value="tasks" checked={csvHandling === "tasks"}/>{ t('importPage.listOfTask') }</label>
           <label><input {...csvProps} value="ts" checked={csvHandling === "ts"}/>{ t('importPage.timeSeries') }</label>
         </div>

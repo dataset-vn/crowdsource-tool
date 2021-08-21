@@ -127,11 +127,11 @@ DataManagerPage.context = ({dmRef}) => {
   const location = useFixedLocation();
   const {project} = useProject();
   const [mode, setMode] = useState(dmRef?.mode ?? "explorer");
-
+  const { t } = useTranslation();
   const links = {
-    '/settings': 'Settings',
-    '/data/import': "Import",
-    '/data/export': 'Export',
+    '/settings': t('dataMan.setting'),
+    '/data/import': t('dataMan.import'),
+    '/data/export': t('dataMan.export'),
   };
 
   const updateCrumbs = (currentMode) => {
