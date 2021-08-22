@@ -61,7 +61,7 @@ export const ProjectsPage = () => {
   );
 };
 
-ProjectsPage.title = "Projects"; //chưa thể áp dụng i18n với dòng này
+ProjectsPage.title = "Dự án"; //chưa thể áp dụng i18n với dòng này
 ProjectsPage.path = "/projects";
 ProjectsPage.exact = true;
 ProjectsPage.routes = ({store}) => [

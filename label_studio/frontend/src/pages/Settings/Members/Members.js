@@ -89,5 +89,5 @@ export const Members = () => {
   );
 };
 
-Members.title = "Members";
+Members.title = "Thành viên";
 Members.path = "/members";

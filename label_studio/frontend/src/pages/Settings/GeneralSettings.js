@@ -82,6 +82,7 @@ export const GeneralSettings = () => {
   );
 };
 
-GeneralSettings.menuItem = "General";
+
+GeneralSettings.menuItem = "Tổng quan";
 GeneralSettings.path = "/";
 GeneralSettings.exact = true;

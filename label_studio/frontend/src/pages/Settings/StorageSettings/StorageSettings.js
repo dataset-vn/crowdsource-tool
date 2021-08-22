@@ -34,5 +34,5 @@ export const StorageSettings = () => {
   );
 };
 
-StorageSettings.title = "Cloud Storage";
+StorageSettings.title = "Lưu trữ đám mây";
 StorageSettings.path = "/storage";

@@ -87,7 +87,7 @@ export const MenuLayout = ({children, ...routeProps}) => {
 };
 
 export const SettingsPage = {
-  title: "Settings",
+  title: "Cài đặt",
   path: "/settings",
   exact: true,
   layout: MenuLayout,

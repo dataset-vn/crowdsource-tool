@@ -72,7 +72,7 @@ def get_all_columns(project):
             'id': 'id',
             'title': "ID",
             'type': 'Number',
-            'help': 'Task ID',
+            'help': 'ID công việc',
             'target': 'tasks',
             'visibility_defaults': {
                 'explore': True,
@@ -84,7 +84,7 @@ def get_all_columns(project):
             'title': 'Hoàn thành',
             'type': 'Datetime',
             'target': 'tasks',
-            'help': 'Last annotation date',
+            'help': 'Ngày dán nhãn cuối cùng',
             'visibility_defaults': {
                 'explore': True,
                 'labeling': False
@@ -95,7 +95,7 @@ def get_all_columns(project):
             'title': 'Dán nhãn',
             'type': "Number",
             'target': 'tasks',
-            'help': 'Total annotations per task',
+            'help': 'Tổng số nhãn dán mỗi tác vụ',
             'visibility_defaults': {
                 'explore': True,
                 'labeling': True
@@ -106,7 +106,7 @@ def get_all_columns(project):
             'title': "Đã Hủy",
             'type': "Number",
             'target': 'tasks',
-            'help': 'Total cancelled (skipped) annotations',
+            'help': 'Tổng số nhãn bị hủy (bỏ qua)',
             'visibility_defaults': {
                 'explore': True,
                 'labeling': False
@@ -117,7 +117,7 @@ def get_all_columns(project):
             'title': "Dự đoán",
             'type': "Number",
             'target': 'tasks',
-            'help': 'Total predictions per task',
+            'help': 'Tổng dự đoán mỗi tác vụ',
             'visibility_defaults': {
                 'explore': True,
                 'labeling': False
@@ -128,7 +128,7 @@ def get_all_columns(project):
             'title': "Kết quả dán nhãn",
             'type': "String",
             'target': 'tasks',
-            'help': 'Annotation results stacked over all annotations',
+            'help': 'Kết quả dán nhãn được cộng dồn của tất cả các nhãn',
             'visibility_defaults': {
                 'explore': False,
                 'labeling': False
@@ -139,7 +139,7 @@ def get_all_columns(project):
             'title': "Điểm dự đoán",
             'type': "Number",
             'target': 'tasks',
-            'help': 'Average prediction score over all task predictions',
+            'help': 'Điểm dự đoán trung bình trên tất cả các tác vụ',
             'visibility_defaults': {
                 'explore': False,
                 'labeling': False
@@ -150,7 +150,7 @@ def get_all_columns(project):
             'title': "Kết quả dự đoán",
             'type': "String",
             'target': 'tasks',
-            'help': 'Prediction results stacked over all predictions',
+            'help': 'Kết quả dự đoán được cộng dồn của tất cả các dự đoán',
             'visibility_defaults': {
                 'explore': False,
                 'labeling': False
@@ -161,7 +161,7 @@ def get_all_columns(project):
             'title': "Tên tệp nguồn",
             'type': "String",
             'target': 'tasks',
-            'help': 'Source filename from import step',
+            'help': 'Tệp tin nguồn từ bước nhập dữ liệu',
             'visibility_defaults': {
                 'explore': False,
                 'labeling': False
@@ -172,7 +172,7 @@ def get_all_columns(project):
             'title': 'Được tạo lúc',
             'type': 'Datetime',
             'target': 'tasks',
-            'help': 'Task creation time',
+            'help': 'Thời gian tạo tác vụ',
             'visibility_defaults': {
                 'explore': False,
                 'labeling': False

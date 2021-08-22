@@ -306,7 +306,8 @@
         "task": "Task Sampling",
         "saved": "Saved!",
         "save": "Save",
-        "color": "Color"
+        "color": "Color",
+        "title": "General"
     },
 
     "menuBar":
