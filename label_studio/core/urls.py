@@ -25,6 +25,7 @@ from django.views.static import serve
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework.permissions import AllowAny
+from django.conf.urls.i18n import i18n_patterns
 
 from core import views
 

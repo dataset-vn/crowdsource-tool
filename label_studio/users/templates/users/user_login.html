@@ -291,9 +291,9 @@ footer a {
 	<div class="form-container sign-in-container">
 		<form id="login-form" action="{% url 'user-login' %}{% if next %}?next={{ next }}{% endif %}" method="post">
       {% csrf_token %}
-      <h1>LOG IN</h1>
+      <h1>{% translate "LOG IN" %}</h1>
       <p><input type="text" class="ls-input" name="email" id="email" placeholder="Email" value="{{ form.data.email }}"></p>
-      <p><input type="password" class="ls-input" name="password" id="password" placeholder="Password"></p>
+      <p><input type="password" class="ls-input" name="password" id="password" placeholder="{% translate 'Password'%}'"></p>
       {% if form.non_field_errors %}
         {% for error in form.non_field_errors %}
           <p class="error">
@@ -301,7 +301,7 @@ footer a {
           </p>
         {% endfor %}
       {% endif %}
-      <p><button type="submit" aria-label="Log In" class="ls-button ls-button_look_primary">Log in</button></p>
+      <p><button type="submit" aria-label="Log In" class="ls-button ls-button_look_primary">{% translate 'Log in' %}</button></p>
     </form>
 	</div>
 	<div class="overlay-container">
@@ -309,9 +309,9 @@ footer a {
 			<div class="overlay-panel overlay-right">
 				<h1>Dataset Labeling Tool 0.1 {{versions.package.short_verion}}</h1>
 				<p>Công cụ dán nhãn dữ liệu</p>
-				<u><a  id="signUp" href="{{ settings.HOSTNAME }}/user/signup">Sign up</a></u>
+				<u><a  id="signUp" href="{{ settings.HOSTNAME }}/user/signup">{% translate 'Sign up' %}</a></u>
 				<br>
-				<u><a  id="forgotPassword" href="{{ settings.HOSTNAME }}/password-reset">Forgot password</a></u>
+				<u><a  id="forgotPassword" href="{{ settings.HOSTNAME }}/password-reset">{% translate 'Forgot password' %}</a></u>
 			</div>
 		</div>
 	</div>

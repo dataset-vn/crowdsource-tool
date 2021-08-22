@@ -5,6 +5,7 @@ import { unique } from '../../../utils/helpers';
 import "./Import.styl";
 import { IconUpload, IconInfo, IconError } from '../../../assets/icons';
 import { useAPI } from '../../../providers/ApiProvider';
+import { useTranslation } from "react-i18next";
 
 const importClass = cn("upload_page");
 const dropzoneClass = cn("dropzone");
@@ -52,10 +53,11 @@ function getFiles(files) {
 }
 
 const Footer = () => {
+  const { t } = useTranslation();
   return (
     <Modal.Footer>
       <IconInfo className={importClass.elem("info-icon")} width="20" height="20" />
-      Give a question to <a target="_blank" href="https://facebook.com/dataset.vn"> our facebook</a> if you have any problems{" "}
+      { t('importFooter.content1') } <a target="_blank" href="https://facebook.com/dataset.vn"> { t('importFooter.content2') }</a> { t('importFooter.content3') }{" "}
     </Modal.Footer>
   );
 };
@@ -122,7 +124,8 @@ export const ImportPage = ({
   const [error, setError] = useState();
   const [ids, _setIds] = useState([]);
   const api = useAPI();
-
+  
+  const { t } = useTranslation();
   const processFiles = (state, action) => {
     if (action.sending) {
       return {...state, uploading: [...action.sending, ...state.uploading]};
@@ -172,7 +175,8 @@ export const ImportPage = ({
     console.error(err);
     // @todo workaround for error about input size in a wrong html format
     if (typeof err === "string" && err.includes("RequestDataTooBig")) {
-      const message = "Imported file is too big";
+      const { t } = useTranslation();
+      const message =  t('importPage.errormess') ;
       const extra = err.match(/"exception_value">(.*)<\/pre>/)?.[1];
       err = { message, extra };
     }
@@ -262,7 +266,6 @@ export const ImportPage = ({
     type: "radio",
     onChange: e => setCsvHandling(e.target.value),
   };
-
   return (
     <div className={importClass}>
       {highlightCsvHandling && <div className={importClass.elem("csv-splash")}/>}
@@ -271,17 +274,17 @@ export const ImportPage = ({
       <header>
         <form className={importClass.elem("url-form") + " inline"} method="POST" onSubmit={onLoadURL}>
           <input placeholder="Dataset URL" name="url" ref={urlRef} />
-          <button type="submit">Add URL</button>
+          <button type="submit">{ t('importPage.addurl') }</button>
         </form>
-        <span>or</span>
+        <span>{ t('importPage.or') }</span>
         <button onClick={() => document.getElementById('file-input').click()} className={importClass.elem("upload-button")}>
           <IconUpload width="16" height="16" className={importClass.elem("upload-icon")} />
-          Upload {files.uploaded.length ? "More " : ""}Files
+          { t('importPage.button1') } {files.uploaded.length ? "More " : ""}{ t('importPage.button2') } 
         </button>
         <div className={importClass.elem("csv-handling").mod({ highlighted: highlightCsvHandling, hidden: !csvHandling })}>
-          <span>Treat CSV/TSV as</span>
-          <label><input {...csvProps} value="tasks" checked={csvHandling === "tasks"}/> List of tasks</label>
-          <label><input {...csvProps} value="ts" checked={csvHandling === "ts"}/> Time Series</label>
+          <span>{ t('importPage.csv/tsv') } </span>
+          <label><input {...csvProps} value="tasks" checked={csvHandling === "tasks"}/>{ t('importPage.listOfTask') }</label>
+          <label><input {...csvProps} value="ts" checked={csvHandling === "ts"}/>{ t('importPage.timeSeries') }</label>
         </div>
         <div className={importClass.elem("status")}>
           {files.uploaded.length
@@ -297,15 +300,15 @@ export const ImportPage = ({
           {!showList && (
             <label htmlFor="file-input">
               <div className={dropzoneClass.elem("content")}>
-                <header>Drag & drop files here<br/>or click to browse</header>
+                <header>{ t('importPage.header1') }<br/>{ t('importPage.header2') }</header>
                 <IconUpload height="64" className={dropzoneClass.elem("icon")} />
                 <dl>
-                  <dt>Text</dt><dd>txt</dd>
-                  <dt>Audio</dt><dd>wav, aiff, mp3, au, flac, m4a, ogg</dd>
-                  <dt>Images</dt><dd>jpg, png, gif, bmp, svg, webp</dd>
+                  <dt>{ t('importPage.text') }</dt><dd>txt</dd>
+                  <dt>{ t('importPage.audio') }</dt><dd>wav, aiff, mp3, au, flac, m4a, ogg</dd>
+                  <dt>{ t('importPage.images') }</dt><dd>jpg, png, gif, bmp, svg, webp</dd>
                   <dt>HTML</dt><dd>html, htm, xml</dd>
-                  <dt>Time Series</dt><dd>csv, tsv</dd>
-                  <dt>Common Formats</dt><dd>csv, tsv, txt, json</dd>
+                  <dt>{ t('importPage.timeSeries') }</dt><dd>csv, tsv</dd>
+                  <dt>{ t('importPage.commonFormats') }</dt><dd>csv, tsv, txt, json</dd>
                 </dl>
               </div>
             </label>

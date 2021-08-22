@@ -44,7 +44,7 @@ def get_all_columns(project):
     for key, data_type in list(data_types.items()):  # make data types from labeling config first
         column = {
             'id': key,
-            'title': key if key != settings.DATA_UNDEFINED_NAME else 'data',
+            'title': key if key != settings.DATA_UNDEFINED_NAME else 'Dữ liệu',
             'type': data_type if data_type in ['Image', 'Audio', 'AudioPlus', 'Unknown'] else 'String',
             'target': 'tasks',
             'parent': 'data',
@@ -60,7 +60,7 @@ def get_all_columns(project):
     # --- Data root ---
     data_root = {
         'id': 'data',
-        'title': "data",
+        'title': "Dữ liệu",
         'type': "List",
         'target': 'tasks',
         'children': task_data_children
@@ -81,7 +81,7 @@ def get_all_columns(project):
         },
         {
             'id': 'completed_at',
-            'title': 'Completed',
+            'title': 'Hoàn thành',
             'type': 'Datetime',
             'target': 'tasks',
             'help': 'Last annotation date',
@@ -92,7 +92,7 @@ def get_all_columns(project):
         },
         {
             'id': 'total_annotations',
-            'title': 'Annotations',
+            'title': 'Dán nhãn',
             'type': "Number",
             'target': 'tasks',
             'help': 'Total annotations per task',
@@ -103,7 +103,7 @@ def get_all_columns(project):
         },
         {
             'id': 'cancelled_annotations',
-            'title': "Cancelled",
+            'title': "Đã Hủy",
             'type': "Number",
             'target': 'tasks',
             'help': 'Total cancelled (skipped) annotations',
@@ -114,7 +114,7 @@ def get_all_columns(project):
         },
         {
             'id': 'total_predictions',
-            'title': "Predictions",
+            'title': "Dự đoán",
             'type': "Number",
             'target': 'tasks',
             'help': 'Total predictions per task',
@@ -125,7 +125,7 @@ def get_all_columns(project):
         },
         {
             'id': 'annotations_results',
-            'title': "Annotation results",
+            'title': "Kết quả dán nhãn",
             'type': "String",
             'target': 'tasks',
             'help': 'Annotation results stacked over all annotations',
@@ -136,7 +136,7 @@ def get_all_columns(project):
         },
         {
             'id': 'predictions_score',
-            'title': "Prediction score",
+            'title': "Điểm dự đoán",
             'type': "Number",
             'target': 'tasks',
             'help': 'Average prediction score over all task predictions',
@@ -147,7 +147,7 @@ def get_all_columns(project):
         },
         {
             'id': 'predictions_results',
-            'title': "Prediction results",
+            'title': "Kết quả dự đoán",
             'type': "String",
             'target': 'tasks',
             'help': 'Prediction results stacked over all predictions',
@@ -158,7 +158,7 @@ def get_all_columns(project):
         },
         {
             'id': 'file_upload',
-            'title': "Source filename",
+            'title': "Tên tệp nguồn",
             'type': "String",
             'target': 'tasks',
             'help': 'Source filename from import step',
@@ -169,7 +169,7 @@ def get_all_columns(project):
         },
         {
             'id': 'created_at',
-            'title': 'Created at',
+            'title': 'Được tạo lúc',
             'type': 'Datetime',
             'target': 'tasks',
             'help': 'Task creation time',
@@ -180,7 +180,7 @@ def get_all_columns(project):
         },
         {
             'id': 'annotators',
-            'title': 'Annotated by',
+            'title': 'Được dán nhãn bởi',
             'type': 'List',
             'target': 'tasks',
             'help': 'All users who completed the task',

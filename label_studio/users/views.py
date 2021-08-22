@@ -8,6 +8,7 @@ from django.contrib import auth
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
 from rest_framework.authtoken.models import Token
+from django.utils.translation import activate, get_language
 
 from users import forms
 from core.utils.common import load_func
@@ -53,6 +54,7 @@ def logout(request):
 def user_signup(request):
     """ Sign up page
     """
+    language_navigator(request)
     user = request.user
     next_page = request.GET.get('next')
     token = request.GET.get('token')
@@ -89,6 +91,7 @@ def user_signup(request):
 def user_login(request):
     """ Login page
     """
+    language_navigator(request)
     user = request.user
     next_page = request.GET.get('next')
     next_page = next_page if next_page else reverse('projects:project-index')
@@ -138,3 +141,18 @@ def user_account(request):
         'user_profile_form': form,
         'token': token
     })
+
+
+def language_navigator(request):
+    current_language = get_language()
+    if current_language == 'vi':
+      activate('vi')
+    elif current_language == None:
+      activate('vi')
+    else:
+      activate('en')
+
+    if request.GET.get('lang') == 'vi':
+      activate('vi')
+    elif request.GET.get('lang') == 'en':
+      activate('en')

@@ -6,8 +6,10 @@ import { ApiContext } from '../../../providers/ApiProvider';
 import { useProject } from '../../../providers/ProjectProvider';
 import { StorageCard } from './StorageCard';
 import { StorageForm } from './StorageForm';
+import { useTranslation } from "react-i18next";
 
 export const StorageSet = ({title, target, rootClass, buttonLabel}) => {
+  const { t } = useTranslation();
   const api = useContext(ApiContext);
   const {project} = useProject();
   const [storages, setStorages] = useState([]);
@@ -59,9 +61,9 @@ export const StorageSet = ({title, target, rootClass, buttonLabel}) => {
       ),
       footer: (
         <>
-          Save completed annotations to Amazon S3, Google Cloud, Microsoft Azure, or Redis.
+          { t("StorageSet.save") /*Save completed annotations to Amazon S3, Google Cloud, Microsoft Azure, or Redis.*/ }
           <br/>
-          <a href="https://labelstud.io/guide/storage.html">See more in the documentation</a>.
+          <a href="https://labelstud.io/guide/storage.html">{ t("StorageSet.see") /*See more in the documentation*/ }</a>.
         </>
       ),
     });
@@ -73,8 +75,8 @@ export const StorageSet = ({title, target, rootClass, buttonLabel}) => {
 
   const onDeleteStorage = useCallback(async (storage) => {
     confirm({
-      title: "Deleting storage",
-      body: "This action cannot be undone. Are you sure?",
+      title: t('StorageSet.delete') /*"Deleting storage"*/,
+      body: t('StorageSet.message') /*"This action cannot be undone. Are you sure?"*/,
       buttonLook: "destructive",
       onOk: async () => {
         const response = await api.callApi('deleteStorage', {

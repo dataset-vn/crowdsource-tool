@@ -13,6 +13,7 @@ import { DataManagerPage } from '../DataManager/DataManager';
 import { SettingsPage } from '../Settings';
 import './Projects.styl';
 import { EmptyProjectsList, ProjectsList } from './ProjectsList';
+import { useTranslation } from "react-i18next";
 
 export const ProjectsPage = () => {
   const api = React.useContext(ApiContext);
@@ -60,7 +61,7 @@ export const ProjectsPage = () => {
   );
 };
 
-ProjectsPage.title = "Projects";
+ProjectsPage.title = "Projects"; //chưa thể áp dụng i18n với dòng này
 ProjectsPage.path = "/projects";
 ProjectsPage.exact = true;
 ProjectsPage.routes = ({store}) => [
@@ -80,5 +81,6 @@ ProjectsPage.routes = ({store}) => [
 ];
 ProjectsPage.context = ({ openModal, showButton }) => {
   if (!showButton) return null;
-  return <Button onClick={openModal} look="primary" size="compact">Create</Button>;
+  const { t } = useTranslation();
+  return <Button onClick={openModal} look="primary" size="compact">{ t('projectCreate.title') /*Create*/ }</Button>;
 };

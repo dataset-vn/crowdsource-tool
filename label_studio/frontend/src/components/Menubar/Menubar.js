@@ -14,6 +14,7 @@ import { VersionNotifier, VersionProvider } from '../VersionNotifier/VersionNoti
 import './Menubar.styl';
 import './MenuContent.styl';
 import './MenuSidebar.styl';
+import { useTranslation } from "react-i18next";
 
 export const MenubarContext = createContext();
 
@@ -47,6 +48,7 @@ export const Menubar = ({
   onSidebarToggle,
   onSidebarPin,
 }) => {
+  const { t } = useTranslation();
   const menuDropdownRef = useRef();
   const useMenuRef = useRef();
   const location = useFixedLocation();
@@ -111,7 +113,7 @@ export const Menubar = ({
     }
     useMenuRef?.current?.close();
   }, [location]);
-
+  
   return (
     <div className={contentClass}>
       {enabled && (
@@ -135,14 +137,14 @@ export const Menubar = ({
             <Menu>
               <Menu.Item
                 icon={<LsSettings/>}
-                label="Account & Settings"
+                label= { t('menuBar.acc&set') }
                 href="/user/account"
                 data-external
               />
               {/* <Menu.Item label="Dark Mode"/> */}
               <Menu.Item
                 icon={<LsDoor/>}
-                label="Log Out"
+                label= { t('menuBar.logout') }
                 href={absoluteURL("/logout")}
                 data-external
               />
@@ -168,21 +170,21 @@ export const Menubar = ({
             >
               <Menu>
                 <Menu.Item
-                  label="Projects"
+                  label= { t('sideBar.projects') }
                   to="/projects"
                   icon={<IconFolder/>}
                   data-external
                   exact
                 />
                 <Menu.Item
-                  label="Members"
+                  label= { t('sideBar.members') }
                   to="/people"
                   icon={<IconPersonInCircle/>}
                   data-external
                   exact
                 />
                 <Menu.Item
-                  label="Organizations"
+                  label= { t('sideBar.organizations') }
                   to="/organizations"
                   icon={<IconBook/>}
                   data-external
@@ -208,7 +210,7 @@ export const Menubar = ({
                   onClick={sidebarPin}
                   active={sidebarPinned}
                 >
-                  {sidebarPinned ?  "Unpin menu" : "Pin menu"}
+                  {sidebarPinned ?  t('sideBar.unpin') : t('sideBar.pin')}
                 </Menu.Item>
 
               </Menu>

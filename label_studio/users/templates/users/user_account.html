@@ -13,7 +13,7 @@
   {
     breadcrumbs: [
       {
-        title: "Account & Settings"
+        title: "Account & Settings" <!--{% translate 'Account & Settings' %} -->
       }
     ],
   }
@@ -27,22 +27,22 @@
     <form action="{% url 'user-detail' pk=user.pk %}" method="patch" class="user__info">
       <input type="hidden" name="_method" value="patch"/>
 
-      <header>Account info</header>
+      <header>{% translate 'Account info' %}</header>
       <ul>
         <li class="field">
           <label for="">E-mail</label>
           <input type="text" class="ls-input" value="{{user.email}}" disabled />
         </li>
         <li class="field">
-          <label for="">First Name</label>
+          <label for="">{% translate 'First Name' %}</label>
           <input type="text" class="ls-input" name="first_name" value="{{user.first_name}}" />
         </li>
         <li class="field">
-          <label for="">Last Name</label>
+          <label for="">{% translate 'Last Name' %}</label>
           <input type="text" class="ls-input" name="last_name" value="{{user.last_name}}" />
         </li>
         <li class="field">
-          <label for="">Phone</label>
+          <label for="">{% translate 'Phone' %}</label>
           <input type="text" class="ls-input" name="phone" value="{{user.phone}}" />
           <!-- <span>We'll send you sms with code if you change your number</span>
           <span class="error">Incorrect phone number!</span> -->
@@ -64,7 +64,7 @@
           </div>
 
           <button class="ls-button ls-button_look_danger" name="delete-avatar" type="button">
-            Delete
+            {% translate 'Delete' %}
           </button>
 
           <input class="file-input" type="file" name="avatar" value="Choose"
@@ -77,8 +77,8 @@
         </div> -->
       </div>
       <footer>
-        <p class="secondary">Registered {{ user.date_joined|date:"M j, Y" }}</p>
-        <button class="ls-button ls-button_look_primary" onclick="smart_submit()">Save</button>
+        <p class="secondary">{% translate 'Registered' %} {{ user.date_joined|date:"M j, Y" }}</p>
+        <button class="ls-button ls-button_look_primary" onclick="smart_submit()">{% translate 'Save' %}</button>
       </footer>
     </form>
 

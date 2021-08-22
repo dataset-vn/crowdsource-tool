@@ -3,8 +3,10 @@ import { Button } from '../../components';
 import { Form, Label, TextArea, Toggle } from '../../components/Form';
 import { MenubarContext } from '../../components/Menubar/Menubar';
 import { ProjectContext } from '../../providers/ProjectProvider';
+import { useTranslation } from "react-i18next";
 
 export const InstructionsSettings = () => {
+  const { t } = useTranslation();
   const {project, fetchProject} = useContext(ProjectContext);
   const pageContext = useContext(MenubarContext);
   const formRef = useRef();
@@ -21,12 +23,12 @@ export const InstructionsSettings = () => {
     <div style={{width: 480}}>
       <Form ref={formRef} action="updateProject" formData={{...project}} params={{pk: project.id}} onSubmit={updateProject}>
         <Form.Row columnCount={1}>
-          <Label text="Labeling Instructions" large/>
+          <Label text= {t('Instructions.label') /*"Labeling Instructions"*/}large/>
           <div style={{paddingLeft: 16}}>
-            <Toggle label="Show before labeling" name="show_instruction"/>
+            <Toggle label={t('Instructions.show') /*"Show before labeling"*/} name="show_instruction"/>
           </div>
           <div style={{color: "rgba(0,0,0,0.4)", paddingLeft: 16}}>
-            Write instructions to help users complete labeling tasks.
+          {t('Instructions.write') /*Write instructions to help users complete labeling tasks.*/}
           </div>
         </Form.Row>
 
@@ -36,9 +38,9 @@ export const InstructionsSettings = () => {
 
         <Form.Actions>
           <Form.Indicator>
-            <span case="success">Saved!</span>
+            <span case="success">{t('Instructions.saved!')}</span>
           </Form.Indicator>
-          <Button type="submit" look="primary" style={{width: 120}}>Save</Button>
+          <Button type="submit" look="primary" style={{width: 120}}>{t('Instructions.save')}</Button>
         </Form.Actions>
       </Form>
     </div>
