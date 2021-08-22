@@ -145,14 +145,15 @@ def user_account(request):
 
 
 def language_navigator(request):
-    current_language = get_language()
+    """current_language = get_language()
     if current_language == 'vi':
       activate('vi')
     elif current_language == None:
       activate('vi')
     else:
-      activate('en')
-
+      activate('en')"""
+    
+    activate('vi')
     if request.GET.get('lang') == 'vi':
       activate('vi')
     elif request.GET.get('lang') == 'en':
