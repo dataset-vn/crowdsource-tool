@@ -121,6 +121,7 @@ def user_login(request):
 
 @login_required
 def user_account(request):
+    language_navigator(request)
     user = request.user
 
     if user.active_organization is None and 'organization_pk' not in request.session:
