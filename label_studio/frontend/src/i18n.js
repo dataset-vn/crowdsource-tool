@@ -17,14 +17,16 @@ i18n
 			},
 		},
 	});
-var locale = navigator.language;
+/*var locale = navigator.language;
 if (locale == "vi") {
 	i18n.changeLanguage("vi");
 } else if (locale == null) {
 	i18n.changeLanguage("vi");
 } else {
 	i18n.changeLanguage("en");
-}
+}*/
+
+i18n.changeLanguage("vi");
 var urlParams = new URLSearchParams(window.location.search);
 var lang = urlParams.get("lang");
 if (lang == "vi") {
@@ -32,5 +34,3 @@ if (lang == "vi") {
 } else if (lang == "en") {
 	i18n.changeLanguage("en");
 }
-
-//i18n.changeLanguage("vi");
