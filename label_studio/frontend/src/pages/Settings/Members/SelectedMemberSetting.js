@@ -9,9 +9,11 @@ import "./MemberSetting.styl";
 import { Space } from "../../../components/Space/Space";
 import { ROLE_MEMBER } from "../../../utils/constant";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 
 export const SelectedMemberSetting = ({ user, onClose, projectID }) => {
+  const { t } = useTranslation();
   const fullName = [user.first_name, user.last_name].filter(n => !!n).join(" ").trim();
   const [role, setRole] = useState('annotator')
   const api = useAPI();
@@ -82,7 +84,7 @@ export const SelectedMemberSetting = ({ user, onClose, projectID }) => {
       )}
 
       <Elem tag="p" name="last-active">
-        Hoạt động lúc : {format(new Date(user.last_activity), 'dd MMM yyyy, KK:mm a')}
+        { t("SelectedMember.time") /*Hoạt động lúc :*/ } {format(new Date(user.last_activity), 'dd MMM yyyy, KK:mm a')}
       </Elem>
       <Elem name="controls">
         <Space spread>
@@ -93,7 +95,7 @@ export const SelectedMemberSetting = ({ user, onClose, projectID }) => {
               checkUserMember(user) ? 
               <>
               <Button icon={<DtsTrash/>} onClick={removeProjectMember}>
-                Xóa khỏi dự án
+                { t("SelectedMember.delete") }
               </Button>
                </> : 
                <> 
@@ -105,7 +107,7 @@ export const SelectedMemberSetting = ({ user, onClose, projectID }) => {
                   )}
                 </select>        
                 <Button icon={<LsPlus />} onClick={createProjectMember}>
-                  Thêm vào dự án
+                  { t("SelectedMember.addproject") /*Thêm vào dự án*/ }
                 </Button>
               </> 
             }

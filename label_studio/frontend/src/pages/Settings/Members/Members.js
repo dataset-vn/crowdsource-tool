@@ -11,9 +11,11 @@ import { MemberListSetting } from './MemberListSetting';
 import { SelectedMemberSetting } from './SelectedMemberSetting';
 import { MemberListSearchSetting } from './MemberListSearchSetting';
 import './Members.styl';
+import { useTranslation } from "react-i18next";
 
 export const Members = () => {
 
+  const { t } = useTranslation();
   const [selectedUser, setSelectedUser] = useState(null);
   const [selectedMemberProject, setSelectedMemberProject] = useState(null);
 
@@ -39,11 +41,10 @@ export const Members = () => {
     return localStorage.getItem('selectedMemberProject');
   }, []);
 
-
   return (
     <>
       <Block name="people-list">
-        <Elem name="column" mix="email">Add Members</Elem>
+        <Elem name="column" mix="email">{ t("Member.add") /*Add Members*/ }</Elem>
         <Elem name="users">
         </Elem>
         <Elem name="content">
@@ -67,7 +68,7 @@ export const Members = () => {
       </Space>
 
       <Block name="people-list">
-        <Elem name="column" mix="email">Thành viên dự án</Elem>
+        <Elem name="column" mix="email">{ t("Member.project") /*Thành viên dự án*/ }</Elem>
         <Elem name="content">
           <MemberListSetting
             selectedUser={selectedMemberProject}

@@ -12,8 +12,10 @@ import './MemberListSetting.styl';
 
 import React, { Component } from 'react';
 import { Space } from "../../../components/Space/Space";
+import { useTranslation } from "react-i18next";
 
 export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, projectID, orgID=1 }) => {
+  const { t } = useTranslation();
   const defaultPageSize = 15
   const api = useAPI();
   const [totalRecords, setTotalRecords] = useState(0)
@@ -104,10 +106,10 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
         <Elem name="users">
           <Elem name="header">
             <Elem name="column" mix="avatar" />
-            <Elem name="column" mix="email">Email</Elem>
-            <Elem name="column" mix="name">Tên</Elem>
-            <Elem name="column" mix="role">Quyền</Elem>
-            <Elem name="column" mix="last-activity">Hoạt động</Elem>
+            <Elem name="column" mix="email">{ t('MemberLSetting2.email') }</Elem>
+            <Elem name="column" mix="name">{ t('MemberLSetting2.name') }</Elem>
+            <Elem name="column" mix="role">{ t('MemberLSetting2.rights') }</Elem>
+            <Elem name="column" mix="last-activity">{ t('MemberLSetting2.activity') }</Elem>
           </Elem>
           <Elem name="body">
            

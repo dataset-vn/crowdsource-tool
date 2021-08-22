@@ -5,6 +5,7 @@ import { Spinner, Userpic } from "../../../components";
 import { Block, Elem } from "../../../utils/bem";
 import { isDefined } from "../../../utils/helpers";
 import './MemberListSetting.styl';
+import { useTranslation } from "react-i18next";
 
 export const MemberListSearchSetting = ({onSelect, selectedUser, defaultSelected, projectID}) => {
   const api = useAPI();
@@ -88,12 +89,13 @@ export const MemberListSearchSetting = ({onSelect, selectedUser, defaultSelected
       if (selected) selectUser(selected.user);
     }
   }, [usersList, defaultSelected]);
+  const { t } = useTranslation();
 
 
   return (
     <Block name="people-list">
       <Elem name="search">
-        < input type="text" style={{width:"30%", border: "2px solid"}} placeholder="Tìm kiếm theo tên, email" onChange={e => handleSearchInputChange(e.target.value)} />
+        < input type="text" style={{width:"30%", border: "2px solid"}} placeholder={ t('MemberLSetting.search') } onChange={e => handleSearchInputChange(e.target.value)} />
         <div style={{paddingLeft: "20px", paddingTop:"10px", paddingBottom:"10px"}} id='search-noti' ></div>
         {/* <div id='loader' ></div> */}
       </Elem>
@@ -101,9 +103,9 @@ export const MemberListSearchSetting = ({onSelect, selectedUser, defaultSelected
         <Elem name="users">
           <Elem name="header">
             <Elem name="column" mix="avatar"/>
-            <Elem name="column" mix="email">Email</Elem>
-            <Elem name="column" mix="name">Tên</Elem>
-            <Elem name="column" mix="last-activity">Hoạt động</Elem>
+            <Elem name="column" mix="email">{ t('MemberLSetting.email') }</Elem>
+            <Elem name="column" mix="name">{ t('MemberLSetting.name') }</Elem>
+            <Elem name="column" mix="last-activity">{ t('MemberLSetting.activity') }</Elem>
           </Elem>
           <Elem name="body" style={{maxHeight: "500px", overflowY: "scroll"}}>
             {usersList.map(({user}) => {

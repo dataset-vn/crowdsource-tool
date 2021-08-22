@@ -200,7 +200,12 @@
         "contribute": "Đóng góp đến",
         "time": "Hoạt động lúc :",
         "already": "Đã là thành viên dự án",
-        "addproject": "Thêm vào dự án"
+        "addproject": "Thêm vào dự án",
+        "delete": "Xóa khỏi dự án",
+        "owner": "Người sở hữu",
+        "manager": "Người quản lý",
+        "reviewer": "Người đánh giá",
+        "annotator": "Người dán nhãn"
     },
 
     "StorageCard":

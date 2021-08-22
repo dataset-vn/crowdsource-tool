@@ -200,7 +200,12 @@
         "contribute": "Contributed to",
         "time": "Active at :",
         "already": "Already a project member",
-        "addproject": "Add to project"
+        "addproject": "Add to project",
+        "delete": "Remove from project",
+        "owner": "Owner",
+        "manager": "Manager",
+        "reviewer": "Reviewer",
+        "annotator": "Annotator"
     },
 
     "StorageCard":
