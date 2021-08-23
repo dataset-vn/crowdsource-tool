@@ -10,6 +10,7 @@ import { useAPI } from '../../../providers/ApiProvider';
 import { ProjectContext } from '../../../providers/ProjectProvider';
 import { MachineLearningList } from './MachineLearningList';
 import './MachineLearningSettings.styl';
+import { useTranslation } from "react-i18next";
 
 export const MachineLearningSettings = () => {
   const api = useAPI();
@@ -28,9 +29,10 @@ export const MachineLearningSettings = () => {
   }, [api, project, setBackends]);
 
   const showMLFormModal = useCallback((backend) => {
+    const { t } = useTranslation();
     const action = backend ? "updateMLBackend" : "addMLBackend";
     const modalProps = {
-      title: `${backend ? 'Edit' : 'Add'} model`,
+      title: `${backend ? t('MLSettings.edit') : t('MLSettings.add')} model`,
       style: { width: 760 },
       closeOnClickOutside: false,
       body: (
@@ -48,17 +50,17 @@ export const MachineLearningSettings = () => {
           <Input type="hidden" name="project" value={project.id}/>
 
           <Form.Row columnCount={2}>
-            <Input name="title" label="Title" placeholder="ML Model"/>
+            <Input name="title" label= {t('MLSettings.title')} placeholder= {t('MLSettings.MLmodel')} />
             <Input name="url" label="URL" required/>
           </Form.Row>
 
           <Form.Row columnCount={1}>
-            <TextArea name="description" label="Description" style={{minHeight: 120}}/>
+            <TextArea name="description" label= {t('MLSettings.description')} style={{minHeight: 120}}/>
           </Form.Row>
 
           <Form.Actions>
             <Button type="submit" look="primary" onClick={() => setMLError(null)}>
-              Validate and Save
+            {t('MLSettings.validate') /*Validate and Save*/ }
             </Button>
           </Form.Actions>
 
@@ -86,19 +88,19 @@ export const MachineLearningSettings = () => {
   useEffect(() => {
     if (project.id) fetchBackends();
   }, [project]);
-
+  const { t } = useTranslation();
   return (
     <>
       <Description style={{marginTop: 0, maxWidth: 680}}>
-        Add one or more machine learning models to predict labels for your data.
-        To import predictions without connecting a model,
+      {t('MLSettings.message') /*Add one or more machine learning models to predict labels for your data.
+        To import predictions without connecting a model,*/}
         {" "}
         <a href="https://labelstud.io/guide/predictions.html" target="_blank">
-          see the documentation
+        {t('MLSettings.see') /*see the documentation*/}
         </a>.
       </Description>
       <Button onClick={() => showMLFormModal()}>
-        Add Model
+      {t('MLSettings.add2') /*Add Model*/}
       </Button>
 
       <Divider height={32}/>
@@ -110,25 +112,25 @@ export const MachineLearningSettings = () => {
         autosubmit
       >
         <Form.Row columnCount={1}>
-          <Label text="ML-Assisted Labeling" large/>
+          <Label text= {t('MLSettings.assisted') /*"ML-Assisted Labeling" */}large/>
 
           <div style={{paddingLeft: 16}}>
             <Toggle
-              label="Start model training after any annotations are submitted or updated"
+              label= {t('MLSettings.start') /*"Start model training after any annotations are submitted or updated"*/}
               name="start_training_on_annotation_update"
             />
           </div>
 
           <div style={{paddingLeft: 16}}>
             <Toggle
-              label="Retrieve predictions when loading a task automatically"
+              label= {t('MLSettings.retrieve') /*"Retrieve predictions when loading a task automatically"*/}
               name="evaluate_predictions_automatically"
             />
           </div>
 
           <div style={{paddingLeft: 16}}>
             <Toggle
-              label="Show predictions to annotators in the Label Stream and Quick View"
+              label= {t('MLSettings.show') /*"Show predictions to annotators in the Label Stream and Quick View"*/}
               name="show_collab_predictions"
             />
           </div>
@@ -144,5 +146,5 @@ export const MachineLearningSettings = () => {
   );
 };
 
-MachineLearningSettings.title = "Machine Learning";
+MachineLearningSettings.title = "Học máy";
 MachineLearningSettings.path = "/ml";

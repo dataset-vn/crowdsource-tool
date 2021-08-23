@@ -5,8 +5,10 @@ import { useAPI } from '../../providers/ApiProvider';
 import { useProject } from '../../providers/ProjectProvider';
 import { isEmptyString } from '../../utils/helpers';
 import { ConfigPage } from '../CreateProject/Config/Config';
+import { useTranslation } from "react-i18next";
 
 export const LabelingSettings = () => {
+  const { t } = useTranslation();
   const history = useHistory();
   const {project, fetchProject} = useProject();
   const [config, setConfig] = useState("");
@@ -52,7 +54,7 @@ export const LabelingSettings = () => {
         body: "Labeling config has essential changes that affect data displaying. Saving the config may lead to deleting all tabs previously created in the Data Manager.",
         buttonLook: "destructive",
         onOk: () => saveConfig(),
-        okText: "Save",
+        okText: t('LabelSettings.save'),
       });
     } else {
       saveConfig();
@@ -81,5 +83,5 @@ export const LabelingSettings = () => {
   );
 };
 
-LabelingSettings.title = "Labeling Interface";
+LabelingSettings.title = "Giao diện dán nhãn";
 LabelingSettings.path = "/labeling";

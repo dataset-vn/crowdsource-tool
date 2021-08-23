@@ -13,6 +13,7 @@ import { Preview } from './Preview';
 import { DEFAULT_COLUMN, EMPTY_CONFIG, isEmptyConfig, Template } from './Template';
 import { TemplatesList } from './TemplatesList';
 import { useAPI } from '../../../providers/ApiProvider';
+import { useTranslation } from "react-i18next";
 
 // don't do this, kids
 const formatXML = (xml) => {
@@ -36,12 +37,14 @@ const formatXML = (xml) => {
 const wizardClass = cn("wizard");
 const configClass = cn("configure");
 
-const EmptyConfigPlaceholder = () => (
+const EmptyConfigPlaceholder = () => {
+  const { t }= useTranslation();
+  return (
   <div className={configClass.elem("empty-config")}>
-    <p>Your labeling configuration is empty. It is required to label your data.</p>
+    <p>{ t('config.empty') }</p>
   </div>
-);
-
+  );
+};
 const Label = ({ label, template, color }) => {
   const value = label.getAttribute("value");
 
@@ -173,11 +176,11 @@ const ConfigureSettings = ({ template }) => {
 
   // check for active settings
   if (!items.filter(Boolean).length) return null;
-
+  const { t } = useTranslation();
   return (
     <ul className={configClass.elem("settings")}>
       <li>
-        <h4>Configure settings</h4>
+        <h4>{ t('config.setting') }</h4>
         <ul className={configClass.elem("object-settings")}>
           {items}
         </ul>
@@ -194,16 +197,16 @@ const ConfigureColumns = ({ columns, template }) => {
   };
 
   if (!template.objects.length) return null;
-
+  const { t } = useTranslation();
   return (
     <div className={configClass.elem("object")}>
-      <h4>Configure data</h4>
+      <h4>{ t('config.confData') }</h4>
       {template.objects.length > 1 && columns?.length > 0 && columns.length < template.objects.length && (
-        <p className={configClass.elem("object-error")}>This template requires more data then you have for now</p>
+        <p className={configClass.elem("object-error")}>{ t('config.objError1') }</p>
       )}
       {columns?.length === 0 && (
         <p className={configClass.elem("object-error")}>
-          To select which field(s) to label you need to upload the data. Alternatively, you can provide it using Code mode.
+          { t('config.objError2') }
         </p>
       )}
       {template.objects.map(obj => (
@@ -237,7 +240,7 @@ const Configurator = ({ columns, config, project, template, setTemplate, onBrows
   const [data, setData] = React.useState();
   const debounceTimer = React.useRef();
   const api = useAPI();
-
+  const { t } = useTranslation();
   React.useEffect(() => {
     // config may change during init, so wait for that, but for a very short time only
     debounceTimer.current = window.setTimeout(() => setConfigToCheck(config), configToCheck ? 500 : 30);
@@ -298,9 +301,9 @@ const Configurator = ({ columns, config, project, template, setTemplate, onBrows
 
   const extra = (
     <p className={configClass.elem('tags-link')}>
-      Configure the labeling interface with tags.
+      { t('config.confLI') }
       <br/>
-      <a href="https://dataset.vn/huongdan/tags/" target="_blank">See all tags</a>
+      <a href="https://dataset.vn/huongdan/tags/" target="_blank">{ t('config.showtags') }</a>
       .
     </p>
   );
@@ -309,7 +312,7 @@ const Configurator = ({ columns, config, project, template, setTemplate, onBrows
     <div className={configClass}>
       <div className={configClass.elem("container")}>
         <header>
-          <button onClick={onBrowse}>Browse Templates</button>
+          <button onClick={onBrowse}>{ t('config.browseTemp') }</button>
           <ToggleItems items={{ code: "Code", visual: "Visual" }} active={configure} onSelect={onSelect} />
         </header>
         <div className={configClass.elem('editor')}>
@@ -337,7 +340,7 @@ const Configurator = ({ columns, config, project, template, setTemplate, onBrows
         {disableSaveButton !== true && onSaveClick && (
           <Form.Actions size="small" extra={configure === "code" && extra} valid>
             <Button look="primary" size="compact" style={{width: 120}} onClick={onSave} waiting={waiting}>
-              Save
+              { t('config.save') }
             </Button>
           </Form.Actions>
         )}

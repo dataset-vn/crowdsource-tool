@@ -9,6 +9,7 @@ import { useFixedLocation, useParams } from '../../providers/RoutesProvider';
 import { BemWithSpecifiContext } from '../../utils/bem';
 import { isDefined } from '../../utils/helpers';
 import "./ExportPage.styl";
+import { useTranslation } from "react-i18next";
 
 // const formats = {
 //   json: 'JSON',
@@ -138,7 +139,7 @@ export const ExportPage = () => {
   //     })}
   //   </Label>
   // );
-
+  const { t } = useTranslation();
   return (
     <Modal
       onHide={() => {
@@ -146,7 +147,7 @@ export const ExportPage = () => {
         const search = location.search;
         history.replace(`${path}${search !== '?' ? search : ''}`);
       }}
-      title="Export data"
+      title= { t('export.title') }
       style={{width: 720}}
       closeOnClickOutside={false}
       allowClose={!downloading}
@@ -179,9 +180,7 @@ export const ExportPage = () => {
             </Elem>
             <Elem name="actions">
               <Space>
-                {downloadingMessage && (
-                  "Files are being prepared. It might take some time."
-                )}
+                {downloadingMessage && t('export.waitmess')}
                 <Elem
                   tag={Button}
                   name="finish"
@@ -201,9 +200,10 @@ export const ExportPage = () => {
 };
 
 const FormatInfo = ({availableFormats, selected, onClick}) => {
+  const{ t } = useTranslation();
   return (
     <Block name="formats">
-      <Elem name="info">You can export dataset in one of the following formats:</Elem>
+      <Elem name="info">{ t('formatInfo.info') }</Elem>
       <Elem name="list">
         {availableFormats.map(format => (
           <Elem
@@ -230,9 +230,9 @@ const FormatInfo = ({availableFormats, selected, onClick}) => {
         ))}
       </Elem>
       <Elem name="feedback">
-        Can't find an export format?
+        { t('formatInfo.feedback') }
         <br/>
-        Contact us over <a className="no-go" href="https://facebook.com/dataset.vn">Facebook</a>
+        { t('formatInfo.contact') }<a className="no-go" href="https://facebook.com/dataset.vn">Facebook</a>
       </Elem>
     </Block>
   );

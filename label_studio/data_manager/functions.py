@@ -44,7 +44,7 @@ def get_all_columns(project):
     for key, data_type in list(data_types.items()):  # make data types from labeling config first
         column = {
             'id': key,
-            'title': key if key != settings.DATA_UNDEFINED_NAME else 'data',
+            'title': key if key != settings.DATA_UNDEFINED_NAME else 'Dữ liệu',
             'type': data_type if data_type in ['Image', 'Audio', 'AudioPlus', 'Unknown'] else 'String',
             'target': 'tasks',
             'parent': 'data',
@@ -60,7 +60,7 @@ def get_all_columns(project):
     # --- Data root ---
     data_root = {
         'id': 'data',
-        'title': "data",
+        'title': "Dữ liệu",
         'type': "List",
         'target': 'tasks',
         'children': task_data_children
@@ -72,7 +72,7 @@ def get_all_columns(project):
             'id': 'id',
             'title': "ID",
             'type': 'Number',
-            'help': 'Task ID',
+            'help': 'ID của tác vụ',
             'target': 'tasks',
             'visibility_defaults': {
                 'explore': True,
@@ -81,10 +81,10 @@ def get_all_columns(project):
         },
         {
             'id': 'completed_at',
-            'title': 'Completed',
+            'title': 'Hoàn thành',
             'type': 'Datetime',
             'target': 'tasks',
-            'help': 'Last annotation date',
+            'help': 'Ngày dán nhãn cuối cùng',
             'visibility_defaults': {
                 'explore': True,
                 'labeling': False
@@ -92,10 +92,10 @@ def get_all_columns(project):
         },
         {
             'id': 'total_annotations',
-            'title': 'Annotations',
+            'title': 'Số lượng nhãn được dán',
             'type': "Number",
             'target': 'tasks',
-            'help': 'Total annotations per task',
+            'help': 'Tổng số lượng nhãn được dán mỗi tác vụ',
             'visibility_defaults': {
                 'explore': True,
                 'labeling': True
@@ -103,10 +103,10 @@ def get_all_columns(project):
         },
         {
             'id': 'cancelled_annotations',
-            'title': "Cancelled",
+            'title': "Hủy bỏ",
             'type': "Number",
             'target': 'tasks',
-            'help': 'Total cancelled (skipped) annotations',
+            'help': 'Tổng số lượng nhãn bị hủy bỏ hoặc bỏ qua',
             'visibility_defaults': {
                 'explore': True,
                 'labeling': False
@@ -114,10 +114,10 @@ def get_all_columns(project):
         },
         {
             'id': 'total_predictions',
-            'title': "Predictions",
+            'title': "Dự đoán",
             'type': "Number",
             'target': 'tasks',
-            'help': 'Total predictions per task',
+            'help': 'Tổng số lượng dự đoán mỗi tác vụ',
             'visibility_defaults': {
                 'explore': True,
                 'labeling': False
@@ -125,10 +125,10 @@ def get_all_columns(project):
         },
         {
             'id': 'annotations_results',
-            'title': "Annotation results",
+            'title': "Kết quả dán nhãn",
             'type': "String",
             'target': 'tasks',
-            'help': 'Annotation results stacked over all annotations',
+            'help': 'Tổng số nhãn dán được cộng dồn từ tất cả các nhãn',
             'visibility_defaults': {
                 'explore': False,
                 'labeling': False
@@ -136,10 +136,10 @@ def get_all_columns(project):
         },
         {
             'id': 'predictions_score',
-            'title': "Prediction score",
+            'title': "Điểm dự đoán",
             'type': "Number",
             'target': 'tasks',
-            'help': 'Average prediction score over all task predictions',
+            'help': 'Số lượng trung bình điểm dự đoán trong tất cả các tác vụ dự đoán',
             'visibility_defaults': {
                 'explore': False,
                 'labeling': False
@@ -147,10 +147,10 @@ def get_all_columns(project):
         },
         {
             'id': 'predictions_results',
-            'title': "Prediction results",
+            'title': "Kết quả dự đoán",
             'type': "String",
             'target': 'tasks',
-            'help': 'Prediction results stacked over all predictions',
+            'help': 'Tổng số dự đoán được cộng dồn từ tất cả dự đoán',
             'visibility_defaults': {
                 'explore': False,
                 'labeling': False
@@ -158,10 +158,10 @@ def get_all_columns(project):
         },
         {
             'id': 'file_upload',
-            'title': "Source filename",
+            'title': "Tên tệp nguồn",
             'type': "String",
             'target': 'tasks',
-            'help': 'Source filename from import step',
+            'help': 'Tên tệp nguồn từ bước nhập liệu',
             'visibility_defaults': {
                 'explore': False,
                 'labeling': False
@@ -169,10 +169,10 @@ def get_all_columns(project):
         },
         {
             'id': 'created_at',
-            'title': 'Created at',
+            'title': 'Được tạo lúc',
             'type': 'Datetime',
             'target': 'tasks',
-            'help': 'Task creation time',
+            'help': 'Thời gian tác vụ đc tạo ra',
             'visibility_defaults': {
                 'explore': False,
                 'labeling': False
@@ -180,10 +180,10 @@ def get_all_columns(project):
         },
         {
             'id': 'annotators',
-            'title': 'Annotated by',
+            'title': 'Được dán nhãn bởi',
             'type': 'List',
             'target': 'tasks',
-            'help': 'All users who completed the task',
+            'help': 'Tất cả người dùng tham gia hoàn thành tác vụ',
             'schema': { 'items': project.members.values_list('user__id', flat=True) },
             # 'schema': { 'items': project.organization.members.values_list('user__id', flat=True) },
             'visibility_defaults': {

@@ -1,0 +1,738 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-08-17 17:43+0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\build\lib\label_studio\core\settings\base.py:288
+#: .\label_studio\core\settings\base.py:289
+msgid "Vietnamese"
+msgstr ""
+
+#: .\build\lib\label_studio\data_manager\models.py:14
+#: .\label_studio\data_manager\models.py:14
+msgid "data"
+msgstr ""
+
+#: .\build\lib\label_studio\data_manager\models.py:15
+#: .\label_studio\data_manager\models.py:15
+msgid "ordering"
+msgstr ""
+
+#: .\build\lib\label_studio\data_manager\models.py:16
+#: .\label_studio\data_manager\models.py:16
+msgid "selected items"
+msgstr ""
+
+#: .\build\lib\label_studio\data_manager\models.py:62
+#: .\label_studio\data_manager\models.py:62
+msgid "conjunction"
+msgstr ""
+
+#: .\build\lib\label_studio\data_manager\models.py:69
+#: .\label_studio\data_manager\models.py:69
+msgid "index"
+msgstr ""
+
+#: .\build\lib\label_studio\data_manager\models.py:70
+#: .\label_studio\data_manager\models.py:70
+msgid "column"
+msgstr ""
+
+#: .\build\lib\label_studio\data_manager\models.py:71
+#: .\label_studio\data_manager\models.py:71
+msgid "type"
+msgstr ""
+
+#: .\build\lib\label_studio\data_manager\models.py:72
+#: .\label_studio\data_manager\models.py:72
+msgid "operator"
+msgstr ""
+
+#: .\build\lib\label_studio\data_manager\models.py:73
+#: .\label_studio\data_manager\models.py:73
+msgid "value"
+msgstr ""
+
+#: .\build\lib\label_studio\io_storages\azure_blob\models.py:31
+#: .\label_studio\io_storages\azure_blob\models.py:31
+msgid "container"
+msgstr ""
+
+#: .\build\lib\label_studio\io_storages\azure_blob\models.py:34
+#: .\build\lib\label_studio\io_storages\gcs\models.py:35
+#: .\build\lib\label_studio\io_storages\s3\models.py:32
+#: .\label_studio\io_storages\azure_blob\models.py:34
+#: .\label_studio\io_storages\gcs\models.py:35
+#: .\label_studio\io_storages\s3\models.py:32
+msgid "prefix"
+msgstr ""
+
+#: .\build\lib\label_studio\io_storages\azure_blob\models.py:37
+#: .\build\lib\label_studio\io_storages\gcs\models.py:38
+#: .\build\lib\label_studio\io_storages\localfiles\models.py:35
+#: .\build\lib\label_studio\io_storages\s3\models.py:35
+#: .\label_studio\io_storages\azure_blob\models.py:37
+#: .\label_studio\io_storages\gcs\models.py:38
+#: .\label_studio\io_storages\localfiles\models.py:35
+#: .\label_studio\io_storages\s3\models.py:35
+msgid "regex_filter"
+msgstr ""
+
+#: .\build\lib\label_studio\io_storages\azure_blob\models.py:40
+#: .\build\lib\label_studio\io_storages\gcs\models.py:41
+#: .\build\lib\label_studio\io_storages\localfiles\models.py:38
+#: .\build\lib\label_studio\io_storages\redis\models.py:35
+#: .\build\lib\label_studio\io_storages\s3\models.py:38
+#: .\label_studio\io_storages\azure_blob\models.py:40
+#: .\label_studio\io_storages\gcs\models.py:41
+#: .\label_studio\io_storages\localfiles\models.py:38
+#: .\label_studio\io_storages\redis\models.py:35
+#: .\label_studio\io_storages\s3\models.py:38
+msgid "use_blob_urls"
+msgstr ""
+
+#: .\build\lib\label_studio\io_storages\azure_blob\models.py:43
+#: .\label_studio\io_storages\azure_blob\models.py:43
+msgid "account_name"
+msgstr ""
+
+#: .\build\lib\label_studio\io_storages\azure_blob\models.py:46
+#: .\label_studio\io_storages\azure_blob\models.py:46
+msgid "account_key"
+msgstr ""
+
+#: .\build\lib\label_studio\io_storages\azure_blob\models.py:74
+#: .\build\lib\label_studio\io_storages\gcs\models.py:55
+#: .\build\lib\label_studio\io_storages\s3\models.py:99
+#: .\label_studio\io_storages\azure_blob\models.py:74
+#: .\label_studio\io_storages\gcs\models.py:55
+#: .\label_studio\io_storages\s3\models.py:99
+msgid "presign"
+msgstr ""
+
+#: .\build\lib\label_studio\io_storages\azure_blob\models.py:77
+#: .\build\lib\label_studio\io_storages\gcs\models.py:58
+#: .\build\lib\label_studio\io_storages\s3\models.py:102
+#: .\label_studio\io_storages\azure_blob\models.py:77
+#: .\label_studio\io_storages\gcs\models.py:58
+#: .\label_studio\io_storages\s3\models.py:102
+msgid "presign_ttl"
+msgstr ""
+
+#: .\build\lib\label_studio\io_storages\base_models.py:26
+#: .\build\lib\label_studio\ml\models.py:50
+#: .\build\lib\label_studio\projects\models.py:71
+#: .\build\lib\label_studio\projects\models.py:586
+#: .\label_studio\io_storages\base_models.py:26 .\label_studio\ml\models.py:50
+#: .\label_studio\projects\models.py:71 .\label_studio\projects\models.py:586
+msgid "title"
+msgstr ""
+
+#: .\build\lib\label_studio\io_storages\base_models.py:29
+#: .\build\lib\label_studio\ml\models.py:57
+#: .\build\lib\label_studio\projects\models.py:74
+#: .\build\lib\label_studio\projects\models.py:587
+#: .\label_studio\io_storages\base_models.py:29 .\label_studio\ml\models.py:57
+#: .\label_studio\projects\models.py:74 .\label_studio\projects\models.py:587
+msgid "description"
+msgstr ""
+
+#: .\build\lib\label_studio\io_storages\base_models.py:34
+#: .\build\lib\label_studio\io_storages\base_models.py:189
+#: .\build\lib\label_studio\io_storages\base_models.py:215
+#: .\build\lib\label_studio\ml\models.py:69
+#: .\build\lib\label_studio\ml\models.py:227
+#: .\build\lib\label_studio\ml\models.py:239
+#: .\build\lib\label_studio\organizations\models.py:28
+#: .\build\lib\label_studio\organizations\models.py:58
+#: .\build\lib\label_studio\projects\models.py:117
+#: .\build\lib\label_studio\projects\models.py:590
+#: .\build\lib\label_studio\projects\models.py:605
+#: .\build\lib\label_studio\projects\models.py:657
+#: .\build\lib\label_studio\projects\models.py:671
+#: .\build\lib\label_studio\tasks\models.py:52
+#: .\build\lib\label_studio\tasks\models.py:305
+#: .\build\lib\label_studio\tasks\models.py:375
+#: .\build\lib\label_studio\tasks\models.py:397
+#: .\label_studio\io_storages\base_models.py:34
+#: .\label_studio\io_storages\base_models.py:189
+#: .\label_studio\io_storages\base_models.py:215 .\label_studio\ml\models.py:69
+#: .\label_studio\ml\models.py:227 .\label_studio\ml\models.py:239
+#: .\label_studio\organizations\models.py:28
+#: .\label_studio\organizations\models.py:58
+#: .\label_studio\projects\models.py:117 .\label_studio\projects\models.py:590
+#: .\label_studio\projects\models.py:605 .\label_studio\projects\models.py:657
+#: .\label_studio\projects\models.py:671 .\label_studio\tasks\models.py:52
+#: .\label_studio\tasks\models.py:305 .\label_studio\tasks\models.py:375
+#: .\label_studio\tasks\models.py:397
+msgid "created at"
+msgstr ""
+
+#: .\build\lib\label_studio\io_storages\base_models.py:37
+#: .\label_studio\io_storages\base_models.py:37
+msgid "last sync"
+msgstr ""
+
+#: .\build\lib\label_studio\io_storages\base_models.py:40
+#: .\label_studio\io_storages\base_models.py:40
+msgid "last sync count"
+msgstr ""
+
+#: .\build\lib\label_studio\io_storages\base_models.py:186
+#: .\label_studio\io_storages\base_models.py:186
+msgid "key"
+msgstr ""
+
+#: .\build\lib\label_studio\io_storages\base_models.py:188
+#: .\build\lib\label_studio\io_storages\base_models.py:214
+#: .\label_studio\io_storages\base_models.py:188
+#: .\label_studio\io_storages\base_models.py:214
+msgid "object exists"
+msgstr ""
+
+#: .\build\lib\label_studio\io_storages\gcs\models.py:32
+#: .\build\lib\label_studio\io_storages\s3\models.py:29
+#: .\label_studio\io_storages\gcs\models.py:32
+#: .\label_studio\io_storages\s3\models.py:29
+msgid "bucket"
+msgstr ""
+
+#: .\build\lib\label_studio\io_storages\localfiles\models.py:32
+#: .\build\lib\label_studio\io_storages\redis\models.py:20
+#: .\label_studio\io_storages\localfiles\models.py:32
+#: .\label_studio\io_storages\redis\models.py:20
+msgid "path"
+msgstr ""
+
+#: .\build\lib\label_studio\io_storages\redis\models.py:23
+#: .\label_studio\io_storages\redis\models.py:23
+msgid "host"
+msgstr ""
+
+#: .\build\lib\label_studio\io_storages\redis\models.py:26
+#: .\build\lib\label_studio\io_storages\redis\models.py:32
+#: .\label_studio\io_storages\redis\models.py:26
+#: .\label_studio\io_storages\redis\models.py:32
+msgid "port"
+msgstr ""
+
+#: .\build\lib\label_studio\io_storages\redis\models.py:29
+#: .\label_studio\io_storages\redis\models.py:29
+msgid "password"
+msgstr ""
+
+#: .\build\lib\label_studio\io_storages\redis\models.py:75
+#: .\build\lib\label_studio\io_storages\redis\models.py:102
+#: .\label_studio\io_storages\redis\models.py:75
+#: .\label_studio\io_storages\redis\models.py:102
+msgid "db"
+msgstr ""
+
+#: .\build\lib\label_studio\io_storages\s3\models.py:41
+#: .\label_studio\io_storages\s3\models.py:41
+msgid "aws_access_key_id"
+msgstr ""
+
+#: .\build\lib\label_studio\io_storages\s3\models.py:44
+#: .\label_studio\io_storages\s3\models.py:44
+msgid "aws_secret_access_key"
+msgstr ""
+
+#: .\build\lib\label_studio\io_storages\s3\models.py:47
+#: .\label_studio\io_storages\s3\models.py:47
+msgid "aws_session_token"
+msgstr ""
+
+#: .\build\lib\label_studio\io_storages\s3\models.py:50
+#: .\label_studio\io_storages\s3\models.py:50
+msgid "region_name"
+msgstr ""
+
+#: .\build\lib\label_studio\io_storages\s3\models.py:53
+#: .\label_studio\io_storages\s3\models.py:53
+msgid "s3_endpoint"
+msgstr ""
+
+#: .\build\lib\label_studio\ml\models.py:24 .\label_studio\ml\models.py:24
+msgid "Connected"
+msgstr ""
+
+#: .\build\lib\label_studio\ml\models.py:25 .\label_studio\ml\models.py:25
+msgid "Disconnected"
+msgstr ""
+
+#: .\build\lib\label_studio\ml\models.py:26 .\label_studio\ml\models.py:26
+msgid "Error"
+msgstr ""
+
+#: .\build\lib\label_studio\ml\models.py:27 .\label_studio\ml\models.py:27
+msgid "Training"
+msgstr ""
+
+#: .\build\lib\label_studio\ml\models.py:28 .\label_studio\ml\models.py:28
+msgid "Predicting"
+msgstr ""
+
+#: .\build\lib\label_studio\ml\models.py:42
+#: .\build\lib\label_studio\ml\models.py:46 .\label_studio\ml\models.py:42
+#: .\label_studio\ml\models.py:46
+msgid "url"
+msgstr ""
+
+#: .\build\lib\label_studio\ml\models.py:64
+#: .\build\lib\label_studio\ml\models.py:221
+#: .\build\lib\label_studio\ml\models.py:236
+#: .\build\lib\label_studio\projects\models.py:110
+#: .\build\lib\label_studio\tasks\models.py:391 .\label_studio\ml\models.py:64
+#: .\label_studio\ml\models.py:221 .\label_studio\ml\models.py:236
+#: .\label_studio\projects\models.py:110 .\label_studio\tasks\models.py:391
+msgid "model version"
+msgstr ""
+
+#: .\build\lib\label_studio\ml\models.py:70
+#: .\build\lib\label_studio\ml\models.py:228
+#: .\build\lib\label_studio\ml\models.py:240
+#: .\build\lib\label_studio\organizations\models.py:29
+#: .\build\lib\label_studio\organizations\models.py:59
+#: .\build\lib\label_studio\projects\models.py:118
+#: .\build\lib\label_studio\projects\models.py:591
+#: .\build\lib\label_studio\projects\models.py:606
+#: .\build\lib\label_studio\projects\models.py:658
+#: .\build\lib\label_studio\tasks\models.py:53
+#: .\build\lib\label_studio\tasks\models.py:306
+#: .\build\lib\label_studio\tasks\models.py:376
+#: .\build\lib\label_studio\tasks\models.py:398 .\label_studio\ml\models.py:70
+#: .\label_studio\ml\models.py:228 .\label_studio\ml\models.py:240
+#: .\label_studio\organizations\models.py:29
+#: .\label_studio\organizations\models.py:59
+#: .\label_studio\projects\models.py:118 .\label_studio\projects\models.py:591
+#: .\label_studio\projects\models.py:606 .\label_studio\projects\models.py:658
+#: .\label_studio\tasks\models.py:53 .\label_studio\tasks\models.py:306
+#: .\label_studio\tasks\models.py:376 .\label_studio\tasks\models.py:398
+msgid "updated at"
+msgstr ""
+
+#: .\build\lib\label_studio\ml\models.py:225 .\label_studio\ml\models.py:225
+msgid "batch size"
+msgstr ""
+
+#: .\build\lib\label_studio\organizations\models.py:49
+#: .\label_studio\organizations\models.py:49
+msgid "organization title"
+msgstr ""
+
+#: .\build\lib\label_studio\organizations\models.py:51
+#: .\build\lib\label_studio\projects\models.py:88
+#: .\label_studio\organizations\models.py:51
+#: .\label_studio\projects\models.py:88
+msgid "token"
+msgstr ""
+
+#: .\build\lib\label_studio\organizations\models.py:56
+#: .\label_studio\organizations\models.py:56
+msgid "created_by"
+msgstr ""
+
+#: .\build\lib\label_studio\projects\models.py:77
+#: .\label_studio\projects\models.py:77
+msgid "label config"
+msgstr ""
+
+#: .\build\lib\label_studio\projects\models.py:79
+#: .\label_studio\projects\models.py:79
+msgid "expert instruction"
+msgstr ""
+
+#: .\build\lib\label_studio\projects\models.py:80
+#: .\label_studio\projects\models.py:80
+msgid "show instruction"
+msgstr ""
+
+#: .\build\lib\label_studio\projects\models.py:82
+#: .\label_studio\projects\models.py:82
+msgid "show skip button"
+msgstr ""
+
+#: .\build\lib\label_studio\projects\models.py:83
+#: .\label_studio\projects\models.py:83
+msgid "enable empty annotation"
+msgstr ""
+
+#: .\build\lib\label_studio\projects\models.py:85
+#: .\label_studio\projects\models.py:85
+msgid "show annotation history"
+msgstr ""
+
+#: .\build\lib\label_studio\projects\models.py:86
+#: .\label_studio\projects\models.py:86
+msgid "show predictions to annotator"
+msgstr ""
+
+#: .\build\lib\label_studio\projects\models.py:87
+#: .\label_studio\projects\models.py:87
+msgid "evaluate predictions automatically"
+msgstr ""
+
+#: .\build\lib\label_studio\projects\models.py:89
+#: .\build\lib\label_studio\tasks\models.py:311
+#: .\label_studio\projects\models.py:89 .\label_studio\tasks\models.py:311
+msgid "result count"
+msgstr ""
+
+#: .\build\lib\label_studio\projects\models.py:90
+#: .\label_studio\projects\models.py:90
+msgid "color"
+msgstr ""
+
+#: .\build\lib\label_studio\projects\models.py:97
+#: .\label_studio\projects\models.py:97
+msgid "created by"
+msgstr ""
+
+#: .\build\lib\label_studio\projects\models.py:99
+#: .\label_studio\projects\models.py:99
+msgid "maximum annotation number"
+msgstr ""
+
+#: .\build\lib\label_studio\projects\models.py:104
+#: .\label_studio\projects\models.py:104
+msgid "min_annotations_to_start_training"
+msgstr ""
+
+#: .\build\lib\label_studio\projects\models.py:109
+#: .\label_studio\projects\models.py:109
+msgid "control weights"
+msgstr ""
+
+#: .\build\lib\label_studio\projects\models.py:112
+#: .\label_studio\projects\models.py:112
+msgid "data_types"
+msgstr ""
+
+#: .\build\lib\label_studio\projects\models.py:115
+#: .\label_studio\projects\models.py:115
+msgid "is draft"
+msgstr ""
+
+#: .\build\lib\label_studio\projects\models.py:116
+#: .\label_studio\projects\models.py:116
+msgid "published"
+msgstr ""
+
+#: .\build\lib\label_studio\projects\models.py:131
+#: .\label_studio\projects\models.py:131
+msgid "show ground truth first"
+msgstr ""
+
+#: .\build\lib\label_studio\projects\models.py:132
+#: .\label_studio\projects\models.py:132
+msgid "show overlap first"
+msgstr ""
+
+#: .\build\lib\label_studio\projects\models.py:133
+#: .\label_studio\projects\models.py:133
+msgid "overlap_cohort_percentage"
+msgstr ""
+
+#: .\build\lib\label_studio\projects\models.py:136
+#: .\label_studio\projects\models.py:136
+msgid "task_data_login"
+msgstr ""
+
+#: .\build\lib\label_studio\projects\models.py:138
+#: .\label_studio\projects\models.py:138
+msgid "task_data_password"
+msgstr ""
+
+#: .\build\lib\label_studio\projects\models.py:563
+#: .\label_studio\projects\models.py:563
+#, python-format
+msgid "Business number %d"
+msgstr ""
+
+#: .\build\lib\label_studio\projects\models.py:675
+#: .\label_studio\projects\models.py:675
+msgid "all data columns"
+msgstr ""
+
+#: .\build\lib\label_studio\projects\models.py:678
+#: .\label_studio\projects\models.py:678
+msgid "common data columns"
+msgstr ""
+
+#: .\build\lib\label_studio\projects\models.py:681
+#: .\label_studio\projects\models.py:681
+msgid "created annotations"
+msgstr ""
+
+#: .\build\lib\label_studio\projects\models.py:684
+#: .\label_studio\projects\models.py:684
+msgid "created labels"
+msgstr ""
+
+#: .\build\lib\label_studio\tasks\models.py:54
+#: .\label_studio\tasks\models.py:54
+msgid "is_labeled"
+msgstr ""
+
+#: .\build\lib\label_studio\tasks\models.py:57
+#: .\label_studio\tasks\models.py:57
+msgid "overlap"
+msgstr ""
+
+#: .\build\lib\label_studio\tasks\models.py:303
+#: .\label_studio\tasks\models.py:303
+msgid "was cancelled"
+msgstr ""
+
+#: .\build\lib\label_studio\tasks\models.py:304
+#: .\label_studio\tasks\models.py:304
+msgid "ground_truth"
+msgstr ""
+
+#: .\build\lib\label_studio\tasks\models.py:307
+#: .\build\lib\label_studio\tasks\models.py:363
+#: .\label_studio\tasks\models.py:307 .\label_studio\tasks\models.py:363
+msgid "lead time"
+msgstr ""
+
+#: .\build\lib\label_studio\tasks\models.py:309
+#: .\label_studio\tasks\models.py:309
+msgid "prediction"
+msgstr ""
+
+#: .\build\lib\label_studio\tasks\models.py:352
+#: .\label_studio\tasks\models.py:352
+msgid "expire_at"
+msgstr ""
+
+#: .\build\lib\label_studio\tasks\models.py:360
+#: .\label_studio\tasks\models.py:360
+msgid "result"
+msgstr ""
+
+#: .\build\lib\label_studio\tasks\models.py:390
+#: .\label_studio\tasks\models.py:390
+msgid "score"
+msgstr ""
+
+#: .\build\lib\label_studio\tasks\models.py:392
+#: .\label_studio\tasks\models.py:392
+msgid "cluster"
+msgstr ""
+
+#: .\build\lib\label_studio\tasks\models.py:394
+#: .\label_studio\tasks\models.py:394
+msgid "mislabeling"
+msgstr ""
+
+#: .\build\lib\label_studio\templates\standard_form.html:11
+#: .\label_studio\templates\standard_form.html:11
+msgid "Create"
+msgstr ""
+
+#: .\build\lib\label_studio\users\models.py:24
+#: .\label_studio\users\models.py:24
+msgid "year"
+msgstr ""
+
+#: .\build\lib\label_studio\users\models.py:64
+#: .\label_studio\users\models.py:64
+msgid "last activity"
+msgstr ""
+
+#: .\build\lib\label_studio\users\models.py:83
+#: .\label_studio\users\models.py:83
+msgid "username"
+msgstr ""
+
+#: .\build\lib\label_studio\users\models.py:84
+#: .\label_studio\users\models.py:84
+msgid "email address"
+msgstr ""
+
+#: .\build\lib\label_studio\users\models.py:86
+#: .\label_studio\users\models.py:86
+msgid "first name"
+msgstr ""
+
+#: .\build\lib\label_studio\users\models.py:87
+#: .\label_studio\users\models.py:87
+msgid "last name"
+msgstr ""
+
+#: .\build\lib\label_studio\users\models.py:88
+#: .\label_studio\users\models.py:88
+msgid "phone"
+msgstr ""
+
+#: .\build\lib\label_studio\users\models.py:91
+#: .\label_studio\users\models.py:91
+msgid "staff status"
+msgstr ""
+
+#: .\build\lib\label_studio\users\models.py:92
+#: .\label_studio\users\models.py:92
+msgid "Designates whether the user can log into this admin site."
+msgstr ""
+
+#: .\build\lib\label_studio\users\models.py:94
+#: .\label_studio\users\models.py:94
+msgid "active"
+msgstr ""
+
+#: .\build\lib\label_studio\users\models.py:95
+#: .\label_studio\users\models.py:95
+msgid ""
+"Designates whether to treat this user as active. Unselect this instead of "
+"deleting accounts."
+msgstr ""
+
+#: .\build\lib\label_studio\users\models.py:98
+#: .\label_studio\users\models.py:98
+msgid "date joined"
+msgstr ""
+
+#: .\build\lib\label_studio\users\models.py:100
+#: .\label_studio\users\models.py:100
+msgid "last annotation activity"
+msgstr ""
+
+#: .\build\lib\label_studio\users\models.py:112
+#: .\label_studio\users\models.py:112
+msgid "user"
+msgstr ""
+
+#: .\build\lib\label_studio\users\models.py:113
+#: .\label_studio\users\models.py:113
+msgid "users"
+msgstr ""
+
+#: .\build\lib\label_studio\users\templates\password\password_reset_form.html:14
+#: .\label_studio\users\templates\password\password_reset_form.html:14
+msgid "Reset your password"
+msgstr ""
+
+#: .\build\lib\label_studio\users\templates\password\password_reset_form.html:21
+#: .\label_studio\users\templates\password\password_reset_form.html:21
+msgid "Reset"
+msgstr ""
+
+#: .\build\lib\label_studio\users\templates\password\password_reset_form.html:26
+#: .\label_studio\users\templates\password\password_reset_form.html:26
+msgid "Login"
+msgstr ""
+
+#: .\build\lib\label_studio\users\templates\users\user_login.html:294
+#: .\label_studio\users\templates\users\user_login.html:294
+msgid "LOG IN"
+msgstr ""
+
+#: .\label_studio\projects\templates\includes\projects_list.html:2
+msgid "Projects"
+msgstr ""
+
+#: .\label_studio\users\templates\password\password_reset_complete.html:6
+#: .\label_studio\users\templates\password\password_reset_done.html:6
+#: .\label_studio\users\templates\password\password_reset_form.html:6
+msgid "DataSet | Password Reset"
+msgstr ""
+
+#: .\label_studio\users\templates\password\password_reset_confirm.html:20
+#: .\label_studio\users\templates\password\password_reset_confirm.html:25
+msgid "Change password"
+msgstr ""
+
+#: .\label_studio\users\templates\password\password_reset_done.html:13
+msgid "We've sent you an email with instructions inside!"
+msgstr ""
+
+#: .\label_studio\users\templates\password\password_reset_done.html:19
+msgid ""
+"If you don't receive an email, please make sure you've entered the address "
+"you registered with, and check your spam folder."
+msgstr ""
+
+#: .\label_studio\users\templates\password\password_reset_form.html:15
+msgid "Enter the email you're using for your account."
+msgstr ""
+
+#: .\label_studio\users\templates\password\password_reset_form.html:19
+msgid "Your Email"
+msgstr ""
+
+#: .\label_studio\users\templates\users\user_account.html:16
+msgid "Account & Settings"
+msgstr "Account & Settings"
+
+#: .\label_studio\users\templates\users\user_account.html:30
+msgid "Account info"
+msgstr ""
+
+#: .\label_studio\users\templates\users\user_account.html:37
+msgid "First Name"
+msgstr ""
+
+#: .\label_studio\users\templates\users\user_account.html:41
+msgid "Last Name"
+msgstr ""
+
+#: .\label_studio\users\templates\users\user_account.html:45
+msgid "Phone"
+msgstr ""
+
+#: .\label_studio\users\templates\users\user_account.html:67
+msgid "Delete"
+msgstr ""
+
+#: .\label_studio\users\templates\users\user_account.html:80
+msgid "Registered"
+msgstr ""
+
+#: .\label_studio\users\templates\users\user_account.html:81
+msgid "Save"
+msgstr ""
+
+#: .\label_studio\users\templates\users\user_base.html:29
+#: .\label_studio\users\templates\users\user_login.html:312
+msgid "Sign up"
+msgstr ""
+
+#: .\label_studio\users\templates\users\user_base.html:30
+#: .\label_studio\users\templates\users\user_login.html:304
+#: .\label_studio\users\templates\users\user_signup.html:323
+msgid "Log in"
+msgstr ""
+
+#: .\label_studio\users\templates\users\user_login.html:296
+#: .\label_studio\users\templates\users\user_signup.html:299
+msgid "Password"
+msgstr ""
+
+#: .\label_studio\users\templates\users\user_login.html:314
+#: .\label_studio\users\templates\users\user_signup.html:325
+msgid "Forgot password"
+msgstr ""
+
+#: .\label_studio\users\templates\users\user_signup.html:286
+msgid "SIGN UP"
+msgstr ""
+
+#: .\label_studio\users\templates\users\user_signup.html:315
+msgid "Create Account"
+msgstr ""

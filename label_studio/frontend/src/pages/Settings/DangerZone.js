@@ -7,8 +7,10 @@ import { Space } from "../../components/Space/Space";
 import { Spinner } from "../../components/Spinner/Spinner";
 import { useAPI } from "../../providers/ApiProvider";
 import { useProject } from "../../providers/ProjectProvider";
+import { useTranslation } from "react-i18next";
 
 export const DangerZone = () => {
+  const { t } = useTranslation();
   const {project} = useProject();
   const api = useAPI();
   const history = useHistory();
@@ -16,9 +18,9 @@ export const DangerZone = () => {
 
   const handleOnClick = (type) => () => {
     confirm({
-      title: "Action confirmation",
-      body: "You're about to delete all things. This action cannot be undone.",
-      okText: "Proceed",
+      title: t('DangerZone.confirm') /*"Action confirmation"*/,
+      body: t('DangerZone.message') /*"You're about to delete all things. This action cannot be undone."*/,
+      okText: t('DangerZone.proceed'),
       buttonLook: "destructive",
       onOk: async () => {
         setProcessing(type);
@@ -61,17 +63,17 @@ export const DangerZone = () => {
     label: `Delete ${project.total_predictions_number} Predictions`,
   }, {
     type: 'tabs',
-    label: `Drop All Tabs`,
+    label: t('DangerZone.drop')/*`Drop All Tabs`*/,
   }, {
     type: 'project',
-    label: 'Delete Project',
+    label: t('DangerZone.delete') /*'Delete Project'*/,
   }], [project]);
 
   return (
     <div style={{width: 480}}>
       <Label
-        text="Delete Annotations, Tasks, or Project"
-        description="Perform these actions at your own risk. Actions you take on this page can't be reverted. Make sure your data is backed up."
+        text= {t('DangerZone.list') /*"Delete Annotations, Tasks, or Project"*/}
+        description= {t('DangerZone.message2') /*"Perform these actions at your own risk. Actions you take on this page can't be reverted. Make sure your data is backed up."*/}
         style={{display: 'block', width: 415}}
       />
 
@@ -96,5 +98,5 @@ export const DangerZone = () => {
   );
 };
 
-DangerZone.title = "Danger Zone";
+DangerZone.title = "Khu vực nguy hiểm";
 DangerZone.path = "/danger-zone";

@@ -84,7 +84,7 @@ def delete_tasks_predictions(project, queryset, **kwargs):
 actions = [
     {
         'entry_point': retrieve_tasks_predictions,
-        'title': 'Retrieve predictions',
+        'title': 'Truy xuất dự đoán',
         'order': 90,
         'permissions': 'can_manage_annotations',
         'dialog': {
@@ -98,7 +98,7 @@ actions = [
     },
     {
         'entry_point': delete_tasks,
-        'title': 'Delete tasks', 'order': 100,
+        'title': 'Xóa tác vụ', 'order': 100,
         'permissions': 'can_delete_tasks',
         'reload': True,
         'dialog': {
@@ -108,7 +108,7 @@ actions = [
     },
     {
         'entry_point': delete_tasks_annotations,
-        'title': 'Delete annotations',
+        'title': 'Xóa nhãn dán',
         'order': 101,
         'permissions': 'can_manage_annotations',
         'dialog': {
@@ -118,7 +118,7 @@ actions = [
     },
     {
         'entry_point': delete_tasks_predictions,
-        'title': 'Delete predictions',
+        'title': 'Xóa dự đoán',
         'order': 102,
         'permissions': 'can_manage_annotations',
         'dialog': {

@@ -13,9 +13,13 @@ import { ImportModal } from '../CreateProject/Import/ImportModal';
 import { ExportPage } from '../ExportPage/ExportPage';
 import { APIConfig } from './api-config';
 import "./DataManager.styl";
+import { useTranslation } from "react-i18next";
 
 const initializeDataManager = async (root, props, params) => {
-  if (!window.LabelStudio) throw Error("Label Studio Frontend doesn't exist on the page");
+  if (!window.LabelStudio) {
+    const { t } = useTranslation();
+    throw Error( t('initDataMan.error') );
+  }
   if (!root && root.dataset.dmInitialized) return;
 
   root.dataset.dmInitialized = true;
@@ -100,13 +104,13 @@ export const DataManagerPage = ({...props}) => {
 
     return () => destroyDM();
   }, [root, init]);
-
+  const { t } = useTranslation();
   return crashed ? (
     <Block name="crash">
-      <Elem name="info">Project was deleted or not yet created</Elem>
+      <Elem name="info">{ t('dataMan.info') }</Elem>
 
       <Button to="/projects">
-        Back to projects
+        { t('dataMan.fallback') }
       </Button>
     </Block>
   ) : (
@@ -123,11 +127,11 @@ DataManagerPage.context = ({dmRef}) => {
   const location = useFixedLocation();
   const {project} = useProject();
   const [mode, setMode] = useState(dmRef?.mode ?? "explorer");
-
+  const { t } = useTranslation();
   const links = {
-    '/settings': 'Settings',
-    '/data/import': "Import",
-    '/data/export': 'Export',
+    '/settings': t('dataMan.setting'),
+    '/data/import': t('dataMan.import'),
+    '/data/export': t('dataMan.export'),
   };
 
   const updateCrumbs = (currentMode) => {
@@ -145,7 +149,7 @@ DataManagerPage.context = ({dmRef}) => {
       });
       addCrumb({
         key: "dm-crumb",
-        title: "Labeling",
+        title: t('dataMan.title'),
       });
     }
   };
@@ -184,11 +188,11 @@ DataManagerPage.context = ({dmRef}) => {
       {(project.expert_instruction && mode !== 'explorer') && (
         <Button size="compact" onClick={() => {
           modal({
-            title: "Instructions",
+            title: t('labelInstruc.title'),
             body: () => <div dangerouslySetInnerHTML={{__html: project.expert_instruction}}/>,
           });
         }}>
-          Instructions
+          {t('labelInstruc.action')}
         </Button>
       )}
 

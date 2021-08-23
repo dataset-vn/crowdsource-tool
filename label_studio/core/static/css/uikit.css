@@ -203,7 +203,7 @@ ul.toggle li.active {
   visibility: hidden;
 }
 .file-input::before {
-  content: 'Choose file';
+  content: 'Chọn tệp'; /* Choose file */
   display: inline-block;
   background: none;
   border: 1px solid #CCC;
