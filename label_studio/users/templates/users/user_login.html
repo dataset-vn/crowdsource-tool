@@ -286,14 +286,43 @@ footer a {
     text-decoration: none;
 }
 
-#panel_dts_login {
-	color: white;
+/* #panel_dts_login { */
+	/* color: white;
 	background-image: url("/static/images/DTS_labeled_vehicles.png");
 	/* filter: blur(5px); */
 	/* -webkit-filter: blur(5px); */
+	/* background-position: center; */
+  	/* background-repeat: no-repeat; */
+  	/* background-size: cover;  */
+/* } */
+
+#img_login_background {
+	position: fixed;
+	left: 0;
+	right: 0;
+	z-index: 1;
+	display: block;
+	background-image: url('/static/images/DTS_labeled_vehicles.png');
+	/* width: 1200px; */
+	height: 100%;
 	background-position: center;
   	background-repeat: no-repeat;
   	background-size: cover;
+
+	/* -webkit-filter: blur(3px);
+	-moz-filter: blur(3px);
+	-o-filter: blur(3px);
+	-ms-filter: blur(3px); */
+	filter: blur(2.5px);
+}
+
+#login_content {
+	position: fixed;
+	left: 0;
+	right: 0;
+	z-index: 9999;
+	margin-left: 20px;
+	margin-right: 20px;
 }
 
 
@@ -320,11 +349,15 @@ footer a {
 		<div class="overlay">
 			<div id="panel_dts_login" class="overlay-panel overlay-right">
 				<!-- {% static 'images/facebook.png' %} -->
-				<h1 style="color: white">Dataset Labeling Tool 0.1 {{versions.package.short_verion}}</h1>
-				<p style="color: white">Công cụ dán nhãn dữ liệu</p>
-				<u ><a style="color: white"  id="signUp" href="{{ settings.HOSTNAME }}/user/signup">{% translate 'Sign up' %}</a></u>
-				<br>
-				<u style="color: white"><a style="color: white"  id="forgotPassword" href="{{ settings.HOSTNAME }}/password-reset">{% translate 'Forgot password' %}</a></u>
+				<div id="img_login_background"></div>
+				<div id="login_content">
+					<b><h1 style="color: white; font-size: 20px; font-weight: bold">Dataset Labeling Tool 1.0 {{versions.package.short_verion}}</h1></b>
+					<b><p style="color: white; font-size: 18px; font-weight: bold">Phần mềm dán nhãn dữ liệu</p></b>
+					<u ><a style="color: white; font-size: 16px; font-weight: bold"  id="signUp" href="{{ settings.HOSTNAME }}/user/signup">{% translate 'Sign up' %}</a></u>
+					<br>
+					<br>
+					<u><a style="color: white; font-size: 16px; font-weight: bold;"  id="forgotPassword" href="{{ settings.HOSTNAME }}/password-reset">{% translate 'Forgot password' %}</a></u>
+				</div>
 			</div>
 		</div>
 	</div>
