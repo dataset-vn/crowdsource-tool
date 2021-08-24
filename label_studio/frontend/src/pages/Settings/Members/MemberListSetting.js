@@ -4,7 +4,7 @@ import { Spinner, Userpic } from "../../../components";
 import { useAPI } from "../../../providers/ApiProvider";
 import { useProject } from "../../../providers/ProjectProvider";
 import { Block, Elem } from "../../../utils/bem";
-import { isDefined } from "../../../utils/helpers";
+import { isDefined, isCurrentlyActive } from "../../../utils/helpers";
 
 import ReactPaginate from 'react-paginate';
 
@@ -46,13 +46,13 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
     fetchUsers(projectID, pageSize, selectedPage);
   }
 
-  const isCurrentlyActive = (lastActive) => {
-    lastActive = new Date(lastActive);
-    let distActive = new Date() - lastActive;
-    let distActiveInMinute = distActive/1000/60
-    if (distActiveInMinute <= 5) return true;
-    return false
-  }
+  // const isCurrentlyActive = (lastActive) => {
+  //   lastActive = new Date(lastActive);
+  //   let distActive = new Date() - lastActive;
+  //   let distActiveInMinute = distActive/1000/60
+  //   if (distActiveInMinute <= 5) return true;
+  //   return false
+  // }
 
   const convertProjectMember2User = (projectMembers) => {
     let users = [];

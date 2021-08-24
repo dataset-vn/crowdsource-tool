@@ -176,13 +176,15 @@
         "search":"Search by name, email",
         "email": "Email",
         "name": "Name",
+        "role": "Role",
+        "status": "Status",
         "activity": "Activities"
     },
     "MemberLSetting2":
     {
         "email": "Email",
         "name": "Name",
-        "rights": "Rights",
+        "rights": "Role",
         "status": "Status",
         "activity": "Activities"
     },

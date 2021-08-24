@@ -176,6 +176,8 @@
         "search":"Tìm kiếm theo tên, email",
         "email": "Email",
         "name": "Tên",
+        "role": "Quyền",
+        "status": "Trạng thái",
         "activity": "Hoạt động"
     },
     "MemberLSetting2":

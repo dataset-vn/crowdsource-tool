@@ -85,3 +85,11 @@ export const copyText = (text) => {
   document.execCommand('copy');
   input.remove();
 };
+
+export const isCurrentlyActive = (lastActive) => {
+  lastActive = new Date(lastActive);
+  let distActive = new Date() - lastActive;
+  let distActiveInMinute = distActive/1000/60
+  if (distActiveInMinute <= 5) return true;
+  return false
+}

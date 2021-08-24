@@ -285,6 +285,18 @@ footer a {
     color: #3c97bf;
     text-decoration: none;
 }
+
+#panel_dts_login {
+	color: white;
+	background-image: url("/static/images/DTS_labeled_vehicles.png");
+	/* filter: blur(5px); */
+	/* -webkit-filter: blur(5px); */
+	background-position: center;
+  	background-repeat: no-repeat;
+  	background-size: cover;
+}
+
+
 </style>
 <div class="login_page">
 <div class="container" id="container">
@@ -304,14 +316,15 @@ footer a {
       <p><button type="submit" aria-label="Log In" class="ls-button ls-button_look_primary">{% translate 'Log in' %}</button></p>
     </form>
 	</div>
-	<div class="overlay-container">
+	<div class="overlay-container" >
 		<div class="overlay">
-			<div class="overlay-panel overlay-right">
-				<h1>Dataset Labeling Tool 0.1 {{versions.package.short_verion}}</h1>
-				<p>Công cụ dán nhãn dữ liệu</p>
-				<u><a  id="signUp" href="{{ settings.HOSTNAME }}/user/signup">{% translate 'Sign up' %}</a></u>
+			<div id="panel_dts_login" class="overlay-panel overlay-right">
+				<!-- {% static 'images/facebook.png' %} -->
+				<h1 style="color: white">Dataset Labeling Tool 0.1 {{versions.package.short_verion}}</h1>
+				<p style="color: white">Công cụ dán nhãn dữ liệu</p>
+				<u ><a style="color: white"  id="signUp" href="{{ settings.HOSTNAME }}/user/signup">{% translate 'Sign up' %}</a></u>
 				<br>
-				<u><a  id="forgotPassword" href="{{ settings.HOSTNAME }}/password-reset">{% translate 'Forgot password' %}</a></u>
+				<u style="color: white"><a style="color: white"  id="forgotPassword" href="{{ settings.HOSTNAME }}/password-reset">{% translate 'Forgot password' %}</a></u>
 			</div>
 		</div>
 	</div>
