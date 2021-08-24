@@ -183,6 +183,7 @@
         "email": "Email",
         "name": "Name",
         "rights": "Rights",
+        "status": "Status",
         "activity": "Activities"
     },
 

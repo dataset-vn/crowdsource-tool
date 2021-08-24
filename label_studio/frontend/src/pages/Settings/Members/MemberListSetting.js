@@ -46,6 +46,13 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
     fetchUsers(projectID, pageSize, selectedPage);
   }
 
+  const isCurrentlyActive = (lastActive) => {
+    lastActive = new Date(lastActive);
+    let distActive = new Date() - lastActive;
+    let distActiveInMinute = distActive/1000/60
+    if (distActiveInMinute <= 5) return true;
+    return false
+  }
 
   const convertProjectMember2User = (projectMembers) => {
     let users = [];
@@ -108,7 +115,9 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
             <Elem name="column" mix="avatar" />
             <Elem name="column" mix="email">{ t('MemberLSetting2.email') }</Elem>
             <Elem name="column" mix="name">{ t('MemberLSetting2.name') }</Elem>
-            <Elem name="column" mix="role">{ t('MemberLSetting2.rights') }</Elem>
+            
+            <Elem name="column" mix="name">{ t('MemberLSetting2.rights') }</Elem>
+            <Elem name="column" mix="role">{ t('MemberLSetting2.status') }</Elem>
             <Elem name="column" mix="last-activity">{ t('MemberLSetting2.activity') }</Elem>
           </Elem>
           <Elem name="body">
@@ -127,9 +136,17 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
                   <Elem key={"name_" + i.user.id} name="field" mix="name">
                     {i.user.first_name} {i.user.last_name}
                   </Elem>
-                  <Elem key={"role_" + i.user.id} name="field" mix="role">
+                  
+                  <Elem key={"role_" + i.user.id} name="field" mix="name">
                     {i.role}
                   </Elem>
+
+                  <Elem key={"status_" + i.user.id} name="field" mix="role">
+                    {isCurrentlyActive(i.user.last_activity)? 
+                      <b style={{color:"#31a24c"}}>online</b> :
+                      <b style={{color:"grey"}}>offline</b>}
+                  </Elem>
+
                   <Elem key={"last_activity_" + i.user.id} name="field" mix="last-activity">
                     {formatDistance(new Date(i.user.last_activity), new Date(), { addSuffix: true })}
                   </Elem>
