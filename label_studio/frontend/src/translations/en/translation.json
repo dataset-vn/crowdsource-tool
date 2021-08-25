@@ -140,7 +140,14 @@
         "confLI": "Configure the labeling interface with tags.",
         "showtags": "See all tags",
         "browseTemp": "Browse Templates",
-        "save": "Save"
+        "save": "Save",
+        "choices": "Choices",
+        "labels": "Labels",
+        "addChoices": "Add Choices",
+        "addLabels": "Add Labels name",
+        "add": "Add",
+        "code": "Code",
+        "visual": "Visual"
     },
 
     "template":
@@ -229,7 +236,9 @@
         "save": "Save completed annotations to Amazon S3, Google Cloud, Microsoft Azure, or Redis.",
         "see": "See more in the documentation",
         "delete": "Deleting storage",
-        "message": "This action cannot be undone. Are you sure?"
+        "message": "This action cannot be undone. Are you sure?",
+        "edit": "Edit",
+        "add": "Add"
     },
     
     "StorageSettings":
@@ -323,6 +332,15 @@
         "members": "Members",
         "organizations": "Organizations",
         "pin": "Pin menu",
-        "unpin": "Unpin menu"
+        "unpin": "Unpin menu",
+		"switchLang": "Switch Language"
+    },
+
+    "tags":
+    {
+        "width": "Width of region borders",
+        "zoom": "Allow image zoom (ctrl+wheel)",
+        "zoomControl": "Show controls to zoom in and out",
+        "rotateControl": "Show controls to rotate image"
     }
 }

@@ -114,6 +114,15 @@ export const Menubar = ({
     useMenuRef?.current?.close();
   }, [location]);
   
+  const switchLanguage = () => {
+		var currentLanguage = i18n.language;
+		if (currentLanguage == "vi") {
+			i18n.changeLanguage("en");
+		} else {
+			i18n.changeLanguage("vi");
+		}
+	};
+
   return (
     <div className={contentClass}>
       {enabled && (
@@ -194,6 +203,11 @@ export const Menubar = ({
                 <Menu.Spacer/>
 
                 <VersionNotifier showNewVersion/>
+
+                <Menu.Item
+									label={t("sideBar.switchLang")}
+									onClick={switchLanguage}
+								/>
 
                 <Menu.Item
                   label="Facebook"
