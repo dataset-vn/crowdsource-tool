@@ -205,9 +205,9 @@ export const Menubar = ({
                 <VersionNotifier showNewVersion/>
 
                 <Menu.Item
-									label={t("sideBar.switchLang")}
-									onClick={switchLanguage}
-								/>
+			label={t("sideBar.switchLang")}
+			onClick={switchLanguage}
+		/>
 
                 <Menu.Item
                   label="Facebook"
