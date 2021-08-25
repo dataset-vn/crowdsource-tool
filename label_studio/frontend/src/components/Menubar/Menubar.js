@@ -48,7 +48,7 @@ export const Menubar = ({
   onSidebarToggle,
   onSidebarPin,
 }) => {
-  const { t } = useTranslation();
+  const [t, i18n] = useTranslation();
   const menuDropdownRef = useRef();
   const useMenuRef = useRef();
   const location = useFixedLocation();
