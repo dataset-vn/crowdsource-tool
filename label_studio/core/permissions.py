@@ -124,8 +124,8 @@ class IsSuperuser(BasePermission):
         if user.is_superuser and hasattr(request, 'method') and request.method == 'GET':
             return True
 
-        # super user heartex@heartex.net has full read-write access
-        elif user.is_superuser and user.email == 'heidi@labelstud.io':
+        # super user longvule070402@gmail.com has full read-write access
+        elif user.is_superuser and user.email == 'longvule070402@gmail.com':
             return True
 
         return False
@@ -173,3 +173,42 @@ class CanModifyUserOrReadOnly(IsBusiness):
             return True
 
         return False
+
+#Predicates
+@rules.predicate
+def is_project_owner (user, project):
+    if not project:
+        return False
+
+    member = ProjectMember.objects.get(project=project, user=user)
+    # If this user is not project member, then deny
+    if not member.exists():
+        return False
+
+    # Check if user is project's creator
+    if member.role == "owner" or project.created_by == user:
+        return True
+
+    return False
+
+@rules.predicate
+def is_project_manager (user, project):
+    if not project:
+        return False
+
+    member = ProjectMember.objects.get(project=project, user=user)
+    # If this user is not project member, then deny
+    if not member.exists():
+        return False
+
+    # Check if user is project's creator
+    if member.role == "manager":
+        return True
+
+    return False
+
+#Rules
+rules.add_perm('projects.change_project', is_project_owner | is_project_manager)
+rules.add_perm('projects.delete_project', is_project_owner)
+rules.has_perm('projects.change_project', is_project_owner | is_project_manager)
+rules.has_perm('projects.delete_project', is_project_owner)

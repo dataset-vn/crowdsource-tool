@@ -39,7 +39,7 @@ from tasks.models import Task, Annotation, Prediction, TaskLock, Q_task_finished
 from tasks.serializers import TaskSerializer, AnnotationSerializer, TaskWithAnnotationsAndPredictionsAndDraftsSerializer
 
 from core.mixins import APIViewVirtualRedirectMixin, APIViewVirtualMethodMixin
-from core.permissions import all_permissions, ViewClassPermission, IsAuthenticated
+from core.permissions import all_permissions, ViewClassPermission, IsAuthenticated, BaseRulesPermission
 from core.utils.common import (
     get_object_with_check_and_log, bool_from_request, paginator, paginator_help)
 from core.utils.exceptions import ProjectExistException, LabelStudioDatabaseException, DatasetJscDatabaseException
@@ -47,6 +47,7 @@ from core.utils.io import find_dir, find_file, read_yaml
 
 from data_manager.functions import get_prepared_queryset
 from data_manager.models import View
+from rules.contrib.views import PermissionRequiredMixin, permission_required
 
 logger = logging.getLogger(__name__)
 
@@ -307,9 +308,10 @@ class ProjectMemberStatisticsAPI(generics.ListCreateAPIView,
 class ProjectMemberAPI(generics.ListCreateAPIView, 
                        generics.RetrieveUpdateDestroyAPIView):
     parser_classes = (JSONParser, FormParser, MultiPartParser)
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (BaseRulesPermission,)
     filter_backends = [filters.SearchFilter]
     serializer_class = ProjectMemberSerializer
+    permission_required = 'projects.change_project'
 
     search_fields = ['user__username', 'user__email', 'user__first_name', 'user__last_name']
 
@@ -459,24 +461,23 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         if 'user_pk' not in body:
             return False, "Member not found"
 
-        project_id = self.kwargs['pk']
-        member_id = body['user_pk']
-        member_role = self.get_project_member_role(project_id, member_id)
-        operator_id = self.request.user.id
-        operator_role = self.get_project_member_role(project_id, operator_id)
-        
-        if operator_role not in ["manager", "owner"]:
-            return False, "Operation can only be performed by a project manager or project owner"
+        #project_id = self.kwargs['pk']
+        #member_id = body['user_pk']
+        #member_role = self.get_project_member_role(project_id, member_id)
+        #operator_id = self.request.user.id
+        #operator_role = self.get_project_member_role(project_id, operator_id)
+        #if operator_role not in ["manager", "owner"]:
+            #return False, "Operation can only be performed by a project manager or project owner"
 
-        if member_role == "owner":
-            return False, "Could not remove owner from the project"
+        #if member_role == "owner":
+            #return False, "Could not remove owner from the project"
 
-        try:
-            instance.delete()
-            return True, "Removed member successfully"
-        except IntegrityError as e:
-            logger.error('Fallback to cascase deleting after integrity_error: {}'.format(str(e)))
-            return False, "Removed member failed"
+        #try:
+           #instance.delete()
+            #return True, "Removed member successfully"
+        #except IntegrityError as e:
+            #logger.error('Fallback to cascase deleting after integrity_error: {}'.format(str(e)))
+            #return False, "Removed member failed"
 
 
     @swagger_auto_schema(tags=['ProjectMember'])
