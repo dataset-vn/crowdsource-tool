@@ -9,6 +9,7 @@ import "./MemberSetting.styl";
 import { Space } from "../../../components/Space/Space";
 import { ROLE_MEMBER } from "../../../utils/constant";
 import { useEffect, useState } from "react";
+import { isCurrentlyActive } from "../../../utils/helpers";
 import { useTranslation } from "react-i18next";
 
 
@@ -83,6 +84,12 @@ export const SelectedMemberSetting = ({ user, onClose, projectID }) => {
         </Elem>
       )}
 
+      <Elem tag="p" name="status">
+        {isCurrentlyActive(user.last_activity)? 
+          <b style={{color:"#31a24c"}}>online</b> :
+          <b style={{color:"grey"}}>offline</b>}
+      </Elem>
+
       <Elem tag="p" name="last-active">
         { t("SelectedMember.time") /*Hoạt động lúc :*/ } {format(new Date(user.last_activity), 'dd MMM yyyy, KK:mm a')}
       </Elem>
@@ -95,7 +102,7 @@ export const SelectedMemberSetting = ({ user, onClose, projectID }) => {
               checkUserMember(user) ? 
               <>
               <Button icon={<DtsTrash/>} onClick={removeProjectMember}>
-                { t("SelectedMember.delete") }
+                { t("SelectedMember.delete") /* Nút Xóa-khỏi-dự-án - Remove-form-project button*/  }
               </Button>
                </> : 
                <> 

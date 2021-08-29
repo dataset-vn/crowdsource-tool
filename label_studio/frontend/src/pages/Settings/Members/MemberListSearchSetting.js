@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useAPI } from "../../../providers/ApiProvider";
 import { Spinner, Userpic } from "../../../components";
 import { Block, Elem } from "../../../utils/bem";
-import { isDefined } from "../../../utils/helpers";
+import { isDefined, isCurrentlyActive } from "../../../utils/helpers";
 import './MemberListSetting.styl';
 import { useTranslation } from "react-i18next";
 
@@ -105,6 +105,8 @@ export const MemberListSearchSetting = ({onSelect, selectedUser, defaultSelected
             <Elem name="column" mix="avatar"/>
             <Elem name="column" mix="email">{ t('MemberLSetting.email') }</Elem>
             <Elem name="column" mix="name">{ t('MemberLSetting.name') }</Elem>
+            {/* <Elem name="column" mix="name">{ t('MemberLSetting.role') }</Elem> */}
+            <Elem name="column" mix="role">{ t('MemberLSetting.status') }</Elem>
             <Elem name="column" mix="last-activity">{ t('MemberLSetting.activity') }</Elem>
           </Elem>
           <Elem name="body" style={{maxHeight: "500px", overflowY: "scroll"}}>
@@ -121,6 +123,14 @@ export const MemberListSearchSetting = ({onSelect, selectedUser, defaultSelected
                   </Elem>
                   <Elem name="field" mix="name">
                     {user.first_name} {user.last_name}
+                  </Elem>
+                  {/* <Elem name="field" mix="role" >
+                    {user.role? user.role : "guest"}
+                  </Elem> */}
+                  <Elem name="field" mix="role" >
+                    {isCurrentlyActive(user.last_activity)? 
+                      <b style={{color:"#31a24c"}}>online</b> :
+                      <b style={{color:"grey"}}>offline</b>}
                   </Elem>
                   <Elem name="field" mix="last-activity">
                     {formatDistance(new Date(user.last_activity), new Date(), {addSuffix: true})}
