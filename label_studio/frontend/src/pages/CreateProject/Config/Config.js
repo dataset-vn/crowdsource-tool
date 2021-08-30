@@ -70,6 +70,7 @@ const Label = ({ label, template, color }) => {
 };
 
 const ConfigureControl = ({ control, template }) => {
+  const { t }= useTranslation();
   const refLabels = React.useRef();
   const tagname = control.tagName;
   if (tagname !== "Choices" && !tagname.endsWith("Labels")) return null;
@@ -90,12 +91,12 @@ const ConfigureControl = ({ control, template }) => {
   return (
     <div className={configClass.elem("labels")}>
       <form className={configClass.elem("add-labels")} action="">
-        <h4>{tagname === "Choices" ? "Add choices" : "Add label names"}</h4>
+        <h4>{tagname === "Choices" ? t('config.addChoices') : t('config.addLabels')}</h4>
         <textarea name="labels" id="" cols="30" rows="5" ref={refLabels} onKeyPress={onKeyPress}></textarea>
-        <input type="button" value="Add" onClick={onAddLabels} />
+        <input type="button" value={ t('config.add') } onClick={onAddLabels} />
       </form>
       <div className={configClass.elem("current-labels")}>
-        <h3>{tagname === "Choices" ? "Choices" : "Labels"} ({control.children.length})</h3>
+        <h3>{tagname === "Choices" ? t('config.choices') : t('config.labels')} ({control.children.length})</h3>
         <ul>
           {Array.from(control.children).map(label => (
             <Label
@@ -211,18 +212,18 @@ const ConfigureColumns = ({ columns, template }) => {
       )}
       {template.objects.map(obj => (
         <p key={obj.getAttribute("name")}>
-          Use {obj.tagName.toLowerCase()}
+          Sử dụng tệp  {obj.tagName.toLowerCase()}
           {template.objects > 1 && ` for ${obj.getAttribute("name")}`}
-          {" from "}
-          {columns?.length > 0 && columns[0] !== DEFAULT_COLUMN && "field "}
+          {" từ "}
+          {columns?.length > 0 && columns[0] !== DEFAULT_COLUMN && "trường "}
           <select onChange={updateValue(obj)} value={obj.getAttribute("value")?.replace(/^\$/, "")}>
             {columns?.map(column => (
               <option key={column} value={column}>
-                {column === DEFAULT_COLUMN ? "<imported file>" : `$${column}`}
+                {column === DEFAULT_COLUMN ? "<dữ liệu nhập vào>" : `$${column}`}
               </option>
             ))}
             {!columns?.length && (
-              <option value={obj.getAttribute("value")?.replace(/^\$/, "")}>{"<imported file>"}</option>
+              <option value={obj.getAttribute("value")?.replace(/^\$/, "")}>{"<dữ liệu nhập vào>"}</option>
             )}
           </select>
         </p>
@@ -307,13 +308,13 @@ const Configurator = ({ columns, config, project, template, setTemplate, onBrows
       .
     </p>
   );
-
+    
   return (
     <div className={configClass}>
       <div className={configClass.elem("container")}>
         <header>
           <button onClick={onBrowse}>{ t('config.browseTemp') }</button>
-          <ToggleItems items={{ code: "Code", visual: "Visual" }} active={configure} onSelect={onSelect} />
+          <ToggleItems items={{ code: t('config.code'), visual: t('config.visual') }} active={configure} onSelect={onSelect} />
         </header>
         <div className={configClass.elem('editor')}>
           {configure === "code" && (

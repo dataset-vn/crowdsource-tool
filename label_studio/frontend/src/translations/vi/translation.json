@@ -136,11 +136,18 @@
         "setting": "Cấu hình cài đặt",
         "confData": "Cấu hình dữ liệu",
         "objError1": "Bản mẫu này yêu cầu nhiều dữ liệu hơn số lượng dữ liệu mà bạn hiện có",
-        "objError2": "Để có thể lựa chọn To select which trường để dán nhãn bạn cần nhập dữ liệu. Ngoài ra, bạn có thể sử dụng chế độ mã.",
+        "objError2": "Để có thể lựa chọn trường để dán nhãn bạn cần nhập dữ liệu. Ngoài ra, bạn có thể sử dụng chế độ mã.",
         "confLI": "Cấu hình giao diện dán nhãn với các thẻ.",
         "showtags": "Hiển thị tất cả các thẻ",
         "browseTemp": "Hiển thị các mẫu",
-        "save": "Lưu"
+        "save": "Lưu",
+        "choices": "Lựa chọn",
+        "labels": "Nhãn",
+        "addChoices": "Thêm lựa chọn",
+        "addLabels": "Thêm nhãn",
+        "add": "Thêm",
+        "code": "Chế độ mã",
+        "visual": "Chế độ trực quan"
     },
 
     "template":
@@ -176,15 +183,12 @@
         "search":"Tìm kiếm theo tên, email",
         "email": "Email",
         "name": "Tên",
-        "role": "Quyền",
-        "status": "Trạng thái",
         "activity": "Hoạt động"
     },
     "MemberLSetting2":
     {
         "email": "Email",
         "name": "Tên",
-        "status": "Trạng thái",
         "rights": "Quyền",
         "activity": "Hoạt động"
     },
@@ -232,7 +236,9 @@
         "save": "Lưu các nhãn dán đã hoàn thành vào Amazon S3, Google Cloud, Microsoft Azure hoặc Redis.",
         "see": "Xem thêm trong tài liệu tham khảo",
         "delete": "Xóa bộ nhớ",
-        "message": "Hành động này không được hoàn tác. Bạn có chắc không?"
+        "message": "Hành động này không được hoàn tác. Bạn có chắc không?",
+        "edit": "Sửa",
+        "add": "Thêm"
     },
     
     "StorageSettings":
@@ -326,6 +332,15 @@
         "members": "Thành viên",
         "organizations": "Tổ chức",
         "pin": "Ghim menu",
-        "unpin": "Bỏ ghim"
+        "unpin": "Bỏ ghim",
+		"switchLang": "Đổi ngôn ngữ"
+    },
+
+    "tags":
+    {
+        "width": "Chiều rộng biên của khu vực",
+        "zoom": "Cho phép thu/phóng hình ảnh (ctrl+wheel)",
+        "zoomControl": "Hiển thị điều khiển thu nhỏ và phóng to",
+        "rotateControl": "Hiển thị điều khiển để xoay hình ảnh"
     }
 }
