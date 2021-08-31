@@ -134,19 +134,29 @@ class IsSuperuser(BasePermission):
         return self.has_permission(request, view)
 
 
-class IsUserProjectOwner(BasePermission):
+class IsManager(BasePermission):
     """ Check: is user owner of this project, task or task annotation
     """
+
     def has_object_permission(self, request, view, obj):
+        # Check if method is not DELETE which means its not deleting something
+        if request.method in ["GET", "POST", "PATCH"]:
+            return True
         user = request.user
-        project = project_from_obj(obj, request)
+
+        # TODO: Consider this get_object function to take in 'request' as another argument.
+        # If that happens, we can check if user is project member in the get_object function.
+        project = get_project(obj)
         if not project:
             return False
 
-        org_pk = project.organization.pk
+        member = ProjectMember.objects.get(project=project, user=user)
+        # If this user is not project member, then deny
+        if not member.exists():
+            return False
 
-        # business
-        if project.created_by == user:
+            # Check if user is project's creator
+        if member.role == "manager":
             return True
 
         return False
