@@ -473,6 +473,9 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         if member_role == "owner":
             return False, "Could not remove owner from the project"
 
+        if member_role == "manager":
+            return False, "Only owner can remove manager from the project"
+
         try:
             instance.delete()
             return True, "Removed member successfully"
