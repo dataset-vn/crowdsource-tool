@@ -98,7 +98,7 @@ class ExportAPI(generics.RetrieveAPIView):
         logger.debug('Get tasks')
         query = Task.objects.filter(project=project)
         if only_finished:
-            query = query.filter(annotations__isnull=False)
+            query = query.filter(annotations__isnull=False).distinct()
 
         current_user_id = self.request.user.id
         current_user_email = self.request.user.email
@@ -107,8 +107,6 @@ class ExportAPI(generics.RetrieveAPIView):
 
         if current_user_role != 'owner' and current_user_id != project.created_by_id and current_user_email != 'chon@dataset.vn':
             raise DatasetJscDatabaseException('Operation can only be performed by a project owner')
-
-        
 
         logger.debug('Serialize tasks for export')
         tasks = ExportDataSerializer(query, many=True).data

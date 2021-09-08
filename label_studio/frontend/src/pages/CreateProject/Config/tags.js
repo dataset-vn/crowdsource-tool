@@ -3,23 +3,23 @@ const OBJECTS = {
     type: 'Image',
     settings: {
       strokeWidth: {
-        title: 'Width of region borders',
+        title: "Chiều rộng biên của khu vực", //'Width of region borders',
         type: Number,
         param: ($obj, value) => $obj.$controls.forEach($control => $control.setAttribute('strokeWidth', value)),
         value: $obj => $obj.$controls[0]?.getAttribute('strokeWidth') ?? 1,
       },
       zoom: {
-        title: 'Allow image zoom (ctrl+wheel)',
+        title: "Cho phép thu/phóng hình ảnh (ctrl+wheel)", //'Allow image zoom (ctrl+wheel)',
         type: Boolean,
         param: 'zoom',
       },
       zoomControl: {
-        title: 'Show controls to zoom in and out',
+        title: "Hiển thị điều khiển thu nhỏ và phóng to", //'Show controls to zoom in and out',
         type: Boolean,
         param: 'zoomControl',
       },
       rotateControl: {
-        title: 'Show controls to rotate image',
+        title: "Hiển thị điều khiển để xoay hình ảnh", //'Show controls to rotate image',
         type: Boolean,
         param: 'rotateControl',
       },
@@ -29,7 +29,7 @@ const OBJECTS = {
     type: 'Text',
     settings: {
       granularity: {
-        title: 'Select text by words',
+        title: "Chọn văn bản theo từng từ", //Select text by words',
         type: Boolean,
         param: ($obj, value) => value ? $obj.setAttribute('granularity', 'word') : $obj.removeAttribute('granularity'),
         value: $obj => $obj.getAttribute('granularity') === 'word',
@@ -41,19 +41,19 @@ const OBJECTS = {
     type: 'HyperText',
   },
   Audio: {
-    type: 'Audio',
+    type: "Âm thanh", //'Audio',
   },
   AudioPlus: {
     type: 'AudioPlus',
   },
   TimeSeries: {
-    type: 'TimeSeries',
+    type: "Chuỗi thời gian", //'TimeSeries',
   },
   Paragraphs: {
-    type: 'Paragraphs',
+    type: "Đoạn văn", //'Paragraphs',
   },
   Table: {
-    type: 'Table',
+    type: "Bảng", //'Table',
   },
 };
 
@@ -61,8 +61,8 @@ const Labels = {
   type: 'Labels',
   settings: {
     placeLabelsLeft: {
-      title: 'Display labels:',
-      type: ["bottom", "left", "right", "top"],
+      title: "Hiển thị nhãn", //'Display labels:',
+      type: ["dưới", "trái", "phải", "trên"], //["bottom", "left", "right", "top"],
       control: true,
       param: ($control, value) => {
         let $container = $control.parentNode;
@@ -101,7 +101,7 @@ const Labels = {
       },
     },
     filter: {
-      title: 'Add filter for long list of labels',
+      title: "Thêm bộ loc cho danh sách(dài) của các nhãn", //'Add filter for long list of labels',
       type: Boolean,
       control: true,
       param: ($obj, value) => {

@@ -39,7 +39,8 @@ export const StorageSet = ({title, target, rootClass, buttonLabel}) => {
   }, [project]);
 
   const showStorageFormModal = useCallback((storage) => {
-    const action = storage ? "Edit" : "Add";
+
+    const action = storage ? t('StorageSet.edit') : t('StorageSet.add');
     const actionTarget = target === 'export' ? 'Target' : 'Source';
     const title = `${action} ${actionTarget} Storage`;
 
