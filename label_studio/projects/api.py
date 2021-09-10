@@ -30,7 +30,7 @@ from projects.models import (
     Project, ProjectSummary, ProjectMember
 )
 from projects.serializers import (
-    ProjectSerializer, ProjectMemberSerializer, ProjectLabelConfigSerializer, ProjectSummarySerializer, ProjectMemberStatisticsSerializer
+    ProjectSerializer, ProjectMemberSerializer, ProjectLabelConfigSerializer, ProjectSummarySerializer, ProjectMemberStatisticsSerializer, ProjectListByUserSerializer
 )
 
 from users.models import User
@@ -138,6 +138,7 @@ class ProjectListAPI(generics.ListCreateAPIView):
         active_org_id = self.request.user.active_organization
 
         return Project.objects.with_counts().filter(id__in=project_ids, organization_id=active_org_id)
+        # return Project.objects.with_counts().filter(status='hello')
 
     def get_serializer_context(self):
         context = super(ProjectListAPI, self).get_serializer_context()
@@ -914,3 +915,61 @@ class ProjectModelVersions(generics.RetrieveAPIView):
         project = self.get_object()
         model_versions = Prediction.objects.filter(task__project=project).values_list('model_version', flat=True).distinct()
         return Response(data=model_versions)
+
+
+from django.db.models import Max
+from django.db.models import Count
+
+class ProjectListByUser(generics.ListCreateAPIView):
+    parser_classes = (JSONParser,)
+    serializer_class = ProjectListByUserSerializer
+
+    # somewhat = Project.objects.annotate(something=Count('members'))
+    # queryset = somewhat.filter(something=2)
+    queryset = Project.objects.annotate(something=Count('members'))
+    
+    # queryset = Project.objects.all()
+
+    # def get_queryset(self,):
+    #     project_id = self.kwargs['pk']
+    #     user_id = None
+    #     if 'user' in self.kwargs:
+    #         user_id = self.kwargs['user']
+    #     current_user_id = self.request.user.id
+    #     project = Project.objects.get(id=project_id)
+
+    #     current_user_role = self.get_project_member_role(project_id, current_user_id)
+    #     if user_id != None and (user_id == current_user_id or current_user_role in ["manager", "owner"]):
+    #         return ProjectMember.objects.filter(project=project_id, user=user_id)
+
+    #     if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner']).exists() and current_user_id != project.created_by_id:
+    #         raise DatasetJscDatabaseException("Operation can only be performed by a project manager or project owner")
+        
+    #     members = ProjectMember.objects.filter(project=project_id).order_by('-role')
+    #     members = members.extra(select={'total_records': members.count()}) # This extra total_records will temporarily help frontend to paginate members list 
+
+    #     if self.request.query_params.get('search'):
+    #         return members
+
+    #     paginated_members = paginator(members, self.request)
+    #     return paginated_members
+
+    # def get_project_member_role(self, project_id: str, user_id: str) -> str:
+    #     """
+    #         Returns role of specific user in a project by id.
+    #         Returns `None` if that user doesn't exist
+    #     """
+    #     current_project = Project.objects.get(id=project_id)
+    #     current_user = ProjectMember.objects.filter(project_id=project_id, user_id=user_id).first()
+
+    #     if not hasattr(current_user, 'role'):
+    #         return None
+    #     if current_user.role is not None:
+    #         return current_user.role
+    #     if current_project.created_by_id == user_id:
+    #         return 'owner'
+    #     return 'annotator'
+
+    @swagger_auto_schema(operation_summary='All Project summary')
+    def get(self, *args, **kwargs):
+        return super(ProjectListByUser, self).get(*args, **kwargs)

@@ -72,6 +72,7 @@ class Project(ProjectMixin, models.Model):
                              help_text=f'Project name. Must be between {settings.PROJECT_TITLE_MIN_LEN} and {settings.PROJECT_TITLE_MAX_LEN} characters long.',
                              validators=[MinLengthValidator(settings.PROJECT_TITLE_MIN_LEN), MaxLengthValidator(settings.PROJECT_TITLE_MAX_LEN)])
     description = models.TextField(_('description'), blank=True, null=True, default='', help_text='Project description')
+    status = models.CharField(_('status'), null=True, blank=True, default='hello', max_length=20, help_text='Project status')
 
     organization = models.ForeignKey('organizations.Organization', on_delete=models.CASCADE, related_name='projects', null=True)
     label_config = models.TextField(_('label config'), blank=True, null=True, default='<View></View>',

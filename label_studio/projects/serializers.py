@@ -157,3 +157,27 @@ class ProjectSummarySerializer(serializers.ModelSerializer):
     class Meta:
         model = ProjectSummary
         fields = '__all__'
+
+
+class ProjectListByUserSerializer(serializers.ModelSerializer):
+
+    # class ProjectUserRoleTempSerializer(serializers.ModelSerializer):
+    #     class Meta:
+    #         model = ProjectMember
+    #         fields = ['user', 'role']
+
+    # projectMember = ProjectUserRoleTempSerializer()
+
+    class Meta:
+        model = Project
+        # fields = '__all__'
+        # fields = ['id']
+        fields = ['id', 'title', 'description', 'members']
+
+    # def create(self, validated_data):
+    #     projectMember_data = validated_data.pop('projectMember')
+    #     projectInfo_instance = Project.objects.create(**validated_data)
+    #     ProjectMember.objects.create(project_field=projectInfo_instance, role=True, **projectMember_data)
+
+    #     # return projectInfo_instance
+    #     return projectMember_data
