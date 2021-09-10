@@ -167,12 +167,12 @@ class ProjectListByUserSerializer(serializers.ModelSerializer):
     #         fields = ['user', 'role']
 
     # projectMember = ProjectUserRoleTempSerializer()
-
+    something = serializers.IntegerField(read_only=True)
     class Meta:
         model = Project
         # fields = '__all__'
         # fields = ['id']
-        fields = ['id', 'title', 'description', 'members']
+        fields = ['id', 'title', 'description', 'members', 'something']
 
     # def create(self, validated_data):
     #     projectMember_data = validated_data.pop('projectMember')
