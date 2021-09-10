@@ -20,7 +20,6 @@ from organizations.models import Organization
 logger = logging.getLogger(__name__)
 
 
-@login_required
 def project_list(request):
     return render(request, 'projects/list.html')
 

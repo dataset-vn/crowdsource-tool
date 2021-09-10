@@ -22,7 +22,7 @@ class UserAdminShort(UserAdmin):
 
         self.fieldsets = ((None, {'fields': ('password', )}),
                           ('Personal info', {'fields': ('first_name', 'last_name', 'email')}),
-                          ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser',)}),
+                          ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
                           ('Important dates', {'fields': ('last_login', 'date_joined')}))
         
 
@@ -34,5 +34,4 @@ admin.site.register(MLBackendTrainJob)
 admin.site.register(Task)
 admin.site.register(Annotation)
 admin.site.register(Organization)
-# remove unused django groups
-admin.site.unregister(Group)
+

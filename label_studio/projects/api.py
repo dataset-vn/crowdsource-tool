@@ -39,7 +39,7 @@ from tasks.models import Task, Annotation, Prediction, TaskLock, Q_task_finished
 from tasks.serializers import TaskSerializer, AnnotationSerializer, TaskWithAnnotationsAndPredictionsAndDraftsSerializer
 
 from core.mixins import APIViewVirtualRedirectMixin, APIViewVirtualMethodMixin
-from core.permissions import all_permissions, ViewClassPermission, IsAuthenticated
+from core.permissions import all_permissions, ViewClassPermission, IsAuthenticated, BaseRulesPermission
 from core.utils.common import (
     get_object_with_check_and_log, bool_from_request, paginator, paginator_help)
 from core.utils.exceptions import ProjectExistException, LabelStudioDatabaseException, DatasetJscDatabaseException
@@ -47,6 +47,9 @@ from core.utils.io import find_dir, find_file, read_yaml
 
 from data_manager.functions import get_prepared_queryset
 from data_manager.models import View
+from rules.contrib.views import PermissionRequiredMixin
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 logger = logging.getLogger(__name__)
 
@@ -122,10 +125,7 @@ class ProjectListAPI(generics.ListCreateAPIView):
     parser_classes = (JSONParser, FormParser, MultiPartParser)
     serializer_class = ProjectSerializer
     filter_backends = [filters.OrderingFilter]
-    permission_required = ViewClassPermission(
-        GET=all_permissions.projects_view,
-        POST=all_permissions.projects_create,
-    )
+    permission_classes = (AllowAny,)
     ordering = ['-created_at']
 
     def get_queryset(self):
@@ -133,11 +133,15 @@ class ProjectListAPI(generics.ListCreateAPIView):
         #1. 
         #2. Get all ID of projects inside this active organization of which current user is member (using ProjectMember)
         #3. return all projects that its id is in IDs list from step 2
-        user_id = self.request.user.id
-        project_ids = ProjectMember.objects.values_list('project', flat=True).filter(user=user_id)
-        active_org_id = self.request.user.active_organization
+        user = self.request.user
+        if user.is_authenticated:
+            user_id = self.request.user.id
+            project_ids = ProjectMember.objects.values_list('project', flat=True).filter(user=user_id)
+            active_org_id = self.request.user.active_organization
 
-        return Project.objects.with_counts().filter(id__in=project_ids, organization_id=active_org_id)
+            return Project.objects.with_counts().filter(Q(id__in=project_ids, organization_id=active_org_id) | Q(project_status = 'Recruiting'))
+        else:
+            return Project.objects.filter(Q(project_status = 'Recruiting'))
 
     def get_serializer_context(self):
         context = super(ProjectListAPI, self).get_serializer_context()
@@ -184,6 +188,7 @@ class ProjectAPI(APIViewVirtualRedirectMixin,
 
     parser_classes = (JSONParser, FormParser, MultiPartParser)
     queryset = Project.objects.with_counts()
+    permission_classes = (AllowAny,)
     permission_required = ViewClassPermission(
         GET=all_permissions.projects_view,
         DELETE=all_permissions.projects_delete,
@@ -305,10 +310,14 @@ class ProjectMemberStatisticsAPI(generics.ListCreateAPIView,
 
 
 class ProjectMemberAPI(generics.ListCreateAPIView, 
-                       generics.RetrieveUpdateDestroyAPIView):
+                       generics.RetrieveUpdateDestroyAPIView, PermissionRequiredMixin):
     parser_classes = (JSONParser, FormParser, MultiPartParser)
     permission_classes = (IsAuthenticated,)
+    filter_backends = [filters.SearchFilter]
     serializer_class = ProjectMemberSerializer
+    permission_required = 'projects.change_project'
+
+    search_fields = ['user__username', 'user__email', 'user__first_name', 'user__last_name']
 
     def get_queryset(self,):
         project_id = self.kwargs['pk']
@@ -316,17 +325,25 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         if 'user' in self.kwargs:
             user_id = self.kwargs['user']
         current_user_id = self.request.user.id
+        project = Project.objects.get(id=project_id)
+
+        current_user_role = self.get_project_member_role(project_id, current_user_id)
         # TODO: Only Project Leader or above can see member list
         # TODO: use django permission instead of directly checking if role is manager as below
-        if user_id != None and user_id == current_user_id:
+        if user_id != None and (user_id == current_user_id or current_user_role in ["manager", "owner"]):
             return ProjectMember.objects.filter(project=project_id, user=user_id)
 
-        if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner']).exists():
+        if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner']).exists() and current_user_id != project.created_by_id:
             raise DatasetJscDatabaseException("Operation can only be performed by a project manager or project owner")
-        # current_project = Project.objects.get(id=project_id)
-        # return current_project.annotators()
         
-        return ProjectMember.objects.filter(project=project_id)
+        members = ProjectMember.objects.filter(project=project_id).order_by('-role')
+        members = members.extra(select={'total_records': members.count()}) # This extra total_records will temporarily help frontend to paginate members list 
+
+        if self.request.query_params.get('search'):
+            return members
+
+        paginated_members = paginator(members, self.request)
+        return paginated_members
 
     def get_object(self):
         current_user_id = self.request.user.id
@@ -353,25 +370,49 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
-        self.perform_destroy(instance)
-        return Response({'code':200, 'detail': 'Delete project member successfully'}, status=status.HTTP_200_OK)
+        result, detail = self.perform_destroy(instance)
+        if result == True:
+            return Response({'code':200, 'detail': detail}, status=status.HTTP_200_OK)
+        raise DatasetJscDatabaseException(detail)
 
+    def get_project_member_role(self, project_id: str, user_id: str) -> str:
+        """
+            Returns role of specific user in a project by id.
+            Returns `None` if that user doesn't exist
+        """
+        current_project = Project.objects.get(id=project_id)
+        current_user = ProjectMember.objects.filter(project_id=project_id, user_id=user_id).first()
+
+        if not hasattr(current_user, 'role'):
+            return None
+        if current_user.role is not None:
+            return current_user.role
+        if current_project.created_by_id == user_id:
+            return 'owner'
+        return 'annotator'
+        
     def perform_create(self, serializer):
         # Added by NgDMau
         # check if logging user is admin of current project
         # if yes, user can add others to this current project, else cant
         current_user_id = self.request.user.id
         project_id = self.kwargs['pk']
+
         user_id = json.loads(self.request.body)['user_pk']
         user_role = json.loads(self.request.body)['role']
-        current_user_role = ProjectMember.objects.filter(project_id=project_id, user_id=current_user_id)[0].role
-        
+
+        current_user_role = self.get_project_member_role(project_id, current_user_id)
+
+        # Error handling
+        if current_user_role is None:
+            raise DatasetJscDatabaseException('User is not a member of project!')
+
         if current_user_role != 'owner' and user_role == 'owner':
             raise DatasetJscDatabaseException('Operation can only be performed by a project owner')
 
         roles = ['owner', 'manager', 'reviewer', 'annotator']
         if user_role not in roles:
-            user_role = 'annotator'
+            user_role = 'annotator' # In case body content changed unexpectedly
 
         if not Project.objects.filter(pk=project_id).exists():
             raise DatasetJscDatabaseException('There is no such project')
@@ -398,7 +439,12 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         user_id = json.loads(self.request.body)['user_pk']
         user_role = json.loads(self.request.body)['role']
         roles = ['owner', 'manager', 'reviewer', 'annotator']
-        current_user_role = ProjectMember.objects.filter(project_id=project_id, user_id=current_user_id)[0].role
+
+        current_user_role = self.get_project_member_role(project_id, user_id)
+
+        # Error handling
+        if current_user_role is None:
+            raise DatasetJscDatabaseException('User is not a member of project!')
 
         if current_user_role != 'owner' and user_role == 'owner':
             raise DatasetJscDatabaseException('Operation can only be performed by a project owner')
@@ -415,11 +461,31 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
             raise DatasetJscDatabaseException('Database error during project creation. Try again.')
 
     def perform_destroy(self, instance):
+        body = json.loads(self.request.body)
+        if 'user_pk' not in body:
+            return False, "Member not found"
+
+        project_id = self.kwargs['pk']
+        member_id = body['user_pk']
+        member_role = self.get_project_member_role(project_id, member_id)
+        operator_id = self.request.user.id
+        operator_role = self.get_project_member_role(project_id, operator_id)
+
+        if operator_role not in ["manager", "owner"]:
+            return False, "Operation can only be performed by a project manager or project owner"
+
+        if member_role == "owner":
+            return False, "Could not remove owner from the project"
+
+        if member_role == "manager":
+            return False, "Only owner can remove manager from the project"
+
         try:
             instance.delete()
+            return True, "Removed member successfully"
         except IntegrityError as e:
             logger.error('Fallback to cascase deleting after integrity_error: {}'.format(str(e)))
-            instance.delete()
+            return False, "Removed member failed"
 
 
     @swagger_auto_schema(tags=['ProjectMember'])
@@ -857,3 +923,20 @@ class ProjectModelVersions(generics.RetrieveAPIView):
         project = self.get_object()
         model_versions = Prediction.objects.filter(task__project=project).values_list('model_version', flat=True).distinct()
         return Response(data=model_versions)
+
+class DashboardList(generics.ListCreateAPIView):
+    parser_classes = (JSONParser, FormParser, MultiPartParser)
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+    permission_classes = (AllowAny,)
+    filter_backends = [filters.OrderingFilter]
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_authenticated:
+            user_id = self.request.user.id
+            project_ids = ProjectMember.objects.values_list('project', flat=True).filter(user=user_id)
+            active_org_id = self.request.user.active_organization
+        return Project.objects.with_counts().filter(id__in=project_ids, organization_id=active_org_id)
+
+

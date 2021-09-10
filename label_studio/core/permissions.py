@@ -124,8 +124,8 @@ class IsSuperuser(BasePermission):
         if user.is_superuser and hasattr(request, 'method') and request.method == 'GET':
             return True
 
-        # super user heartex@heartex.net has full read-write access
-        elif user.is_superuser and user.email == 'heidi@labelstud.io':
+        # super user longvule070402@gmail.com has full read-write access
+        elif user.is_superuser and user.email == 'longvule070402@gmail.com':
             return True
 
         return False
@@ -134,19 +134,29 @@ class IsSuperuser(BasePermission):
         return self.has_permission(request, view)
 
 
-class IsUserProjectOwner(BasePermission):
+class IsManager(BasePermission):
     """ Check: is user owner of this project, task or task annotation
     """
+
     def has_object_permission(self, request, view, obj):
+        # Check if method is not DELETE which means its not deleting something
+        if request.method in ["GET", "POST", "PATCH"]:
+            return True
         user = request.user
-        project = project_from_obj(obj, request)
+
+        # TODO: Consider this get_object function to take in 'request' as another argument.
+        # If that happens, we can check if user is project member in the get_object function.
+        project = get_project(obj)
         if not project:
             return False
 
-        org_pk = project.organization.pk
+        member = ProjectMember.objects.get(project=project, user=user)
+        # If this user is not project member, then deny
+        if not member.exists():
+            return False
 
-        # business
-        if project.created_by == user:
+            # Check if user is project's creator
+        if member.role == "manager":
             return True
 
         return False
@@ -173,3 +183,42 @@ class CanModifyUserOrReadOnly(IsBusiness):
             return True
 
         return False
+
+#Predicates
+@rules.predicate
+def is_project_owner (user, project):
+    if not project:
+        return False
+
+    member = ProjectMember.objects.get(project=project, user=user)
+    # If this user is not project member, then deny
+    if not member.exists():
+        return False
+
+    # Check if user is project's creator
+    if member.role == "owner" or project.created_by == user:
+        return True
+
+    return False
+
+@rules.predicate
+def is_project_manager (user, project):
+    if not project:
+        return False
+
+    member = ProjectMember.objects.get(project=project, user=user)
+    # If this user is not project member, then deny
+    if not member.exists():
+        return False
+
+    # Check if user is project's creator
+    if member.role == "manager":
+        return True
+
+    return False
+
+#Rules
+rules.add_perm('projects.change_project', is_project_owner | is_project_manager)
+rules.add_perm('projects.delete_project', is_project_owner)
+rules.has_perm('projects.change_project', is_project_owner | is_project_manager)
+rules.has_perm('projects.delete_project', is_project_owner)
