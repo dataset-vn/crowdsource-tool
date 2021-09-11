@@ -116,6 +116,8 @@ class Project(ProjectMixin, models.Model):
     is_published = models.BooleanField(_('published'), default=False, help_text='Whether or not the project is published to annotators')
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
+    project_status = models.CharField(default='Working', max_length=32, help_text='Represents the project status')
+    project_type = models.CharField(default='Community', max_length=32, help_text='Represents the project status')
 
     SEQUENCE = 'Sequential sampling'
     UNIFORM = 'Uniform sampling'

@@ -15,7 +15,7 @@ from django.conf import settings
 from django.shortcuts import get_object_or_404
 from drf_yasg.utils import swagger_auto_schema
 from django.utils.decorators import method_decorator
-from django.db.models import Q, When, Count, Case, OuterRef, Max, Exists, Value, BooleanField, Avg
+from django.db.models import F, Q, When, Count, Case, OuterRef, Max, Exists, Value, BooleanField, Avg
 from rest_framework.views import APIView
 from rest_framework import generics, status, filters
 from rest_framework.exceptions import NotFound, ValidationError as RestValidationError
@@ -133,11 +133,28 @@ class ProjectListAPI(generics.ListCreateAPIView):
         #1. 
         #2. Get all ID of projects inside this active organization of which current user is member (using ProjectMember)
         #3. return all projects that its id is in IDs list from step 2
-        user_id = self.request.user.id
-        project_ids = ProjectMember.objects.values_list('project', flat=True).filter(user=user_id)
-        active_org_id = self.request.user.active_organization
+        # user_id = self.request.user.id
+        # project_ids = ProjectMember.objects.values_list('project', flat=True).filter(user=user_id)
+        # active_org_id = self.request.user.active_organization
 
-        return Project.objects.with_counts().filter(id__in=project_ids, organization_id=active_org_id)
+        # return Project.objects.with_counts().filter(id__in=project_ids, organization_id=active_org_id)
+        user = self.request.user        
+        
+        if user.is_authenticated:
+            current_user_id = self.request.user.id
+            current_user_projects = Project.objects.with_counts().all().filter(Q(members__user_id=current_user_id)).annotate(current_user_role=Case(
+                When(members__user_id=current_user_id, then=F('members__role')),
+                default=Value('Available')
+            ))
+
+            public_projects = Project.objects.with_counts().filter(Q(project_status='Recruiting'))
+
+            projects = current_user_projects | public_projects
+
+            return projects
+
+        else:
+            return Project.objects.with_counts().filter(Q(project_status='Recruiting'))
 
     def get_serializer_context(self):
         context = super(ProjectListAPI, self).get_serializer_context()

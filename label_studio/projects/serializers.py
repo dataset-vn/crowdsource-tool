@@ -48,6 +48,7 @@ class ProjectSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
                                                                 help_text='Start model training after any annotations are submitted or updated')
     config_has_control_tags = SerializerMethodField(default=None, read_only=True,
                                                     help_text='Flag to detect is project ready for labeling')
+    current_user_role = serializers.CharField(default=None, read_only=True, help_text='Role of the current user in Project')
 
     @staticmethod
     def get_config_has_control_tags(project):
@@ -81,7 +82,9 @@ class ProjectSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
                   'total_annotations_number', 'total_predictions_number', 'sampling', 'show_ground_truth_first',
                   'show_overlap_first', 'overlap_cohort_percentage', 'task_data_login', 'task_data_password',
                   'control_weights', 'parsed_label_config', 'evaluate_predictions_automatically',
-                  'config_has_control_tags']
+                  'config_has_control_tags', 'project_status', 'project_type', 
+                  'current_user_role'
+                  ]
 
     def validate_label_config(self, value):
         if self.instance is None:
