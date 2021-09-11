@@ -81,6 +81,8 @@ class ProjectSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
                   'show_overlap_first', 'overlap_cohort_percentage', 'task_data_login', 'task_data_password',
                   'control_weights', 'parsed_label_config', 'evaluate_predictions_automatically',
                   'config_has_control_tags']
+        
+                
 
     def validate_label_config(self, value):
         if self.instance is None:
@@ -132,3 +134,11 @@ class ProjectSummarySerializer(serializers.ModelSerializer):
     class Meta:
         model = ProjectSummary
         fields = '__all__'
+
+
+class DashboardSerializer(serializers.ModelSerializer):
+    current_user_role = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = Project
+        fields = ['id', 'title', 'description', 'project_status', 'current_user_role']

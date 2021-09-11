@@ -10,12 +10,12 @@ import os
 from datetime import datetime
 from collections import Counter
 from django.db import IntegrityError
-from django.db.models.fields import DecimalField
+from django.db.models.fields import CharField, DecimalField
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from drf_yasg.utils import swagger_auto_schema
 from django.utils.decorators import method_decorator
-from django.db.models import Q, When, Count, Case, OuterRef, Max, Exists, Value, BooleanField, Avg
+from django.db.models import Q, F, When, Count, Case, OuterRef, Max, Exists, Value, BooleanField, Avg
 from rest_framework.views import APIView
 from rest_framework import generics, status, filters
 from rest_framework.exceptions import NotFound, ValidationError as RestValidationError
@@ -30,7 +30,7 @@ from projects.models import (
     Project, ProjectSummary, ProjectMember
 )
 from projects.serializers import (
-    ProjectSerializer, ProjectMemberSerializer, ProjectLabelConfigSerializer, ProjectSummarySerializer, ProjectMemberStatisticsSerializer
+    ProjectSerializer, ProjectMemberSerializer, ProjectLabelConfigSerializer, ProjectSummarySerializer, ProjectMemberStatisticsSerializer, DashboardSerializer
 )
 
 from users.models import User
@@ -924,19 +924,33 @@ class ProjectModelVersions(generics.RetrieveAPIView):
         model_versions = Prediction.objects.filter(task__project=project).values_list('model_version', flat=True).distinct()
         return Response(data=model_versions)
 
+
 class DashboardList(generics.ListCreateAPIView):
-    parser_classes = (JSONParser, FormParser, MultiPartParser)
-    queryset = Project.objects.all()
-    serializer_class = ProjectSerializer
-    permission_classes = (AllowAny,)
-    filter_backends = [filters.OrderingFilter]
+    parser_classes = (JSONParser,)
+    serializer_class = DashboardSerializer
+    
+    # queryset = Project.objects.all()
 
-    def get_queryset(self):
-        user = self.request.user
+    def get_queryset(self,):
+        user = self.request.user        
+        
         if user.is_authenticated:
-            user_id = self.request.user.id
-            project_ids = ProjectMember.objects.values_list('project', flat=True).filter(user=user_id)
-            active_org_id = self.request.user.active_organization
-        return Project.objects.with_counts().filter(id__in=project_ids, organization_id=active_org_id)
+            current_user_id = self.request.user.id
+            current_user_projects = Project.objects.all().filter(Q(members__user_id=current_user_id)).annotate(current_user_role=Case(
+                When(members__user_id=current_user_id, then=F('members__role')),
+                default=Value(''),
+                output_field=CharField()
+            ))
 
+            public_projects = Project.objects.filter(Q(project_status = 'Recruiting'))
 
+            projects = current_user_projects | public_projects
+
+            return projects
+
+        else:
+            return Project.objects.filter(Q(project_status = 'Recruiting'))
+
+    @swagger_auto_schema(operation_summary='All Project summary')
+    def get(self, *args, **kwargs):
+        return super(DashboardList, self).get(*args, **kwargs)
