@@ -122,10 +122,11 @@ class ProjectListAPI(generics.ListCreateAPIView):
     parser_classes = (JSONParser, FormParser, MultiPartParser)
     serializer_class = ProjectSerializer
     filter_backends = [filters.OrderingFilter]
-    permission_required = ViewClassPermission(
-        GET=all_permissions.projects_view,
-        POST=all_permissions.projects_create,
-    )
+    # permission_required = ViewClassPermission(
+    #     GET=all_permissions.projects_view,
+    #     POST=all_permissions.projects_create,
+    # )
+    permission_classes = (AllowAny, )
     ordering = ['-created_at']
 
     def get_queryset(self):
