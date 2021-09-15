@@ -1,6 +1,7 @@
 import {React, useState, useEffect, useCallback, useContext } from 'react';
 import { useAPI } from "../../providers/ApiProvider";
 import {useProject} from "../../providers/ProjectProvider";
+import {useCurrentUser} from "../../providers/CurrentUser";
 import { SidebarMenu } from '../../components/SidebarMenu/SidebarMenu';
 import { Members } from './Members/Members';
 import { DangerZone } from './DangerZone';
@@ -14,6 +15,9 @@ export const MenuLayout = ({children, ...routeProps}) => {
   
   const api = useAPI();
   const {project} = useProject();
+  const currentUser = useCurrentUser().user;
+
+  console.log("currentUser: ", currentUser)
 
   var projectOwnerId 
   var projectId 
