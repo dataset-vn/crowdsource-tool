@@ -134,28 +134,23 @@ class ProjectListAPI(generics.ListCreateAPIView):
         #1. 
         #2. Get all ID of projects inside this active organization of which current user is member (using ProjectMember)
         #3. return all projects that its id is in IDs list from step 2
-        # user_id = self.request.user.id
-        # project_ids = ProjectMember.objects.values_list('project', flat=True).filter(user=user_id)
-        # active_org_id = self.request.user.active_organization
-
-        # return Project.objects.with_counts().filter(id__in=project_ids, organization_id=active_org_id)
         user = self.request.user        
         
         if user.is_authenticated:
             current_user_id = self.request.user.id
             current_user_projects = Project.objects.with_counts().all().filter(Q(members__user_id=current_user_id)).annotate(current_user_role=Case(
                 When(members__user_id=current_user_id, then=F('members__role')),
-                default=Value('Available')
+                default=Value('')
             ))
 
-            public_projects = Project.objects.with_counts().filter(Q(project_status='Recruiting'))
+            public_projects = Project.objects.with_counts().filter(Q(project_status='open') | Q(project_status='open_running')).exclude(Q(members__user_id=current_user_id))
 
             projects = current_user_projects | public_projects
 
             return projects
 
         else:
-            return Project.objects.with_counts().filter(Q(project_status='Recruiting'))
+            return Project.objects.with_counts().filter(Q(project_status='open') | Q(project_status='open_running'))
 
     def get_serializer_context(self):
         context = super(ProjectListAPI, self).get_serializer_context()
@@ -215,7 +210,11 @@ class ProjectAPI(APIViewVirtualRedirectMixin,
     redirect_kwarg = 'pk'
 
     def get_queryset(self):
-        return Project.objects.with_counts().filter(organization=self.request.user.active_organization)
+        current_user_id = self.request.user.id
+        return Project.objects.with_counts().filter(organization=self.request.user.active_organization).annotate(current_user_role=Case(
+                When(members__user_id=current_user_id, then=F('members__role')),
+                default=Value('')
+            ))
 
     def get(self, request, *args, **kwargs):
         return super(ProjectAPI, self).get(request, *args, **kwargs)

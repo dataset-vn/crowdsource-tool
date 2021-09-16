@@ -61,36 +61,72 @@ const ProjectCard = ({ project, history }) => {
 			  }
 			: {};
 	}, [color]);
-	const projectstatus = project.project_status;
-	const userstatus = project.current_user_role;
+	const projectStatus = project.project_status;
+	const userStatus = project.current_user_role;
 	const projectType = project.project_type;
 
-	const projectStatus = useMemo(() => {
+	const projectStatusStyle = useMemo(() => {
 		var style = {};
-		projectstatus == "Recruiting"
+		projectStatus == "open"
 			? (style = {
-					background: "#E8E8E8",
-					color: "#003FFF",
+					background: "#f4f4f4",
+					color: "#22cc00",
 					height: "30px",
-					"text-align": "center",
-					"padding-top": "10px",
+					fontWeight: "medium",
+					textAlign: "center",
+					paddingTop: "10px",
 			  })
-			: projectstatus == "Working"
+			: projectStatus == "open_running"
 			? (style = {
-					background: "#E8E8E8",
-					color: "#22E000",
+					background: "#f4f4f4",
+					color: "#0003ff",
 					height: "30px",
-					"text-align": "center",
-					"padding-top": "10px",
+					fontWeight: "medium",
+					textAlign: "center",
+					paddingTop: "10px",
+			  })
+			: projectStatus == "closed_running"
+			? (style = {
+					background: "#f4f4f4",
+					color: "#777777",
+					height: "30px",
+					fontWeight: "medium",
+					textAlign: "center",
+					paddingTop: "10px",
 			  })
 			: (style = {
-					background: "#E8E8E8",
-					color: "#C4C4C4",
+					background: "#f4f4f4",
+					color: "#bb8811",
 					height: "30px",
-					"text-align": "center",
-					"padding-top": "10px",
+					fontWeight: "medium",
+					textAlign: "center",
+					paddingTop: "10px",
 			  });
 		return style;
+	});
+
+	const projectStatusLabel = useMemo(() => {
+		var label = "";
+		projectStatus == "open"
+			? (label = "Open")
+			: projectStatus == "open_running"
+			? (label = "Open - Running")
+			: projectStatus == "closed_running"
+			? (label = "Closed - Running")
+			: (label = "Completed");
+		return label;
+	});
+
+	const capitalizeStyle = useMemo(() => {
+		return {
+			textTransform: "capitalize",
+		};
+	});
+
+	const userStatusLabel = useMemo(() => {
+		var label = "";
+		userStatus == "" ? (label = "Available") : (label = userStatus);
+		return label;
 	});
 
 	const { t } = useTranslation();
@@ -104,8 +140,8 @@ const ProjectCard = ({ project, history }) => {
 				name='project-card'
 				mod={{ colored: !!color }}
 				style={projectColors}>
-				<Elem name='project-status' style={projectStatus}>
-					{projectstatus}
+				<Elem name='project-status' style={projectStatusStyle}>
+					{projectStatusLabel}
 				</Elem>
 				<Elem name='header'>
 					<Elem name='title'>
@@ -133,12 +169,16 @@ const ProjectCard = ({ project, history }) => {
 						</Elem>
 					</Elem>
 					<Elem name='summary'>
-						{projectstatus == "Recruiting" ? (
+						{userStatus == "" ? (
 							<Elem name='annotation'>
-								<Elem name='total'>{projectType}</Elem>
-								<Elem name='detail'>{userstatus}</Elem>
+								<Elem name='total' style={capitalizeStyle}>
+									{projectType}
+								</Elem>
+								<Elem name='detail' style={capitalizeStyle}>
+									{userStatusLabel}
+								</Elem>
 							</Elem>
-						) : projectstatus == "Working" ? (
+						) : projectStatus != "completed" ? (
 							<Elem name='annotation'>
 								<Elem name='total'>
 									{project.num_tasks_with_annotations} / {project.task_number}
