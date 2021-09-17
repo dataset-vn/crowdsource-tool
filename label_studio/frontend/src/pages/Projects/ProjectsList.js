@@ -62,8 +62,6 @@ const ProjectCard = ({ project, history }) => {
 			: {};
 	}, [color]);
 	const projectStatus = project.project_status;
-	const userStatus = project.current_user_role;
-	const projectType = project.project_type;
 
 	const projectStatusStyle = useMemo(() => {
 		var style = {};
@@ -117,15 +115,11 @@ const ProjectCard = ({ project, history }) => {
 		return label;
 	});
 
-	const capitalizeStyle = useMemo(() => {
-		return {
-			textTransform: "capitalize",
-		};
-	});
-
 	const userStatusLabel = useMemo(() => {
 		var label = "";
-		userStatus == "" ? (label = "Available") : (label = userStatus);
+		project.current_user_role == ""
+			? (label = "Available")
+			: (label = project.current_user_role);
 		return label;
 	});
 
@@ -169,12 +163,12 @@ const ProjectCard = ({ project, history }) => {
 						</Elem>
 					</Elem>
 					<Elem name='summary'>
-						{userStatus == "" ? (
+						{project.current_user_role == "" ? (
 							<Elem name='annotation'>
-								<Elem name='total' style={capitalizeStyle}>
-									{projectType}
+								<Elem name='total' style={{ textTransform: "capitalize" }}>
+									{project.project_type}
 								</Elem>
-								<Elem name='detail' style={capitalizeStyle}>
+								<Elem name='detail' style={{ textTransform: "capitalize" }}>
 									{userStatusLabel}
 								</Elem>
 							</Elem>
