@@ -211,8 +211,11 @@ class ProjectAPI(APIViewVirtualRedirectMixin,
 
     def get_queryset(self):
         current_user_id = self.request.user.id
-        return Project.objects.with_counts().filter(organization=self.request.user.active_organization).annotate(current_user_role=Case(
-                When(members__user_id=current_user_id, then=F('members__role')),
+        project_id = self.kwargs['pk']
+        if not ProjectMember.objects.filter(user=current_user_id, project=project_id).exists():
+          return Project.objects.with_counts().filter(Q(id=project_id))
+        return Project.objects.with_counts().filter(Q(members__user_id=current_user_id)).annotate(current_user_role=Case(
+                When(Q(members__user_id=current_user_id) & Q(members__project_id=project_id), then=F('members__role')),
                 default=Value('')
             ))
 

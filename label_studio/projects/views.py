@@ -30,6 +30,10 @@ def project_settings(request, pk, sub_path):
     return render(request, 'projects/settings.html')
 
 
+def project_details(request, pk):
+    return render(request, 'projects/details.html')
+
+
 def playground_replacements(request, task_data):
     if request.GET.get('playground', '0') == '1':
         for key in task_data:
