@@ -1,8 +1,11 @@
 import chr from "chroma-js";
 import React, { useContext, useMemo } from "react";
-import { ProjectContext } from "../../providers/ProjectProvider";
-
+import { ProjectContext, useProject } from "../../providers/ProjectProvider";
+import { useCurrentUser } from "../../providers/CurrentUser";
+import { useAPI } from "../../providers/ApiProvider";
 import { Block, Elem } from "../../utils/bem";
+import { Space } from '../../components/Space/Space';
+import { Button } from '../../components/Button/Button';
 import {
 	IconCalendar,
 	IconMoney,
@@ -94,3 +97,73 @@ export const ProjectDetailPage = () => {
 ProjectDetailPage.title = "Details";
 ProjectDetailPage.path = "/details";
 // ProjectDetailPage.exact = true;
+
+ProjectDetailPage.context = () => {
+	const { project } = useProject();
+	if(project && project.hasOwnProperty('current_user_role') && project.hasOwnProperty('id')) {
+	  var userRole = project.current_user_role;
+	  var projectID = project.id;
+	}
+	const { user } = useCurrentUser();
+	if(user && user.hasOwnProperty('id')) {
+	  var userID = user.id;
+	}
+	const api = useAPI();
+	const createProjectMember = async () => {
+	  const response = await api.callApi("createProjectMember", {
+		params: {
+		  pk: projectID
+		},
+		body: {
+		  user_pk: userID,
+		  role: "pending"
+		}
+	  })
+	  console.log("1");
+	  window.location.reload();
+	}
+  
+	const removeProjectMember = async () => {
+	  const response = await api.callApi("removeProjectMember", {
+		params: {
+		  pk: projectID
+		},
+		body: {
+		  user_pk: userID,
+		}
+	  });
+  
+	  if (response.code == 200) {
+		window.location.reload();
+	  }
+	}
+  
+	return project && project.id ? (
+	  <Space size="small">
+		{(project.expert_instruction && mode !== 'explorer') && (
+		  <Button size="compact" onClick={() => {
+			modal({
+			  title: t('labelInstruc.title'),
+			  body: () => <div dangerouslySetInnerHTML={{__html: project.expert_instruction}}/>,
+			});
+		  }}>
+			{t('labelInstruc.action')}
+		  </Button>
+		)}
+		{userRole == null ? 
+		(
+		  <Button onClick={createProjectMember} style={{color: "white", background: "#0D88BC"}}>Apply</Button>
+		)
+		: 
+		userRole == "pending" ?
+		(
+		  <Button onClick={removeProjectMember} style={{color: "white", background: "#BC0D17"}}>Cancel</Button>
+		)
+		:
+		userRole == "trainee" ? null
+		: 
+		null
+		}
+	  </Space>
+	) : null;
+  };

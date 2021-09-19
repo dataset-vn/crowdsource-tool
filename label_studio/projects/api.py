@@ -369,8 +369,8 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         if not User.objects.filter(pk=user_id).exists():
             raise DatasetJscDatabaseException('There is no such member')
         # TODO: use django permission instead of directly checking if role is manager as below
-        if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner']).exists():
-            raise DatasetJscDatabaseException("Operation can only be performed by a project manager or project owner")
+        #if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner']).exists():
+        #    raise DatasetJscDatabaseException("Operation can only be performed by a project manager or project owner")
         if not ProjectMember.objects.filter(user=user_id, project=project_id).exists():
             raise DatasetJscDatabaseException('There is no such member in the project')
 
@@ -418,13 +418,11 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         current_user_role = self.get_project_member_role(project_id, current_user_id)
 
         # Error handling
-        if current_user_role is None:
-            raise DatasetJscDatabaseException('User is not a member of project!')
 
         if current_user_role != 'owner' and user_role == 'owner':
             raise DatasetJscDatabaseException('Operation can only be performed by a project owner')
 
-        roles = ['owner', 'manager', 'reviewer', 'annotator']
+        roles = ['owner', 'manager', 'reviewer', 'annotator','trainee','pending']
         if user_role not in roles:
             user_role = 'annotator' # In case body content changed unexpectedly
 
@@ -433,8 +431,8 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         if not User.objects.filter(pk=user_id).exists():
             raise DatasetJscDatabaseException('There is no such member')
         # TODO: use django permission instead of directly checking if role is manager as below
-        if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner']).exists():
-            raise DatasetJscDatabaseException("Operation can only be performed by a project manager or project owner")
+        #if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner',None]).exists():
+        #   raise DatasetJscDatabaseException("Operation can only be performed by a project manager or project owner")
         if ProjectMember.objects.filter(user=user_id, project=project_id).exists():
             raise DatasetJscDatabaseException('This user is already in the project')
         
@@ -482,11 +480,11 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         project_id = self.kwargs['pk']
         member_id = body['user_pk']
         member_role = self.get_project_member_role(project_id, member_id)
-        operator_id = self.request.user.id
-        operator_role = self.get_project_member_role(project_id, operator_id)
+        #operator_id = self.request.user.id
+        #operator_role = self.get_project_member_role(project_id, operator_id)
         
-        if operator_role not in ["manager", "owner"]:
-            return False, "Operation can only be performed by a project manager or project owner"
+        #if operator_role not in ["manager", "owner"]:
+        #    return False, "Operation can only be performed by a project manager or project owner"
 
         if member_role == "owner":
             return False, "Could not remove owner from the project"
