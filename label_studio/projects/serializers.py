@@ -82,7 +82,7 @@ class ProjectSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
                   'total_annotations_number', 'total_predictions_number', 'sampling', 'show_ground_truth_first',
                   'show_overlap_first', 'overlap_cohort_percentage', 'task_data_login', 'task_data_password',
                   'control_weights', 'parsed_label_config', 'evaluate_predictions_automatically',
-                  'config_has_control_tags', 'project_status', 'project_type', 
+                  'config_has_control_tags', 'project_status', 'project_type', 'project_rate', 'project_due', 'project_size',
                   'current_user_role'
                   ]
 

@@ -61,6 +61,7 @@ const ProjectCard = ({ project, history }) => {
 			  }
 			: {};
 	}, [color]);
+
 	const projectStatus = project.project_status;
 
 	const projectStatusStyle = useMemo(() => {

@@ -116,8 +116,23 @@ class Project(ProjectMixin, models.Model):
     is_published = models.BooleanField(_('published'), default=False, help_text='Whether or not the project is published to annotators')
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
-    project_status = models.CharField(default='Working', max_length=32, help_text='Represents the project status')
-    project_type = models.CharField(default='Community', max_length=32, help_text='Represents the project status')
+    
+    PROJECT_STATUS = (
+        ('COMMUNITY', 'Community'),
+        ('PAID', 'Paid')
+    )
+
+    PROJECT_TYPE = (
+        ('OPEN', 'open'),
+        ('OPEN - RUNNING', 'open_running'),
+        ('CLOSED - RUNNING', 'closed - running'),
+    )
+
+    project_status = models.CharField(_('project_status'), default='Working', max_length=32, help_text='Represents the project status', choices = PROJECT_STATUS)
+    project_type = models.CharField(_('project_type'), default='Community', max_length=32, help_text='Represents the project status', choices = PROJECT_TYPE)
+    project_rate = models.DecimalField(_('project_rate'), null = True, decimal_places = 2, max_digits = 10)
+    project_due = models.DateField(_('project_due'), null = True)
+    project_size = models.IntegerField(_('project_size'), default = 0)
 
     SEQUENCE = 'Sequential sampling'
     UNIFORM = 'Uniform sampling'

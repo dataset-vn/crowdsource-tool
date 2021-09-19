@@ -3636,6 +3636,84 @@ __user_active::before {
 .ls-project-card_colored .ls-project-card__detail-item {
   --icon-color: #fff;
 }
+.ls-project-detail-page__content {
+  background-color: #fafafa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - var(--header-height));
+}
+.ls-detail-card {
+  --text-color: #000;
+  background-color: #fff;
+  border: 1px solid #c4c4c4;
+  width: 840px;
+  padding: 20px 0;
+  margin-bottom: 60px;
+  box-shadow: 10px -10px 3px rgba(0,0,0,0.15);
+}
+.ls-detail-card_colored {
+  --text-color: #fff;
+  background-color: var(--background-color);
+}
+.ls-detail-card_colored .ls-detail-card__header {
+  background-color: var(--header-color);
+  box-shadow: none;
+}
+.ls-detail-card__icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  padding-left: 0.5rem;
+}
+.ls-detail-card__header {
+  background-color: #fff;
+  color: var(--text-color);
+  padding: 20px 80px;
+  align-items: flex-start;
+  justify-content: center;
+  border-top: 1px solid rgba(0,0,0,0.15);
+  border-bottom: 1px solid rgba(0,0,0,0.15);
+}
+.ls-detail-card__title {
+  font-size: 36px;
+  font-weight: 500;
+}
+.ls-detail-card__stats_with_nums {
+  padding: 20px 120px;
+}
+.ls-detail-card__stat-item {
+  padding: 8px 0;
+  font-size: 16px;
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+}
+.ls-detail-card__profitable_project {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.ls-detail-card__numtype-data-withicon {
+  display: flex;
+  align-items: center;
+}
+.ls-detail-card__description {
+  padding: 20px 80px;
+}
+.ls-detail-card__description-label {
+  padding-bottom: 20px;
+  font-size: 16px;
+  font-weight: 500;
+}
+.ls-detail-card__description-data {
+  min-height: 6rem;
+  text-align: justify;
+}
+.ls-detail-card__current_user_role {
+  padding: 20px 80px;
+  font-size: 16px;
+  font-weight: 500;
+}
 
 body {
   --header-height: 48px;

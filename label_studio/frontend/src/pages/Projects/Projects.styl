@@ -177,4 +177,83 @@
       &-item
         --icon-color #fff
 
+.project-detail-page
+  &__content
+    background-color #FAFAFA
+    display: flex
+    align-items center
+    justify-content center
+    min-height calc(100vh - var(--header-height))
+
+.detail-card
+  --text-color #000
+  background-color: white
+  border 1px solid #c4c4c4
+  width: 840px
+  padding 20px 0
+  margin-bottom: 60px
+  box-shadow 10px -10px 3px rgba(0, 0, 0, 0.15)
+
+  &_colored
+    --text-color #fff
+    background-color var(--background-color)
+
+  &_colored ^[0]
+    &__header
+      background-color var(--header-color)
+      box-shadow none
+
+  &__icon
+    width 1.25rem
+    height 1.25rem
+    padding-left: 0.5rem
+
+  &__header
+    background-color: white
+    color var(--text-color)
+    padding: 20px 80px
+    align-items flex-start
+    justify-content center
+    border-top: 1px solid rgba(0,0,0, 0.15)
+    border-bottom: 1px solid rgba(0,0,0, 0.15)
+
+  &__title
+    font-size: 36px
+    font-weight: 500
+
+  &__stats_with_nums
+    padding: 20px 120px
+
+  &__stat-item
+    padding: 8px 0
+    font-size 16px
+    font-weight: 500
+    display: flex
+    justify-content: space-between
+
+  &__profitable_project
+    width: 100%
+    display: flex
+    justify-content: space-between
+
+  &__numtype-data-withicon
+    display: flex
+    align-items: center
+
+  &__description
+    padding: 20px 80px
+
+  &__description-label
+    padding-bottom: 20px
+    font-size: 16px
+    font-weight: 500
+
+  &__description-data
+    min-height: 6rem
+    text-align: justify
+
+  &__current_user_role
+    padding 20px 80px
+    font-size: 16px
+    font-weight: 500
 
