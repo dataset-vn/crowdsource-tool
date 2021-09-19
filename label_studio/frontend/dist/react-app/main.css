@@ -3659,6 +3659,7 @@ __user_active::before {
 .ls-detail-card_colored .ls-detail-card__header {
   background-color: var(--header-color);
   box-shadow: none;
+  border: none;
 }
 .ls-detail-card__icon {
   width: 1.25rem;
