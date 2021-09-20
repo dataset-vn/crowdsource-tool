@@ -20,7 +20,7 @@ const ProjectName = ({ name, setName, onSaveName, onSubmit, error, description, 
   <form className={cn("project-name")} onSubmit={e => { e.preventDefault(); onSubmit(); }}>
     <div className="field field--wide">
       <label htmlFor="project_name">{ t('projectCreate.name') /*Project Name*/ }</label>
-      <input name="name" id="project_name" value={name} onChange={e => setName(e.target.value)} onBlur={onSaveName} />
+      <input required name="name" id="project_name" value={name} onChange={e => setName(e.target.value)} onBlur={onSaveName} />
       {error && <span className="error">{error}</span>}
     </div>
     <div className="field field--wide">
@@ -40,26 +40,26 @@ const ProjectName = ({ name, setName, onSaveName, onSubmit, error, description, 
     </div>
     <div>
       <label htmlFor="project_type">Loại hình dự án</label>
-      <select value={project_type} onChange={e => setProjectType(e.target.value)}>
-        <option value="Cộng đồng">Cộng đồng</option>
-        <option value="Có lợi nhuận">Có lợi nhuận</option>
+      <select required value={project_type} onChange={e => setProjectType(e.target.value)}>
+        <option value="nonprofit_project">Cộng đồng</option>
+        <option value="profitable">Có lợi nhuận</option>
       </select>
     </div>
     <div>
       <label htmlFor="project_status">Tình trạng hoạt động</label>
-      <select value={project_status} onChange={e => setProjectStatus(e.target.value)}>
-        <option value="Đang tuyển">Đang tuyển</option>
-        <option value="Vẫn tuyển">Vẫn tuyển</option>
-        <option value="Ngừng tuyển">Ngừng tuyển</option>
+      <select required value={project_status} onChange={e => setProjectStatus(e.target.value)}>
+        <option value="open">Đang tuyển</option>
+        <option value="open_running">Vẫn tuyển</option>
+        <option value="closed_running">Ngừng tuyển</option>
       </select>
     </div>
     <div>
       <label htmlFor="project_size">Số người dự kiến</label>
-      <input name="project_size" placeholder="Nhập số lượng người tham gia dự án ở đây, mặc định là 1" id="project_size" value={project_size} onChange={e => setProjectSize(e.target.value)} />
+      <input name="project_size" id="project_size" required value={project_size} onChange={e => setProjectSize(e.target.value)} />
     </div>
     <div>
       <label htmlFor="project_due">Ngày kết thúc</label>
-      <input name="project_due" id="project_due" type="date" data-date="" data-date-format="YYYY-MM-DD" value={project_due} onChange={e => setProjectDue(e.target.value)} />
+      <input name="project_due" id="project_due" type="date" data-date="" data-date-format="YYYY-MM-DD" required value={project_due} onChange={e => setProjectDue(e.target.value)} />
     </div>
   </form>
 );
