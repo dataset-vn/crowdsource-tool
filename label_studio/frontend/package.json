@@ -153,6 +153,7 @@
   "dependencies": {
     "i18next": "^20.4.0",
     "i18next-browser-languagedetector": "^6.1.2",
+    "react-calendar": "^3.4.0",
     "react-i18next": "^11.11.4",
     "react-loadingg": "^1.7.2",
     "react-paginate": "^7.1.3"
