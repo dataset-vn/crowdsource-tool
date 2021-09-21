@@ -73,7 +73,7 @@ ProjectsPage.routes = ({ store }) => [
 		exact: true,
 		component: () => {
 			const params = useRouterParams();
-			return <Redirect to={`/projects/${params.id}/data`} />;
+			return <Redirect to={`/projects/${params.id}/details`} />;
 		},
 		pages: {
 			DataManagerPage,

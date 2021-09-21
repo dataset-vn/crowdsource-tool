@@ -7,6 +7,7 @@ import { useAPI } from '../../providers/ApiProvider';
 import { cn } from '../../utils/bem';
 import { ConfigPage } from './Config/Config';
 import "./CreateProject.styl";
+import "./CreateProject.css";
 import { ImportPage } from './Import/Import';
 import { useImportPage } from './Import/useImportPage';
 import { useDraftProject } from './utils/useDraftProject';
@@ -33,33 +34,33 @@ const ProjectName = ({ name, setName, onSaveName, onSubmit, error, description, 
         value={description}
         onChange={e => setDescription(e.target.value)}
       />
-    </div>
-    <div className="field field--wide">
-      <label htmlFor="project_rate">Thu nhập</label>
-      <input name="project_rate" id="project_rate" value={project_rate} onChange={e => setProjectRate(e.target.value)} />
-    </div>
-    <div>
+    </div><div>
       <label htmlFor="project_type">Loại hình dự án</label>
-      <select required value={project_type} onChange={e => setProjectType(e.target.value)}>
+      <select className="typeDropdown" required value={project_type} onChange={e => setProjectType(e.target.value)}>
         <option value="nonprofit_project">Cộng đồng</option>
         <option value="profitable">Có lợi nhuận</option>
       </select>
     </div>
     <div>
       <label htmlFor="project_status">Tình trạng hoạt động</label>
-      <select required value={project_status} onChange={e => setProjectStatus(e.target.value)}>
+      <select className="statusDropdown" required value={project_status} onChange={e => setProjectStatus(e.target.value)}>
         <option value="open">Đang tuyển</option>
         <option value="open_running">Vẫn tuyển</option>
         <option value="closed_running">Ngừng tuyển</option>
       </select>
     </div>
     <div>
+      <label htmlFor="project_rate">Thu nhập</label>
+      <input className="inputRate" name="project_rate" id="project_rate" value={project_rate} onChange={e => setProjectRate(e.target.value)} />
+    </div>
+    
+    <div>
       <label htmlFor="project_size">Số người dự kiến</label>
-      <input name="project_size" id="project_size" required value={project_size} onChange={e => setProjectSize(e.target.value)} />
+      <input className="inputSize" name="project_size" id="project_size" required value={project_size} onChange={e => setProjectSize(e.target.value)} />
     </div>
     <div>
       <label htmlFor="project_due">Ngày kết thúc</label>
-      <input name="project_due" id="project_due" type="date" data-date="" data-date-format="YYYY-MM-DD" required value={project_due} onChange={e => setProjectDue(e.target.value)} />
+      <input className="calendar" name="project_due" id="project_due" type="date" data-date="" data-date-format="YYYY-MM-DD" required value={project_due} onChange={e => setProjectDue(e.target.value)} />
     </div>
   </form>
 );
@@ -80,9 +81,9 @@ export const CreateProject = ({ onClose }) => {
   const [config, setConfig] = React.useState("<View></View>");
   const [project_rate, setProjectRate] = React.useState("");
   const [project_due, setProjectDue] = React.useState(new Date());
-  const [project_status, setProjectStatus] = React.useState("Đang tuyển");
+  const [project_status, setProjectStatus] = React.useState("open");
   const [project_size, setProjectSize] = React.useState(1);
-  const [project_type, setProjectType] = React.useState("Cộng đồng");
+  const [project_type, setProjectType] = React.useState("nonprofit_project");
 
   React.useEffect(() => { setError(null); }, [name]);
 

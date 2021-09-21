@@ -126,6 +126,7 @@ DataManagerPage.pages = {
 DataManagerPage.context = ({dmRef}) => {
   const location = useFixedLocation();
   const {project} = useProject();
+  console.log(project.project_status);
   const [mode, setMode] = useState(dmRef?.mode ?? "explorer");
   const { t } = useTranslation();
   const links = {

@@ -8,6 +8,7 @@ import { Button, Dropdown, Menu, Userpic } from "../../components";
 import { Block, Elem } from "../../utils/bem";
 import { absoluteURL } from "../../utils/helpers";
 import { useTranslation } from "react-i18next";
+import { useProject } from "../../providers/ProjectProvider";
 
 export const ProjectsList = ({ projects }) => {
 	const history = useHistory();
@@ -62,6 +63,7 @@ const ProjectCard = ({ project, history }) => {
 			: {};
 	}, [color]);
 
+	const thisProject = useProject().project;
 	const projectStatus = project.project_status;
 
 	const projectStatusStyle = useMemo(() => {
@@ -129,7 +131,9 @@ const ProjectCard = ({ project, history }) => {
 		<Elem
 			tag={NavLink}
 			name='link'
-			to={`/projects/${project.id}/data`}
+			to={
+				`/projects/${project.id}/details`
+			}
 			data-external>
 			<Block
 				name='project-card'
