@@ -8,7 +8,7 @@ import { Button, Dropdown, Menu, Userpic } from "../../components";
 import { Block, Elem } from "../../utils/bem";
 import { absoluteURL } from "../../utils/helpers";
 import { useTranslation } from "react-i18next";
-import { useProject } from "../../providers/ProjectProvider";
+import { useCurrentUser } from "../../providers/CurrentUser";
 
 export const ProjectsList = ({ projects }) => {
 	const history = useHistory();
@@ -65,7 +65,7 @@ const ProjectCard = ({ project, history }) => {
 
 	const projectStatus = project.project_status;
 	const userRole = project.current_user_role;
-
+	const { user } = useCurrentUser();
 	const projectStatusStyle = useMemo(() => {
 		var style = {};
 		projectStatus == "open"
@@ -120,7 +120,7 @@ const ProjectCard = ({ project, history }) => {
 
 	const userStatusLabel = useMemo(() => {
 		var label = "";
-		project.current_user_role == ""
+		project.current_user_role == "" || project.current_user_role == null
 			? (label = "Available")
 			: (label = project.current_user_role);
 		return label;
@@ -133,8 +133,8 @@ const ProjectCard = ({ project, history }) => {
 			name='link'
 			to={
 				userRole == "" || userRole == "pending" || userRole == "trainee" ?
-				`/projects/${project.id}/details/${project.current_user_role}`
-				:`/projects/${project.id}/data/${project.current_user_role}`
+				`/projects/${project.id}/details`
+				:`/projects/${project.id}/data`
 			}
 			data-external>
 			<Block
@@ -155,7 +155,7 @@ const ProjectCard = ({ project, history }) => {
 								e.preventDefault();
 							}}>
 							{
-								userRole != "" && userRole != "pending" ?
+								user.email != "" && userRole != "" && userRole != "pending" ?
 								(
 									<Dropdown.Trigger
 										content={
@@ -176,7 +176,7 @@ const ProjectCard = ({ project, history }) => {
 						</Elem>
 					</Elem>
 					<Elem name='summary'>
-						{project.current_user_role == "" ? (
+						{project.current_user_role == null || project.current_user_role == "" || project.current_user_role == "pending" || project.current_user_role == "trainee"? (
 							<Elem name='annotation'>
 								<Elem name='total' style={{ textTransform: "capitalize" }}>
 									{project.project_type}

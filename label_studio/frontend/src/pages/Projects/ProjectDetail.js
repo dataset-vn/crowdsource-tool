@@ -121,8 +121,7 @@ ProjectDetailPage.context = () => {
 		  role: "pending"
 		}
 	  })
-	  console.log("1");
-	  window.location.reload();
+		window.location.reload();
 	}
   
 	const removeProjectMember = async () => {
