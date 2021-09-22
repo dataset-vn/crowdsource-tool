@@ -1,6 +1,6 @@
 .statusDropdown{
     font-size: 16px;
-    margin: 0 0 0 162px;
+    margin: 0 0 0 141px;
     width: 189px;
     height: 35px;
     text-align: center;
@@ -8,14 +8,14 @@
 
 .typeDropdown{
     font-size: 16px;
-    margin: 0 0 0 200px;
+    margin: 0 0 0 179px;
     width: 189px;
     height: 35px;
     text-align: center;
 }
 
 .inputRate{
-    margin: 0 0 0 244px;
+    margin: 0 0 0 203px;
     width: 155px;
 }
 
@@ -25,6 +25,6 @@
 }
 
 .calendar{
-    margin: 0 0 0 213px;
+    margin: 0 0 0 191px;
     width: 155px;
 }

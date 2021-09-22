@@ -20,7 +20,7 @@ const ProjectName = ({ name, setName, onSaveName, onSubmit, error, description, 
   return(
   <form className={cn("project-name")} onSubmit={e => { e.preventDefault(); onSubmit(); }}>
     <div className="field field--wide">
-      <label htmlFor="project_name">{ t('projectCreate.name') /*Project Name*/ }</label>
+      <label htmlFor="project_name">{ t('projectCreate.name') /*Project Name*/ } (*)</label>
       <input required name="name" id="project_name" value={name} onChange={e => setName(e.target.value)} onBlur={onSaveName} />
       {error && <span className="error">{error}</span>}
     </div>
@@ -35,14 +35,14 @@ const ProjectName = ({ name, setName, onSaveName, onSubmit, error, description, 
         onChange={e => setDescription(e.target.value)}
       />
     </div><div>
-      <label htmlFor="project_type">Loại hình dự án</label>
+      <label htmlFor="project_type">Loại hình dự án (*)</label>
       <select className="typeDropdown" required value={project_type} onChange={e => setProjectType(e.target.value)}>
         <option value="nonprofit_project">Cộng đồng</option>
         <option value="profitable">Có lợi nhuận</option>
       </select>
     </div>
     <div>
-      <label htmlFor="project_status">Tình trạng hoạt động</label>
+      <label htmlFor="project_status">Tình trạng hoạt động (*)</label>
       <select className="statusDropdown" required value={project_status} onChange={e => setProjectStatus(e.target.value)}>
         <option value="open">Đang tuyển</option>
         <option value="open_running">Vẫn tuyển</option>
@@ -50,7 +50,7 @@ const ProjectName = ({ name, setName, onSaveName, onSubmit, error, description, 
       </select>
     </div>
     <div>
-      <label htmlFor="project_rate">Thu nhập</label>
+      <label htmlFor="project_rate">Thu nhập (vnđ)</label>
       <input className="inputRate" name="project_rate" id="project_rate" value={project_rate} onChange={e => setProjectRate(e.target.value)} />
     </div>
     
@@ -59,8 +59,11 @@ const ProjectName = ({ name, setName, onSaveName, onSubmit, error, description, 
       <input className="inputSize" name="project_size" id="project_size" required value={project_size} onChange={e => setProjectSize(e.target.value)} />
     </div>
     <div>
-      <label htmlFor="project_due">Ngày kết thúc</label>
+      <label htmlFor="project_due">Ngày kết thúc (*)</label>
       <input className="calendar" name="project_due" id="project_due" type="date" data-date="" data-date-format="YYYY-MM-DD" required value={project_due} onChange={e => setProjectDue(e.target.value)} />
+    </div>
+    <div>
+      <label  htmlFor="important">Những trường chứa (*) là những trường quan trọng, bắt buộc phải điền</label>
     </div>
   </form>
 );

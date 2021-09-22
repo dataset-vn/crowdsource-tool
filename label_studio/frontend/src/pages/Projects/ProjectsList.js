@@ -154,19 +154,25 @@ const ProjectCard = ({ project, history }) => {
 								e.stopPropagation();
 								e.preventDefault();
 							}}>
-							<Dropdown.Trigger
-								content={
-									<Menu>
-										<Menu.Item href={`/projects/${project.id}/settings`}>
-											{t("projectCard.setting")}
-										</Menu.Item>
-										<Menu.Item href={`/projects/${project.id}/data?labeling=1`}>
-											{t("projectCard.label")}
-										</Menu.Item>
-									</Menu>
-								}>
-								<Button size='small' type='text' icon={<LsEllipsis />} />
-							</Dropdown.Trigger>
+							{
+								userRole != "" && userRole != "pending" ?
+								(
+									<Dropdown.Trigger
+										content={
+											<Menu>
+												<Menu.Item href={`/projects/${project.id}/settings`}>
+													{t("projectCard.setting")}
+												</Menu.Item>
+												<Menu.Item href={`/projects/${project.id}/data?labeling=1`}>
+													{t("projectCard.label")}
+												</Menu.Item>
+											</Menu>
+										}>
+										<Button size='small' type='text' icon={<LsEllipsis />} />
+									</Dropdown.Trigger>
+								) : null
+							}
+							
 						</Elem>
 					</Elem>
 					<Elem name='summary'>
