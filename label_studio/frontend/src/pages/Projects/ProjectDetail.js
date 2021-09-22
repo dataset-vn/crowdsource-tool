@@ -17,15 +17,6 @@ import {
 
 export const ProjectDetailPage = () => {
 	const { project, fetchProject } = useContext(ProjectContext);
-	const params = useRouterParams();
-	const projectData = useProject().project;
-	var userRole;
-	if(params.id == project.id){
-		userRole = projectData.current_user_role
-	}
-	if(userRole == 'annotator' || userRole == 'reviewer' || userRole == 'manager' || userRole == 'owner'){
-		return <Redirect to={`/projects/${params.id}/data`} />;
-	}
 		const color = useMemo(() => {
 			return project.color === "#FFFFFF" ? null : project.color;
 		}, [project]);

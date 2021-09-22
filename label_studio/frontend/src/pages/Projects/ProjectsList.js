@@ -63,7 +63,6 @@ const ProjectCard = ({ project, history }) => {
 			: {};
 	}, [color]);
 
-	const thisProject = useProject().project;
 	const projectStatus = project.project_status;
 
 	const projectStatusStyle = useMemo(() => {
@@ -132,7 +131,9 @@ const ProjectCard = ({ project, history }) => {
 			tag={NavLink}
 			name='link'
 			to={
-				`/projects/${project.id}/details`
+				userRole == "" || userRole == "pending" || userRole == "trainee" ?
+				`/projects/${project.id}/details/${project.current_user_role}`
+				:`/projects/${project.id}/data/${project.current_user_role}`
 			}
 			data-external>
 			<Block
