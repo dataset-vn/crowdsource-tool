@@ -64,6 +64,7 @@ const ProjectCard = ({ project, history }) => {
 	}, [color]);
 
 	const projectStatus = project.project_status;
+	const userRole = project.current_user_role;
 
 	const projectStatusStyle = useMemo(() => {
 		var style = {};
