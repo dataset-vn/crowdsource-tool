@@ -190,7 +190,7 @@
 		"name": "Name",
 		"rights": "Rights",
 		"activity": "Activities",
-		"status": ""
+		"status": "Status"
 	},
 
 	"Member": {

@@ -190,7 +190,7 @@
 		"name": "Tên",
 		"rights": "Quyền",
 		"activity": "Hoạt động",
-		"status": "Vai trò"
+		"status": "Trạng thái"
 	},
 
 	"Member": {
