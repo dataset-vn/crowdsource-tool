@@ -1,6 +1,10 @@
+.subProperty{
+    display: flex;
+    justify-content: space-between;
+}
+
 .statusDropdown{
     font-size: 16px;
-    margin: 0 0 0 141px;
     width: 189px;
     height: 35px;
     text-align: center;
@@ -8,23 +12,20 @@
 
 .typeDropdown{
     font-size: 16px;
-    margin: 0 0 0 179px;
-    width: 189px;
     height: 35px;
+    width: 189px;
     text-align: center;
 }
 
 .inputRate{
-    margin: 0 0 0 203px;
     width: 155px;
 }
 
 .inputSize{
-    margin: 0 0 0 188px;
     width: 155px;
 }
 
 .calendar{
-    margin: 0 0 0 191px;
     width: 155px;
+    height: 20px;
 }

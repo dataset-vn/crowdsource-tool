@@ -34,36 +34,36 @@ const ProjectName = ({ name, setName, onSaveName, onSubmit, error, description, 
         value={description}
         onChange={e => setDescription(e.target.value)}
       />
-    </div><div>
-      <label htmlFor="project_type">Loại hình dự án (*)</label>
+    </div>
+    <div className="subProperty">
+      <label htmlFor="project_type">{ t('projectCreate.type') } (*)</label>
       <select className="typeDropdown" required value={project_type} onChange={e => setProjectType(e.target.value)}>
-        <option value="nonprofit_project">Cộng đồng</option>
-        <option value="profitable">Có lợi nhuận</option>
+        <option value="nonprofit_project">{ t('projectCreate.community') }</option>
+        <option value="profitable">{ t('projectCreate.paid') }</option>
       </select>
     </div>
-    <div>
-      <label htmlFor="project_status">Tình trạng hoạt động (*)</label>
+    <div className="subProperty">
+      <label htmlFor="project_status">{ t('projectCreate.status') } (*)</label>
       <select className="statusDropdown" required value={project_status} onChange={e => setProjectStatus(e.target.value)}>
-        <option value="open">Đang tuyển</option>
-        <option value="open_running">Vẫn tuyển</option>
-        <option value="closed_running">Ngừng tuyển</option>
+        <option value="open">{ t('projectCreate.open') }</option>
+        <option value="open_running">{ t('projectCreate.open_running') }</option>
+        <option value="closed_running">{ t('projectCreate.closed_running') }</option>
       </select>
     </div>
-    <div>
-      <label htmlFor="project_rate">Thu nhập (vnđ)</label>
+    <div className="subProperty">
+      <label htmlFor="project_rate">{ t('projectCreate.rate') } (vnđ)</label>
       <input className="inputRate" name="project_rate" id="project_rate" value={project_rate} onChange={e => setProjectRate(e.target.value)} />
     </div>
-    
-    <div>
-      <label htmlFor="project_size">Số người dự kiến</label>
+    <div className="subProperty">
+      <label htmlFor="project_size">{ t('projectCreate.size') }</label>
       <input className="inputSize" name="project_size" id="project_size" required value={project_size} onChange={e => setProjectSize(e.target.value)} />
     </div>
-    <div>
-      <label htmlFor="project_due">Ngày kết thúc (*)</label>
+    <div className="subProperty">
+      <label htmlFor="project_due">{ t('projectCreate.due') } (*)</label>
       <input className="calendar" name="project_due" id="project_due" type="date" data-date="" data-date-format="YYYY-MM-DD" required value={project_due} onChange={e => setProjectDue(e.target.value)} />
     </div>
     <div>
-      <label  htmlFor="important">Những trường chứa (*) là những trường quan trọng, bắt buộc phải điền</label>
+      <label  htmlFor="important">{ t('projectCreate.note') }</label>
     </div>
   </form>
 );
