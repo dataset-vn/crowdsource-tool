@@ -1,357 +1,330 @@
 {
-    "projectCard":
-    {
-        "setting": "Cài Đặt",
-        "label": "Dán nhãn"
-    },
+	"projectCard": {
+		"setting": "Cài Đặt",
+		"label": "Dán nhãn"
+	},
 
-    "projectEmpty":
-    {
-        "header": "Chưa có bất kỳ dự án nào",
-        "content": "Tạo dự án để bắt đầu gán nhãn dữ liệu",
-        "action": "Tạo dự án"
-    },
+	"projectDetail": {
+		"incomeLabel": "Thu nhập:",
+		"communityProjectLabel": "Dự án cộng đồng - Không lợi nhuận",
+		"projectSizeLabel": "Số người tham gia:",
+		"dueDateLabel": "Ngày kết thúc:",
+		"descriptionLabel": "Mô tả dự án:",
+		"noDescription": "(Dự án này chưa có mô tả.)",
+		"currentRoleLabel": "Bạn hiện đang là ",
+		"noRoleLabel": "Bạn hiện chưa tham gia dự án này",
+		"applyButtonLabel": "Tham gia",
+		"cancelButtonLabel": "Hủy bỏ"
+	},
 
-    "projectItem":
-    {
-        "action": "Tạo dự án" 
-    },
+	"projectEmpty": {
+		"header": "Chưa có bất kỳ dự án nào",
+		"content": "Tạo dự án để bắt đầu gán nhãn dữ liệu",
+		"action": "Tạo dự án"
+	},
 
-    "projectPage":
-    {
-        "title": "Dự án"
-    },
-    
-    "peopleList":
-    {
-        "placeholder": "Tìm kiếm theo tên, email",
-        "email": "Email",
-        "name": "Tên",
-        "active": "Hoạt động"
-    },
+	"projectItem": {
+		"action": "Tạo dự án"
+	},
 
-    "invitationModal":
-    {
-        "description": "Mời thêm thành viên tham gia Dataset",
-        "title": "Mời thêm thành viên",
-        "reset": "Đặt lại đường dẫn",
-        "copy": "Sao chép đường dẫn",
-        "copied": "Đã sao chép!",
-        "action": "Thêm thành viên"
-    },
+	"projectPage": {
+		"title": "Dự án"
+	},
 
-    "selectedUser":
-    {
-        "created": "Dự án đã tạo",
-        "contributed": "Dự án đóng góp"
-    },
+	"peopleList": {
+		"placeholder": "Tìm kiếm theo tên, email",
+		"email": "Email",
+		"name": "Tên",
+		"active": "Hoạt động"
+	},
 
-    "export":
-    {
-        "waitmess": "Tệp tin đang được chuẩn bị. Vui lòng đợi.",
-        "title": "Xuất dữ liệu"
-    },
+	"invitationModal": {
+		"description": "Mời thêm thành viên tham gia Dataset",
+		"title": "Mời thêm thành viên",
+		"reset": "Đặt lại đường dẫn",
+		"copy": "Sao chép đường dẫn",
+		"copied": "Đã sao chép!",
+		"action": "Thêm thành viên"
+	},
 
-    "formatInfo":
-    {
-        "info": "Có thể xuất bộ dữ liệu dựa trên những định dạng sau:",
-        "feedback": "Không tìm thấy định đạng phù hợp?",
-        "contact": "Liên hệ với chúng tôi qua "
-    },
+	"selectedUser": {
+		"created": "Dự án đã tạo",
+		"contributed": "Dự án đóng góp"
+	},
 
-    "initDataMan":
-    {
-        "error": "Giao diện của Label Studio không tồn tại"
-    },
+	"export": {
+		"waitmess": "Tệp tin đang được chuẩn bị. Vui lòng đợi.",
+		"title": "Xuất dữ liệu"
+	},
 
-    "dataMan":
-    {
-        "info": "Dự án đã bị xóa hoặc chưa được tạo ra",
-        "fallback": "Trở về dự án",
-        "setting": "Cài đặt",
-        "import": "Nhập",
-        "export": "Xuất",
-        "title": "Gán nhãn"
-    },
+	"formatInfo": {
+		"info": "Có thể xuất bộ dữ liệu dựa trên những định dạng sau:",
+		"feedback": "Không tìm thấy định đạng phù hợp?",
+		"contact": "Liên hệ với chúng tôi qua "
+	},
 
-    "labelInstruc":
-    {
-        "title": "Hướng dẫn",
-        "action": "Hướng dẫn"
-    },
+	"initDataMan": {
+		"error": "Giao diện của Label Studio không tồn tại"
+	},
 
-    "projectCreate":
-    {
-        "name": "Tên dự án",
-        "description": "Mô tả",
-        "type": "Loại hình dự án",
-        "community": "Cộng đồng",
-        "paid": "Có lợi nhuận",
-        "status": "Tình trạng hoạt động",
-        "open": "Đang tuyển",
-        "open_running": "Vẫn tuyển",
-        "closed_running": "Ngừng tuyển",
-        "rate": "Thu nhập",
-        "size": "Số người dự kiến",
-        "due": "Ngày kết thúc",
-        "note": "Những trường chứa (*) là những trường quan trọng, bắt buộc phải điền",
-        "import": "Nhập dữ liệu",
-        "delete": "Xóa",
-        "save": "Lưu",
-        "config": "Thiết lập nhãn",
-        "title": "Tạo dự án",
-        "placeholder": "Thêm mô tả về dự án của bạn"
-    },
+	"dataMan": {
+		"info": "Dự án đã bị xóa hoặc chưa được tạo ra",
+		"fallback": "Trở về dự án",
+		"setting": "Cài đặt",
+		"import": "Nhập",
+		"export": "Xuất",
+		"title": "Gán nhãn"
+	},
 
-    "importFooter":
-    {
-        "content1": "Đặt câu hỏi tới",
-        "content2": "facebook của chúng tôi",
-        "content3": "nếu bạn có bất kỳ vấn đề nào"
-    },
+	"labelInstruc": {
+		"title": "Hướng dẫn",
+		"action": "Hướng dẫn"
+	},
 
-    "importPage":
-    {
-        "errormess": "Tệp tải lên có dung lượng quá lớn",
-        "addurl": "Thêm URL",
-        "placeholder": "Dataset URL",
-        "or": "hoặc",
-        "button1": "Tải lên",
-        "button2": "tệp tin",
-        "csv/tsv": "Coi tệp CSV/TSV như",
-        "listOfTask": "Danh sách công việc",
-        "timeSeries": "Chuỗi thời gian",
-        "header1": "Kéo và thả tệp ở đây",
-        "header2": "hoặc ấn vào trình duyêt",
-        "text": "Văn bản",
-        "audio": "Âm thanh",
-        "images": "Hình ảnh",
-        "commonFormats": "Định dạng chung"
-    },
+	"projectCreate": {
+		"name": "Tên dự án",
+		"description": "Mô tả",
+		"type": "Loại hình dự án",
+		"community": "Cộng đồng",
+		"paid": "Có lợi nhuận",
+		"status": "Tình trạng hoạt động",
+		"open": "Đang tuyển",
+		"open_running": "Vẫn tuyển",
+		"closed_running": "Ngừng tuyển",
+		"rate": "Thu nhập",
+		"size": "Số người dự kiến",
+		"due": "Ngày kết thúc",
+		"note": "Những trường chứa (*) là những trường quan trọng, bắt buộc phải điền",
+		"import": "Nhập dữ liệu",
+		"delete": "Xóa",
+		"save": "Lưu",
+		"config": "Thiết lập nhãn",
+		"title": "Tạo dự án",
+		"placeholder": "Thêm mô tả về dự án của bạn"
+	},
 
-    "importModal":
-    {
-        "title": "Nhập dữ liệu",
-        "cancel": "Hủy",
-        "import": "Nhập"
-    },
+	"importFooter": {
+		"content1": "Đặt câu hỏi tới",
+		"content2": "facebook của chúng tôi",
+		"content3": "nếu bạn có bất kỳ vấn đề nào"
+	},
 
-    "preview":
-    {
-        "UI": "Xem trước giao diện người dùng"
-    },
+	"importPage": {
+		"errormess": "Tệp tải lên có dung lượng quá lớn",
+		"addurl": "Thêm URL",
+		"placeholder": "Dataset URL",
+		"or": "hoặc",
+		"button1": "Tải lên",
+		"button2": "tệp tin",
+		"csv/tsv": "Coi tệp CSV/TSV như",
+		"listOfTask": "Danh sách công việc",
+		"timeSeries": "Chuỗi thời gian",
+		"header1": "Kéo và thả tệp ở đây",
+		"header2": "hoặc ấn vào trình duyêt",
+		"text": "Văn bản",
+		"audio": "Âm thanh",
+		"images": "Hình ảnh",
+		"commonFormats": "Định dạng chung"
+	},
 
-    "config":
-    {
-        "empty": "Cấu hình ghi nhãn của bạn trống. Nó được yêu cầu để gắn nhãn dữ liệu của bạn.",
-        "setting": "Cấu hình cài đặt",
-        "confData": "Cấu hình dữ liệu",
-        "objError1": "Bản mẫu này yêu cầu nhiều dữ liệu hơn số lượng dữ liệu mà bạn hiện có",
-        "objError2": "Để có thể lựa chọn trường để dán nhãn bạn cần nhập dữ liệu. Ngoài ra, bạn có thể sử dụng chế độ mã.",
-        "confLI": "Cấu hình giao diện dán nhãn với các thẻ.",
-        "showtags": "Hiển thị tất cả các thẻ",
-        "browseTemp": "Hiển thị các mẫu",
-        "save": "Lưu",
-        "choices": "Lựa chọn",
-        "labels": "Nhãn",
-        "addChoices": "Thêm lựa chọn",
-        "addLabels": "Thêm nhãn",
-        "add": "Thêm",
-        "code": "Chế độ mã",
-        "visual": "Chế độ trực quan"
-    },
+	"importModal": {
+		"title": "Nhập dữ liệu",
+		"cancel": "Hủy",
+		"import": "Nhập"
+	},
 
-    "template":
-    {
-        "custom": "Tùy chỉnh mẫu"
-    },
+	"preview": {
+		"UI": "Xem trước giao diện người dùng"
+	},
 
-    "ErrorWrapper":
-    {
-        "content": "Hỏi đáp trên Facebook",
-        "button1": "Trở lại",
-        "button2": "Tải lại trang"
-    },
+	"config": {
+		"empty": "Cấu hình ghi nhãn của bạn trống. Nó được yêu cầu để gắn nhãn dữ liệu của bạn.",
+		"setting": "Cấu hình cài đặt",
+		"confData": "Cấu hình dữ liệu",
+		"objError1": "Bản mẫu này yêu cầu nhiều dữ liệu hơn số lượng dữ liệu mà bạn hiện có",
+		"objError2": "Để có thể lựa chọn trường để dán nhãn bạn cần nhập dữ liệu. Ngoài ra, bạn có thể sử dụng chế độ mã.",
+		"confLI": "Cấu hình giao diện dán nhãn với các thẻ.",
+		"showtags": "Hiển thị tất cả các thẻ",
+		"browseTemp": "Hiển thị các mẫu",
+		"save": "Lưu",
+		"choices": "Lựa chọn",
+		"labels": "Nhãn",
+		"addChoices": "Thêm lựa chọn",
+		"addLabels": "Thêm nhãn",
+		"add": "Thêm",
+		"code": "Chế độ mã",
+		"visual": "Chế độ trực quan"
+	},
 
-    "Spinner":
-    {
-        "loading": "ĐANG TẢI....."
-    },
+	"template": {
+		"custom": "Tùy chỉnh mẫu"
+	},
 
-    "VersionNotifier":
-    {
-        "status": "Đã sẵn sàng",
-        "version": "Phiên bản hiện tại:"
-    },
+	"ErrorWrapper": {
+		"content": "Hỏi đáp trên Facebook",
+		"button1": "Trở lại",
+		"button2": "Tải lại trang"
+	},
 
-    "Projectempty":
-    {
-        "header": "Hiện tại không có dự án nào cả"
-    },
+	"Spinner": {
+		"loading": "ĐANG TẢI....."
+	},
 
-    "MemberLSetting":
-    {
-        "search":"Tìm kiếm theo tên, email",
-        "email": "Email",
-        "name": "Tên",
-        "activity": "Hoạt động"
-    },
-    "MemberLSetting2":
-    {
-        "email": "Email",
-        "name": "Tên",
-        "rights": "Quyền",
-        "activity": "Hoạt động"
-    },
+	"VersionNotifier": {
+		"status": "Đã sẵn sàng",
+		"version": "Phiên bản hiện tại:"
+	},
 
-    "Member":
-    {
-        "invite": "Các thành viên được mời sẽ có tài khoản cá nhân. Họ có thể đăng ký và tham gia vào tổ chức bằng cách sử dụng đường link này.",
-        "link": "Reset Link",
-        "add": "Thêm thành viên",
-        "project": "Thành viên dự án",
-        "menu": "Cài đặt thành viên"
-    },
+	"Projectempty": {
+		"header": "Hiện tại không có dự án nào cả"
+	},
 
-    "SelectedMember":
-    {
-        "create": "Project đã tạo",
-        "contribute": "Đóng góp đến",
-        "time": "Hoạt động lúc :",
-        "already": "Đã là thành viên dự án",
-        "addproject": "Thêm vào dự án",
-        "delete": "Xóa khỏi dự án",
-        "owner": "Người sở hữu",
-        "manager": "Người quản lý",
-        "reviewer": "Người đánh giá",
-        "annotator": "Người dán nhãn"
-    },
+	"MemberLSetting": {
+		"search": "Tìm kiếm theo tên, email",
+		"email": "Email",
+		"name": "Tên",
+		"activity": "Hoạt động"
+	},
+	"MemberLSetting2": {
+		"email": "Email",
+		"name": "Tên",
+		"rights": "Quyền",
+		"activity": "Hoạt động"
+	},
 
-    "StorageCard":
-    {
-        "edit": "Chỉnh sửa",
-        "delete": "Xóa",
-        "sync": "Đồng bộ hóa bộ nhớ"
-    },
+	"Member": {
+		"invite": "Các thành viên được mời sẽ có tài khoản cá nhân. Họ có thể đăng ký và tham gia vào tổ chức bằng cách sử dụng đường link này.",
+		"link": "Reset Link",
+		"add": "Thêm thành viên",
+		"project": "Thành viên dự án",
+		"menu": "Cài đặt thành viên"
+	},
 
-    "StorageForm":
-    {
-        "success": "kết nối thành công!",
-        "fail": "Kết nối thất bại",
-        "check": "Kiểm tra kết nối",
-        "add": "Thêm bộ nhớ"
-    },
+	"SelectedMember": {
+		"create": "Project đã tạo",
+		"contribute": "Đóng góp đến",
+		"time": "Hoạt động lúc :",
+		"already": "Đã là thành viên dự án",
+		"addproject": "Thêm vào dự án",
+		"delete": "Xóa khỏi dự án",
+		"owner": "Người sở hữu",
+		"manager": "Người quản lý",
+		"reviewer": "Người đánh giá",
+		"annotator": "Người dán nhãn"
+	},
 
-    "StorageSet":
-    {
-        "save": "Lưu các nhãn dán đã hoàn thành vào Amazon S3, Google Cloud, Microsoft Azure hoặc Redis.",
-        "see": "Xem thêm trong tài liệu tham khảo",
-        "delete": "Xóa bộ nhớ",
-        "message": "Hành động này không được hoàn tác. Bạn có chắc không?",
-        "edit": "Sửa",
-        "add": "Thêm"
-    },
-    
-    "StorageSettings":
-    {
-        "use": "Sử dụng lưu trữ đám mây hoặc cơ sở dữ liệu làm nguồn cho các tác vụ gắn nhãn hoặc các nhãn dán đã hoàn thành của bạn.",
-        "source": "Nguồn lưu trữ đám mây",
-        "addsource": "Thêm Nguồn lưu trữ",
-        "target": "Xác định Nguồn lưu trữ đám mây",
-        "addtarget": "Thêm nguồn lưu trữ mục tiêu"
-    },
+	"StorageCard": {
+		"edit": "Chỉnh sửa",
+		"delete": "Xóa",
+		"sync": "Đồng bộ hóa bộ nhớ"
+	},
 
-    "MLList":
-    {
-        "delete": "Xóa BackEnd ML",
-        "message": "Hành động này không được hoàn tác. Bạn có chắc không?",
-        "edit": "Chỉnh sửa",
-        "delete2": "Xóa",
-        "disconnected": "Mất kết nối",
-        "connected": "Đã kết nối",
-        "error": "Lỗi",
-        "training": "Đang đào tạo",
-        "predicting": "Đang dự đoán"
-    },
+	"StorageForm": {
+		"success": "kết nối thành công!",
+		"fail": "Kết nối thất bại",
+		"check": "Kiểm tra kết nối",
+		"add": "Thêm bộ nhớ"
+	},
 
-    "MLSettings":
-    {
-        "edit": "Chỉnh sửa",
-        "add": "Bổ sung",
-        "title": "Tiêu đề",
-        "MLmodel": "Mô hình Machine Learning",
-        "description": "Mô tả",
-        "validate": "Xác nhận và lưu",
-        "message": "Thêm một hoặc nhiều mô hình học máy để dự đoán nhãn dán cho dữ liệu của bạn. Để nhập dự đoán mà không cần kết nối mô hình,",
-        "see": "xem tài liệu sau đây",
-        "add2": "Thêm mô hình",
-        "assisted": "ML-Hỗ trợ gán nhãn",
-        "start": "Bắt đầu đào tạo mô hình sau khi bất kỳ chú thích nào được gửi hoặc cập nhật",
-        "retrieve": "Trả lại dự đoán khi tải một công việc tự động",
-        "show": "Hiển thị gợi ý cho người dùng trong Luồng nhãn dãn và Chế độ xem nhanh"
-    },
+	"StorageSet": {
+		"save": "Lưu các nhãn dán đã hoàn thành vào Amazon S3, Google Cloud, Microsoft Azure hoặc Redis.",
+		"see": "Xem thêm trong tài liệu tham khảo",
+		"delete": "Xóa bộ nhớ",
+		"message": "Hành động này không được hoàn tác. Bạn có chắc không?",
+		"edit": "Sửa",
+		"add": "Thêm"
+	},
 
-    "Instructions":
-    {
-        "label": "Hướng dẫn dán nhãn",
-        "show": "Hiển thị trước khi dán nhãn",
-        "write": "Viết hướng dẫn để giúp người dùng hoàn thành các tác vụ ghi nhãn.",
-        "saved": "Đã lưu!",
-        "save": "Lưu"
-    },
+	"StorageSettings": {
+		"use": "Sử dụng lưu trữ đám mây hoặc cơ sở dữ liệu làm nguồn cho các tác vụ gắn nhãn hoặc các nhãn dán đã hoàn thành của bạn.",
+		"source": "Nguồn lưu trữ đám mây",
+		"addsource": "Thêm Nguồn lưu trữ",
+		"target": "Xác định Nguồn lưu trữ đám mây",
+		"addtarget": "Thêm nguồn lưu trữ mục tiêu"
+	},
 
-    "DangerZone":
-    {
-        "confirm": "Xác nhận hành động",
-        "message": "Bạn sắp xóa tất cả mọi thứ. Hành động này không thể được hoàn tác.",
-        "proceed": "Tiếp tục",
-        "drop": "Xoá hết Tabs",
-        "delete": "Xóa dự án",
-        "list": "Xóa chú thích, công việc hoặc dự án",
-        "message2": "Thực hiện những hành động này có nguy cơ cho chính bạn. Không thể hoàn tác hành động bạn thực hiện trên trang này. Hãy đảm bảo dữ liệu của bạn đã được sao lưu."
-    },
+	"MLList": {
+		"delete": "Xóa BackEnd ML",
+		"message": "Hành động này không được hoàn tác. Bạn có chắc không?",
+		"edit": "Chỉnh sửa",
+		"delete2": "Xóa",
+		"disconnected": "Mất kết nối",
+		"connected": "Đã kết nối",
+		"error": "Lỗi",
+		"training": "Đang đào tạo",
+		"predicting": "Đang dự đoán"
+	},
 
-    "LabelSettings":
-    {
-        "save": "Lưu"
-    },
+	"MLSettings": {
+		"edit": "Chỉnh sửa",
+		"add": "Bổ sung",
+		"title": "Tiêu đề",
+		"MLmodel": "Mô hình Machine Learning",
+		"description": "Mô tả",
+		"validate": "Xác nhận và lưu",
+		"message": "Thêm một hoặc nhiều mô hình học máy để dự đoán nhãn dán cho dữ liệu của bạn. Để nhập dự đoán mà không cần kết nối mô hình,",
+		"see": "xem tài liệu sau đây",
+		"add2": "Thêm mô hình",
+		"assisted": "ML-Hỗ trợ gán nhãn",
+		"start": "Bắt đầu đào tạo mô hình sau khi bất kỳ chú thích nào được gửi hoặc cập nhật",
+		"retrieve": "Trả lại dự đoán khi tải một công việc tự động",
+		"show": "Hiển thị gợi ý cho người dùng trong Luồng nhãn dãn và Chế độ xem nhanh"
+	},
 
-    "GeneralSettings":
-    {
-        "sequential": "Tuần tự",
-        "random": "Ngẫu nhiên",
-        "sampling": "Các nhiệm vụ được sắp xếp theo thứ tự của Người quản lý dữ liệu",
-        "sampling2": "Nhiệm vụ được chọn ngẫu nhiên đồng nhất",
-        "name": "Tên dự án",
-        "des": "Mô tả",
-        "task": "Lấy mẫu tác vụ",
-        "saved": "Đã lưu!",
-        "save": "Lưu",
-        "color": "Màu sắc",
-        "title": "Tổng quan"
-    },
+	"Instructions": {
+		"label": "Hướng dẫn dán nhãn",
+		"show": "Hiển thị trước khi dán nhãn",
+		"write": "Viết hướng dẫn để giúp người dùng hoàn thành các tác vụ ghi nhãn.",
+		"saved": "Đã lưu!",
+		"save": "Lưu"
+	},
 
-    "menuBar":
-    {
-        "logout": "Đăng xuất",
-        "acc&set": "Cài đặt tài khoản"
-    },
+	"DangerZone": {
+		"confirm": "Xác nhận hành động",
+		"message": "Bạn sắp xóa tất cả mọi thứ. Hành động này không thể được hoàn tác.",
+		"proceed": "Tiếp tục",
+		"drop": "Xoá hết Tabs",
+		"delete": "Xóa dự án",
+		"list": "Xóa chú thích, công việc hoặc dự án",
+		"message2": "Thực hiện những hành động này có nguy cơ cho chính bạn. Không thể hoàn tác hành động bạn thực hiện trên trang này. Hãy đảm bảo dữ liệu của bạn đã được sao lưu."
+	},
 
-    "sideBar":
-    {
-        "projects": "Dự án",
-        "members": "Thành viên",
-        "organizations": "Tổ chức",
-        "pin": "Ghim menu",
-        "unpin": "Bỏ ghim",
+	"LabelSettings": {
+		"save": "Lưu"
+	},
+
+	"GeneralSettings": {
+		"sequential": "Tuần tự",
+		"random": "Ngẫu nhiên",
+		"sampling": "Các nhiệm vụ được sắp xếp theo thứ tự của Người quản lý dữ liệu",
+		"sampling2": "Nhiệm vụ được chọn ngẫu nhiên đồng nhất",
+		"name": "Tên dự án",
+		"des": "Mô tả",
+		"task": "Lấy mẫu tác vụ",
+		"saved": "Đã lưu!",
+		"save": "Lưu",
+		"color": "Màu sắc",
+		"title": "Tổng quan"
+	},
+
+	"menuBar": {
+		"logout": "Đăng xuất",
+		"acc&set": "Cài đặt tài khoản"
+	},
+
+	"sideBar": {
+		"projects": "Dự án",
+		"members": "Thành viên",
+		"organizations": "Tổ chức",
+		"pin": "Ghim menu",
+		"unpin": "Bỏ ghim",
 		"switchLang": "Đổi ngôn ngữ"
-    },
+	},
 
-    "tags":
-    {
-        "width": "Chiều rộng biên của khu vực",
-        "zoom": "Cho phép thu/phóng hình ảnh (ctrl+wheel)",
-        "zoomControl": "Hiển thị điều khiển thu nhỏ và phóng to",
-        "rotateControl": "Hiển thị điều khiển để xoay hình ảnh"
-    }
+	"tags": {
+		"width": "Chiều rộng biên của khu vực",
+		"zoom": "Cho phép thu/phóng hình ảnh (ctrl+wheel)",
+		"zoomControl": "Hiển thị điều khiển thu nhỏ và phóng to",
+		"rotateControl": "Hiển thị điều khiển để xoay hình ảnh"
+	}
 }
