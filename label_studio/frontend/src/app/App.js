@@ -49,9 +49,12 @@ const App = ({content}) => {
       <Router history={browserHistory}>
         <MultiProvider providers={[
           <AppStoreProvider key="app-store"/>,
+          <ApiProvider key="api"/>,
           <ConfigProvider key="config"/>,
           <LibraryProvider key="lsf" libraries={libraries}/>,
           <RoutesProvider key="rotes"/>,
+          <ProjectProvider key="project"/>,
+          <CurrentUserProvider key="user"/>,
         ]}>
           <AsyncPage>
             <RootPage content={content}/>
