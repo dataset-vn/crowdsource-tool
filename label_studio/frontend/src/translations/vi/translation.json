@@ -189,7 +189,8 @@
 		"email": "Email",
 		"name": "Tên",
 		"rights": "Quyền",
-		"activity": "Hoạt động"
+		"activity": "Hoạt động",
+		"status": "Vai trò"
 	},
 
 	"Member": {

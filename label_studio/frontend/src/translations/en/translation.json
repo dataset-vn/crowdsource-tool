@@ -189,7 +189,8 @@
 		"email": "Email",
 		"name": "Name",
 		"rights": "Rights",
-		"activity": "Activities"
+		"activity": "Activities",
+		"status": ""
 	},
 
 	"Member": {
