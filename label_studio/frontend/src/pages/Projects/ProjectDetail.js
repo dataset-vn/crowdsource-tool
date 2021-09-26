@@ -3,20 +3,31 @@ import React, { useContext, useMemo } from "react";
 import { ProjectContext, useProject } from "../../providers/ProjectProvider";
 import { useCurrentUser } from "../../providers/CurrentUser";
 import { useAPI } from "../../providers/ApiProvider";
+// import { useContextProps } from "../../providers/RoutesProvider";
 import { Block, Elem } from "../../utils/bem";
 import { Space } from "../../components/Space/Space";
 import { Button } from "../../components/Button/Button";
-import { Redirect } from "react-router-dom";
-import { useParams as useRouterParams } from "react-router";
+import { modal } from '../../components/Modal/Modal';
 import {
 	IconCalendar,
 	IconMoney,
 	IconGroupOfPersons,
 } from "../../assets/icons";
 import { useTranslation } from "react-i18next";
+import { Modal } from "../../components/Modal/ModalPopup";
 
 export const ProjectDetailPage = () => {
 	const { project, fetchProject } = useContext(ProjectContext);
+	// const setContextProps = useContextProps();
+
+	const [modal, setModal] = React.useState(false);
+	const openModal = setModal.bind(null, true);
+	const closeModal = setModal.bind(null, false);
+
+	// React.useEffect(() => {
+	// 	setContextProps({ openModal });
+	// }, []);
+
 	const color = useMemo(() => {
 		return project.color === "#FFFFFF" ? null : project.color;
 	}, [project]);
@@ -102,6 +113,7 @@ export const ProjectDetailPage = () => {
 						)}
 					</Elem>
 				</Block>
+				{modal && <NoPhoneNumberModal />}
 			</Elem>
 		</Block>
 	);
@@ -127,16 +139,27 @@ ProjectDetailPage.context = () => {
 	}
 	const api = useAPI();
 	const createProjectMember = async () => {
-		const response = await api.callApi("createProjectMember", {
-			params: {
-				pk: projectID,
-			},
-			body: {
-				user_pk: userID,
-				role: "pending",
-			},
-		});
-		window.location.reload();
+		if (user) {
+			if (user.phone !== "") {
+				const response = await api.callApi("createProjectMember", {
+					params: {
+						pk: projectID,
+					},
+					body: {
+						user_pk: userID,
+						role: "pending",
+					},
+				});
+				window.location.reload();
+			} else {
+				modal({
+					title: "somethings",
+					body: () => (
+						<div>somethings</div>
+					),
+				});
+			}
+		}
 	};
 
 	const removeProjectMember = async () => {
@@ -191,4 +214,16 @@ ProjectDetailPage.context = () => {
 			) : userRole == "trainee" ? null : null}
 		</Space>
 	) : null;
+};
+
+const NoPhoneNumberModal = () => {
+	return (
+		<Modal visible>
+			<div>
+				<p>hello this is a new modal</p>
+				<button>cancel</button>
+				<button>redirect</button>
+			</div>
+		</Modal>
+	);
 };
