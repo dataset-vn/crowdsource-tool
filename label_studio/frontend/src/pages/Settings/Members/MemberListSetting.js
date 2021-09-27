@@ -32,7 +32,7 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
       },
       body: {
         user_pk: user.id,
-        contact_status: contact_status
+        contact_status: "checked"
       }
     })
   }
