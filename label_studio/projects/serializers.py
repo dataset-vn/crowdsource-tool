@@ -124,7 +124,8 @@ class ProjectMemberSerializer(serializers.ModelSerializer):
             'date_joined',
             'activity_at',
             'avatar',
-            'total_records'
+            'total_records',
+            'contact_status'
         )
 
 
