@@ -4,6 +4,7 @@ import { Spinner, Userpic } from "../../../components";
 import { useAPI } from "../../../providers/ApiProvider";
 import { useProject } from "../../../providers/ProjectProvider";
 import { Block, Elem } from "../../../utils/bem";
+import { CONTACT_STATUS } from "../../../utils/constant";
 import { isDefined, isCurrentlyActive } from "../../../utils/helpers";
 
 import ReactPaginate from 'react-paginate';
@@ -23,6 +24,18 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
   const [pageCount, setPageCount] = useState()
   const [usersList, setUsersList] = useState();
   const { project } = useProject();
+
+ const setContactStatus = async (contact_status, user) => {
+    const response = await api.callApi("updateProjectMember", {
+      params: {
+        pk: projectID
+      },
+      body: {
+        user_pk: user.id,
+        contact_status: "checked"
+      }
+    })
+  }
 
   const fetchUsers = useCallback(async (projectID, page_size=pageSize, page=1) => {
     let users = []
@@ -71,6 +84,7 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
           created_projects: [],
           contributed_to_projects: [],
           avatar: projectMembers[i].avatar,
+          contact_status: projectMembers[i].contact_status,
         },
         role: projectMembers[i].role
       }
@@ -115,10 +129,10 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
             <Elem name="column" mix="avatar" />
             <Elem name="column" mix="email">{ t('MemberLSetting2.email') }</Elem>
             <Elem name="column" mix="name">{ t('MemberLSetting2.name') }</Elem>
-            
             <Elem name="column" mix="name">{ t('MemberLSetting2.rights') }</Elem>
-            <Elem name="column" mix="role">{ t('MemberLSetting2.status') }</Elem>
+            <Elem name="column" mix="role">Trạng thái</Elem>
             <Elem name="column" mix="last-activity">{ t('MemberLSetting2.activity') }</Elem>
+            <Elem name="column" mix="contact">Trạng thái liên lạc</Elem>
           </Elem>
           <Elem name="body">
            
@@ -149,6 +163,17 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
 
                   <Elem key={"last_activity_" + i.user.id} name="field" mix="last-activity">
                     {formatDistance(new Date(i.user.last_activity), new Date(), { addSuffix: true })}
+                  </Elem>
+
+                  <Elem key={"contact_status_" + i.user.id} name="field" mix="contact">
+                    {i.contact_status}
+                     <select id="cars" className="ls-button ls-button_look_ "  onChange={(e) => setContactStatus(e.target.value, i.user)} name="role_member">
+                        {Object.keys(CONTACT_STATUS).map(
+                          (i) => (
+                      <option value={i}>{i}</option>
+                          )
+                     )}
+                     </select>
                   </Elem>
                 </Elem>
               );
