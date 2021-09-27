@@ -451,6 +451,8 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         user_id = json.loads(self.request.body)['user_pk']
         user_role = json.loads(self.request.body)['role']
         roles = ['owner', 'manager', 'reviewer', 'annotator']
+        user_contactstatus = json.loads(self.request.body)['contact_status']
+        contact_status = ['checked', 'not_checked']
 
         current_user_role = self.get_project_member_role(project_id, user_id)
 
@@ -464,11 +466,14 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         if not user_role in roles:
             user_role = 'annotator'
 
+        # if not user_contactstatus in contact_status:
+        #     user_contactstatus = 'not_checked'
+
         project = Project.objects.get(pk=project_id)
         user = User.objects.get(pk=user_id)
         self.check_object_permissions(self.request, project)
         try:
-            serializer.save(user=user, project=project, role=user_role)
+            serializer.save(user=user, project=project, role=user_role, contact_status=user_contactstatus)
         except IntegrityError as e:
             raise DatasetJscDatabaseException('Database error during project creation. Try again.')
 
@@ -506,8 +511,8 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         return super(ProjectMemberAPI, self).post(request, *args, **kwargs)
 
     @swagger_auto_schema(tags=['ProjectMember'])
-    def update(self, request, *args, **kwargs):
-        return super(ProjectMemberAPI, self).update(request, *args, **kwargs)
+    def put(self, request, *args, **kwargs):
+        return super(ProjectMemberAPI, self).put(request, *args, **kwargs)
 
     @swagger_auto_schema(tags=['ProjectMember'])
     def delete(self, request, *args, **kwargs):

@@ -5,3 +5,7 @@ export const ROLE_MEMBER = {
     pending: 'pending',
     trainee: 'trainee'
 }
+export const CONTACT_STATUS = {
+    checked: 'Đã liên lạc',
+    not_checked: 'Chưa liên lạc'
+}

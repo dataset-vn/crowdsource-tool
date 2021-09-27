@@ -106,6 +106,7 @@ class ProjectMemberSerializer(serializers.ModelSerializer):
     activity_at = serializers.CharField(source='user.activity_at', required = False)
     avatar = serializers.CharField(source='user.avatar', required = False)
     total_records = serializers.IntegerField(read_only=True)
+    contact_status = serializers.CharField(source='user.contact_status', required = False)
     
 
     class Meta:
@@ -124,7 +125,8 @@ class ProjectMemberSerializer(serializers.ModelSerializer):
             'date_joined',
             'activity_at',
             'avatar',
-            'total_records'
+            'total_records',
+            'contact_status',
         )
 
 
