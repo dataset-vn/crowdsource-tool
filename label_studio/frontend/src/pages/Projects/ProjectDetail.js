@@ -7,14 +7,13 @@ import { useAPI } from "../../providers/ApiProvider";
 import { Block, Elem } from "../../utils/bem";
 import { Space } from "../../components/Space/Space";
 import { Button } from "../../components/Button/Button";
-import { modal } from '../../components/Modal/Modal';
+import { modal } from "../../components/Modal/Modal";
 import {
 	IconCalendar,
 	IconMoney,
 	IconGroupOfPersons,
 } from "../../assets/icons";
 import { useTranslation } from "react-i18next";
-import { Modal } from "../../components/Modal/ModalPopup";
 
 export const ProjectDetailPage = () => {
 	const { project, fetchProject } = useContext(ProjectContext);
@@ -153,9 +152,21 @@ ProjectDetailPage.context = () => {
 				window.location.reload();
 			} else {
 				modal({
-					title: "somethings",
+					title: "You don't have phone number",
 					body: () => (
-						<div>somethings</div>
+						<div>
+							<p>
+								Your account has not currently had a phone number. This will
+								cause difficulties for whoever managing this project.
+							</p>
+							<p>
+								You must go to Account Setting and add that information before
+								applying to any projects.
+							</p>
+							<Button look='primary' size='compact' href='/user/account/'>
+								To Account Setting
+							</Button>
+						</div>
 					),
 				});
 			}
@@ -214,16 +225,4 @@ ProjectDetailPage.context = () => {
 			) : userRole == "trainee" ? null : null}
 		</Space>
 	) : null;
-};
-
-const NoPhoneNumberModal = () => {
-	return (
-		<Modal visible>
-			<div>
-				<p>hello this is a new modal</p>
-				<button>cancel</button>
-				<button>redirect</button>
-			</div>
-		</Modal>
-	);
 };
