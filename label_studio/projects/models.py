@@ -673,6 +673,8 @@ class ProjectMember(models.Model):
     role = models.CharField(default='annotator', max_length=32, help_text='Represents role of member in project')
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
+    contact_status = models.CharField(_('contact status'), null=True, max_length=32,
+                                      help_text='Represents contact status of project members in project')
 
     def get_statistics(self):
         avg_lead_time = Annotation.objects.filter(completed_by=self.user).aggregate(total_lead_time=Avg('lead_time'))

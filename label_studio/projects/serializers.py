@@ -106,7 +106,6 @@ class ProjectMemberSerializer(serializers.ModelSerializer):
     activity_at = serializers.CharField(source='user.activity_at', required = False)
     avatar = serializers.CharField(source='user.avatar', required = False)
     total_records = serializers.IntegerField(read_only=True)
-    contact_status = serializers.CharField(source='user.contact_status', required = False)
     
 
     class Meta:

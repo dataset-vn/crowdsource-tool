@@ -446,34 +446,29 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
             raise DatasetJscDatabaseException('Database error during project creation. Try again.')
 
     def perform_update(self, serializer):
-        current_user_id=self.request.user.id
+        #current_user_id=self.request.user.id
         project_id = self.kwargs['pk']
         user_id = json.loads(self.request.body)['user_pk']
-        user_role = json.loads(self.request.body)['role']
+        contact_status = json.loads(self.request.body)['contact_status']
         roles = ['owner', 'manager', 'reviewer', 'annotator']
-        user_contactstatus = json.loads(self.request.body)['contact_status']
-        contact_status = ['checked', 'not_checked']
 
-        current_user_role = self.get_project_member_role(project_id, user_id)
+        #current_user_role = self.get_project_member_role(project_id, user_id)
 
         # Error handling
-        if current_user_role is None:
-            raise DatasetJscDatabaseException('User is not a member of project!')
+        #if current_user_role is None:
+        #    raise DatasetJscDatabaseException('User is not a member of project!')
 
-        if current_user_role != 'owner' and user_role == 'owner':
-            raise DatasetJscDatabaseException('Operation can only be performed by a project owner')
+        #if current_user_role != 'owner' and user_role == 'owner':
+        #    raise DatasetJscDatabaseException('Operation can only be performed by a project owner')
 
-        if not user_role in roles:
-            user_role = 'annotator'
-
-        # if not user_contactstatus in contact_status:
-        #     user_contactstatus = 'not_checked'
+        #if not user_role in roles:
+        #    user_role = 'annotator'
 
         project = Project.objects.get(pk=project_id)
         user = User.objects.get(pk=user_id)
         self.check_object_permissions(self.request, project)
         try:
-            serializer.save(user=user, project=project, role=user_role, contact_status=user_contactstatus)
+            serializer.save(user=user, project=project, contact_status=contact_status)
         except IntegrityError as e:
             raise DatasetJscDatabaseException('Database error during project creation. Try again.')
 
@@ -511,8 +506,8 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         return super(ProjectMemberAPI, self).post(request, *args, **kwargs)
 
     @swagger_auto_schema(tags=['ProjectMember'])
-    def put(self, request, *args, **kwargs):
-        return super(ProjectMemberAPI, self).put(request, *args, **kwargs)
+    def patch(self, request, *args, **kwargs):
+        return super(ProjectMemberAPI, self).patch(request, *args, **kwargs)
 
     @swagger_auto_schema(tags=['ProjectMember'])
     def delete(self, request, *args, **kwargs):

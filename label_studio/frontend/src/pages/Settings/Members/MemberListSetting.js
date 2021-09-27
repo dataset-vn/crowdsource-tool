@@ -32,12 +32,9 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
       },
       body: {
         user_pk: user.id,
-        role:role,
         contact_status: contact_status
       }
     })
-    console.log(response,"-----")
-    console.log(user, "-----")
   }
 
   const fetchUsers = useCallback(async (projectID, page_size=pageSize, page=1) => {
