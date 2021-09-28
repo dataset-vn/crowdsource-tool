@@ -3747,6 +3747,12 @@ __user_active::before {
   font-size: 16px;
   font-weight: 500;
 }
+.ls-modal__footer {
+  text-align: right;
+}
+.ls-modal__footer .ls-button {
+  margin-right: 16px;
+}
 
 body {
   --header-height: 48px;

@@ -14,7 +14,11 @@
 		"currentRoleLabel": "You are currently a(an) ",
 		"noRoleLabel": "You haven't joined this project yet",
 		"applyButtonLabel": "Apply",
-		"cancelButtonLabel": "Cancel"
+		"cancelButtonLabel": "Cancel",
+		"noPhoneModalHeader": "No phone number",
+		"noPhoneModalText": "You must go to Account Setting and add phone number before applying to any projects.",
+		"toAccountModalButton": "To Account Setting",
+		"cancelModalButton": "Cancel"
 	},
 
 	"projectEmpty": {
