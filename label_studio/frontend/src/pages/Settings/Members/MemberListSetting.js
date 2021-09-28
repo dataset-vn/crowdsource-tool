@@ -1,6 +1,6 @@
 import { formatDistance } from "date-fns";
 import { useCallback, useEffect, useState } from "react";
-import { Spinner, Userpic } from "../../../components";
+import { Button, Spinner, Userpic } from "../../../components";
 import { useAPI } from "../../../providers/ApiProvider";
 import { useProject } from "../../../providers/ProjectProvider";
 import { Block, Elem } from "../../../utils/bem";
@@ -25,14 +25,16 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
   const [usersList, setUsersList] = useState();
   const { project } = useProject();
 
- const setContactStatus = async (contact_status, user) => {
+  const setContactStatus = async (contact_status, userID) => {
+    if(contact_status == "not check") contact_status = "checked"
+    else contact_status = "not check"
     const response = await api.callApi("updateProjectMember", {
       params: {
         pk: projectID
       },
       body: {
-        user_pk: user.id,
-        contact_status: "checked"
+        user_pk: userID,
+        contact_status: contact_status
       }
     })
   }
@@ -166,14 +168,9 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
                   </Elem>
 
                   <Elem key={"contact_status_" + i.user.id} name="field" mix="contact">
-                    {i.contact_status}
-                     <select id="cars" className="ls-button ls-button_look_ "  onChange={(e) => setContactStatus(e.target.value, i.user)} name="role_member">
-                        {Object.keys(CONTACT_STATUS).map(
-                          (i) => (
-                      <option value={i}>{i}</option>
-                          )
-                     )}
-                     </select>
+                    <Button onClick={() => setContactStatus(i.user.contact_status, i.user.id)}>
+                      {i.user.contact_status}
+                    </Button>
                   </Elem>
                 </Elem>
               );
