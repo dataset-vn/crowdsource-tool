@@ -15,7 +15,7 @@ import React, { Component } from 'react';
 import { Space } from "../../../components/Space/Space";
 import { useTranslation } from "react-i18next";
 
-export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, projectID, orgID=1 }) => {
+export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, projectID, orgID = 1 }) => {
   const { t } = useTranslation();
   const defaultPageSize = 15
   const api = useAPI();
@@ -26,7 +26,7 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
   const { project } = useProject();
 
   const setContactStatus = async (contact_status, userID) => {
-    if(contact_status == "not check") contact_status = "checked"
+    if (contact_status == "not check") contact_status = "checked"
     else contact_status = "not check"
     const response = await api.callApi("updateProjectMember", {
       params: {
@@ -37,9 +37,20 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
         contact_status: contact_status
       }
     })
+    if (response) {
+      let arr = [];
+      let newUserList = usersList
+      newUserList.forEach(element => {
+        if (element.id === userID) {
+          element.user.contact_status = contact_status
+        }
+        arr.push(element)
+      });
+      setUsersList(arr)
+    }
   }
 
-  const fetchUsers = useCallback(async (projectID, page_size=pageSize, page=1) => {
+  const fetchUsers = useCallback(async (projectID, page_size = pageSize, page = 1) => {
     let users = []
     if (projectID) {
       const projectMembers = await api.callApi("getProjectMember", {
@@ -105,7 +116,7 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
   }, [project]);
 
   useEffect(() => {
-    setPageCount(Math.ceil(totalRecords/pageSize))
+    setPageCount(Math.ceil(totalRecords / pageSize))
   }, [totalRecords])
 
   useEffect(() => {
@@ -129,16 +140,16 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
         <Elem name="users">
           <Elem name="header">
             <Elem name="column" mix="avatar" />
-            <Elem name="column" mix="email">{ t('MemberLSetting2.email') }</Elem>
-            <Elem name="column" mix="name">{ t('MemberLSetting2.name') }</Elem>
-            <Elem name="column" mix="name">{ t('MemberLSetting2.rights') }</Elem>
+            <Elem name="column" mix="email">{t('MemberLSetting2.email')}</Elem>
+            <Elem name="column" mix="name">{t('MemberLSetting2.name')}</Elem>
+            <Elem name="column" mix="name">{t('MemberLSetting2.rights')}</Elem>
             <Elem name="column" mix="role">Trạng thái</Elem>
-            <Elem name="column" mix="last-activity">{ t('MemberLSetting2.activity') }</Elem>
+            <Elem name="column" mix="last-activity">{t('MemberLSetting2.activity')}</Elem>
             <Elem name="column" mix="contact">Trạng thái liên lạc</Elem>
           </Elem>
           <Elem name="body">
-           
-            {usersList.sort((a, b) => compareStrings(a.role, b.role)).map(( i ) => {
+
+            {usersList.sort((a, b) => compareStrings(a.role, b.role)).map((i) => {
               const active = i.user.id === selectedUser?.id;
 
               return (
@@ -152,15 +163,15 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
                   <Elem key={"name_" + i.user.id} name="field" mix="name">
                     {i.user.first_name} {i.user.last_name}
                   </Elem>
-                  
+
                   <Elem key={"role_" + i.user.id} name="field" mix="name">
                     {i.role}
                   </Elem>
 
                   <Elem key={"status_" + i.user.id} name="field" mix="role">
-                    {isCurrentlyActive(i.user.last_activity)? 
-                      <b style={{color:"#31a24c"}}>online</b> :
-                      <b style={{color:"grey"}}>offline</b>}
+                    {isCurrentlyActive(i.user.last_activity) ?
+                      <b style={{ color: "#31a24c" }}>online</b> :
+                      <b style={{ color: "grey" }}>offline</b>}
                   </Elem>
 
                   <Elem key={"last_activity_" + i.user.id} name="field" mix="last-activity">
@@ -181,7 +192,7 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
           </Space>
 
           <Elem >
-            <ReactPaginate 
+            <ReactPaginate
               previousLabel={'<<'}
               nextLabel={'>>'}
               breakLabel={'...'}
