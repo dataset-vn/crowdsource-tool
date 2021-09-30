@@ -3,11 +3,12 @@ import React, { useContext, useMemo } from "react";
 import { ProjectContext, useProject } from "../../providers/ProjectProvider";
 import { useCurrentUser } from "../../providers/CurrentUser";
 import { useAPI } from "../../providers/ApiProvider";
-// import { useContextProps } from "../../providers/RoutesProvider";
+import { useContextProps } from "../../providers/RoutesProvider";
 import { Block, Elem } from "../../utils/bem";
 import { Space } from "../../components/Space/Space";
 import { Button } from "../../components/Button/Button";
 import { modal } from "../../components/Modal/Modal";
+import { Modal } from "../../components/Modal/ModalPopup";
 import {
 	IconCalendar,
 	IconMoney,
@@ -17,15 +18,15 @@ import { useTranslation } from "react-i18next";
 
 export const ProjectDetailPage = () => {
 	const { project, fetchProject } = useContext(ProjectContext);
-	// const setContextProps = useContextProps();
+	const setContextProps = useContextProps();
 
 	const [modal, setModal] = React.useState(false);
 	const openModal = setModal.bind(null, true);
 	const closeModal = setModal.bind(null, false);
 
-	// React.useEffect(() => {
-	// 	setContextProps({ openModal });
-	// }, []);
+	React.useEffect(() => {
+		setContextProps({ openModal });
+	}, []);
 
 	const color = useMemo(() => {
 		return project.color === "#FFFFFF" ? null : project.color;
@@ -112,7 +113,7 @@ export const ProjectDetailPage = () => {
 						)}
 					</Elem>
 				</Block>
-				{modal && <NoPhoneNumberModal />}
+				{modal && <ModalNoPhoneNumber closeModal={closeModal} />}
 			</Elem>
 		</Block>
 	);
@@ -122,7 +123,7 @@ ProjectDetailPage.title = "Details";
 ProjectDetailPage.path = "/details";
 // ProjectDetailPage.exact = true;
 
-ProjectDetailPage.context = () => {
+ProjectDetailPage.context = ({ openModal }) => {
 	const { project } = useProject();
 	if (
 		project &&
@@ -137,7 +138,7 @@ ProjectDetailPage.context = () => {
 		var userID = user.id;
 	}
 	const api = useAPI();
-	const createProjectMember = async () => {
+	const createProjectMember = async ({ openModal }) => {
 		if (user) {
 			if (user.phone !== "") {
 				const response = await api.callApi("createProjectMember", {
@@ -151,24 +152,7 @@ ProjectDetailPage.context = () => {
 				});
 				window.location.reload();
 			} else {
-				modal({
-					title: "You don't have phone number",
-					body: () => (
-						<div>
-							<p>
-								Your account has not currently had a phone number. This will
-								cause difficulties for whoever managing this project.
-							</p>
-							<p>
-								You must go to Account Setting and add that information before
-								applying to any projects.
-							</p>
-							<Button look='primary' size='compact' href='/user/account/'>
-								To Account Setting
-							</Button>
-						</div>
-					),
-				});
+				openModal();
 			}
 		}
 	};
@@ -212,17 +196,51 @@ ProjectDetailPage.context = () => {
 			)}
 			{userRole == null ? (
 				<Button
-					onClick={createProjectMember}
-					style={{ color: "white", background: "#0D88BC" }}>
+					// onClick={userPhone !== "" ? createProjectMember : openModal}
+					onClick={() => createProjectMember({ openModal })}
+					look='primary'
+					size='impact'
+					// style={{ color: "white", background: "#0D88BC" }}
+				>
 					{t("projectDetail.applyButtonLabel")}
 				</Button>
 			) : userRole == "pending" ? (
 				<Button
 					onClick={removeProjectMember}
-					style={{ color: "white", background: "#BC0D17" }}>
+					look='primary'
+					size='impact'
+					// style={{ color: "white", background: "#BC0D17" }}
+				>
 					{t("projectDetail.cancelButtonLabel")}
 				</Button>
 			) : userRole == "trainee" ? null : null}
 		</Space>
 	) : null;
+};
+
+const ModalNoPhoneNumber = ({ closeModal }) => {
+	const { t } = useTranslation();
+
+	return (
+		<Modal visible bare closeOnClickOutside={false}>
+			<Modal.Header>
+				<h2>{t("projectDetail.noPhoneModalHeader")}</h2>
+			</Modal.Header>
+			<div className='ls-modal__body'>
+				{t("projectDetail.noPhoneModalText")}
+			</div>
+			<Modal.Footer>
+				<Button
+					look='primary'
+					size='compact'
+					href='/user/account/'
+					onClick={closeModal}>
+					{t("projectDetail.toAccountModalButton")}
+				</Button>
+				<Button look='danger' size='compact' onClick={closeModal}>
+					{t("projectDetail.cancelModalButton")}
+				</Button>
+			</Modal.Footer>
+		</Modal>
+	);
 };
