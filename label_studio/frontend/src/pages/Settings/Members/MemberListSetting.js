@@ -41,7 +41,7 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
       let arr = [];
       let newUserList = usersList
       newUserList.forEach(element => {
-        if (element.id === userID) {
+        if (element.user.id === userID) {
           element.user.contact_status = contact_status
         }
         arr.push(element)
