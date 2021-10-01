@@ -18,6 +18,7 @@ export const Members = () => {
   const { t } = useTranslation();
   const [selectedUser, setSelectedUser] = useState(null);
   const [selectedMemberProject, setSelectedMemberProject] = useState(null);
+  const [resetFilter, setResetFilter] = useState(null);
 
   const { project } = useProject();
 
@@ -44,7 +45,8 @@ export const Members = () => {
   return (
     <>
       <Block name="people-list">
-        <Elem name="column" mix="email">{ t("Member.add") /*Add Members*/ }</Elem>
+        <Elem name="column" mix="email">{t("Member.add") /*Add Members*/}</Elem>
+
         <Elem name="users">
         </Elem>
         <Elem name="content">
@@ -68,13 +70,17 @@ export const Members = () => {
       </Space>
 
       <Block name="people-list">
-        <Elem name="column" mix="email">{ t("Member.project") /*Thành viên dự án*/ }</Elem>
+        <Elem name="column" mix="email">{t("Member.project") /*Thành viên dự án*/}</Elem>
+        <Button onClick={() => setResetFilter(!resetFilter)}>
+          Reset Filter
+        </Button>
         <Elem name="content">
           <MemberListSetting
             selectedUser={selectedMemberProject}
             defaultSelected={defaultSelected2}
             onSelect={(user) => selectMemberProject(user)}
             projectID={project.id}
+            resetFilter={resetFilter}
           />
           {selectedMemberProject && (
             <SelectedMemberSetting

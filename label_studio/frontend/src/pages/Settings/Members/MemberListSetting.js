@@ -1,6 +1,6 @@
 import { formatDistance } from "date-fns";
 import { useCallback, useEffect, useState } from "react";
-import { Button, Spinner, Userpic } from "../../../components";
+import { Button, Dropdown, Menu, Spinner, Userpic } from "../../../components";
 import { useAPI } from "../../../providers/ApiProvider";
 import { useProject } from "../../../providers/ProjectProvider";
 import { Block, Elem } from "../../../utils/bem";
@@ -14,8 +14,9 @@ import './MemberListSetting.styl';
 import React, { Component } from 'react';
 import { Space } from "../../../components/Space/Space";
 import { useTranslation } from "react-i18next";
+import { LsEllipsis } from "../../../assets/icons";
 
-export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, projectID, orgID = 1 }) => {
+export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, projectID, orgID = 1, resetFilter }) => {
   const { t } = useTranslation();
   const defaultPageSize = 15
   const api = useAPI();
@@ -23,7 +24,118 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
   const [pageSize, setPageSize] = useState(defaultPageSize)
   const [pageCount, setPageCount] = useState()
   const [usersList, setUsersList] = useState();
+  const [usersListSetup, setUsersListSetup] = useState();
+
   const { project } = useProject();
+
+  const itemModal = (filter) => {
+    if (filter === 'role') {
+      return <Elem name="column" mix="role">{t('MemberLSetting2.rights')}</Elem>
+    } else if (filter === "last-activity") {
+      return <Elem name="column" mix="status">Trạng thái</Elem>
+    } else {
+      return <Elem name="column" mix="contact">Trạng thái liên lạc</Elem>
+    }
+  }
+
+  const filterCheckSearch = (check) => {
+    let arr = [];
+    let num = 0;
+    let newUserList = usersList
+    newUserList.forEach(element => {
+      if (element.user.contact_status === check) {
+        arr.push(element)
+        num++
+      }
+    });
+    if (arr.length === 0) {
+      let newUserListSetup = usersListSetup
+      newUserListSetup.forEach(element => {
+        if (element.user.contact_status === check) {
+          arr.push(element)
+          num++
+        }
+      });
+    }
+    setUsersList(arr)
+  }
+
+  const filterRoleSearch = (roleFilter) => {
+    let arr = [];
+    let num = 0;
+    let newUserList = usersList
+    newUserList.forEach(element => {
+      if (element.role === roleFilter) {
+        arr.push(element)
+        num++
+      }
+    });
+    if (arr.length === 0) {
+      let newUserListSetup = usersListSetup
+      newUserListSetup.forEach(element => {
+        if (element.role === roleFilter) {
+          arr.push(element)
+          num++
+        }
+      });
+    }
+    setUsersList(arr)
+
+  }
+
+  const contentModal = (filter) => {
+    if (filter === 'role') {
+      return (<Menu>
+        <Menu.Item onClick={() => filterRoleSearch("owner")}>
+          owner
+        </Menu.Item>
+        <Menu.Item onClick={() => filterRoleSearch("annotator")}>
+          annotator
+        </Menu.Item>
+        <Menu.Item onClick={() => filterRoleSearch("manager")}>
+          manager
+        </Menu.Item>
+        <Menu.Item onClick={() => filterRoleSearch("reviewer")} >
+          reviewer
+        </Menu.Item>
+        <Menu.Item onClick={() => filterRoleSearch("pending")}>
+          pending
+        </Menu.Item>
+        <Menu.Item onClick={() => filterRoleSearch("trainee")}>
+          trainee
+        </Menu.Item>
+      </Menu>)
+    } else if (filter === "status") {
+      return (<Menu>
+        <Menu.Item >
+          {t("online")}
+        </Menu.Item>
+        <Menu.Item >
+          {t("offline")}
+        </Menu.Item>
+      </Menu>)
+    } else {
+      return (<Menu>
+        <Menu.Item onClick={() => filterCheckSearch("checked")}>
+          {t("checked")}
+        </Menu.Item>
+        <Menu.Item onClick={() => filterCheckSearch("not check")}>
+          {t("not check")}
+        </Menu.Item>
+      </Menu>)
+    }
+  }
+
+  const modalFilterDrop = (filter) => {
+    return (
+      <Dropdown.Trigger
+        content={
+          contentModal(filter)
+        }>
+        {itemModal(filter)}
+      </Dropdown.Trigger>
+    )
+  }
 
   const setContactStatus = async (contact_status, userID) => {
     if (contact_status == "not check") contact_status = "checked"
@@ -64,7 +176,15 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
       users = convertProjectMember2User(projectMembers) // as ProjectMember and User are 2 different objects
     }
     setUsersList(users);
+    setUsersListSetup(users)
+    console.log("====================", users)
   }, [api]);
+
+  useEffect(() => {
+    if (usersListSetup) {
+      setUsersList(usersListSetup)
+    }
+  }, [resetFilter])
 
   var handlePageClick = (data) => {
     let selectedPage = (data.selected + 1) || 1;
@@ -133,6 +253,8 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
     return (a < b) ? -1 : (a > b) ? 1 : 0;
   }
 
+
+
   return (
     <Block name="people-list">
 
@@ -142,10 +264,31 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
             <Elem name="column" mix="avatar" />
             <Elem name="column" mix="email">{t('MemberLSetting2.email')}</Elem>
             <Elem name="column" mix="name">{t('MemberLSetting2.name')}</Elem>
-            <Elem name="column" mix="name">{t('MemberLSetting2.rights')}</Elem>
-            <Elem name="column" mix="role">Trạng thái</Elem>
+            <Elem
+              name="column" mix="role"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+              }}>
+              {modalFilterDrop("role")}
+            </Elem>
+            <Elem
+              name="column" mix="status"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+              }}>
+              {modalFilterDrop("status")}
+            </Elem>
             <Elem name="column" mix="last-activity">{t('MemberLSetting2.activity')}</Elem>
-            <Elem name="column" mix="contact">Trạng thái liên lạc</Elem>
+            <Elem
+              name="column" mix="contact"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+              }}>
+              {modalFilterDrop("contact")}
+            </Elem>
           </Elem>
           <Elem name="body">
 
@@ -179,7 +322,7 @@ export const MemberListSetting = ({ onSelect, selectedUser, defaultSelected, pro
                   </Elem>
 
                   <Elem key={"contact_status_" + i.user.id} name="field" mix="contact">
-                    <Button onClick={() => setContactStatus(i.user.contact_status, i.user.id)}>
+                    <Button onClick={(e) => { e.stopPropagation(); setContactStatus(i.user.contact_status, i.user.id) }}>
                       {i.user.contact_status}
                     </Button>
                   </Elem>
