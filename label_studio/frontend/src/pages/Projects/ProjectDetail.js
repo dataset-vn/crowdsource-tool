@@ -91,7 +91,7 @@ export const ProjectDetailPage = () => {
 						</Elem>
 					</Elem>
 					<Elem name='description'>
-						<Elem name='description-label' style={{ whiteSpace: "pre-line" }}>
+						<Elem name='description-label'>
 							{t("projectDetail.descriptionLabel")}
 						</Elem>
 						<Elem name='description-data'>
