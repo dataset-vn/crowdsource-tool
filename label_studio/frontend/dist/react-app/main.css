@@ -3770,6 +3770,7 @@ __user_active::before {
 .ls-detail-card__description-data {
   min-height: 6rem;
   text-align: justify;
+  white-space: pre-line;
 }
 .ls-detail-card__current_user_role {
   padding: 20px 80px;
