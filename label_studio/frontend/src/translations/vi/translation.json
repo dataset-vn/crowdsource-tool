@@ -192,21 +192,27 @@
 	"MemberLSetting2": {
 		"email": "Email",
 		"name": "Tên",
-		"rights": "Quyền",
+		"roles": "Vị trí",
+		"online": "trực tuyến",
+		"offline": "ngoại tuyến",
+		"checked": "đã liên lạc",
+		"notChecked": "chưa liên lạc",
+		"contactStatus": "Trạng thái Liên lạc",
 		"activity": "Hoạt động",
 		"status": "Trạng thái"
 	},
 
 	"Member": {
-		"invite": "Các thành viên được mời sẽ có tài khoản cá nhân. Họ có thể đăng ký và tham gia vào tổ chức bằng cách sử dụng đường link này.",
-		"link": "Reset Link",
+		"invite": "Các thành viên được mời sẽ có tài khoản cá nhân. Họ có thể đăng ký và tham gia vào tổ chức bằng cách sử dụng đường dẫn này.",
+		"link": "Đặt lại đường dẫn",
 		"add": "Thêm thành viên",
 		"project": "Thành viên dự án",
-		"menu": "Cài đặt thành viên"
+		"menu": "Cài đặt thành viên",
+		"resetFilter": "Đặt lại bộ lọc"
 	},
 
 	"SelectedMember": {
-		"create": "Project đã tạo",
+		"create": "Dự án đã tạo",
 		"contribute": "Đóng góp đến",
 		"time": "Hoạt động lúc :",
 		"already": "Đã là thành viên dự án",

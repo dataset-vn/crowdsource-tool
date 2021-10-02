@@ -192,7 +192,12 @@
 	"MemberLSetting2": {
 		"email": "Email",
 		"name": "Name",
-		"rights": "Rights",
+		"roles": "Roles",
+		"online": "online",
+		"offline": "offline",
+		"checked": "checked",
+		"notChecked": "not checked",
+		"contactStatus": "Contact Status",
 		"activity": "Activities",
 		"status": "Status"
 	},
@@ -202,7 +207,8 @@
 		"link": "Reset Link",
 		"add": "Add Members",
 		"project": "Project Members",
-		"menu": "Member"
+		"menu": "Member",
+		"resetFilter": "Reset Filter"
 	},
 
 	"SelectedMember": {
