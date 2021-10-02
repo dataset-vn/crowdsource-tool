@@ -1,5 +1,6 @@
 import chr from "chroma-js";
 import React, { useContext, useMemo } from "react";
+import Linkify from "linkify-react";
 import { ProjectContext, useProject } from "../../providers/ProjectProvider";
 import { useCurrentUser } from "../../providers/CurrentUser";
 import { useAPI } from "../../providers/ApiProvider";
@@ -95,9 +96,11 @@ export const ProjectDetailPage = () => {
 							{t("projectDetail.descriptionLabel")}
 						</Elem>
 						<Elem name='description-data'>
-							{project.description
-								? project.description
-								: t("projectDetail.noDescription")}
+							<Linkify>
+								{project.description
+									? project.description
+									: t("projectDetail.noDescription")}
+							</Linkify>
 						</Elem>
 					</Elem>
 					<Elem name='current_user_role'>
