@@ -66,45 +66,6 @@ const ProjectCard = ({ project, history }) => {
 	const projectStatus = project.project_status;
 	const userRole = project.current_user_role;
 	const { user } = useCurrentUser();
-	const projectStatusStyle = useMemo(() => {
-		var style = {};
-		projectStatus == "open"
-			? (style = {
-					background: "#f4f4f4",
-					color: "#22cc00",
-					height: "30px",
-					fontWeight: "medium",
-					textAlign: "center",
-					paddingTop: "10px",
-			  })
-			: projectStatus == "open_running"
-			? (style = {
-					background: "#f4f4f4",
-					color: "#0003ff",
-					height: "30px",
-					fontWeight: "medium",
-					textAlign: "center",
-					paddingTop: "10px",
-			  })
-			: projectStatus == "closed_running"
-			? (style = {
-					background: "#f4f4f4",
-					color: "#777777",
-					height: "30px",
-					fontWeight: "medium",
-					textAlign: "center",
-					paddingTop: "10px",
-			  })
-			: (style = {
-					background: "#f4f4f4",
-					color: "#bb8811",
-					height: "30px",
-					fontWeight: "medium",
-					textAlign: "center",
-					paddingTop: "10px",
-			  });
-		return style;
-	});
 
 	const { t } = useTranslation();
 	return (
@@ -121,7 +82,17 @@ const ProjectCard = ({ project, history }) => {
 				name='project-card'
 				mod={{ colored: !!color }}
 				style={projectColors}>
-				<Elem name='project-status' style={projectStatusStyle}>
+				<Elem
+					name='project-status'
+					style={
+						projectStatus == "open"
+							? { color: "#22cc00" }
+							: projectStatus == "open_running"
+							? { color: "#0003ff" }
+							: projectStatus == "closed_running"
+							? { color: "#777777" }
+							: { color: "#bb8811" }
+					}>
 					{projectStatus == "open"
 						? t("projectCard.projectStatusOpen")
 						: projectStatus == "open_running"
@@ -159,19 +130,18 @@ const ProjectCard = ({ project, history }) => {
 						</Elem>
 					</Elem>
 					<Elem name='summary'>
-						{project.current_user_role == null ||
-						project.current_user_role == "" ||
-						project.current_user_role == "pending" ||
-						project.current_user_role == "trainee" ? (
+						{userRole == null ||
+						userRole == "" ||
+						userRole == "pending" ||
+						userRole == "trainee" ? (
 							<Elem name='annotation'>
 								<Elem name='total' style={{ textTransform: "capitalize" }}>
 									{project.project_type}
 								</Elem>
 								<Elem name='detail' style={{ textTransform: "capitalize" }}>
-									{project.current_user_role == "" ||
-									project.current_user_role == null
+									{userRole == "" || userRole == null
 										? t("projectCard.userStatusAvailable")
-										: project.current_user_role}
+										: userRole}
 								</Elem>
 							</Elem>
 						) : projectStatus != "completed" ? (

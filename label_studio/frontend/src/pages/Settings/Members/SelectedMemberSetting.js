@@ -132,7 +132,7 @@ export const SelectedMemberSetting = ({ user, onClose, projectID }) => {
 									))}
 								</select>
 								<Button onClick={updateRole}>
-									Thay đổi role{/*Thay đổi role*/}
+									{t("SelectedMember.changeRoleButton")}
 								</Button>
 							</Space>
 						) : null}
