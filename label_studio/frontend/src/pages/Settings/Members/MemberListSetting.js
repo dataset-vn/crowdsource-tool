@@ -228,6 +228,7 @@ export const MemberListSetting = ({
 					contributed_to_projects: [],
 					avatar: projectMembers[i].avatar,
 					contact_status: projectMembers[i].contact_status,
+          role: projectMembers[i].role,
 				},
 				role: projectMembers[i].role,
 			};
