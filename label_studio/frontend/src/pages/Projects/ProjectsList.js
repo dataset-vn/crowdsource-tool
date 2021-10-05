@@ -57,9 +57,9 @@ const ProjectCard = ({ project, history }) => {
 	const projectColors = useMemo(() => {
 		return color
 			? {
-				"--header-color": color,
-				"--background-color": chr(color).alpha(0.2).css(),
-			}
+					"--header-color": color,
+					"--background-color": chr(color).alpha(0.2).css(),
+			  }
 			: {};
 	}, [color]);
 
@@ -70,60 +70,40 @@ const ProjectCard = ({ project, history }) => {
 		var style = {};
 		projectStatus == "open"
 			? (style = {
-				background: "#f4f4f4",
-				color: "#22cc00",
-				height: "30px",
-				fontWeight: "medium",
-				textAlign: "center",
-				paddingTop: "10px",
-			})
+					background: "#f4f4f4",
+					color: "#22cc00",
+					height: "30px",
+					fontWeight: "medium",
+					textAlign: "center",
+					paddingTop: "10px",
+			  })
 			: projectStatus == "open_running"
-				? (style = {
+			? (style = {
 					background: "#f4f4f4",
 					color: "#0003ff",
 					height: "30px",
 					fontWeight: "medium",
 					textAlign: "center",
 					paddingTop: "10px",
-				})
-				: projectStatus == "closed_running"
-					? (style = {
-						background: "#f4f4f4",
-						color: "#777777",
-						height: "30px",
-						fontWeight: "medium",
-						textAlign: "center",
-						paddingTop: "10px",
-					})
-					: (style = {
-						background: "#f4f4f4",
-						color: "#bb8811",
-						height: "30px",
-						fontWeight: "medium",
-						textAlign: "center",
-						paddingTop: "10px",
-					});
+			  })
+			: projectStatus == "closed_running"
+			? (style = {
+					background: "#f4f4f4",
+					color: "#777777",
+					height: "30px",
+					fontWeight: "medium",
+					textAlign: "center",
+					paddingTop: "10px",
+			  })
+			: (style = {
+					background: "#f4f4f4",
+					color: "#bb8811",
+					height: "30px",
+					fontWeight: "medium",
+					textAlign: "center",
+					paddingTop: "10px",
+			  });
 		return style;
-	});
-
-	const projectStatusLabel = useMemo(() => {
-		var label = "";
-		projectStatus == "open"
-			? (label = "Open")
-			: projectStatus == "open_running"
-				? (label = "Open - Running")
-				: projectStatus == "closed_running"
-					? (label = "Closed - Running")
-					: (label = "Completed");
-		return label;
-	});
-
-	const userStatusLabel = useMemo(() => {
-		var label = "";
-		project.current_user_role == "" || project.current_user_role == null
-			? (label = "Available")
-			: (label = project.current_user_role);
-		return label;
 	});
 
 	const { t } = useTranslation();
@@ -132,8 +112,8 @@ const ProjectCard = ({ project, history }) => {
 			tag={NavLink}
 			name='link'
 			to={
-				userRole == "" || userRole == "pending" || userRole == "trainee" ?
-					`/projects/${project.id}/details`
+				userRole == "" || userRole == "pending" || userRole == "trainee"
+					? `/projects/${project.id}/details`
 					: `/projects/${project.id}/data`
 			}
 			data-external>
@@ -142,7 +122,13 @@ const ProjectCard = ({ project, history }) => {
 				mod={{ colored: !!color }}
 				style={projectColors}>
 				<Elem name='project-status' style={projectStatusStyle}>
-					{projectStatusLabel}
+					{projectStatus == "open"
+						? t("projectCard.projectStatusOpen")
+						: projectStatus == "open_running"
+						? t("projectCard.projectStatusOpenRunning")
+						: projectStatus == "closed_running"
+						? t("projectCard.projectStatusClosedRunning")
+						: t("projectCard.projectStatusCompleted")}
 				</Elem>
 				<Elem name='header'>
 					<Elem name='title'>
@@ -154,35 +140,38 @@ const ProjectCard = ({ project, history }) => {
 								e.stopPropagation();
 								e.preventDefault();
 							}}>
-							{
-								user.email != "" && userRole != "" && userRole != "pending" ?
-									(
-										<Dropdown.Trigger
-											content={
-												<Menu>
-													<Menu.Item href={`/projects/${project.id}/settings`}>
-														{t("projectCard.setting")}
-													</Menu.Item>
-													<Menu.Item href={`/projects/${project.id}/data?labeling=1`}>
-														{t("projectCard.label")}
-													</Menu.Item>
-												</Menu>
-											}>
-											<Button size='small' type='text' icon={<LsEllipsis />} />
-										</Dropdown.Trigger>
-									) : null
-							}
-
+							{user.email != "" && userRole != "" && userRole != "pending" ? (
+								<Dropdown.Trigger
+									content={
+										<Menu>
+											<Menu.Item href={`/projects/${project.id}/settings`}>
+												{t("projectCard.setting")}
+											</Menu.Item>
+											<Menu.Item
+												href={`/projects/${project.id}/data?labeling=1`}>
+												{t("projectCard.label")}
+											</Menu.Item>
+										</Menu>
+									}>
+									<Button size='small' type='text' icon={<LsEllipsis />} />
+								</Dropdown.Trigger>
+							) : null}
 						</Elem>
 					</Elem>
 					<Elem name='summary'>
-						{project.current_user_role == null || project.current_user_role == "" || project.current_user_role == "pending" || project.current_user_role == "trainee" ? (
+						{project.current_user_role == null ||
+						project.current_user_role == "" ||
+						project.current_user_role == "pending" ||
+						project.current_user_role == "trainee" ? (
 							<Elem name='annotation'>
 								<Elem name='total' style={{ textTransform: "capitalize" }}>
 									{project.project_type}
 								</Elem>
 								<Elem name='detail' style={{ textTransform: "capitalize" }}>
-									{userStatusLabel}
+									{project.current_user_role == "" ||
+									project.current_user_role == null
+										? t("projectCard.userStatusAvailable")
+										: project.current_user_role}
 								</Elem>
 							</Elem>
 						) : projectStatus != "completed" ? (

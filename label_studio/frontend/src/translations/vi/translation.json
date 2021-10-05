@@ -1,5 +1,12 @@
 {
 	"projectCard": {
+		"projectStatusOpen": "Đang tuyển",
+		"projectStatusOpenRunning": "Đang tuyển - Đang hoạt động",
+		"projectStatusClosedRunning": "Ngừng tuyển - Đang hoạt động",
+		"projectStatusCompleted": "Đã hoàn thành",
+		"userStatusAvailable": "Chưa tham gia",
+		"projectTypeProfitable": "Có lợi nhuận",
+		"projectTypeNonprofit": "Không lợi nhuận",
 		"setting": "Cài Đặt",
 		"label": "Dán nhãn"
 	},
@@ -218,10 +225,8 @@
 		"already": "Đã là thành viên dự án",
 		"addproject": "Thêm vào dự án",
 		"delete": "Xóa khỏi dự án",
-		"owner": "Người sở hữu",
-		"manager": "Người quản lý",
-		"reviewer": "Người đánh giá",
-		"annotator": "Người dán nhãn"
+		"online": "trực tuyến",
+		"offline": "ngoại tuyến"
 	},
 
 	"StorageCard": {

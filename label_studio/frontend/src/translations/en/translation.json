@@ -1,5 +1,12 @@
 {
 	"projectCard": {
+		"projectStatusOpen": "Open",
+		"projectStatusOpenRunning": "Open - Running",
+		"projectStatusClosedRunning": "Closed - Running",
+		"projectStatusCompleted": "Completed",
+		"userStatusAvailable": "Available",
+		"projectTypeProfitable": "Profitable",
+		"projectTypeNonprofit": "Nonprofit",
 		"setting": "Settings",
 		"label": "Label"
 	},
@@ -218,10 +225,8 @@
 		"already": "Already a project member",
 		"addproject": "Add to project",
 		"delete": "Remove from project",
-		"owner": "Owner",
-		"manager": "Manager",
-		"reviewer": "Reviewer",
-		"annotator": "Annotator"
+		"online": "online",
+		"offline": "offline"
 	},
 
 	"StorageCard": {

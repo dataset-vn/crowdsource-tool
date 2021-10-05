@@ -228,7 +228,6 @@ export const MemberListSetting = ({
 					contributed_to_projects: [],
 					avatar: projectMembers[i].avatar,
 					contact_status: projectMembers[i].contact_status,
-          role: projectMembers[i].role,
 				},
 				role: projectMembers[i].role,
 			};
@@ -373,7 +372,9 @@ export const MemberListSetting = ({
 													e.stopPropagation();
 													setContactStatus(i.user.contact_status, i.user.id);
 												}}>
-												{i.user.contact_status}
+												{i.user.contact_status == "checked"
+													? t("MemberLSetting2.checked")
+													: t("MemberLSetting2.notChecked")}
 											</Button>
 										</Elem>
 									</Elem>
