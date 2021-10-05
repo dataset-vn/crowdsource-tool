@@ -446,29 +446,16 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
             raise DatasetJscDatabaseException('Database error during project creation. Try again.')
 
     def perform_update(self, serializer):
-        #current_user_id=self.request.user.id
         project_id = self.kwargs['pk']
         user_id = json.loads(self.request.body)['user_pk']
         contact_status = json.loads(self.request.body)['contact_status']
-        roles = ['owner', 'manager', 'reviewer', 'annotator']
-
-        #current_user_role = self.get_project_member_role(project_id, user_id)
-
-        # Error handling
-        #if current_user_role is None:
-        #    raise DatasetJscDatabaseException('User is not a member of project!')
-
-        #if current_user_role != 'owner' and user_role == 'owner':
-        #    raise DatasetJscDatabaseException('Operation can only be performed by a project owner')
-
-        #if not user_role in roles:
-        #    user_role = 'annotator'
+        role = json.loads(self.request.body)['role']
 
         project = Project.objects.get(pk=project_id)
         user = User.objects.get(pk=user_id)
         self.check_object_permissions(self.request, project)
         try:
-            serializer.save(user=user, project=project, contact_status=contact_status)
+            serializer.save(user=user, project=project, contact_status=contact_status, role=role)
         except IntegrityError as e:
             raise DatasetJscDatabaseException('Database error during project creation. Try again.')
 
