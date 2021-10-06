@@ -153,9 +153,12 @@
   "dependencies": {
     "i18next": "^20.4.0",
     "i18next-browser-languagedetector": "^6.1.2",
+    "linkify": "^0.2.1",
     "linkify-react": "^3.0.1",
+    "linkifyjs": "^3.0.1",
     "react-calendar": "^3.4.0",
     "react-i18next": "^11.11.4",
+    "react-linkify": "^1.0.0-alpha",
     "react-loadingg": "^1.7.2",
     "react-paginate": "^7.1.3"
   }
