@@ -222,6 +222,7 @@
 		"create": "Created Project",
 		"contribute": "Contributed to",
 		"time": "Active at :",
+		"changeRoleButton": "Change Role",
 		"already": "Already a project member",
 		"addproject": "Add to project",
 		"delete": "Remove from project",
