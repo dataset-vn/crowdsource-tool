@@ -7,6 +7,7 @@ import { Block, Elem } from "../../../utils/bem";
 import "./SelectedMemberSetting.styl";
 import "./MemberSetting.styl";
 import { Space } from "../../../components/Space/Space";
+import { useProject } from "../../../providers/ProjectProvider"
 import { ROLE_MEMBER } from "../../../utils/constant";
 import { useEffect, useState } from "react";
 import { isCurrentlyActive } from "../../../utils/helpers";
@@ -14,6 +15,7 @@ import { useTranslation } from "react-i18next";
 
 export const SelectedMemberSetting = ({ user, onClose, projectID }) => {
 	const { t } = useTranslation();
+	const { project } = useProject();
 	const fullName = [user.first_name, user.last_name]
 		.filter((n) => !!n)
 		.join(" ")
@@ -22,8 +24,12 @@ export const SelectedMemberSetting = ({ user, onClose, projectID }) => {
 	const api = useAPI();
 	const [userList, setUserList] = useState([]);
 	const [roleChange, setRoleChange] = useState(
-		user?.role ? user?.role : ROLE_MEMBER.role
+		user?.role ? user?.role : "annotator"
 	);
+
+	useEffect(() => {
+		setRoleChange(user?.role ? user?.role : "annotator")
+	  }, [user]);
 
 	const createProjectMember = async () => {
 		const response = await api.callApi("createProjectMember", {
@@ -119,7 +125,8 @@ export const SelectedMemberSetting = ({ user, onClose, projectID }) => {
 			<Elem name='controls'>
 				<Space spread>
 					<Space style={{ marginTop: 12 }}>
-						{checkUserMember(user) ? (
+						{project.current_user_role == "owner" && checkUserMember(user) ? 
+						user.role != "owner" ? (
 							<Space>
 								<select
 									id='roleChange'
@@ -135,20 +142,46 @@ export const SelectedMemberSetting = ({ user, onClose, projectID }) => {
 									{t("SelectedMember.changeRoleButton")}
 								</Button>
 							</Space>
-						) : null}
+						) : null
+						:
+						project.current_user_role == "manager" && checkUserMember(user) ? 
+							user.role != "owner" ?
+							(
+								<Space>
+									<select
+										id='roleChange'
+										className='ls-button ls-button_look_ '
+										value={roleChange}
+										onChange={(e) => setRoleChange(e.target.value)}
+										name='role_member_change'>
+										{Object.keys(ROLE_MEMBER).map((i) => (
+											i != "manager" ? (
+											<option value={i}>{i}</option>
+											) : null
+										))}
+									</select>
+									<Button onClick={updateRole}>
+										{t("SelectedMember.changeRoleButton")}
+									</Button>
+								</Space>
+							): null
+							: null
+					}
 					</Space>
 					<Space>
 						{
 							// If user is member of project, then display button Xóa-khỏi-dự-án, else Thêm-vào-dự-án.
-							checkUserMember(user) ? (
-								<Button icon={<DtsTrash />} onClick={removeProjectMember}>
-									{
-										t(
-											"SelectedMember.delete"
-										) /* Nút Xóa-khỏi-dự-án - Remove-form-project button*/
-									}
-								</Button>
-							) : (
+							checkUserMember(user) ? 
+								user.role != "owner" ?(
+									<Button icon={<DtsTrash />} onClick={removeProjectMember}>
+										{
+											t(
+												"SelectedMember.delete"
+											) /* Nút Xóa-khỏi-dự-án - Remove-form-project button*/
+										}
+									</Button>
+								) : null 
+							: (
 								<Space>
 									<select
 										id='cars'

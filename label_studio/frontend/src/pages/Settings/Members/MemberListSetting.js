@@ -228,6 +228,7 @@ export const MemberListSetting = ({
 					contributed_to_projects: [],
 					avatar: projectMembers[i].avatar,
 					contact_status: projectMembers[i].contact_status,
+					role: projectMembers[i].role,
 				},
 				role: projectMembers[i].role,
 			};
@@ -262,7 +263,7 @@ export const MemberListSetting = ({
 	}, [usersList, defaultSelected]);
 
 	function compareStrings(a, b) {
-		let roles = ["owner", "manager", "reviewer", "annotator"];
+		let roles = ["owner", "manager", "reviewer", "annotator","pending","trainee"];
 		a = roles.indexOf(a);
 		b = roles.indexOf(b);
 		return a < b ? -1 : a > b ? 1 : 0;
