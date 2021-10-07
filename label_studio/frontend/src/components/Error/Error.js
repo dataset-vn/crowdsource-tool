@@ -40,34 +40,6 @@ export const ErrorWrapper = ({title, message, errorId, stacktrace, validation, v
         <Elem name="title">{title}</Elem>
       )}
 
-      {message && <Elem name="detail"dangerouslySetInnerHTML={{
-        __html: String(message),
-      }}/>}
-
-      {preparedStackTrace && (
-        <Elem name="stracktrace" dangerouslySetInnerHTML={{
-          __html: preparedStackTrace.replace(/(\n)/g, '<br>'),
-        }}/>
-      )}
-
-
-      {validation?.length && (
-        <Elem tag="ul" name="validation">
-          {validation.map(([field, errors]) => (
-            <Fragment key={field}>
-              {[].concat(errors).map((err, i) => (
-                <Elem
-                  tag="li"
-                  key={i}
-                  name="message"
-                  dangerouslySetInnerHTML={{__html: err}}
-                />
-              ))}
-            </Fragment>
-          ))}
-        </Elem>
-      )}
-
       {(version || errorId) && (
         <Elem name="version">
           <Space>
@@ -80,9 +52,9 @@ export const ErrorWrapper = ({title, message, errorId, stacktrace, validation, v
       <Elem name="actions">
         <Space spread>
           <Elem tag={Button} name="action-slack" target="_blank" icon={<DtsFacebook/>} href={FACEBOOK_PAGE_URL}>
-          /*{
-            t('ErrorWrapper.content') // Ask on Facebook
-          }*/
+
+            Ask on Facebook
+
           </Elem>
 
           <Space size="small">
