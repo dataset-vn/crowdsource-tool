@@ -194,7 +194,10 @@
 		"search": "Tìm kiếm theo tên, email",
 		"email": "Email",
 		"name": "Tên",
-		"activity": "Hoạt động"
+		"status": "Trạng thái",
+		"activity": "Hoạt động",
+		"online": "trực tuyến",
+		"offline": "ngoại tuyến"
 	},
 	"MemberLSetting2": {
 		"email": "Email",

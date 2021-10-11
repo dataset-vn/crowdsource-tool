@@ -194,7 +194,10 @@
 		"search": "Search by name, email",
 		"email": "Email",
 		"name": "Name",
-		"activity": "Activities"
+		"status": "Status",
+		"activity": "Activities",
+		"online": "online",
+		"offline": "offline"
 	},
 	"MemberLSetting2": {
 		"email": "Email",
