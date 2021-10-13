@@ -144,7 +144,7 @@ export const MemberListSetting = ({
 		);
 	};
 
-	const setContactStatus = async (contact_status, userID) => {
+	const setContactStatus = async (contact_status, userID, userRole) => {
 		if (contact_status == "not check") contact_status = "checked";
 		else contact_status = "not check";
 		const response = await api.callApi("updateProjectMember", {
@@ -153,6 +153,7 @@ export const MemberListSetting = ({
 			},
 			body: {
 				user_pk: userID,
+				role: userRole,
 				contact_status: contact_status,
 			},
 		});
@@ -263,7 +264,14 @@ export const MemberListSetting = ({
 	}, [usersList, defaultSelected]);
 
 	function compareStrings(a, b) {
-		let roles = ["owner", "manager", "reviewer", "annotator","pending","trainee"];
+		let roles = [
+			"owner",
+			"manager",
+			"reviewer",
+			"annotator",
+			"pending",
+			"trainee",
+		];
 		a = roles.indexOf(a);
 		b = roles.indexOf(b);
 		return a < b ? -1 : a > b ? 1 : 0;
@@ -371,7 +379,11 @@ export const MemberListSetting = ({
 											<Button
 												onClick={(e) => {
 													e.stopPropagation();
-													setContactStatus(i.user.contact_status, i.user.id);
+													setContactStatus(
+														i.user.contact_status,
+														i.user.id,
+														i.user.role
+													);
 												}}>
 												{i.user.contact_status == "checked"
 													? t("MemberLSetting2.checked")
