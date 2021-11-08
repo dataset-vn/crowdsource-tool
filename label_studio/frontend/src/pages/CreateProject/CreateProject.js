@@ -83,7 +83,7 @@ export const CreateProject = ({ onClose }) => {
   const [description, setDescription] = React.useState("");
   const [config, setConfig] = React.useState("<View></View>");
   const [project_rate, setProjectRate] = React.useState("");
-  const [project_due, setProjectDue] = React.useState(new Date());
+  const [project_due, setProjectDue] = React.useState(new Date().toLocaleDateString('fr-CA'));
   const [project_status, setProjectStatus] = React.useState("open");
   const [project_size, setProjectSize] = React.useState(1);
   const [project_type, setProjectType] = React.useState("nonprofit_project");
