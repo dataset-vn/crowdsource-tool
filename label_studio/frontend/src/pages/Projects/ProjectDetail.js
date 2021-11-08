@@ -179,24 +179,24 @@ ProjectDetailPage.context = ({ openModal }) => {
 
 	return project && project.id ? (
 		<Space size='small'>
-// 			{project.expert_instruction && mode !== "explorer" && (
-// 				<Button
-// 					size='compact'
-// 					onClick={() => {
-// 						modal({
-// 							title: t("labelInstruc.title"),
-// 							body: () => (
-// 								<div
-// 									dangerouslySetInnerHTML={{
-// 										__html: project.expert_instruction,
-// 									}}
-// 								/>
-// 							),
-// 						});
-// 					}}>
-// 					{t("labelInstruc.action")}
-// 				</Button>
-// 			)}
+			{/* {project.expert_instruction && mode !== "explorer" && (
+				<Button
+					size='compact'
+					onClick={() => {
+						modal({
+							title: t("labelInstruc.title"),
+							body: () => (
+								<div
+									dangerouslySetInnerHTML={{
+										__html: project.expert_instruction,
+									}}
+								/>
+							),
+						});
+					}}>
+					{t("labelInstruc.action")}
+				</Button>
+			)} */}
 			{userRole == null ? (
 				<Button
 					// onClick={userPhone !== "" ? createProjectMember : openModal}

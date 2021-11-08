@@ -2510,6 +2510,9 @@ div[class^=App_menu]>div {
 .ls-create-project form.ls-project-name > *:not(:first-child) {
   margin-top: 32px;
 }
+form {
+  overflow-y: auto;
+}
 
 .subProperty{
     display: flex;
