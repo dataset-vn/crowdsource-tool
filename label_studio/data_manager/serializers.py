@@ -190,7 +190,9 @@ class DataManagerTaskSerializer(TaskSerializer):
             "drafts",
             "file_upload",
             "annotators",
-            "project"
+            "project",
+            "annotator_assigned",
+            "reviewer_assigned"
         ]
 
     @staticmethod

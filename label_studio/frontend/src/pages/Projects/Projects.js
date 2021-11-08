@@ -15,6 +15,7 @@ import "./Projects.styl";
 import { ProjectDetailPage } from "./ProjectDetail";
 import { EmptyProjectsList, ProjectsList } from "./ProjectsList";
 import { useTranslation } from "react-i18next";
+import { useCurrentUser } from "../../providers/CurrentUser";
 
 export const ProjectsPage = () => {
 	const api = React.useContext(ApiContext);
@@ -72,8 +73,18 @@ ProjectsPage.routes = ({ store }) => [
 		path: "/:id(\\d+)",
 		exact: true,
 		component: () => {
+			const userRole = store.project?.current_user_role;
+			console.log(userRole);
 			const params = useRouterParams();
-			return <Redirect to={`/projects/${params.id}/details`} />;
+			if (
+				userRole == null ||
+				userRole == "" ||
+				userRole == "pending" ||
+				userRole == "trainee"
+			) {
+				return <Redirect to={`/projects/${params.id}/details`} />;
+			}
+			return <Redirect to={`/projects/${params.id}/data`} />;
 		},
 		pages: {
 			DataManagerPage,
