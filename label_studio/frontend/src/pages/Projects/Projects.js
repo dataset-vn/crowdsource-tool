@@ -72,8 +72,18 @@ ProjectsPage.routes = ({ store }) => [
 		path: "/:id(\\d+)",
 		exact: true,
 		component: () => {
+			const userRole = store.project?.current_user_role;
+			console.log(userRole);
 			const params = useRouterParams();
-			return <Redirect to={`/projects/${params.id}/details`} />;
+			if (
+				userRole == null ||
+				userRole == "" ||
+				userRole == "pending" ||
+				userRole == "trainee"
+			) {
+				return <Redirect to={`/projects/${params.id}/details`} />;
+			}
+			return <Redirect to={`/projects/${params.id}/data`} />;
 		},
 		pages: {
 			DataManagerPage,
