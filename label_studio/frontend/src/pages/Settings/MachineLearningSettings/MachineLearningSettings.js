@@ -95,7 +95,7 @@ export const MachineLearningSettings = () => {
         To import predictions without connecting a model,*/}
         {" "}
         <a href="https://labelstud.io/guide/predictions.html" target="_blank">
-        {t('MLSettings.see') /*see the documentation*/}
+        {/*t('MLSettings.see') /*see the documentation*/}
         </a>.
       </Description>
       <Button onClick={() => showMLFormModal()}>
