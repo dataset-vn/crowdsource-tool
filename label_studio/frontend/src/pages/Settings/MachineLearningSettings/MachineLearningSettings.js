@@ -29,7 +29,6 @@ export const MachineLearningSettings = () => {
   }, [api, project, setBackends]);
 
   const showMLFormModal = useCallback((backend) => {
-    const { t } = useTranslation();
     const action = backend ? "updateMLBackend" : "addMLBackend";
     const modalProps = {
       title: `${backend ? t('MLSettings.edit') : t('MLSettings.add')} model`,
