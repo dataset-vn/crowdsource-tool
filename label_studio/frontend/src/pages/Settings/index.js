@@ -69,7 +69,10 @@ export const MenuLayout = ({children, ...routeProps}) => {
   const managerVisibleComponents = [
     GeneralSettings,
     InstructionsSettings,
-    Members
+    LabelingSettings,
+    Members,
+    MachineLearningSettings,
+    StorageSettings
   ]
 
   const annotatorVisibleComponents = [InstructionsSettings]
