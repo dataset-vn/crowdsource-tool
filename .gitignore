@@ -34,6 +34,7 @@ label_studio/core/static_build
 label_studio/core/version_.py
 label_studio/core/core
 label_studio/tests/test_data/tasks_and_annotations.json
+label_studio/core/settings/base.py
 
 archive
 

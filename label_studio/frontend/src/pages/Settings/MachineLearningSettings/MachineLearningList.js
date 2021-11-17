@@ -49,7 +49,6 @@ export const MachineLearningList = ({ backends, fetchBackends, onEdit }) => {
 
 const BackendCard = ({backend, onStartTrain, onEdit, onDelete}) => {
   const confirmDelete = useCallback((backend) => {
-    const { t } = useTranslation();
     confirm({
       title: t('MLList.delete') /*"Delete ML Backend"*/,
       body:  t('MLList.message') /*"This action cannot be undone. Are you sure?"*/,
@@ -58,6 +57,7 @@ const BackendCard = ({backend, onStartTrain, onEdit, onDelete}) => {
     });
   }, [backend, onDelete]);
 
+  const { t } = useTranslation();
   return (
     <Card style={{marginTop: 0}} header={backend.title} extra={(
       <div className={cn('ml').elem('info')}>

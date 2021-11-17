@@ -1,0 +1,21 @@
+{
+  "title": "DataSet JSC Tool",
+  "description": "Description",
+  "host": "",
+  "internal_host": "0.0.0.0",
+  "port": 8080,
+  "debug": false,
+  "label_config": null,
+  "input_path": null,
+  "output_dir": "completions",
+  "instruction": "Contact us at <a href='https://facebook.com/dataset.vn'>Facebook</a>",
+  "allow_delete_completions": true,
+  "templates_dir": "examples",
+  "editor": {
+    "debug": false
+  },
+  "sampling": "sequential",
+  "ml_backends": [],
+  "task_page_auto_update_timer": 10000,
+  "show_project_links_in_multisession": true
+}
