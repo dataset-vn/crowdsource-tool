@@ -15,7 +15,7 @@ from django.conf import settings
 from django.shortcuts import get_object_or_404
 from drf_yasg.utils import swagger_auto_schema
 from django.utils.decorators import method_decorator
-from django.db.models import Q, When, Count, Case, OuterRef, Max, Exists, Value, BooleanField, Avg
+from django.db.models import F, Q, When, Count, Case, OuterRef, Max, Exists, Value, BooleanField, Avg
 from rest_framework.views import APIView
 from rest_framework import generics, status, filters
 from rest_framework.exceptions import NotFound, ValidationError as RestValidationError
@@ -122,10 +122,11 @@ class ProjectListAPI(generics.ListCreateAPIView):
     parser_classes = (JSONParser, FormParser, MultiPartParser)
     serializer_class = ProjectSerializer
     filter_backends = [filters.OrderingFilter]
-    permission_required = ViewClassPermission(
-        GET=all_permissions.projects_view,
-        POST=all_permissions.projects_create,
-    )
+    # permission_required = ViewClassPermission(
+    #     GET=all_permissions.projects_view,
+    #     POST=all_permissions.projects_create,
+    # )
+    permission_classes = (AllowAny, )
     ordering = ['-created_at']
 
     def get_queryset(self):
@@ -133,11 +134,23 @@ class ProjectListAPI(generics.ListCreateAPIView):
         #1. 
         #2. Get all ID of projects inside this active organization of which current user is member (using ProjectMember)
         #3. return all projects that its id is in IDs list from step 2
-        user_id = self.request.user.id
-        project_ids = ProjectMember.objects.values_list('project', flat=True).filter(user=user_id)
-        active_org_id = self.request.user.active_organization
+        user = self.request.user        
+        
+        if user.is_authenticated:
+            current_user_id = self.request.user.id
+            current_user_projects = Project.objects.with_counts().all().filter(Q(members__user_id=current_user_id)).annotate(current_user_role=Case(
+                When(members__user_id=current_user_id, then=F('members__role')),
+                default=Value('')
+            ))
 
-        return Project.objects.with_counts().filter(id__in=project_ids, organization_id=active_org_id)
+            public_projects = Project.objects.with_counts().filter(Q(project_status='open') | Q(project_status='open_running')).exclude(Q(members__user_id=current_user_id))
+
+            projects = current_user_projects | public_projects
+
+            return projects
+
+        else:
+            return Project.objects.with_counts().filter(Q(project_status='open') | Q(project_status='open_running'))
 
     def get_serializer_context(self):
         context = super(ProjectListAPI, self).get_serializer_context()
@@ -197,7 +210,14 @@ class ProjectAPI(APIViewVirtualRedirectMixin,
     redirect_kwarg = 'pk'
 
     def get_queryset(self):
-        return Project.objects.with_counts().filter(organization=self.request.user.active_organization)
+        current_user_id = self.request.user.id
+        project_id = self.kwargs['pk']
+        if not ProjectMember.objects.filter(user=current_user_id, project=project_id).exists():
+          return Project.objects.with_counts().filter(Q(id=project_id))
+        return Project.objects.with_counts().filter(Q(members__user_id=current_user_id)).annotate(current_user_role=Case(
+                When(Q(members__user_id=current_user_id) & Q(members__project_id=project_id), then=F('members__role')),
+                default=Value('')
+            ))
 
     def get(self, request, *args, **kwargs):
         return super(ProjectAPI, self).get(request, *args, **kwargs)
@@ -349,8 +369,8 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         if not User.objects.filter(pk=user_id).exists():
             raise DatasetJscDatabaseException('There is no such member')
         # TODO: use django permission instead of directly checking if role is manager as below
-        if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner']).exists():
-            raise DatasetJscDatabaseException("Operation can only be performed by a project manager or project owner")
+        #if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner']).exists():
+        #    raise DatasetJscDatabaseException("Operation can only be performed by a project manager or project owner")
         if not ProjectMember.objects.filter(user=user_id, project=project_id).exists():
             raise DatasetJscDatabaseException('There is no such member in the project')
 
@@ -398,13 +418,11 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         current_user_role = self.get_project_member_role(project_id, current_user_id)
 
         # Error handling
-        if current_user_role is None:
-            raise DatasetJscDatabaseException('User is not a member of project!')
 
         if current_user_role != 'owner' and user_role == 'owner':
             raise DatasetJscDatabaseException('Operation can only be performed by a project owner')
 
-        roles = ['owner', 'manager', 'reviewer', 'annotator']
+        roles = ['owner', 'manager', 'reviewer', 'annotator','trainee','pending']
         if user_role not in roles:
             user_role = 'annotator' # In case body content changed unexpectedly
 
@@ -413,8 +431,8 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         if not User.objects.filter(pk=user_id).exists():
             raise DatasetJscDatabaseException('There is no such member')
         # TODO: use django permission instead of directly checking if role is manager as below
-        if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner']).exists():
-            raise DatasetJscDatabaseException("Operation can only be performed by a project manager or project owner")
+        #if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner',None]).exists():
+        #   raise DatasetJscDatabaseException("Operation can only be performed by a project manager or project owner")
         if ProjectMember.objects.filter(user=user_id, project=project_id).exists():
             raise DatasetJscDatabaseException('This user is already in the project')
         
@@ -428,29 +446,16 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
             raise DatasetJscDatabaseException('Database error during project creation. Try again.')
 
     def perform_update(self, serializer):
-        current_user_id=self.request.user.id
         project_id = self.kwargs['pk']
         user_id = json.loads(self.request.body)['user_pk']
-        user_role = json.loads(self.request.body)['role']
-        roles = ['owner', 'manager', 'reviewer', 'annotator']
-
-        current_user_role = self.get_project_member_role(project_id, user_id)
-
-        # Error handling
-        if current_user_role is None:
-            raise DatasetJscDatabaseException('User is not a member of project!')
-
-        if current_user_role != 'owner' and user_role == 'owner':
-            raise DatasetJscDatabaseException('Operation can only be performed by a project owner')
-
-        if not user_role in roles:
-            user_role = 'annotator'
+        contact_status = json.loads(self.request.body)['contact_status']
+        role = json.loads(self.request.body)['role']
 
         project = Project.objects.get(pk=project_id)
         user = User.objects.get(pk=user_id)
         self.check_object_permissions(self.request, project)
         try:
-            serializer.save(user=user, project=project, role=user_role)
+            serializer.save(user=user, project=project, contact_status=contact_status, role=role)
         except IntegrityError as e:
             raise DatasetJscDatabaseException('Database error during project creation. Try again.')
 
@@ -462,11 +467,11 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         project_id = self.kwargs['pk']
         member_id = body['user_pk']
         member_role = self.get_project_member_role(project_id, member_id)
-        operator_id = self.request.user.id
-        operator_role = self.get_project_member_role(project_id, operator_id)
+        #operator_id = self.request.user.id
+        #operator_role = self.get_project_member_role(project_id, operator_id)
         
-        if operator_role not in ["manager", "owner"]:
-            return False, "Operation can only be performed by a project manager or project owner"
+        #if operator_role not in ["manager", "owner"]:
+        #    return False, "Operation can only be performed by a project manager or project owner"
 
         if member_role == "owner":
             return False, "Could not remove owner from the project"
@@ -488,8 +493,8 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         return super(ProjectMemberAPI, self).post(request, *args, **kwargs)
 
     @swagger_auto_schema(tags=['ProjectMember'])
-    def update(self, request, *args, **kwargs):
-        return super(ProjectMemberAPI, self).update(request, *args, **kwargs)
+    def patch(self, request, *args, **kwargs):
+        return super(ProjectMemberAPI, self).patch(request, *args, **kwargs)
 
     @swagger_auto_schema(tags=['ProjectMember'])
     def delete(self, request, *args, **kwargs):

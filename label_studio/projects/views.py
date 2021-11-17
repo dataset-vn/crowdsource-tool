@@ -20,7 +20,7 @@ from organizations.models import Organization
 logger = logging.getLogger(__name__)
 
 
-@login_required
+# @login_required
 def project_list(request):
     return render(request, 'projects/list.html')
 
@@ -28,6 +28,10 @@ def project_list(request):
 @login_required
 def project_settings(request, pk, sub_path):
     return render(request, 'projects/settings.html')
+
+
+def project_details(request, pk):
+    return render(request, 'projects/details.html')
 
 
 def playground_replacements(request, task_data):

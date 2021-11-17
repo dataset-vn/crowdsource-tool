@@ -29,7 +29,6 @@ export const MachineLearningSettings = () => {
   }, [api, project, setBackends]);
 
   const showMLFormModal = useCallback((backend) => {
-    const { t } = useTranslation();
     const action = backend ? "updateMLBackend" : "addMLBackend";
     const modalProps = {
       title: `${backend ? t('MLSettings.edit') : t('MLSettings.add')} model`,
@@ -96,7 +95,7 @@ export const MachineLearningSettings = () => {
         To import predictions without connecting a model,*/}
         {" "}
         <a href="https://labelstud.io/guide/predictions.html" target="_blank">
-        {t('MLSettings.see') /*see the documentation*/}
+        {/*t('MLSettings.see') /*see the documentation*/}
         </a>.
       </Description>
       <Button onClick={() => showMLFormModal()}>

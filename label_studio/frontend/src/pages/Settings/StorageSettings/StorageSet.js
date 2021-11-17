@@ -64,7 +64,7 @@ export const StorageSet = ({title, target, rootClass, buttonLabel}) => {
         <>
           { t("StorageSet.save") /*Save completed annotations to Amazon S3, Google Cloud, Microsoft Azure, or Redis.*/ }
           <br/>
-          <a href="https://labelstud.io/guide/storage.html">{ t("StorageSet.see") /*See more in the documentation*/ }</a>.
+          {/* <a href="https://labelstud.io/guide/storage.html">{ t("StorageSet.see") /*See more in the documentation }</a>*/}
         </>
       ),
     });

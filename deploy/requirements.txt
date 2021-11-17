@@ -26,6 +26,7 @@ drf-generators==0.3.0
 label-studio-converter==0.0.29
 htmlmin==0.1.12
 jsonschema==3.2.0
+linkify-react==3.0.1
 lockfile>=0.12.0
 lxml>=4.2.5
 numpy>=1.19.1

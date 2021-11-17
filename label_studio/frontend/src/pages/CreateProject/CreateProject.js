@@ -7,20 +7,21 @@ import { useAPI } from '../../providers/ApiProvider';
 import { cn } from '../../utils/bem';
 import { ConfigPage } from './Config/Config';
 import "./CreateProject.styl";
+import "./CreateProject.css";
 import { ImportPage } from './Import/Import';
 import { useImportPage } from './Import/useImportPage';
 import { useDraftProject } from './utils/useDraftProject';
 import { useTranslation } from "react-i18next";
 
 
-const ProjectName = ({ name, setName, onSaveName, onSubmit, error, description, setDescription, show = true }) => {
+const ProjectName = ({ name, setName, onSaveName, onSubmit, error, description, setDescription, project_due, setProjectDue, project_rate, setProjectRate, project_type, setProjectType, project_status, setProjectStatus, project_size, setProjectSize, show = true }) => {
   if (!show) return null;
   const { t } = useTranslation(); 
   return(
   <form className={cn("project-name")} onSubmit={e => { e.preventDefault(); onSubmit(); }}>
     <div className="field field--wide">
-      <label htmlFor="project_name">{ t('projectCreate.name') /*Project Name*/ }</label>
-      <input name="name" id="project_name" value={name} onChange={e => setName(e.target.value)} onBlur={onSaveName} />
+      <label htmlFor="project_name">{ t('projectCreate.name') /*Project Name*/ } (*)</label>
+      <input required name="name" id="project_name" value={name} onChange={e => setName(e.target.value)} onBlur={onSaveName} />
       {error && <span className="error">{error}</span>}
     </div>
     <div className="field field--wide">
@@ -33,6 +34,36 @@ const ProjectName = ({ name, setName, onSaveName, onSubmit, error, description, 
         value={description}
         onChange={e => setDescription(e.target.value)}
       />
+    </div>
+    <div className="subProperty">
+      <label htmlFor="project_type">{ t('projectCreate.type') } (*)</label>
+      <select className="typeDropdown" required value={project_type} onChange={e => setProjectType(e.target.value)}>
+        <option value="nonprofit_project">{ t('projectCreate.community') }</option>
+        <option value="profitable">{ t('projectCreate.paid') }</option>
+      </select>
+    </div>
+    <div className="subProperty">
+      <label htmlFor="project_status">{ t('projectCreate.status') } (*)</label>
+      <select className="statusDropdown" required value={project_status} onChange={e => setProjectStatus(e.target.value)}>
+        <option value="open">{ t('projectCreate.open') }</option>
+        <option value="open_running">{ t('projectCreate.open_running') }</option>
+        <option value="closed_running">{ t('projectCreate.closed_running') }</option>
+      </select>
+    </div>
+    <div className="subProperty">
+      <label htmlFor="project_rate">{ t('projectCreate.rate') } (vnđ)</label>
+      <input className="inputRate" name="project_rate" id="project_rate" value={project_rate} onChange={e => setProjectRate(e.target.value)} />
+    </div>
+    <div className="subProperty">
+      <label htmlFor="project_size">{ t('projectCreate.size') }</label>
+      <input className="inputSize" name="project_size" id="project_size" required value={project_size} onChange={e => setProjectSize(e.target.value)} />
+    </div>
+    <div className="subProperty">
+      <label htmlFor="project_due">{ t('projectCreate.due') } (*)</label>
+      <input className="calendar" name="project_due" id="project_due" type="date" data-date="" data-date-format="YYYY-MM-DD" required value={project_due} onChange={e => setProjectDue(e.target.value)} />
+    </div>
+    <div>
+      <label  htmlFor="important">{ t('projectCreate.note') }</label>
     </div>
   </form>
 );
@@ -51,6 +82,11 @@ export const CreateProject = ({ onClose }) => {
   const [error, setError] = React.useState();
   const [description, setDescription] = React.useState("");
   const [config, setConfig] = React.useState("<View></View>");
+  const [project_rate, setProjectRate] = React.useState("");
+  const [project_due, setProjectDue] = React.useState(new Date().toLocaleDateString('fr-CA'));
+  const [project_status, setProjectStatus] = React.useState("open");
+  const [project_size, setProjectSize] = React.useState(1);
+  const [project_type, setProjectType] = React.useState("nonprofit_project");
 
   React.useEffect(() => { setError(null); }, [name]);
 
@@ -71,13 +107,18 @@ export const CreateProject = ({ onClose }) => {
   const projectBody = React.useMemo(() => ({
     title: name,
     description,
+    project_rate,
+    project_due,
+    project_type,
+    project_size,
+    project_status,
     label_config: config,
-  }), [name, description, config]);
+  }), [name, description, project_rate, project_due, project_type, project_size, project_status, config]);
 
   const onCreate = React.useCallback(async () => {
     const imported = await finishUpload();
     if (!imported) return;
-
+    
     setWaitingStatus(true);
     const response = await api.callApi('updateProject',{
       params: {
@@ -139,6 +180,16 @@ export const CreateProject = ({ onClose }) => {
           onSubmit={onCreate}
           description={description}
           setDescription={setDescription}
+          project_rate={project_rate}
+          setProjectRate = {setProjectRate}
+          project_due={project_due}
+          setProjectDue={setProjectDue}
+          project_size={project_size}
+          setProjectSize={setProjectSize}
+          project_status={project_status}
+          setProjectStatus={setProjectStatus}
+          project_type={project_type}
+          setProjectType={setProjectType}
           show={step === "name"}
         />
         <ImportPage project={project} show={step === "import"} {...pageProps} />

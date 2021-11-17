@@ -40,8 +40,8 @@ export default class ErrorBoundary extends Component {
           <div style={{padding: 40}}>
             <ErrorWrapper
               title="Runtime error"
-              message={error}
-              stacktrace={`${errorInfo ? `Component Stack: ${errorInfo}` : ''}\n\n${this.state.error?.stack ?? ''}`}
+              message="Something went wrong"
+//              stacktrace={`${errorInfo ? `Component Stack: ${errorInfo}` : ''}\n\n${this.state.error?.stack ?? ''}`}
               onGoBack={goBack}
               onReload={() => location.reload()}
             />
@@ -53,8 +53,8 @@ export default class ErrorBoundary extends Component {
     return (
       <ErrorContext.Provider value={{
         hasError: this.state.hasError,
-        error: this.state.error,
-        errorInfo: this.state.errorInfo,
+//        error: this.state.error,
+//        errorInfo: this.state.errorInfo,
         silence: this.silence,
         unsilence: this.unsilence,
       }}>
