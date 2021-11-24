@@ -15,7 +15,8 @@ from django.conf import settings
 from django.shortcuts import get_object_or_404
 from drf_yasg.utils import swagger_auto_schema
 from django.utils.decorators import method_decorator
-from django.db.models import F, Q, When, Count, Case, OuterRef, Max, Exists, Value, BooleanField, Avg
+from django.db.models import F, Q, When, Count, Case, OuterRef, Max, Exists, Value, BooleanField, Avg, Window
+from django.db.models.functions import Rank
 from rest_framework.views import APIView
 from rest_framework import generics, status, filters
 from rest_framework.exceptions import NotFound, ValidationError as RestValidationError
@@ -919,3 +920,26 @@ class ProjectModelVersions(generics.RetrieveAPIView):
         project = self.get_object()
         model_versions = Prediction.objects.filter(task__project=project).values_list('model_version', flat=True).distinct()
         return Response(data=model_versions)
+
+class RankingProjectMemberAPI(generics.ListCreateAPIView,
+                           generics.DestroyAPIView,
+                           APIViewVirtualMethodMixin,
+                           APIViewVirtualRedirectMixin):
+
+    parser_classes = (JSONParser, FormParser, MultiPartParser)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ProjectMemberSerializer
+    queryset = ProjectMember.objects.all()
+
+    def get_queryset(self):
+        project_id = self.kwargs['pk']
+        ranking = ProjectMember.objects.filter(
+            Q(project=project_id)
+        ).annotate(
+            rank=Window(
+                expression=Rank(),
+                order_by=F('ranking_score').desc(),
+            )
+        )
+
+        return ranking
