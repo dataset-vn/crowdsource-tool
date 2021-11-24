@@ -36,9 +36,9 @@ export const ErrorWrapper = ({title, message, errorId, stacktrace, validation, v
         />
       )}
 
-      {title && (
-        <Elem name="title">{title}</Elem>
-      )}
+      {message && <Elem name="detail"dangerouslySetInnerHTML={{
+        __html: String(message),
+      }}/>}
 
       {(version || errorId) && (
         <Elem name="version">
