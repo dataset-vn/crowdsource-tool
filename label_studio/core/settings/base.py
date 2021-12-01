@@ -61,7 +61,7 @@ DATABASES_ALL = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'USER': get_env('POSTGRE_USER', 'postgres'),
-        'PASSWORD': get_env('POSTGRE_PASSWORD', 'postgres'),
+        'PASSWORD': get_env('POSTGRE_PASSWORD', 'hung2005'),
         'NAME': get_env('POSTGRE_NAME', 'postgres'),
         'HOST': get_env('POSTGRE_HOST', 'localhost'),
         'PORT': int(get_env('POSTGRE_PORT', '5432')),
@@ -340,6 +340,12 @@ EMAIL_PORT = get_env('DTS_MAIL_PORT')
 EMAIL_HOST_USER = get_env('DTS_MAIL_HOST')
 EMAIL_HOST_PASSWORD = get_env('DTS_MAIL_PASSWORD')
 EMAIL_USE_SSL = get_env('DTS_MAIL_SSL')
+
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST_USER = 'hung08211031@gmail.com'
+# EMAIL_HOST_PASSWORD = 'hung08102131'
+# EMAIL_PORT = 587
 
 ENABLE_LOCAL_FILES_STORAGE = get_bool_env('ENABLE_LOCAL_FILES_STORAGE', default=True)
 LOCAL_FILES_SERVING_ENABLED = get_bool_env('LOCAL_FILES_SERVING_ENABLED', default=False)
