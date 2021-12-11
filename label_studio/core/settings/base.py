@@ -122,6 +122,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'social_django',
 
     'drf_yasg',
     'corsheaders',
@@ -164,6 +165,7 @@ MIDDLEWARE = [
     'core.middleware.SetSessionUIDMiddleware',
     'core.middleware.ContextLogMiddleware',
     'core.middleware.DatabaseIsLockedRetryMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 REST_FRAMEWORK = {
@@ -204,8 +206,18 @@ ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = 'users.User'
 AUTHENTICATION_BACKENDS = [
     'rules.permissions.ObjectPermissionBackend',
-    'django.contrib.auth.backends.ModelBackend'
+    'django.contrib.auth.backends.ModelBackend',
+    'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
 ]
+SOCIAL_AUTH_FACEBOOK_KEY = '992085151656454'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'ea84fbefefa9f37866113838a79a91da'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '644869590629-6crucvmt6frm291q6inu3u6ja0parjod.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
 USE_USERNAME_FOR_LOGIN = False
 
 DISABLE_SIGNUP_WITHOUT_LINK = get_bool_env('DISABLE_SIGNUP_WITHOUT_LINK', False)
@@ -232,7 +244,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'core.context_processors.settings'
+                'core.context_processors.settings',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
             'builtins': ['django.templatetags.i18n'],
         },
