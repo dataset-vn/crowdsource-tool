@@ -141,6 +141,12 @@ ProjectDetailPage.context = ({ openModal }) => {
 		var userID = user.id;
 	}
 	const api = useAPI();
+	const sendTelegramNoti = async (body) => {
+		const botToken = "5026160226:AAFWNBMCZcyYDku_SBFR6CbNpgFDDt6Yx10";
+		const chatID = "-678696473";
+		var response = await fetch("https://api.telegram.org/bot" + botToken + "/sendMessage?text=" + encodeURIComponent(body) + "&chat_id=" + chatID + "&parse_mode=HTML");
+		window.location.reload();
+	}
 	const createProjectMember = async ({ openModal }) => {
 		if (user) {
 			if (user.phone !== "") {
@@ -153,7 +159,7 @@ ProjectDetailPage.context = ({ openModal }) => {
 						role: "pending",
 					},
 				});
-				window.location.reload();
+				sendTelegramNoti(`User ${user.username} has joined the project ${project.title} as a pending`);
 			} else {
 				openModal();
 			}
@@ -171,7 +177,7 @@ ProjectDetailPage.context = ({ openModal }) => {
 		});
 
 		if (response.code == 200) {
-			window.location.reload();
+			sendTelegramNoti(`User ${user.username} has canceled request to join the project ${project.title}`);
 		}
 	};
 
