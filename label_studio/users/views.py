@@ -9,7 +9,18 @@ from django.conf import settings
 from django.core.exceptions import PermissionDenied
 from rest_framework.authtoken.models import Token
 from django.utils.translation import activate, get_language
+from django.contrib.sites.shortcuts import get_current_site
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, authenticate
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.template.loader import render_to_string
+from .tokens import account_activation_token
+from django.core.mail import EmailMessage
 
+from users.models import User
 from users import forms
 from core.utils.common import load_func
 from users.functions import proceed_registration
@@ -76,9 +87,28 @@ def user_signup(request):
         organization_form = OrganizationSignupForm(request.POST)
 
         if user_form.is_valid():
-            redirect_response = proceed_registration(request, user_form, organization_form, next_page)
-            if redirect_response:
-                return redirect_response
+            unAuthenticatedUser = user_form.save()
+            unAuthenticatedUser.username = unAuthenticatedUser.email.split('@')[0]
+            unAuthenticatedUser.save()
+            redirect_response = proceed_registration(request, unAuthenticatedUser, organization_form, next_page)
+            # if redirect_response:
+            #     return redirect_response
+            # user.is_active = False
+            current_site = get_current_site(request)
+            mail_subject = 'Activate your Dataset account.'
+            message = render_to_string('users/user_verify_email.html', {
+                'user': unAuthenticatedUser,
+                'domain': current_site.domain,
+                'uid':urlsafe_base64_encode(force_bytes(unAuthenticatedUser.id)),
+                'token':account_activation_token.make_token(unAuthenticatedUser),
+            })
+            to_email = user_form.cleaned_data.get('email')
+            from_email = get_env('DTS_MAIL_HOST')
+            email = EmailMessage(
+                        mail_subject, message, from_email=from_email, to=[to_email]
+            )
+            email.send()
+            return HttpResponse('Please confirm your email address to complete the registration')
 
     return render(request, 'users/user_signup.html', {
         'user_form': user_form,
@@ -87,6 +117,20 @@ def user_signup(request):
         'token': token,
     })
 
+def activate_user(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.filter(id=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user[0], token):
+        user.update(is_active=True)
+        # user.save()
+        # user_login(request)
+        return redirect('/user/login')
+        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+    else:
+        return HttpResponse('Activation link is invalid!')
 
 def user_login(request):
     """ Login page
