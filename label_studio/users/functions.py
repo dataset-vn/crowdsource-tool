@@ -47,12 +47,12 @@ def check_avatar(files):
     return avatar
 
 
-def save_user(request, next_page, user_form):
+def save_user(request, next_page, user):
     """ Save user instance to DB
     """
-    user = user_form.save()
-    user.username = user.email.split('@')[0]
-    user.save()
+    # user = user_form.save()
+    # user.username = user.email.split('@')[0]
+    # user.save()
 
     if Organization.objects.exists():
         org = Organization.objects.first()
@@ -67,11 +67,11 @@ def save_user(request, next_page, user_form):
     return redirect(redirect_url)
 
 
-def proceed_registration(request, user_form, organization_form, next_page):
+def proceed_registration(request, user, organization_form, next_page):
     """ Register a new user for POST user_signup
     """
     # save user to db
     save_user = load_func(settings.SAVE_USER)
-    response = save_user(request, next_page, user_form)
+    response = save_user(request, next_page, user)
 
     return response

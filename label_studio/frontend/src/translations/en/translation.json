@@ -84,7 +84,8 @@
 		"setting": "Settings",
 		"import": "Import",
 		"export": "Export",
-		"title": "Labeling"
+		"title": "Labeling",
+		"details": "Details"
 	},
 
 	"labelInstruc": {

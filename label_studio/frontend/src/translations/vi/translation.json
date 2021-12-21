@@ -84,7 +84,8 @@
 		"setting": "Cài đặt",
 		"import": "Nhập",
 		"export": "Xuất",
-		"title": "Gán nhãn"
+		"title": "Gán nhãn",
+		"details": "Chi tiết"
 	},
 
 	"labelInstruc": {

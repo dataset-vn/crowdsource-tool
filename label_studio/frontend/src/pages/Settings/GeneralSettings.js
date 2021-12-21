@@ -1,9 +1,10 @@
 import React, { useCallback, useContext } from 'react';
+import { NavLink } from "react-router-dom";
 import { Button } from '../../components';
 import { Form, Input, TextArea } from '../../components/Form';
 import { RadioGroup } from '../../components/Form/Elements/RadioGroup/RadioGroup';
 import { ProjectContext } from '../../providers/ProjectProvider';
-import { Block } from '../../utils/bem';
+import { Block, Elem } from '../../utils/bem';
 import { useTranslation } from "react-i18next";
 
 export const GeneralSettings = () => {
@@ -30,7 +31,7 @@ export const GeneralSettings = () => {
   ];
 
   return (
-    <div style={{width: 480}}>
+    <div style={{width: 540}}>
       <Form
         action="updateProject"
         formData={{...project}}

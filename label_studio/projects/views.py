@@ -9,11 +9,12 @@ from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
-from projects.models import Project
+from projects.models import Project, ProjectMember
 
 from core.utils.common import get_object_with_check_and_log
 from core.label_config import get_sample_task
 from core.utils.common import get_organization_from_request
+from core.utils.exceptions import ProjectExistException, LabelStudioDatabaseException, DatasetJscDatabaseException
 
 from organizations.models import Organization
 
@@ -27,7 +28,13 @@ def project_list(request):
 
 @login_required
 def project_settings(request, pk, sub_path):
-    return render(request, 'projects/settings.html')
+    current_user_id = request.user.id
+    project = Project.objects.get(id=pk)
+    current_user_role = ProjectMember.objects.filter(project_id=pk, user_id=current_user_id)[0].role
+    if(current_user_role != "manager" and current_user_role != "owner"):
+        raise DatasetJscDatabaseException('Operation can only be performed by a project owner or manager')
+    else:
+        return render(request, 'projects/settings.html')
 
 
 def project_details(request, pk):
