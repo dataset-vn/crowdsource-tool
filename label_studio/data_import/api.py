@@ -17,7 +17,8 @@ from ranged_fileresponse import RangedFileResponse
 
 from core.permissions import all_permissions, ViewClassPermission
 from core.utils.common import bool_from_request, retry_database_locked
-from projects.models import Project
+from core.utils.exceptions import ProjectExistException, LabelStudioDatabaseException, DatasetJscDatabaseException
+from projects.models import Project, ProjectMember
 from tasks.models import Task
 from .uploader import load_tasks
 from .serializers import ImportApiSerializer, FileUploadSerializer
@@ -156,7 +157,7 @@ class ImportAPI(generics.CreateAPIView):
         if project_id:
             project = generics.get_object_or_404(Project.objects.for_user(self.request.user), pk=project_id)
         else:
-            project = None
+            project = None 
         return {'project': project, 'user': self.request.user}
 
     def post(self, *args, **kwargs):
@@ -170,7 +171,7 @@ class ImportAPI(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         start = time.time()
         commit_to_project = bool_from_request(request.query_params, 'commit_to_project', True)
-
+        
         # check project permissions
         project = generics.get_object_or_404(Project.objects.for_user(self.request.user), pk=self.kwargs['pk'])
 
@@ -228,6 +229,15 @@ class ReImportAPI(ImportAPI):
     def create(self, request, *args, **kwargs):
         start = time.time()
         files_as_tasks_list = bool_from_request(request.data, 'files_as_tasks_list', True)
+
+        #check user permission
+        current_user_id = self.request.user.id
+        current_user_email = self.request.user.email
+        project_id = self.kwargs['pk']
+        current_user_role = ProjectMember.objects.filter(project_id=project_id, user_id=current_user_id)[0].role
+
+        if current_user_role != 'owner' and current_user_id != Project.objects.filter(id=project_id)[0].created_by_id and current_user_email != 'chon@dataset.vn':
+            raise DatasetJscDatabaseException('Operation can only be performed by a project owner')
 
         # check project permissions
         project = generics.get_object_or_404(Project.objects.for_user(self.request.user), pk=self.kwargs['pk'])

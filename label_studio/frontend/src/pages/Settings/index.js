@@ -69,17 +69,12 @@ export const MenuLayout = ({children, ...routeProps}) => {
   const managerVisibleComponents = [
     GeneralSettings,
     InstructionsSettings,
-    LabelingSettings,
-    Members,
-    MachineLearningSettings,
-    StorageSettings
+    Members
   ]
 
-  const annotatorVisibleComponents = [InstructionsSettings]
   const getVisibleComponents = (role) => {
     if (role == 'owner') return ownerVisibleComponents;
     if (role == 'manager') return managerVisibleComponents;
-    return annotatorVisibleComponents;
   }
 
   return (

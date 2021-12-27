@@ -1,5 +1,6 @@
 import chr from "chroma-js";
 import React, { useContext, useMemo } from "react";
+import { NavLink } from "react-router-dom";
 import Linkify from "linkify-react";
 import { ProjectContext, useProject } from "../../providers/ProjectProvider";
 import { useCurrentUser } from "../../providers/CurrentUser";
@@ -107,7 +108,15 @@ export const ProjectDetailPage = () => {
 						{project.current_user_role ? (
 							<Elem name='user_role_sentence'>
 								{t("projectDetail.currentRoleLabel")}
-								{project.current_user_role}
+								{project.current_user_role}. 
+								{project.current_user_role != "pending" && project.current_user_role != "trainee" ? (
+									<Elem
+									tag={NavLink}
+									name='numtype-data-withicon'
+									to={`/projects/${project.id}/data`}>
+										{t("projectDetail.link")}
+									</Elem>
+								):null}
 							</Elem>
 						) : (
 							<Elem name='user_role_sentence'>
@@ -143,7 +152,7 @@ ProjectDetailPage.context = ({ openModal }) => {
 	const api = useAPI();
 	const sendTelegramNoti = async (body) => {
 		const botToken = "5026160226:AAFWNBMCZcyYDku_SBFR6CbNpgFDDt6Yx10";
-		const chatID = "-678696473";
+		const chatID = "1461525363";
 		var response = await fetch("https://api.telegram.org/bot" + botToken + "/sendMessage?text=" + encodeURIComponent(body) + "&chat_id=" + chatID + "&parse_mode=HTML");
 		window.location.reload();
 	}
