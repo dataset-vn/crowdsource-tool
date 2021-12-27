@@ -32,9 +32,13 @@ def project_settings(request, pk, sub_path):
     project = Project.objects.get(id=pk)
     current_user_role = ProjectMember.objects.filter(project_id=pk, user_id=current_user_id)[0].role
     if(current_user_role != "manager" and current_user_role != "owner"):
-        raise DatasetJscDatabaseException('Operation can only be performed by a project owner or manager')
+        return render(request,"../templates/404.html")
     else:
-        return render(request, 'projects/settings.html')
+        manager_sub_path = ['instruction','members']
+        if(current_user_role == "manager" and sub_path not in manager_sub_path):
+            return render(request,"../templates/404.html")
+        else:
+            return render(request, 'projects/settings.html')
 
 
 def project_details(request, pk):

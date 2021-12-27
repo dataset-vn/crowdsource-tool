@@ -25,7 +25,8 @@
 		"noPhoneModalHeader": "No phone number",
 		"noPhoneModalText": "You must go to Account Setting and add phone number before applying to any projects.",
 		"toAccountModalButton": "To Account Setting",
-		"cancelModalButton": "Cancel"
+		"cancelModalButton": "Cancel",
+		"link": "Start annotate"
 	},
 
 	"projectEmpty": {

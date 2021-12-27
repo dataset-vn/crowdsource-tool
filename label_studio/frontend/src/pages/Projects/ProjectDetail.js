@@ -114,7 +114,7 @@ export const ProjectDetailPage = () => {
 									tag={NavLink}
 									name='numtype-data-withicon'
 									to={`/projects/${project.id}/data`}>
-										Let's annotate
+										{t("projectDetail.link")}
 									</Elem>
 								):null}
 							</Elem>

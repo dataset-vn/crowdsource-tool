@@ -25,7 +25,8 @@
 		"noPhoneModalHeader": "Chưa có số điện thoại",
 		"noPhoneModalText": "Bạn cần vào Cài đặt Tài khoản và thêm số điện thoại để có thể tham gia các dự án.",
 		"toAccountModalButton": "Đến Cài đặt Tài khoản",
-		"cancelModalButton": "Hủy bỏ"
+		"cancelModalButton": "Hủy bỏ",
+		"link": "Bắt đầu dán nhãn"
 	},
 
 	"projectEmpty": {

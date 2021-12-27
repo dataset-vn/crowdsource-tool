@@ -738,3 +738,15 @@ msgstr "ĐĂNG KÝ"
 #: .\label_studio\users\templates\users\user_signup.html:315
 msgid "Create Account"
 msgstr "Tạo tài khoản"
+
+#: \label_studio\users\templates\users\user_active_email:37
+msgid "Please check your email address for confirmation link to complete the registration"
+msgstr "Xin hãy kiểm tra địa chỉ email bạn đã đăng ký để lấy đường dẫn xác thực và hoàn thành quá trình đăng ký tài khoản"
+
+#: \label_studio\users\templates\users\user_active_email:38
+msgid "And if you have any problems, please contact "
+msgstr "Nếu bạn có bất kỳ vấn đề gì, xin hãy liên hệ đến "
+
+#: \label_studio\users\templates\users\user_active_email:39
+msgid "our facebook"
+msgstr "facebook của chúng tôi"
