@@ -1,6 +1,6 @@
 import { createContext, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { StaticContent } from '../../app/StaticContent/StaticContent';
-import { DtsFacebook, IconBook, DtsBuilding, IconFolder, IconPersonInCircle, IconPin, IconTerminal, LsDoor, LsGitHub, LsSettings, LsSlack } from '../../assets/icons';
+import { DtsFacebook, IconBook, DtsBuilding, IconFolder, IconPersonInCircle, IconLeaderBoard, IconPin, IconTerminal, LsDoor, LsGitHub, LsSettings, LsSlack } from '../../assets/icons';
 import { useConfig } from '../../providers/ConfigProvider';
 import { useContextComponent, useFixedLocation } from '../../providers/RoutesProvider';
 import { cn } from '../../utils/bem';
@@ -182,6 +182,13 @@ export const Menubar = ({
                   label= { t('sideBar.projects') }
                   to="/projects"
                   icon={<IconFolder/>}
+                  data-external
+                  exact
+                />
+                <Menu.Item
+                  label= { t('sideBar.leaderboards') }
+                  to="/leaderboard"
+                  icon={<IconLeaderBoard/>}
                   data-external
                   exact
                 />
