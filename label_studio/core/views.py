@@ -11,7 +11,7 @@ import pandas as pd
 from django.conf import settings
 from django.contrib.auth import logout
 from django.http import HttpResponse, HttpResponseServerError, HttpResponseForbidden
-from django.shortcuts import redirect, reverse
+from django.shortcuts import redirect, reverse, render
 from django.template import loader
 from django.views.static import serve
 from django.http import JsonResponse
@@ -78,6 +78,14 @@ def metrics(request):
     """ Empty page for metrics evaluation """
     return HttpResponse('')
 
+def leaderboard(request):
+    return render(request, 'leaderboard_ranking.html')
+
+def people(request):
+    return render(request, 'people.html')
+
+def organizations(request):
+    return render(request, 'organizations.html')
 
 def editor_files(request):
     """ Get last editor files
