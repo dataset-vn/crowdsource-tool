@@ -129,11 +129,23 @@ DataManagerPage.context = ({dmRef}) => {
   console.log(project.project_status);
   const [mode, setMode] = useState(dmRef?.mode ?? "explorer");
   const { t } = useTranslation();
-  const links = {
-    '/settings': t('dataMan.setting'),
-    '/data/import': t('dataMan.import'),
-    '/data/export': t('dataMan.export'),
-  };
+  const userRole = project.current_user_role;
+  var links;
+  if(userRole == "owner"){
+    links = {
+      '/settings': t('dataMan.setting'),
+      '/data/import': t('dataMan.import'),
+      '/data/export': t('dataMan.export'),
+    }
+  }
+  else if(userRole == "manager"){
+    links = {
+      '/settings': t('dataMan.setting')
+    }
+  }
+  else{
+    links = {}
+  }
 
   const updateCrumbs = (currentMode) => {
     const isExplorer = currentMode === 'explorer';
