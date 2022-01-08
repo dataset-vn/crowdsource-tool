@@ -125,28 +125,25 @@ DataManagerPage.pages = {
 };
 DataManagerPage.context = ({dmRef}) => {
   const location = useFixedLocation();
-  const {project} = useProject();
-  console.log(project.project_status);
+  const { project } = useProject();
   const [mode, setMode] = useState(dmRef?.mode ?? "explorer");
   const { t } = useTranslation();
-  const userRole = project.current_user_role;
   var links;
-  if(userRole == "owner"){
+  if(project.current_user_role == "manager" || project.current_user_role == "owner"){
     links = {
+      '/details': t('dataMan.details'),
       '/settings': t('dataMan.setting'),
       '/data/import': t('dataMan.import'),
       '/data/export': t('dataMan.export'),
-    }
-  }
-  else if(userRole == "manager"){
-    links = {
-      '/settings': t('dataMan.setting')
-    }
+    };
   }
   else{
-    links = {}
+    links = {
+      '/details': t('dataMan.details'),
+      '/data/import': t('dataMan.import'),
+      '/data/export': t('dataMan.export'),
+    };
   }
-
   const updateCrumbs = (currentMode) => {
     const isExplorer = currentMode === 'explorer';
     const dmPath = location.pathname.replace(DataManagerPage.path, '');

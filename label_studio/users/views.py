@@ -95,7 +95,7 @@ def user_signup(request):
             #     return redirect_response
             # user.is_active = False
             current_site = get_current_site(request)
-            mail_subject = 'Activate your Dataset account.'
+            mail_subject = 'Activate your Dataset account'
             message = render_to_string('users/user_verify_email.html', {
                 'user': unAuthenticatedUser,
                 'domain': current_site.domain,
@@ -108,7 +108,7 @@ def user_signup(request):
                         mail_subject, message, from_email=from_email, to=[to_email]
             )
             email.send()
-            return HttpResponse('Please confirm your email address to complete the registration')
+            return render(request,"users/user_active_email.html")
 
     return render(request, 'users/user_signup.html', {
         'user_form': user_form,
