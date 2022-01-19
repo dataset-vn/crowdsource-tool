@@ -347,8 +347,10 @@ TASKS_MAX_FILE_SIZE = DATA_UPLOAD_MAX_MEMORY_SIZE
 TASK_LOCK_TTL = int(get_env('TASK_LOCK_TTL')) if get_env('TASK_LOCK_TTL') else None
 TASK_LOCK_DEFAULT_TTL = int(get_env('TASK_LOCK_DEFAULT_TTL', 3600))
 
-# Email backend
+# Python Social Auth configuration
+SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 
+# Email backend
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = get_env('DTS_SMTP_HOST')
 EMAIL_PORT = get_env('DTS_MAIL_PORT')
