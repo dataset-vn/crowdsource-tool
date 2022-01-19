@@ -209,7 +209,6 @@ AUTHENTICATION_BACKENDS = [
     'social_core.backends.facebook.FacebookOAuth2',
     'social_core.backends.google.GoogleOAuth2',
     'django.contrib.auth.backends.ModelBackend',
-    'django.contrib.auth.backends.ModelBackend',
     
 ]
 SOCIAL_AUTH_FACEBOOK_KEY = '992085151656454'
@@ -222,6 +221,9 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 USE_USERNAME_FOR_LOGIN = False
 SOCIAL_AUTH_RAISE_EXCEPTIONS = False
+
+SOCIAL_AUTH_USER_FIELDS = ['email', 'username']
+
 
 SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 
