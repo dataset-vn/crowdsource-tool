@@ -206,10 +206,11 @@ ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = 'users.User'
 AUTHENTICATION_BACKENDS = [
     'rules.permissions.ObjectPermissionBackend',
-    'django.contrib.auth.backends.ModelBackend',
-    'django.contrib.auth.backends.ModelBackend',
     'social_core.backends.facebook.FacebookOAuth2',
     'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+    'django.contrib.auth.backends.ModelBackend',
+    
 ]
 SOCIAL_AUTH_FACEBOOK_KEY = '992085151656454'
 SOCIAL_AUTH_FACEBOOK_SECRET = 'ea84fbefefa9f37866113838a79a91da'
