@@ -3796,6 +3796,62 @@ __user_active::before {
   margin-right: 16px;
 }
 
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #060f61;
+  height: 100px;
+  padding: 20px;
+  color: #FFFAF0;
+}
+
+.App-title {
+  font-size: 1.5em;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #FFFAF0;
+}
+
+/*  Leaderboard  */
+.leaderboard {
+  padding: 20px 50px;
+}
+.leaderboard__header,
+.leaderboard__entry {
+  display: flex;
+  border-bottom: 1px solid #40E0D0;
+}
+.leaderboard__header p,
+.leaderboard__entry p {
+  float: left;
+  text-align: left;
+  width: 25%;
+}
+.leaderboard__header {
+  font-weight: bold;
+  border-width: 2px;
+  color: #40E0D0;
+  text-transform: uppercase;
+}
+.leaderboard__recentPoints,
+.leaderboard__totalPoints {
+  cursor: pointer;
+}
+
+ul {
+  padding-left: 0;
+}
+
+.underline {
+  text-decoration: underline;
+}
 body {
   --header-height: 48px;
   --menu-animation-duration: 0.15s;

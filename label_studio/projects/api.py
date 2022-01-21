@@ -943,3 +943,26 @@ class RankingProjectMemberAPI(generics.ListCreateAPIView,
         )
 
         return ranking
+
+class RecentRankingProjectMemberAPI(generics.ListCreateAPIView,
+                           generics.DestroyAPIView,
+                           APIViewVirtualMethodMixin,
+                           APIViewVirtualRedirectMixin):
+
+    parser_classes = (JSONParser, FormParser, MultiPartParser)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ProjectMemberSerializer
+    queryset = ProjectMember.objects.all()
+
+    def get_queryset(self):
+        project_id = self.kwargs['pk']
+        ranking = ProjectMember.objects.filter(
+            Q(project=project_id)
+        ).annotate(
+            rank=Window(
+                expression=Rank(),
+                order_by=F('recent_score').desc(),
+            )
+        )
+
+        return ranking
