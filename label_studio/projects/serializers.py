@@ -126,7 +126,8 @@ class ProjectMemberSerializer(serializers.ModelSerializer):
             'avatar',
             'total_records',
             'contact_status',
-            'ranking_score'
+            'ranking_score',
+            'recent_score'
         )
 
 

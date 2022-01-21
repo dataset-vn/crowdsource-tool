@@ -223,7 +223,7 @@
 		"resetFilter": "Reset Filter"
 	},
 
-	"SelectedMember": {
+	"organization.titleMember": {
 		"create": "Created Project",
 		"contribute": "Contributed to",
 		"time": "Active at :",

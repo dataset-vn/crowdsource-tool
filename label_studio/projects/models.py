@@ -674,6 +674,7 @@ class ProjectMember(models.Model):
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
     contact_status = models.CharField(default='not check', max_length=32, help_text='Represents contact status of member')
+    recent_score = models.IntegerField(_('recent score'), default=0, help_text='Represents the recent score of each project member')
     ranking_score = models.IntegerField(_('ranking score'), default=0, help_text='Represents the score of each project member')
 
     def get_statistics(self):
