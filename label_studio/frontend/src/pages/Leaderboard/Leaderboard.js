@@ -69,14 +69,5 @@ Leaderboard.title = "Bảng xếp hạng";
 Leaderboard.path = "/leaderboard";
 Leaderboard.exact = true;
 
-Leaderboard.context = ({ openModal, showButton }) => {
-	if (!showButton) return null;
-	const { t } = useTranslation();
-	return (
-		<Button onClick={openModal} look='primary' size='compact'>
-			Chọn dự án
-		</Button>
-	);
-};
 
 
