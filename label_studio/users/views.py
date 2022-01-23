@@ -89,6 +89,7 @@ def user_signup(request):
         if user_form.is_valid():
             unAuthenticatedUser = user_form.save()
             unAuthenticatedUser.username = unAuthenticatedUser.email.split('@')[0]
+            unAuthenticatedUser.is_active = False
             unAuthenticatedUser.save()
             redirect_response = proceed_registration(request, unAuthenticatedUser, organization_form, next_page)
             # if redirect_response:
