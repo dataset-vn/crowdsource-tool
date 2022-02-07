@@ -31,8 +31,12 @@ class UserManager(BaseUserManager):
         """
         Create and save a user with the given email and password.
         """
-        if not email:
+        if not email or email == "":
             raise ValueError('Must specify an email address')
+
+        if User.objects.filter(email=email):
+            user = User.objects.filter(email=email)[0]
+            return user
 
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
