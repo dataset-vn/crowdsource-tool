@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../../components/Ranking/Leaderboard.css';
-import EntryList from '../../components/Ranking/EntryList';
-import { Button } from "../../components";
+import { EntryList } from '../../components/Ranking/EntryList';
+import { Dropdown } from "../../components/Ranking/ChooseProject";
 
 export class Leaderboard extends Component {
   constructor(props) {
@@ -45,6 +45,9 @@ export class Leaderboard extends Component {
           <h1 className="App-title">Ranking Leaderboard</h1>
           These are our top contributors in Dataset JSC Labeling Platform
         </header>
+
+        <Dropdown />
+
         <section className="leaderboard">
           <div className="leaderboard__header">
             <p className="leaderboard__rank">Rank</p>
@@ -69,14 +72,5 @@ Leaderboard.title = "Bảng xếp hạng";
 Leaderboard.path = "/leaderboard";
 Leaderboard.exact = true;
 
-Leaderboard.context = ({ openModal, showButton }) => {
-	if (!showButton) return null;
-	const { t } = useTranslation();
-	return (
-		<Button onClick={openModal} look='primary' size='compact'>
-			Chọn dự án
-		</Button>
-	);
-};
 
 

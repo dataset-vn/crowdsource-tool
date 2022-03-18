@@ -921,6 +921,7 @@ class ProjectModelVersions(generics.RetrieveAPIView):
         model_versions = Prediction.objects.filter(task__project=project).values_list('model_version', flat=True).distinct()
         return Response(data=model_versions)
 
+
 class RankingProjectMemberAPI(generics.ListCreateAPIView,
                            generics.DestroyAPIView,
                            APIViewVirtualMethodMixin,

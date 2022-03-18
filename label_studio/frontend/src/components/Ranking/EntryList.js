@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Leaderboard.css';
 
-class EntryList extends Component {
+export class EntryList extends Component {
 
   render() {
     const entry = this.props.entries.map((entry, i) => {
@@ -20,5 +20,3 @@ class EntryList extends Component {
     );
   }
 }
-
-export default EntryList;
