@@ -160,12 +160,13 @@ class ProjectListAPI(generics.ListCreateAPIView):
 
     def perform_create(self, ser):
         user_id = self.request.user.id
-        
+        user_name = User.objects.filter(id=user_id)[0].username
         try:
             project = ser.save(organization=self.request.user.active_organization)
             # Also make that curent user owner of the project
             try:
                 ProjectMember.objects.create(user_id=user_id, project_id=project.id, role='owner')
+                telegram_bot_sendtext("User " + user_name + " has created project " + project.title.replace("#","no."))
             except IntegrityError as e:
                 raise DatasetJscDatabaseException('Database error during project member creation. Try again.')
 
@@ -237,6 +238,8 @@ class ProjectAPI(APIViewVirtualRedirectMixin,
         return super(ProjectAPI, self).delete(request, *args, **kwargs)
 
     def patch(self, request, *args, **kwargs):
+        user_id = self.request.user.id
+        user_name = User.objects.filter(id=user_id)[0].username
         project = self.get_object()
         label_config = self.request.data.get('label_config')
 
@@ -249,6 +252,10 @@ class ProjectAPI(APIViewVirtualRedirectMixin,
             else:
                 if has_changes:
                     View.objects.filter(project=project).all().delete()
+        if(self.request.data.get('title')):
+            project_title = self.request.data.get('title')
+            if(project_title != project.title):
+                telegram_bot_sendtext("User " + user_name + " has changed project name from " + project.title.replace("#","no.") + " to " + project_title.replace("#","no."))
 
         return super(ProjectAPI, self).patch(request, *args, **kwargs)
 
