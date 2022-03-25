@@ -7,14 +7,13 @@ export class Dropdown extends Component {
     super(props, context);
     this.state = {
       selectedOption: {},
-      normalSelectOption: null,
     }
   }
 
   ProjectList = (inputValue, callback) => {
     setTimeout(() => {
       fetch(
-        "http://127.0.0.1:8080/api/projects" +
+        "/api/projects" +
           inputValue,
         {
           method: "GET",

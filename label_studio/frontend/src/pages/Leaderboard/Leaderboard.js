@@ -1,23 +1,70 @@
 import React, { Component } from 'react';
 import '../../components/Ranking/Leaderboard.css';
 import { EntryList } from '../../components/Ranking/EntryList';
-import { Dropdown } from "../../components/Ranking/ChooseProject";
+import AsyncSelect from "react-select/async";
+//import { Dropdown } from "../../components/Ranking/ChooseProject";
 
 export class Leaderboard extends Component {
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
     this.state = {
         data: [],
-        sortedByRecent: false
+        sortedByRecent: false,
+        selectedOption: {},
     }
 }
+
+  ProjectList = (inputValue, callback) => {
+    setTimeout(() => {
+      fetch(
+        "/api/projects" +
+          inputValue,
+        {
+          method: "GET",
+        }
+      )
+        .then((resp) => {
+          return resp.json();
+        })
+        .then((data) => {
+          const tempArray = [];
+          if (data) {
+            if (data.length) {
+              data.forEach((project) => {
+                tempArray.push({
+                  label: `${project.title}`,
+                  value: project.id,
+                });
+              });
+            } else {
+              tempArray.push({
+                label: `${data.title}`,
+                value: data.id,
+              });
+            }
+          }
+          callback(tempArray);
+        })
+        .catch((error) => {
+          console.log(error, "Error");
+        });
+    }, 500);
+  };
+
+  onSearchChange = (selectedOption) => {
+    if (selectedOption) {
+      this.setState({
+        selectedOption,
+      });
+    }
+  };
 
   componentDidMount() {
     this.sortByTotal();
   }
 
   sortByRecent() {
-    fetch('http://127.0.0.1:8080/api/projects/43/recentranking')
+    fetch.get(`http://127.0.0.1:8080/api/projects/${data.id}/recentranking`)
     .then((resp) => resp.json())
     .then((data) => {
         this.setState({
@@ -28,7 +75,7 @@ export class Leaderboard extends Component {
   }
 
   sortByTotal() {
-    fetch('http://127.0.0.1:8080/api/projects/43/ranking')
+    fetch(`http://127.0.0.1:8080/api/projects/${data.id}/ranking`)
     .then((resp) => resp.json())
     .then((data) => {
         this.setState({
@@ -46,7 +93,20 @@ export class Leaderboard extends Component {
           These are our top contributors in Dataset JSC Labeling Platform
         </header>
 
-        <Dropdown />
+        <div style={{ marginLeft: "40%", width: "300px" }}>
+        <div>
+          <p>Choose your projects:</p>
+          <AsyncSelect
+            value={this.state.selectedOption}
+            loadOptions={this.ProjectList}
+            placeholder="Project List"
+            onChange={(e) => {
+              this.onSearchChange(e);
+            }}
+            defaultOptions={true}
+          />
+        </div>
+        </div>
 
         <section className="leaderboard">
           <div className="leaderboard__header">

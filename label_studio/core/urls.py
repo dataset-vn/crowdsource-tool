@@ -51,8 +51,8 @@ urlpatterns = [
     re_path(r'^static/(?P<path>.*)$', serve, kwargs={'document_root': settings.STATIC_ROOT, 'show_indexes': True}),
     re_path(r'leaderboard/', views.leaderboard, name="leaderboard"),
     re_path(r'people/', views.people, name="people"),
-    re_path(r'organizations/', views.organizations, name="organizations"),
 
+    re_path(r'^', include('organizations.urls')),
     re_path(r'^', include('projects.urls')),
     re_path(r'^', include('data_import.urls')),
     re_path(r'^', include('data_manager.urls')),
