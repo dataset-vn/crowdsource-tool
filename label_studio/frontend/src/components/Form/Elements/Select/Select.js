@@ -4,7 +4,7 @@ import { FormField } from '../../FormField';
 import { default as Label } from '../Label/Label';
 import './Select.styl';
 
-const Select = ({label, className, options, validate, required, skip, labelProps, ghost, ...props}) => {
+const Select = ({label, className, options, defaultVal, validate, required, skip, labelProps, ghost, ...props}) => {
   const rootClass = cn('select');
 
   const classList = rootClass.mod({ghost}).mix(className);
@@ -16,11 +16,12 @@ const Select = ({label, className, options, validate, required, skip, labelProps
       validate={validate}
       required={required}
       skip={skip}
+      defaultVal={defaultVal}
       {...props}
     >
       {ref => (
         <div className={classList}>
-          <select {...props} ref={ref} className={rootClass.elem('list')}>
+          <select {...props} ref={ref} className={rootClass.elem('list')} defaultValue={defaultVal}>
             {(options ?? []).map(option => (
               <option key={option.value} value={option.value}>
                 {option.label ?? option.value}

@@ -16,6 +16,8 @@ from organizations.models import OrganizationMember, Organization
 from users.functions import hash_upload
 from core.utils.common import load_func
 
+from notifications.telegram.bot import telegram_bot_sendtext
+
 YEAR_START = 1980
 YEAR_CHOICES = []
 for r in range(YEAR_START, (datetime.datetime.now().year+1)):
@@ -43,6 +45,8 @@ class UserManager(BaseUserManager):
 
         user.set_password(password)
         user.save(using=self._db)
+
+        telegram_bot_sendtext('Account ' + user.email.split('@')[0] + ' has just been created')
 
         return user
 

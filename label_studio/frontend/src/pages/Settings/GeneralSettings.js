@@ -1,7 +1,7 @@
 import React, { useCallback, useContext } from 'react';
 import { NavLink } from "react-router-dom";
 import { Button } from '../../components';
-import { Form, Input, TextArea } from '../../components/Form';
+import { Form, Input, TextArea, Select, Toggle, Label } from '../../components/Form';
 import { RadioGroup } from '../../components/Form/Elements/RadioGroup/RadioGroup';
 import { ProjectContext } from '../../providers/ProjectProvider';
 import { Block, Elem } from '../../utils/bem';
@@ -25,6 +25,17 @@ export const GeneralSettings = () => {
     '#D55C9D',
   ];
 
+  const typeOption = [
+    {label:t('projectCreate.community'), value:"nonprofit_project"},
+    {label:t('projectCreate.paid'), value:"profitable"}
+  ]
+
+  const statusOption = [
+    {label:t('projectCreate.open'), value:"open"},
+    {label:t('projectCreate.open_running'), value:"open_running"},
+    {label:t('projectCreate.closed_running'), value:"closed_running"}
+  ]
+
   const samplings = [
     {value: "Sequential", label: t('GeneralSettings.sequential') /*"Sequential"*/, description: t('GeneralSettings.sampling') /*"Tasks are ordered by Data manager ordering"*/},
     {value: "Uniform", label: t('GeneralSettings.random') /*"Random"*/, description: t('GeneralSettings.sampling2') /*"Tasks are chosen with uniform random"*/},
@@ -45,12 +56,38 @@ export const GeneralSettings = () => {
             labelProps={{large: true}}
           />
 
+          <Select
+            name="project_type"
+            label={t('projectCreate.type')}
+            options={typeOption}
+            defaultValue={project.type}
+            labelProps={{large: true}}
+          />
+
+          <Select
+            name="project_status"
+            label={t('projectCreate.status')}
+            options={statusOption}
+            defaultValue={project.project_status}
+            labelProps={{large: true}}
+          />
+
           <TextArea
             name="description"
             label= {t('GeneralSettings.des') /*"Description"*/}
             labelProps={{large: true}}
             style={{minHeight: 128}}
           />
+
+          <div style={{display: "flex", justifyContent: "space-between"}}>
+            <Label text={"Tự động duyệt thành viên dự án"} large/>
+            <div>
+              <Toggle
+                name="auto_approval"
+                defaultChecked={project.auto_approval}
+              />
+            </div>
+          </div>
 
           <RadioGroup name="color" label={t('GeneralSettings.color')} size="large" labelProps={{size: "large"}}>
             {colors.map(color => (

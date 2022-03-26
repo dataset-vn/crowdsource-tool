@@ -49,6 +49,8 @@ from core.utils.io import find_dir, find_file, read_yaml
 from data_manager.functions import get_prepared_queryset
 from data_manager.models import View
 
+from notifications.telegram.bot import telegram_bot_sendtext
+
 logger = logging.getLogger(__name__)
 
 
@@ -450,6 +452,7 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
 
         try:
             serializer.save(user=user, project=project, role=user_role)
+            telegram_bot_sendtext("User " + user.username + " has joined project " + project.title.replace('#','no.') + " as a " + user_role)
         except IntegrityError as e:
             raise DatasetJscDatabaseException('Database error during project creation. Try again.')
 
@@ -484,8 +487,12 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         if member_role == "owner":
             return False, "Could not remove owner from the project"
 
+        user = User.objects.get(id=member_id)
+        project = Project.objects.get(id=project_id)
+
         try:
             instance.delete()
+            telegram_bot_sendtext("User " + user.username + " has been removed from project " + project.title.replace('#','no.'))
             return True, "Removed member successfully"
         except IntegrityError as e:
             logger.error('Fallback to cascase deleting after integrity_error: {}'.format(str(e)))

@@ -133,6 +133,7 @@ class Project(ProjectMixin, models.Model):
     project_rate = models.DecimalField(_('project_rate'), null = True, decimal_places = 2, max_digits = 10)
     project_due = models.DateField(_('project_due'), null = True)
     project_size = models.IntegerField(_('project_size'), default = 0)
+    auto_approval = models.BooleanField(_('auto_approval'), default = False)
 
     SEQUENCE = 'Sequential sampling'
     UNIFORM = 'Uniform sampling'

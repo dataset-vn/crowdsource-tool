@@ -110,12 +110,14 @@ export const ProjectDetailPage = () => {
 								{t("projectDetail.currentRoleLabel")}
 								{project.current_user_role}. 
 								{project.current_user_role != "pending" && project.current_user_role != "trainee" ? (
-									<Elem
-									tag={NavLink}
-									name='numtype-data-withicon'
-									to={`/projects/${project.id}/data`}>
-										{t("projectDetail.link")}
-									</Elem>
+									<div style={{fontSize:"25px"}}>
+										<Elem
+										tag={NavLink}
+										name='numtype-data-withicon'
+										to={`/projects/${project.id}/data`}>
+											{t("projectDetail.link")}
+										</Elem>
+									</div>
 								):null}
 							</Elem>
 						) : (
@@ -150,25 +152,24 @@ ProjectDetailPage.context = ({ openModal }) => {
 		var userID = user.id;
 	}
 	const api = useAPI();
-	const sendTelegramNoti = async (body) => {
-		const botToken = "5026160226:AAFWNBMCZcyYDku_SBFR6CbNpgFDDt6Yx10";
-		const chatID = "1461525363";
-		var response = await fetch("https://api.telegram.org/bot" + botToken + "/sendMessage?text=" + encodeURIComponent(body) + "&chat_id=" + chatID + "&parse_mode=HTML");
-		window.location.reload();
-	}
 	const createProjectMember = async ({ openModal }) => {
 		if (user) {
 			if (user.phone !== "") {
+				var role;
+				if(project.auto_approval){
+					role = "annotator"
+				}
+				else role = "pending"
 				const response = await api.callApi("createProjectMember", {
 					params: {
 						pk: projectID,
 					},
 					body: {
 						user_pk: userID,
-						role: "pending",
+						role: role,
 					},
 				});
-				sendTelegramNoti(`User ${user.username} has joined the project ${project.title} as a pending`);
+				window.location.reload();
 			} else {
 				openModal();
 			}
@@ -184,10 +185,7 @@ ProjectDetailPage.context = ({ openModal }) => {
 				user_pk: userID,
 			},
 		});
-
-		if (response.code == 200) {
-			sendTelegramNoti(`User ${user.username} has canceled request to join the project ${project.title}`);
-		}
+		window.location.reload();
 	};
 
 	const { t } = useTranslation();
