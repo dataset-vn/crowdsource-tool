@@ -326,7 +326,8 @@
 		"saved": "Saved!",
 		"save": "Save",
 		"color": "Color",
-		"title": "General"
+		"title": "General",
+		"auto_approval": "Automatically approve project members"
 	},
 
 	"menuBar": {

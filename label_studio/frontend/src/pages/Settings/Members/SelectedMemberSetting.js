@@ -135,7 +135,7 @@ export const SelectedMemberSetting = ({ user, onClose, projectID }) => {
 									onChange={(e) => setRoleChange(e.target.value)}
 									name='role_member_change'>
 									{Object.keys(ROLE_MEMBER).map((i) => (
-										<option value={i}>{i}</option>
+										<option key={i} value={i}>{i}</option>
 									))}
 								</select>
 								<Button onClick={updateRole}>

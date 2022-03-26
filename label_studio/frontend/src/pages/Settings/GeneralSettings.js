@@ -80,7 +80,7 @@ export const GeneralSettings = () => {
           />
 
           <div style={{display: "flex", justifyContent: "space-between"}}>
-            <Label text={"Tự động duyệt thành viên dự án"} large/>
+            <Label text={t('GeneralSettings.auto_approval')} large/>
             <div>
               <Toggle
                 name="auto_approval"

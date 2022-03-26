@@ -326,7 +326,8 @@
 		"saved": "Đã lưu!",
 		"save": "Lưu",
 		"color": "Màu sắc",
-		"title": "Tổng quan"
+		"title": "Tổng quan",
+		"auto_approval": "Tự động duyệt thành viên dự án"
 	},
 
 	"menuBar": {
