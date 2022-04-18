@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import '../../components/Ranking/Leaderboard.css';
 import { EntryList } from '../../components/Ranking/EntryList';
 import AsyncSelect from "react-select/async";
-//import { Dropdown } from "../../components/Ranking/ChooseProject";
 
 export class Leaderboard extends Component {
   constructor(props, context) {
@@ -64,7 +63,7 @@ export class Leaderboard extends Component {
   }
 
   sortByRecent() {
-    fetch.get(`http://127.0.0.1:8080/api/projects/${data.id}/recentranking`)
+    fetch("http://127.0.0.1:8080/api/projects/66/timeranking")
     .then((resp) => resp.json())
     .then((data) => {
         this.setState({
@@ -75,7 +74,7 @@ export class Leaderboard extends Component {
   }
 
   sortByTotal() {
-    fetch(`http://127.0.0.1:8080/api/projects/${data.id}/ranking`)
+    fetch("http://127.0.0.1:8080/api/projects/66/ranking")
     .then((resp) => resp.json())
     .then((data) => {
         this.setState({
@@ -114,7 +113,7 @@ export class Leaderboard extends Component {
             <p className="leaderboard__name">Email</p>
             <p className={"leaderboard__recentPoints " + (this.state.sortedByRecent ? 'underline' : '')}
                onClick={this.sortByRecent.bind(this)}>
-                Points in last 30 days
+                Average lead time
             </p>
             <p className={"leaderboard__totalPoints " + (this.state.sortedByRecent ? '' : 'underline')}
                onClick={this.sortByTotal.bind(this)}>

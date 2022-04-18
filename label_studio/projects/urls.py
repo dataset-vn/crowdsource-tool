@@ -64,7 +64,7 @@ _api_urlpatterns = [
     path('<int:pk>/ranking', api.RankingProjectMemberAPI.as_view(), name='update-project-member-ranking'),
 
     #Update 30 days ranking of project member
-    path('<int:pk>/recentranking', api.RecentRankingProjectMemberAPI.as_view(), name='update-project-member-recent-ranking')
+    path('<int:pk>/timeranking', api.TimeRankingProjectMemberAPI.as_view(), name='update-project-member-time-ranking')
 ]
 
 _api_urlpatterns_templates = [
