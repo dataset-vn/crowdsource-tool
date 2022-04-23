@@ -31,7 +31,7 @@ from projects.models import (
     Project, ProjectSummary, ProjectMember
 )
 from projects.serializers import (
-    ProjectSerializer, ProjectMemberSerializer, ProjectLabelConfigSerializer, ProjectSummarySerializer, ProjectMemberStatisticsSerializer
+    ProjectSerializer, ProjectMemberSerializer, ProjectLabelConfigSerializer, ProjectSummarySerializer, ProjectStatisticsSerializer
 )
 
 from users.models import User
@@ -297,15 +297,11 @@ class ProjectMemberStatisticsAPI(generics.ListCreateAPIView,
     serializer_class = UserStatisticsSerializer
 
     def get_queryset(self):
-        
         project_id = self.kwargs['pk']
         user_id = None
         if 'user' in self.kwargs:
             user_id = self.kwargs['user']
         current_user_id = self.request.user.id
-        # time_point = json.loads(self.request.body)['time_point']
-        # if time_point is None:
-        #     time_point = "2021-01-27 00:00:00+07"
         # TODO: Only Project Leader or above can see member list
         # TODO: use django permission instead of directly checking if role is manager as below
         if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner']).exists():
@@ -314,7 +310,7 @@ class ProjectMemberStatisticsAPI(generics.ListCreateAPIView,
         time_point = "2021-07-13 00:00:00+07"
 
         if user_id != None:
-            return User.objects.filter(id=user_id, project_memberships__project_id=project_id).annotate(num_tasks=Count('annotations__task', filter=Q(annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)), 
+            return User.objects.filter(id=user_id, project_memberships__project_id=project_id).annotate(num_tasks=Count('annotations__task', filter=Q(annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)),
                                                                                         num_annotations=Count('annotations', filter=Q(annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)),
                                                                                         num_skips=Count('annotations', filter=Q(annotations__was_cancelled=True) & Q(annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)),
                                                                                         avg_lead_time=Avg('annotations__lead_time', filter=Q(annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)))
@@ -324,6 +320,22 @@ class ProjectMemberStatisticsAPI(generics.ListCreateAPIView,
                                                                                         num_skips=Count('annotations', filter=Q(annotations__was_cancelled=True) & Q(annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)),
                                                                                         avg_lead_time=Avg('annotations__lead_time', filter=Q(annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)))
 
+class ProjectStatisticsAPI(generics.ListCreateAPIView,
+                       generics.RetrieveUpdateDestroyAPIView):
+    parser_classes = (JSONParser, FormParser, MultiPartParser)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ProjectStatisticsSerializer
+
+    def get_queryset(self):
+        project_id = self.kwargs['pk']
+        current_user_id = self.request.user.id
+        current_project = Project.objects.get(id=project_id)
+        # TODO: Only Project Leader or above can see member list
+        # TODO: use django permission instead of directly checking if role is manager as below
+        if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner']).exists():
+            raise DatasetJscDatabaseException("Operation can only be performed by a project manager or project owner")
+
+        return Project.objects.with_counts().filter(id=project_id)
 
 class ProjectMemberAPI(generics.ListCreateAPIView, 
                        generics.RetrieveUpdateDestroyAPIView):

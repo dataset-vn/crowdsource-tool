@@ -3228,6 +3228,13 @@ __user_active::before {
   margin: 8px;
 }
 
+.ls-stat-card {
+  --text-color: #000;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
 .ls-radio-group {
   --radius: 8px;
   --height: 32px;

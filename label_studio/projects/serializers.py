@@ -95,7 +95,6 @@ class ProjectSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
             self.instance.validate_config(value)
         return value
 
-
 class ProjectMemberSerializer(serializers.ModelSerializer):
     
     first_name = serializers.CharField(source='user.first_name', required = False)
@@ -161,3 +160,21 @@ class ProjectSummarySerializer(serializers.ModelSerializer):
     class Meta:
         model = ProjectSummary
         fields = '__all__'
+
+class ProjectStatisticsSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
+
+    task_number = serializers.IntegerField(default=None, read_only=True,
+                                        help_text='Total task number in project')
+    total_annotations_number = serializers.IntegerField(default=None, read_only=True,
+                                                    help_text='Total annotations number in project including '
+                                                              'skipped_annotations_number and ground_truth_number.')
+    skipped_annotations_number = serializers.IntegerField(default=None, read_only=True,
+                                                      help_text='Skipped by collaborators annotation number in project')
+    num_tasks_with_annotations = serializers.IntegerField(default=None, read_only=True, help_text='Tasks with annotations count')
+
+    class Meta:
+        model = Project
+        extra_kwargs = {'memberships': {'required': False}, 'title': {'required': False}, 'created_by': {'required': False}}
+        fields = ['id', 'title', 'description', 'num_tasks_with_annotations',
+                  'task_number', 'skipped_annotations_number',
+                  'total_annotations_number']

@@ -5,6 +5,7 @@ import {useCurrentUser} from "../../providers/CurrentUser";
 import { SidebarMenu } from '../../components/SidebarMenu/SidebarMenu';
 import { Members } from './Members/Members';
 import { DangerZone } from './DangerZone';
+import { Statistics } from './Statistics/Statistics';
 import { GeneralSettings } from './GeneralSettings';
 import { InstructionsSettings } from './InstructionsSettings';
 import { LabelingSettings } from './LabelingSettings';
@@ -64,6 +65,7 @@ export const MenuLayout = ({children, ...routeProps}) => {
     StorageSettings,
     DangerZone,
     Members,
+    Statistics,
   ]
 
   const managerVisibleComponents = [
@@ -72,7 +74,8 @@ export const MenuLayout = ({children, ...routeProps}) => {
     LabelingSettings,
     Members,
     MachineLearningSettings,
-    StorageSettings
+    StorageSettings,
+    Statistics,
   ]
 
   const annotatorVisibleComponents = [InstructionsSettings]
@@ -107,6 +110,7 @@ export const SettingsPage = {
     StorageSettings,
     DangerZone,
     Members,
+    Statistics,
   },
 };
 
