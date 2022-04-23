@@ -1,24 +1,25 @@
 /* global Sentry */
 
-import { createBrowserHistory } from 'history';
-import React from 'react';
-import { render } from 'react-dom';
-import { Router } from 'react-router-dom';
+import { createBrowserHistory } from "history";
+import React from "react";
+import { render } from "react-dom";
+import { Router } from "react-router-dom";
 import { initSentry } from "../config/Sentry";
-import { ApiProvider } from '../providers/ApiProvider';
-import { AppStoreProvider } from '../providers/AppStoreProvider';
-import { ConfigProvider } from '../providers/ConfigProvider';
-import { LibraryProvider } from '../providers/LibraryProvider';
-import { MultiProvider } from '../providers/MultiProvider';
-import { ProjectProvider } from '../providers/ProjectProvider';
-import { RoutesProvider } from '../providers/RoutesProvider';
-import { CurrentUserProvider } from '../providers/CurrentUser';
+import { ApiProvider } from "../providers/ApiProvider";
+import { AppStoreProvider } from "../providers/AppStoreProvider";
+import { ConfigProvider } from "../providers/ConfigProvider";
+import { LibraryProvider } from "../providers/LibraryProvider";
+import { MultiProvider } from "../providers/MultiProvider";
+import { ProjectProvider } from "../providers/ProjectProvider";
+import { RoutesProvider } from "../providers/RoutesProvider";
+import { CurrentUserProvider } from "../providers/CurrentUser";
 
-import './App.styl';
-import { AsyncPage } from './AsyncPage/AsyncPage';
-import ErrorBoundary from './ErrorBoundary';
-import { RootPage } from './RootPage';
-import '../i18n';
+import "./App.styl";
+import { AsyncPage } from "./AsyncPage/AsyncPage";
+import ErrorBoundary from "./ErrorBoundary";
+import { RootPage } from "./RootPage";
+import "../i18n";
+import StyleGlobal from "./styleGlobal";
 
 const baseURL = new URL(APP_SETTINGS.hostname || location.origin);
 
@@ -30,7 +31,7 @@ window.LSH = browserHistory;
 
 initSentry(browserHistory);
 
-const App = ({content}) => {
+const App = ({ content }) => {
   const libraries = {
     lsf: {
       scriptSrc: window.EDITOR_JS,
@@ -46,18 +47,21 @@ const App = ({content}) => {
 
   return (
     <ErrorBoundary>
+      <StyleGlobal />,
       <Router history={browserHistory}>
-        <MultiProvider providers={[
-          <AppStoreProvider key="app-store"/>,
-          <ApiProvider key="api"/>,
-          <ConfigProvider key="config"/>,
-          <LibraryProvider key="lsf" libraries={libraries}/>,
-          <RoutesProvider key="rotes"/>,
-          <ProjectProvider key="project"/>,
-          <CurrentUserProvider key="user"/>,
-        ]}>
+        <MultiProvider
+          providers={[
+            <AppStoreProvider key="app-store" />,
+            <ApiProvider key="api" />,
+            <ConfigProvider key="config" />,
+            <LibraryProvider key="lsf" libraries={libraries} />,
+            <RoutesProvider key="rotes" />,
+            <ProjectProvider key="project" />,
+            <CurrentUserProvider key="user" />,
+          ]}
+        >
           <AsyncPage>
-            <RootPage content={content}/>
+            <RootPage content={content} />
           </AsyncPage>
         </MultiProvider>
       </Router>
@@ -65,7 +69,7 @@ const App = ({content}) => {
   );
 };
 
-const root = document.querySelector('.app-wrapper');
-const content = document.querySelector('#main-content');
+const root = document.querySelector(".app-wrapper");
+const content = document.querySelector("#main-content");
 
-render(<App content={content.innerHTML}/>, root);
+render(<App content={content.innerHTML} />, root);
