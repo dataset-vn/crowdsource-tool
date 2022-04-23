@@ -47,7 +47,7 @@ const App = ({ content }) => {
 
   return (
     <ErrorBoundary>
-      <StyleGlobal />,
+      <StyleGlobal />
       <Router history={browserHistory}>
         <MultiProvider
           providers={[
