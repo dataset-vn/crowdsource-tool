@@ -63,7 +63,7 @@ export class Leaderboard extends Component {
   }
 
   sortByRecent() {
-    fetch("http://127.0.0.1:8080/api/projects/66/timeranking")
+    fetch("/api/projects/66/timeranking")
     .then((resp) => resp.json())
     .then((data) => {
         this.setState({
@@ -74,7 +74,7 @@ export class Leaderboard extends Component {
   }
 
   sortByTotal() {
-    fetch("http://127.0.0.1:8080/api/projects/66/ranking")
+    fetch("/api/projects/66/ranking")
     .then((resp) => resp.json())
     .then((data) => {
         this.setState({
