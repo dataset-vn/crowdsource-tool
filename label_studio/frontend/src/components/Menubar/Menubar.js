@@ -246,13 +246,6 @@ export const Menubar = ({
                   data-external
                   exact
                 />
-                <Menu.Item
-                  label={t("sideBar.organizations")}
-                  to="/organizations"
-                  icon={<IconBook />}
-                  data-external
-                  exact
-                />
 
                 <Menu.Spacer />
 

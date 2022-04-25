@@ -14,7 +14,6 @@ from projects.models import Project
 from core.utils.common import get_object_with_check_and_log
 from core.label_config import get_sample_task
 from core.utils.common import get_organization_from_request
-from core.utils.exceptions import ProjectExistException, LabelStudioDatabaseException, DatasetJscDatabaseException
 
 from organizations.models import Organization
 
