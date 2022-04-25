@@ -84,9 +84,6 @@ def leaderboard(request):
 def people(request):
     return render(request, 'people.html')
 
-def organizations(request):
-    return render(request, 'organizations.html')
-
 def editor_files(request):
     """ Get last editor files
     """
