@@ -67,6 +67,38 @@ const StyleGlobal = createGlobalStyle`
                 } */
             }
         }
+        .ls-content-wrapper__body{
+            .ls-content-wrapper__content{
+                .leaderboard{
+                    font-size: 13px;
+                    padding: 10px 10px;
+                    overflow-y: auto;
+                    .leaderboard__rank{
+                        width: 10%;
+                        padding: 0 0.5em;
+                    }
+                    .leaderboard__name{
+                        width: 45%;
+                        padding: 0 0.5em;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        overflow: hidden;
+                    }
+                    .leaderboard__recentPoints{
+                        width: 25%;
+                        padding: 0 0.5em;
+                    }
+                    .leaderboard__totalPoints{
+                        width: 15%;
+                        padding: 0 0.5em;
+                    }
+                }
+            }
+        }
+
+
+
+        //dm
         .dm-tab-panel{
             width: 100vw;
             overflow-x: scroll;
