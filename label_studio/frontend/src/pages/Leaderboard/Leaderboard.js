@@ -2,21 +2,12 @@ import React, { useState, useEffect } from "react";
 import "../../components/Ranking/Leaderboard.css";
 import { EntryList } from "../../components/Ranking/EntryList";
 import AsyncSelect from "react-select/async";
-import { Button } from "../../components";
-import {
-  Form,
-  Input,
-  TextArea,
-  Select,
-  Toggle,
-  Label,
-} from "../../components/Form";
-import { isThisSecond } from "date-fns";
+
 //import { Dropdown } from "../../components/Ranking/ChooseProject";
 
 export const Leaderboard = () => {
   const [listProject, setListProject] = useState([]);
-  const [inputValueText, setInputValueText] = useState("");
+  const [data, setData] = useState([]);
 
   const getListProjects = () => {
     fetch("http://127.0.0.1:8080/api/projects")
@@ -41,15 +32,10 @@ export const Leaderboard = () => {
     console.log("projectID, projectID", projectID);
     fetch(`http://127.0.0.1:8080/api/projects/${projectID}/ranking`)
       .then((resp) => {
-        console.log("resp", resp);
         return resp.json();
       })
       .then((data) => {
-        console.log("dataaaaa", data);
-        // this.setState({
-        //   data: data,
-        //   sortedByRecent: false,
-        // });
+        setData(data);
       });
   };
 
@@ -62,7 +48,7 @@ export const Leaderboard = () => {
           // eslint-disable-next-line comma-dangle
           ?.includes(inputValue?.toUpperCase().trim()) || inputValue === ""
     );
-    if (inputValueText === "") {
+    if (listProject.length === 0) {
       fetch("http://127.0.0.1:8080/api/projects")
         .then((resp) => resp.json())
         .then((data) => {
@@ -95,16 +81,15 @@ export const Leaderboard = () => {
           alignItems: "center",
         }}
       >
-        <div style={{width: "300px" }}>
+        <div style={{ width: "300px" }}>
           <p>Choose your projects:</p>
           <AsyncSelect
             defaultOptions
             cacheOptions
             loadOptions={ProjectList}
             onChange={(e) => {
-              // console.log("eeeee", e);
-              // setInputValueText(e.label);
-              sortByTotal(5);
+              console.log("eeeee", e);
+              sortByTotal(e?.value);
             }}
           />
         </div>
@@ -117,6 +102,7 @@ export const Leaderboard = () => {
           <p className="leaderboard__recentPoints ">Points in last 30 days</p>
           <p className={"leaderboard__totalPoints "}>Total points</p>
         </div>
+        <EntryList entries={data} />
       </section>
     </div>
   );
