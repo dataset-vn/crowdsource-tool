@@ -88,7 +88,7 @@ export const Leaderboard = () => {
             cacheOptions
             loadOptions={ProjectList}
             onChange={(e) => {
-              console.log("eeeee", e);
+              console.log(e);
               sortByTotal(e?.value);
             }}
           />
@@ -99,8 +99,8 @@ export const Leaderboard = () => {
         <div className="leaderboard__header">
           <p className="leaderboard__rank">Rank</p>
           <p className="leaderboard__name">Email</p>
-          <p className="leaderboard__recentPoints ">Points in last 30 days</p>
-          <p className={"leaderboard__totalPoints "}>Total points</p>
+          <p className="leaderboard__recentPoints ">Average lead time</p>
+          <p className="leaderboard__totalPoints ">Total points</p>
         </div>
         <EntryList entries={data} />
       </section>

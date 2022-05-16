@@ -942,41 +942,23 @@ class RankingProjectMemberAPI(generics.ListCreateAPIView,
 
     parser_classes = (JSONParser, FormParser, MultiPartParser)
     permission_classes = (IsAuthenticated,)
-    serializer_class = ProjectMemberSerializer
-    queryset = ProjectMember.objects.all()
+    serializer_class = UserStatisticsSerializer
 
     def get_queryset(self):
         project_id = self.kwargs['pk']
-        ranking = ProjectMember.objects.filter(
-            Q(project=project_id)
-        ).annotate(
+        user_id = None
+        if 'user' in self.kwargs:
+            user_id = self.kwargs['user']
+        current_project = Project.objects.get(id=project_id)
+        time_point = "2021-07-13 00:00:00+07"
+        num_annotations = Count('annotations', filter=Q(annotations__task__project=current_project) & Q(
+            annotations__updated_at__gt=time_point))
+
+        return User.objects.filter(project_memberships__project_id=project_id).annotate(
+            avg_lead_time=Avg('annotations__lead_time', filter=Q(annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)),
+            total_points = num_annotations * 100,
             rank=Window(
                 expression=Rank(),
-                order_by=F('ranking_score').desc(),
+                order_by=F('total_points').desc(),
             )
         )
-
-        return ranking
-
-class RecentRankingProjectMemberAPI(generics.ListCreateAPIView,
-                           generics.DestroyAPIView,
-                           APIViewVirtualMethodMixin,
-                           APIViewVirtualRedirectMixin):
-
-    parser_classes = (JSONParser, FormParser, MultiPartParser)
-    permission_classes = (IsAuthenticated,)
-    serializer_class = ProjectMemberSerializer
-    queryset = ProjectMember.objects.all()
-
-    def get_queryset(self):
-        project_id = self.kwargs['pk']
-        ranking = ProjectMember.objects.filter(
-            Q(project=project_id)
-        ).annotate(
-            rank=Window(
-                expression=Rank(),
-                order_by=F('recent_score').desc(),
-            )
-        )
-
-        return ranking

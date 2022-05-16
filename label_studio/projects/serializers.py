@@ -95,7 +95,6 @@ class ProjectSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
             self.instance.validate_config(value)
         return value
 
-
 class ProjectMemberSerializer(serializers.ModelSerializer):
     
     first_name = serializers.CharField(source='user.first_name', required = False)
@@ -126,8 +125,6 @@ class ProjectMemberSerializer(serializers.ModelSerializer):
             'avatar',
             'total_records',
             'contact_status',
-            'ranking_score',
-            'recent_score'
         )
 
 
