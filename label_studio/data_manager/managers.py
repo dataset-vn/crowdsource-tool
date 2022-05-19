@@ -56,7 +56,8 @@ def get_fields_for_annotation(prepare_params):
     result = []
     # collect fields from ordering
     if prepare_params.ordering:
-        ordering_field_name = prepare_params.ordering[0].replace("tasks:", "").replace("-", "")
+        ordering_field_name = prepare_params.ordering[0].replace(
+            "tasks:", "").replace("-", "")
         result.append(ordering_field_name)
 
     # collect fields from filters
@@ -82,21 +83,27 @@ def apply_ordering(queryset, ordering):
     if ordering:
         field_name = ordering[0].replace("tasks:", "")
         ascending = False if field_name[0] == '-' else True  # detect direction
-        field_name = field_name[1:] if field_name[0] == '-' else field_name  # remove direction
+        # remove direction
+        field_name = field_name[1:] if field_name[0] == '-' else field_name
 
         if "data." in field_name:
             field_name = field_name.replace(".", "__", 1)
-            only_undefined_field = queryset.exists() and queryset.first().project.only_undefined_field
+            only_undefined_field = queryset.exists(
+            ) and queryset.first().project.only_undefined_field
             if only_undefined_field:
-                field_name = re.sub('data__\w+', f'data__{settings.DATA_UNDEFINED_NAME}', field_name)
+                field_name = re.sub(
+                    'data__\w+', f'data__{settings.DATA_UNDEFINED_NAME}', field_name)
 
             # annotate task with data field for float/int/bool ordering support
             json_field = field_name.replace('data__', '')
-            queryset = queryset.annotate(ordering_field=KeyTransform(json_field, 'data'))
-            f = F('ordering_field').asc(nulls_last=True) if ascending else F('ordering_field').desc(nulls_last=True)
+            queryset = queryset.annotate(
+                ordering_field=KeyTransform(json_field, 'data'))
+            f = F('ordering_field').asc(nulls_last=True) if ascending else F(
+                'ordering_field').desc(nulls_last=True)
 
         else:
-            f = F(field_name).asc(nulls_last=True) if ascending else F(field_name).desc(nulls_last=True)
+            f = F(field_name).asc(nulls_last=True) if ascending else F(
+                field_name).desc(nulls_last=True)
 
         queryset = queryset.order_by(f)
     else:
@@ -123,7 +130,8 @@ def apply_filters(queryset, filters):
     else:
         conjunction = Q.AND
 
-    only_undefined_field = queryset.exists() and queryset.first().project.only_undefined_field
+    only_undefined_field = queryset.exists(
+    ) and queryset.first().project.only_undefined_field
 
     for _filter in filters.items:
         # we can also have annotations filters
@@ -131,7 +139,8 @@ def apply_filters(queryset, filters):
             continue
 
         # django orm loop expression attached to column name
-        field_name = preprocess_field_name(_filter.filter, _filter.operator, only_undefined_field)
+        field_name = preprocess_field_name(
+            _filter.filter, _filter.operator, only_undefined_field)
 
         # in
         if _filter.operator == "in":
@@ -167,15 +176,33 @@ def apply_filters(queryset, filters):
         # starting from not_
         elif _filter.operator.startswith("not_"):
             cast_value(_filter)
-            filter_expression.add(~Q(**{field_name: _filter.value}), conjunction)
+            filter_expression.add(
+                ~Q(**{field_name: _filter.value}), conjunction)
 
         # all others
         else:
             cast_value(_filter)
-            filter_expression.add(Q(**{field_name: _filter.value}), conjunction)
-    
+            filter_expression.add(
+                Q(**{field_name: _filter.value}), conjunction)
+
     logger.debug(f'Apply filter: {filter_expression}')
     queryset = queryset.filter(filter_expression)
+    return queryset
+
+
+def filter_by_user(queryset, user, role):
+    if (not user) & (not role):
+        return queryset
+
+    print("ROLE: ", role)
+
+    if (role == "owner") | (role == "manager"):
+        return queryset
+
+    queryset = queryset.filter(
+        Q(annotator_assigned_id=user) | Q(reviewer_assigned_id=user))
+
+    # queryset = queryset.filter(filter_expression)
     return queryset
 
 
@@ -192,6 +219,10 @@ class TaskQuerySet(models.QuerySet):
         if prepare_params.project is not None:
             queryset = queryset.filter(project=prepare_params.project)
 
+        print("QUERYSET: ", queryset)
+
+        queryset = filter_by_user(
+            queryset, prepare_params.user, prepare_params.role)
         queryset = apply_filters(queryset, prepare_params.filters)
         queryset = apply_ordering(queryset, prepare_params.ordering)
 
@@ -200,11 +231,13 @@ class TaskQuerySet(models.QuerySet):
 
         # included selected items
         if prepare_params.selectedItems.all is False and prepare_params.selectedItems.included:
-            queryset = queryset.filter(id__in=prepare_params.selectedItems.included)
+            queryset = queryset.filter(
+                id__in=prepare_params.selectedItems.included)
 
         # excluded selected items
         elif prepare_params.selectedItems.all is True and prepare_params.selectedItems.excluded:
-            queryset = queryset.exclude(id__in=prepare_params.selectedItems.excluded)
+            queryset = queryset.exclude(
+                id__in=prepare_params.selectedItems.excluded)
 
         return queryset
 
@@ -222,14 +255,16 @@ class GroupConcat(Aggregate):
 def annotate_completed_at(queryset):
     from tasks.models import Annotation
 
-    newest = Annotation.objects.filter(task=OuterRef("pk"), task__is_labeled=True).distinct().order_by("-created_at")
+    newest = Annotation.objects.filter(task=OuterRef(
+        "pk"), task__is_labeled=True).distinct().order_by("-created_at")
     return queryset.annotate(completed_at=Subquery(newest.values("created_at")[:1]))
 
 
 def annotate_cancelled_annotations(queryset):
     from tasks.models import Annotation
 
-    cancelled_annotations = Annotation.objects.filter(was_cancelled=True, task=OuterRef("pk"))
+    cancelled_annotations = Annotation.objects.filter(
+        was_cancelled=True, task=OuterRef("pk"))
     return queryset.annotate(cancelled_annotations=Exists(cancelled_annotations))
 
 
@@ -254,6 +289,13 @@ def annotate_annotators(queryset):
         return queryset.annotate(annotators=ArrayAgg("annotations__completed_by"))
 
 
+def annotate_reviewers(queryset):
+    if settings.DJANGO_DB == settings.DJANGO_DB_SQLITE:
+        return queryset.annotate(reviewers=Coalesce(GroupConcat("annotations__reviewed_by"), Value(None)))
+    else:
+        return queryset.annotate(reviewers=ArrayAgg("annotations__reviewed_by"))
+
+
 def annotate_predictions_score(queryset):
     return queryset.annotate(predictions_score=Avg("predictions__score"))
 
@@ -269,6 +311,7 @@ settings.DATA_MANAGER_ANNOTATIONS_MAP = {
     "predictions_results": annotate_predictions_results,
     "predictions_score": annotate_predictions_score,
     "annotators": annotate_annotators,
+    "reviewers": annotate_reviewers,
     "total_annotations": dummy,
     "total_predictions": dummy
 }
@@ -292,7 +335,8 @@ class PreparedTaskManager(models.Manager):
 
         # default annotations for calculating total values in pagination output
         queryset = queryset.annotate(
-            total_annotations=Count("annotations", distinct=True, filter=Q(annotations__was_cancelled=False)),
+            total_annotations=Count("annotations", distinct=True, filter=Q(
+                annotations__was_cancelled=False)),
             total_predictions=Count("predictions", distinct=True),
         )
 

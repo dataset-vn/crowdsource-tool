@@ -28,10 +28,10 @@ logger = logging.getLogger(__name__)
 
 
 @method_decorator(name='post', decorator=swagger_auto_schema(
-        tags=['Tasks'],
-        operation_summary='Create task',
-        operation_description='Create a new labeling task in Label Studio.',
-        request_body=TaskSerializer))
+    tags=['Tasks'],
+    operation_summary='Create task',
+    operation_description='Create a new labeling task in Label Studio.',
+    request_body=TaskSerializer))
 class TaskListAPI(generics.ListCreateAPIView):
     parser_classes = (JSONParser, FormParser, MultiPartParser)
     queryset = Task.objects.all()
@@ -39,13 +39,15 @@ class TaskListAPI(generics.ListCreateAPIView):
 
     @swagger_auto_schema(auto_schema=None)
     def get(self, request, *args, **kwargs):
+        print("-----get tasks-----")
         return super(TaskListAPI, self).get(request, *args, **kwargs)
 
     def get_serializer_context(self):
         context = super(TaskListAPI, self).get_serializer_context()
         project_id = self.request.data.get('project')
         if project_id:
-            context['project'] = generics.get_object_or_404(Project, pk=project_id)
+            context['project'] = generics.get_object_or_404(
+                Project, pk=project_id)
         return context
 
     def post(self, request, *args, **kwargs):
@@ -53,25 +55,25 @@ class TaskListAPI(generics.ListCreateAPIView):
 
 
 @method_decorator(name='get', decorator=swagger_auto_schema(
-        tags=['Tasks'],
-        operation_summary='Get task',
-        operation_description="""
+    tags=['Tasks'],
+    operation_summary='Get task',
+    operation_description="""
         Get task data, metadata, annotations and other attributes for a specific labeling task by task ID.
         """,
-        manual_parameters=[
-            openapi.Parameter(name='proxy', type=openapi.TYPE_BOOLEAN, in_=openapi.IN_QUERY,
+    manual_parameters=[
+        openapi.Parameter(name='proxy', type=openapi.TYPE_BOOLEAN, in_=openapi.IN_QUERY,
                           description='Use the proxy parameter inline for credential access to task data')
-        ]))
+    ]))
 @method_decorator(name='patch', decorator=swagger_auto_schema(
-        tags=['Tasks'],
-        operation_summary='Update task',
-        operation_description='Update the attributes of an existing labeling task.',
-        request_body=TaskSimpleSerializer))
+    tags=['Tasks'],
+    operation_summary='Update task',
+    operation_description='Update the attributes of an existing labeling task.',
+    request_body=TaskSimpleSerializer))
 @method_decorator(name='delete', decorator=swagger_auto_schema(
-        tags=['Tasks'],
-        operation_summary='Delete task',
-        operation_description='Delete a task in Label Studio. This action cannot be undone!',
-        ))
+    tags=['Tasks'],
+    operation_summary='Delete task',
+    operation_description='Delete a task in Label Studio. This action cannot be undone!',
+))
 class TaskAPI(generics.RetrieveUpdateDestroyAPIView):
     """
 
@@ -88,7 +90,7 @@ class TaskAPI(generics.RetrieveUpdateDestroyAPIView):
         # POST, PATCH, PUT
         else:
             return TaskSimpleSerializer
-    
+
     def retrieve(self, request, *args, **kwargs):
         task = self.get_object()
 
@@ -117,21 +119,22 @@ class TaskAPI(generics.RetrieveUpdateDestroyAPIView):
     def put(self, request, *args, **kwargs):
         return super(TaskAPI, self).put(request, *args, **kwargs)
 
+
 @method_decorator(name='get', decorator=swagger_auto_schema(
-        tags=['Annotations'],
-        operation_summary='Get annotation by its ID',
-        operation_description='Retrieve a specific annotation for a task using the annotation result ID.',
-        ))
+    tags=['Annotations'],
+    operation_summary='Get annotation by its ID',
+    operation_description='Retrieve a specific annotation for a task using the annotation result ID.',
+))
 @method_decorator(name='patch', decorator=swagger_auto_schema(
-        tags=['Annotations'],
-        operation_summary='Update annotation',
-        operation_description='Update existing attributes on an annotation.',
-        request_body=AnnotationSerializer))
+    tags=['Annotations'],
+    operation_summary='Update annotation',
+    operation_description='Update existing attributes on an annotation.',
+    request_body=AnnotationSerializer))
 @method_decorator(name='delete', decorator=swagger_auto_schema(
-        tags=['Annotations'],
-        operation_summary='Delete annotation',
-        operation_description='Delete an annotation. This action can\'t be undone!',
-        ))
+    tags=['Annotations'],
+    operation_summary='Delete annotation',
+    operation_description='Delete an annotation. This action can\'t be undone!',
+))
 class AnnotationAPI(RequestDebugLogMixin, generics.RetrieveUpdateDestroyAPIView):
     parser_classes = (JSONParser, FormParser, MultiPartParser)
     permission_required = ViewClassPermission(
@@ -148,14 +151,17 @@ class AnnotationAPI(RequestDebugLogMixin, generics.RetrieveUpdateDestroyAPIView)
         annotation.delete()
 
     def update(self, request, *args, **kwargs):
+        print("holy fffffffffffffffffffffffffffffffff----------------fffffffffffffffffffffff-----------------------ffffffffffffffffffff---------------f")
         # save user history with annotator_id, time & annotation result
         annotation_id = self.kwargs['pk']
-        annotation = get_object_with_check_and_log(request, Annotation, pk=annotation_id)
+        annotation = get_object_with_check_and_log(
+            request, Annotation, pk=annotation_id)
 
         annotation.task.save()  # refresh task metrics
 
         if self.request.data.get('ground_truth'):
-            annotation.task.ensure_unique_groundtruth(annotation_id=annotation.id)
+            annotation.task.ensure_unique_groundtruth(
+                annotation_id=annotation.id)
 
         return super(AnnotationAPI, self).update(request, *args, **kwargs)
 
@@ -174,16 +180,16 @@ class AnnotationAPI(RequestDebugLogMixin, generics.RetrieveUpdateDestroyAPIView)
 
 
 @method_decorator(name='get', decorator=swagger_auto_schema(
-        tags=['Annotations'],
-        operation_summary='Get all task annotations',
-        operation_description='List all annotations for a task.',
-        ))
+    tags=['Annotations'],
+    operation_summary='Get all task annotations',
+    operation_description='List all annotations for a task.',
+))
 @method_decorator(name='post', decorator=swagger_auto_schema(
-        tags=['Annotations'],
-        operation_summary='Create annotation',
-        operation_description='Add annotations to a task like an annotator does.',
-        request_body=AnnotationSerializer
-        ))
+    tags=['Annotations'],
+    operation_summary='Create annotation',
+    operation_description='Add annotations to a task like an annotator does.',
+    request_body=AnnotationSerializer
+))
 class AnnotationsListAPI(RequestDebugLogMixin, generics.ListCreateAPIView):
     parser_classes = (JSONParser, FormParser, MultiPartParser)
     permission_required = ViewClassPermission(
@@ -200,11 +206,13 @@ class AnnotationsListAPI(RequestDebugLogMixin, generics.ListCreateAPIView):
         return super(AnnotationsListAPI, self).post(request, *args, **kwargs)
 
     def get_queryset(self):
-        task = generics.get_object_or_404(Task.objects.for_user(self.request.user), pk=self.kwargs.get('pk', 0))
+        task = generics.get_object_or_404(Task.objects.for_user(
+            self.request.user), pk=self.kwargs.get('pk', 0))
         return Annotation.objects.filter(Q(task=task) & Q(was_cancelled=False)).order_by('pk')
 
     def perform_create(self, ser):
-        task = get_object_with_check_and_log(self.request, Task, pk=self.kwargs['pk'])
+        task = get_object_with_check_and_log(
+            self.request, Task, pk=self.kwargs['pk'])
         # annotator has write access only to annotations and it can't be checked it after serializer.save()
         user = self.request.user
         # Release task if it has been taken at work (it should be taken by the same user, or it makes sentry error
@@ -219,12 +227,14 @@ class AnnotationsListAPI(RequestDebugLogMixin, generics.ListCreateAPIView):
         # save stats about how well annotator annotations coincide with current prediction
         # only for finished task annotations
         if result is not None:
-            prediction = Prediction.objects.filter(task=task, model_version=task.project.model_version)
+            prediction = Prediction.objects.filter(
+                task=task, model_version=task.project.model_version)
             if prediction.exists():
                 prediction = prediction.first()
                 prediction_ser = PredictionSerializer(prediction).data
             else:
-                logger.debug(f'User={self.request.user}: there are no predictions for task={task}')
+                logger.debug(
+                    f'User={self.request.user}: there are no predictions for task={task}')
                 prediction_ser = {}
             # serialize annotation
             extra_args.update({
@@ -232,7 +242,8 @@ class AnnotationsListAPI(RequestDebugLogMixin, generics.ListCreateAPIView):
             })
 
         if 'was_cancelled' in self.request.GET:
-            extra_args['was_cancelled'] = bool_from_request(self.request.GET, 'was_cancelled', False)
+            extra_args['was_cancelled'] = bool_from_request(
+                self.request.GET, 'was_cancelled', False)
 
         if 'completed_by' not in ser.validated_data:
             extra_args['completed_by'] = self.request.user
@@ -247,11 +258,13 @@ class AnnotationsListAPI(RequestDebugLogMixin, generics.ListCreateAPIView):
         # if annotation created from draft - remove this draft
         draft_id = self.request.data.get('draft_id')
         if draft_id is not None:
-            logger.debug(f'Remove draft {draft_id} after creating annotation {annotation.id}')
+            logger.debug(
+                f'Remove draft {draft_id} after creating annotation {annotation.id}')
             AnnotationDraft.objects.filter(id=draft_id).delete()
 
         if self.request.data.get('ground_truth'):
-            annotation.task.ensure_unique_groundtruth(annotation_id=annotation.id)
+            annotation.task.ensure_unique_groundtruth(
+                annotation_id=annotation.id)
 
         return annotation
 
@@ -275,7 +288,8 @@ class AnnotationDraftListAPI(RequestDebugLogMixin, generics.ListCreateAPIView):
         task_id = self.kwargs['pk']
         annotation_id = self.kwargs.get('annotation_id')
         user = self.request.user
-        logger.debug(f'User {user} is going to create draft for task={task_id}, annotation={annotation_id}')
+        logger.debug(
+            f'User {user} is going to create draft for task={task_id}, annotation={annotation_id}')
         serializer.save(
             task_id=self.kwargs['pk'],
             annotation_id=annotation_id,
@@ -321,3 +335,37 @@ class PredictionAPI(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Prediction.objects.filter(organization=self.request.user.active_organization)
+
+
+@method_decorator(name='patch', decorator=swagger_auto_schema(
+    tags=['Annotations'],
+    operation_summary='Update annotation review',
+    operation_description='Update review result on an annotation.',
+    request_body=AnnotationSerializer))
+class AnnotationReviewAPI(RequestDebugLogMixin, generics.RetrieveUpdateDestroyAPIView):
+    parser_classes = (JSONParser, FormParser, MultiPartParser)
+    permission_required = ViewClassPermission(
+        PATCH=all_permissions.annotations_change,
+    )
+
+    serializer_class = AnnotationSerializer
+    queryset = Annotation.objects.all()
+
+    def update(self, request, *args, **kwargs):
+        print("reviewreviewreviewreviewreviewreviewreviewreviewreviewreviewreviewreviewreviewreviewreviewreviewreviewreviewreviewreviewreviewreviewreviewreview")
+        print(self.request.data)
+        # save user history with annotator_id, time & annotation result
+        annotation_id = self.kwargs['pk']
+        annotation = get_object_with_check_and_log(
+            request, Annotation, pk=annotation_id)
+
+        annotation.reviewed_by_id = self.request.user
+        print(annotation.is_accepted)
+        print(self.request.user)
+        annotation.task.save()
+        annotation.save()
+
+        return super(AnnotationReviewAPI, self).update(request, *args, **kwargs)
+
+    def patch(self, request, *args, **kwargs):
+        return super(AnnotationReviewAPI, self).patch(request, *args, **kwargs)

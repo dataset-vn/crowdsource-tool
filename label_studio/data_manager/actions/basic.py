@@ -2,7 +2,8 @@
 """
 from django.db.models import signals
 
-from tasks.models import Annotation, Prediction, update_is_labeled_after_removing_annotation
+from tasks.models import Annotation, Prediction, Task, update_is_labeled_after_removing_annotation
+from users.models import User
 from core.utils.common import temporary_disconnect_signal, temporary_disconnect_all_signals
 
 from data_manager.functions import evaluate_predictions
@@ -81,6 +82,36 @@ def delete_tasks_predictions(project, queryset, **kwargs):
     return {'processed_items': count, 'detail': 'Deleted ' + str(count) + ' predictions'}
 
 
+def assign_task_annotators(project, queryset, **kwargs):
+    """ Assign to a task as annotator """
+    task_ids = queryset.values_list('id', flat=True)
+    tasks = Task.objects.filter(id__in=task_ids)
+    count = tasks.count()
+    selectedUserIds = kwargs.get('request').data.get('selectedUsers')
+    if (len(selectedUserIds) > 0):
+        selectedUsers = User.objects.get(id=selectedUserIds[0])
+        # currently only assign only the first user from the list
+        for task in tasks:
+            task.annotator_assigned = selectedUsers
+            task.save()
+    return {'processed_items': count, 'detail': "Assigned annotators to " + str(count) + " tasks"}
+
+
+def assign_task_reviewers(project, queryset, **kwargs):
+    """ Assign to a task as annotator """
+    task_ids = queryset.values_list('id', flat=True)
+    tasks = Task.objects.filter(id__in=task_ids)
+    count = tasks.count()
+    selectedUserIds = kwargs.get('request').data.get('selectedUsers')
+    if (len(selectedUserIds) > 0):
+        selectedUsers = User.objects.get(id=selectedUserIds[0])
+        # currently only assign only the first user from the list
+        for task in tasks:
+            task.reviewer_assigned = selectedUsers
+            task.save()
+    return {'processed_items': count, 'detail': "Assigned reviewers to " + str(count) + " tasks"}
+
+
 actions = [
     {
         'entry_point': retrieve_tasks_predictions,
@@ -89,7 +120,7 @@ actions = [
         'permissions': 'can_manage_annotations',
         'dialog': {
             'text': 'Send the selected tasks to all ML backends connected to the project.'
-                    'This operation migth be abruptly interrupted due to a timeout. ' 
+                    'This operation migth be abruptly interrupted due to a timeout. '
                     'The recommended way to get predictions is to update tasks using the Label Studio API.'
                     '<a href="https://labelstud.io/guide/ml.html>See more in the documentation</a>.'
                     'Please confirm your action.',
@@ -125,5 +156,25 @@ actions = [
             'text': 'You are going to delete all predictions from the selected tasks. Please confirm your action.',
             'type': 'confirm'
         }
-    }
+    },
+    {
+        'entry_point': assign_task_annotators,
+        'title': 'Phân công người dán nhãn', 'order': 111,
+        'permissions': 'can_manage_annotations',
+        'reload': True,
+        'dialog': {
+            'text': 'You are going to assign 1 annotator to the selected tasks. Please confirm your action.',
+            'type': 'confirm'
+        }
+    },
+    {
+        'entry_point': assign_task_reviewers,
+        'title': 'Phân công người kiểm tra', 'order': 112,
+        'permissions': 'can_manage_annotations',
+        'reload': True,
+        'dialog': {
+            'text': 'You are going to assign 1 reviewer to the selected tasks. Please confirm your action.',
+            'type': 'confirm'
+        }
+    },
 ]

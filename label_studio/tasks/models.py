@@ -35,7 +35,8 @@ TaskMixin = load_func(settings.TASK_MIXIN)
 class Task(TaskMixin, models.Model):
     """ Business tasks from project
     """
-    id = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID', db_index=True)
+    id = models.AutoField(auto_created=True, primary_key=True,
+                          serialize=False, verbose_name='ID', db_index=True)
     data = JSONField('data', null=False, help_text='User imported or uploaded data for a task. Data is formatted according to '
                                                    'the project label config. You can find examples of data for your project '
                                                    'on the Import page in the Label Studio Data Manager UI.')
@@ -46,11 +47,13 @@ class Task(TaskMixin, models.Model):
     project = models.ForeignKey('projects.Project', related_name='tasks', on_delete=models.CASCADE, null=True,
                                 help_text='Project ID for this task')
     annotator_assigned = models.ForeignKey('users.User', related_name='assignees', on_delete=models.CASCADE, null=True,
-                                help_text='ID of annotator assigned for this task')
+                                           help_text='ID of annotator assigned for this task')
     reviewer_assigned = models.ForeignKey('users.User', related_name='reviewers', on_delete=models.CASCADE, null=True,
-                                help_text='ID of reviewer assigned for this task')                            
-    created_at = models.DateTimeField(_('created at'), auto_now_add=True, help_text='Time a task was created')
-    updated_at = models.DateTimeField(_('updated at'), auto_now=True, help_text='Last time a task was updated')
+                                          help_text='ID of reviewer assigned for this task')
+    created_at = models.DateTimeField(
+        _('created at'), auto_now_add=True, help_text='Time a task was created')
+    updated_at = models.DateTimeField(
+        _('updated at'), auto_now=True, help_text='Last time a task was updated')
     is_labeled = models.BooleanField(_('is_labeled'), default=False,
                                      help_text='True if the number of annotations for this task is greater than or equal '
                                                'to the number of maximum_completions for the project')
@@ -63,7 +66,8 @@ class Task(TaskMixin, models.Model):
     updates = ['is_labeled']
 
     objects = TaskManager()  # task manager by default
-    prepared = PreparedTaskManager()  # task manager with filters, ordering, etc for data_manager app
+    # task manager with filters, ordering, etc for data_manager app
+    prepared = PreparedTaskManager()
 
     @property
     def file_upload_name(self):
@@ -75,9 +79,11 @@ class Task(TaskMixin, models.Model):
         """
         lock = None
         if project is not None:
-            lock = TaskLock.objects.filter(user=user, expire_at__gt=now(), task__project=project).first()
+            lock = TaskLock.objects.filter(
+                user=user, expire_at__gt=now(), task__project=project).first()
         elif tasks is not None:
-            locked_tasks = tasks.filter(locks__user=user, locks__expire_at__gt=now())[:1]
+            locked_tasks = tasks.filter(
+                locks__user=user, locks__expire_at__gt=now())[:1]
             if locked_tasks:
                 return locked_tasks[0]
         else:
@@ -94,7 +100,8 @@ class Task(TaskMixin, models.Model):
 
         num = num_locks + num_annotations
         if num > self.overlap:
-            logger.error(f"Num takes={num} > overlap={self.overlap} for task={self.id} - it's a bug")
+            logger.error(
+                f"Num takes={num} > overlap={self.overlap} for task={self.id} - it's a bug")
         return num >= self.overlap
 
     @property
@@ -145,7 +152,8 @@ class Task(TaskMixin, models.Model):
             protected_data = {}
             for key, value in task_data.items():
                 if isinstance(value, str) and string_is_url(value):
-                    path = reverse('projects-file-proxy', kwargs={'pk': self.project.pk}) + '?url=' + value
+                    path = reverse(
+                        'projects-file-proxy', kwargs={'pk': self.project.pk}) + '?url=' + value
                     value = urljoin(settings.HOSTNAME, path)
                 protected_data[key] = value
             return protected_data
@@ -172,7 +180,8 @@ class Task(TaskMixin, models.Model):
     def update_is_labeled(self):
         """Set is_labeled field according to annotations*.count > overlap
         """
-        n = self.annotations.filter(Q_finished_annotations & Q(ground_truth=False)).count()
+        n = self.annotations.filter(
+            Q_finished_annotations & Q(ground_truth=False)).count()
         # self.is_labeled = n >= self.project.maximum_annotations
         self.is_labeled = n >= self.overlap
 
@@ -213,7 +222,8 @@ class Task(TaskMixin, models.Model):
             default=Value(False),
             output_field=models.BooleanField(null=False)
         )
-        results = tasks.annotate(pre_is_labeled=condition).values('pre_is_labeled')
+        results = tasks.annotate(
+            pre_is_labeled=condition).values('pre_is_labeled')
         project.tasks.update(is_labeled=Subquery(results))
 
     def delete_url(self):
@@ -234,7 +244,8 @@ class Task(TaskMixin, models.Model):
             return ground_truth_annotations.first()
 
         # owner annotation
-        owner_annotations = self.annotations.filter(completed_by=self.project.created_by)
+        owner_annotations = self.annotations.filter(
+            completed_by=self.project.created_by)
         if owner_annotations.count() > 0:
             return owner_annotations.first()
 
@@ -272,9 +283,11 @@ class AnnotationManager(models.Manager):
         return self.filter(task__project__organization=user.active_organization)
 
     def bulk_create(self, objs, batch_size=None):
-        pre_bulk_create.send(sender=self.model, objs=objs, batch_size=batch_size)
+        pre_bulk_create.send(sender=self.model, objs=objs,
+                             batch_size=batch_size)
         res = super(AnnotationManager, self).bulk_create(objs, batch_size)
-        post_bulk_create.send(sender=self.model, objs=objs, batch_size=batch_size)
+        post_bulk_create.send(
+            sender=self.model, objs=objs, batch_size=batch_size)
         return res
 
 
@@ -300,17 +313,26 @@ class Annotation(AnnotationMixin, models.Model):
                              help_text='Corresponding task for this annotation')
     completed_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="annotations", on_delete=models.SET_NULL,
                                      null=True, help_text='User ID of the person who created this annotation')
-    was_cancelled = models.BooleanField(_('was cancelled'), default=False, help_text='User skipped the task', db_index=True)
-    ground_truth = models.BooleanField(_('ground_truth'), default=False, help_text='This annotation is a Ground Truth (ground_truth)', db_index=True)
-    created_at = models.DateTimeField(_('created at'), auto_now_add=True, help_text='Creation time')
-    updated_at = models.DateTimeField(_('updated at'), auto_now=True, help_text='Last updated time')
-    lead_time = models.FloatField(_('lead time'), null=True, default=None, help_text='How much time it took to annotate the task')
+    reviewed_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="review", on_delete=models.SET_NULL,
+                                    null=True, help_text='User ID of the person who reviewed this annotation')
+    is_accepted = models.BooleanField(
+        _('is accepted'), default=False, help_text='Annotation is accepted by reviewer')
+    was_cancelled = models.BooleanField(
+        _('was cancelled'), default=False, help_text='User skipped the task', db_index=True)
+    ground_truth = models.BooleanField(
+        _('ground_truth'), default=False, help_text='This annotation is a Ground Truth (ground_truth)', db_index=True)
+    created_at = models.DateTimeField(
+        _('created at'), auto_now_add=True, help_text='Creation time')
+    updated_at = models.DateTimeField(
+        _('updated at'), auto_now=True, help_text='Last updated time')
+    lead_time = models.FloatField(_('lead time'), null=True, default=None,
+                                  help_text='How much time it took to annotate the task')
     prediction = JSONField(
         _('prediction'),
         null=True, default=dict, help_text='Prediction viewed at the time of annotation')
     result_count = models.IntegerField(_('result count'), default=0,
                                        help_text='Results inside of annotation counter')
-    
+
     class Meta:
         db_table = 'task_completion'
         indexes = [
@@ -372,8 +394,10 @@ class AnnotationDraft(models.Model):
         settings.AUTH_USER_MODEL, related_name='drafts', on_delete=models.CASCADE,
         help_text='User who created this draft')
 
-    created_at = models.DateTimeField(_('created at'), auto_now_add=True, help_text='Creation time')
-    updated_at = models.DateTimeField(_('updated at'), auto_now=True, help_text='Last update time')
+    created_at = models.DateTimeField(
+        _('created at'), auto_now_add=True, help_text='Creation time')
+    updated_at = models.DateTimeField(
+        _('updated at'), auto_now=True, help_text='Last update time')
 
     def created_ago(self):
         """ Humanize date """
@@ -386,14 +410,21 @@ class AnnotationDraft(models.Model):
 class Prediction(models.Model):
     """ ML backend predictions
     """
-    result = JSONField('result', null=True, default=dict, help_text='Prediction result')
-    score = models.FloatField(_('score'), default=None, help_text='Prediction score', null=True)
-    model_version = models.TextField(_('model version'), default='', blank=True, null=True)
-    cluster = models.IntegerField(_('cluster'), default=None, help_text='Cluster for the current prediction', null=True)
-    neighbors = JSONField('neighbors', null=True, blank=True, help_text='Array of task IDs of the closest neighbors')
-    mislabeling = models.FloatField(_('mislabeling'), default=0.0, help_text='Related task mislabeling score')
+    result = JSONField('result', null=True, default=dict,
+                       help_text='Prediction result')
+    score = models.FloatField(_('score'), default=None,
+                              help_text='Prediction score', null=True)
+    model_version = models.TextField(
+        _('model version'), default='', blank=True, null=True)
+    cluster = models.IntegerField(
+        _('cluster'), default=None, help_text='Cluster for the current prediction', null=True)
+    neighbors = JSONField('neighbors', null=True, blank=True,
+                          help_text='Array of task IDs of the closest neighbors')
+    mislabeling = models.FloatField(
+        _('mislabeling'), default=0.0, help_text='Related task mislabeling score')
 
-    task = models.ForeignKey('tasks.Task', on_delete=models.CASCADE, related_name='predictions')
+    task = models.ForeignKey(
+        'tasks.Task', on_delete=models.CASCADE, related_name='predictions')
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
 
@@ -418,7 +449,8 @@ def update_all_task_states_after_deleting_task(sender, instance, **kwargs):
             tasks_number_changed=True
         )
     except Exception as exc:
-        logger.error('Error in update_all_task_states_after_deleting_task: ' + str(exc))
+        logger.error(
+            'Error in update_all_task_states_after_deleting_task: ' + str(exc))
 
 
 # =========== PROJECT SUMMARY UPDATES ===========
@@ -501,7 +533,8 @@ def _task_exists_in_db(task):
 def update_is_labeled_after_removing_annotation(sender, instance, **kwargs):
     # Update task.is_labeled state
     task = instance.task
-    if _task_exists_in_db(task): # To prevent django.db.utils.DatabaseError: Save with update_fields did not affect any rows.
+    # To prevent django.db.utils.DatabaseError: Save with update_fields did not affect any rows.
+    if _task_exists_in_db(task):
         logger.debug(f'Update task stats for task={task}')
         instance.task.update_is_labeled()
         instance.task.save(update_fields=['is_labeled'])
@@ -516,7 +549,8 @@ def delete_draft(sender, instance, **kwargs):
     drafts = AnnotationDraft.objects.filter(**query_args)
     num_drafts = drafts.count()
     drafts.delete()
-    logger.debug(f'{num_drafts} drafts removed from task {task} after saving annotation {instance}')
+    logger.debug(
+        f'{num_drafts} drafts removed from task {task} after saving annotation {instance}')
 
 
 @receiver(post_save, sender=Annotation)
@@ -527,12 +561,14 @@ def update_ml_backend(sender, instance, **kwargs):
     project = instance.task.project
 
     if hasattr(project, 'ml_backends') and project.min_annotations_to_start_training:
-        annotation_count = Annotation.objects.filter(task__project=project).count()
+        annotation_count = Annotation.objects.filter(
+            task__project=project).count()
 
         # start training every N annotation
         if annotation_count % project.min_annotations_to_start_training == 0:
             for ml_backend in project.ml_backends.all():
                 ml_backend.train()
+
 
 def update_task_stats(task, stats=('is_labeled',), save=True):
     """Update single task statistics:
@@ -548,6 +584,7 @@ def update_task_stats(task, stats=('is_labeled',), save=True):
         task.update_is_labeled()
     if save:
         task.save()
+
 
 def bulk_update_stats_project_tasks(tasks):
     """bulk Task update accuracy
@@ -565,8 +602,10 @@ def bulk_update_stats_project_tasks(tasks):
         for task in tasks:
             update_task_stats(task, save=False)
         # start update query batches
-        bulk_update(tasks, update_fields=['is_labeled'], batch_size=settings.BATCH_SIZE)
+        bulk_update(tasks, update_fields=[
+                    'is_labeled'], batch_size=settings.BATCH_SIZE)
+
 
 Q_finished_annotations = Q(was_cancelled=False) & Q(result__isnull=False)
 Q_task_finished_annotations = Q(annotations__was_cancelled=False) & \
-                              Q(annotations__result__isnull=False)
+    Q(annotations__result__isnull=False)

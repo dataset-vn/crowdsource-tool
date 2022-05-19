@@ -15,9 +15,11 @@ _api_urlpatterns = [
     path('', api.TaskListAPI.as_view(), name='task-list'),
     path('<int:pk>/', api.TaskAPI.as_view(), name='task-detail'),
 
-    path('<int:pk>/annotations/', api.AnnotationsListAPI.as_view(), name='task-annotations'),
+    path('<int:pk>/annotations/', api.AnnotationsListAPI.as_view(),
+         name='task-annotations'),
     path('<int:pk>/drafts', api.AnnotationDraftListAPI.as_view(), name='task-drafts'),
-    path('<int:pk>/annotations/<int:annotation_id>/drafts', api.AnnotationDraftListAPI.as_view(), name='task-annotations-drafts'),
+    path('<int:pk>/annotations/<int:annotation_id>/drafts',
+         api.AnnotationDraftListAPI.as_view(), name='task-annotations-drafts'),
 ]
 
 _api_annotations_urlpatterns = [
@@ -35,7 +37,12 @@ urlpatterns = [
     path('api/tasks/', include((_api_urlpatterns, app_name), namespace='api')),
 
     # TODO: these should be moved to the separate apps
-    path('api/annotations/', include((_api_annotations_urlpatterns, app_name), namespace='api-annotations')),
-    path('api/drafts/', include((_api_drafts_urlpatterns, app_name), namespace='api-drafts')),
-    path('api/', include((_api_predictions_urlpatterns, app_name), namespace='api-predictions')),
+    path('api/annotations/', include((_api_annotations_urlpatterns,
+         app_name), namespace='api-annotations')),
+    path('api/drafts/', include((_api_drafts_urlpatterns,
+         app_name), namespace='api-drafts')),
+    path('api/', include((_api_predictions_urlpatterns,
+         app_name), namespace='api-predictions')),
+    path('api/annotations/<int:pk>/review/',
+         api.AnnotationReviewAPI.as_view(), name='annotation-review')
 ]

@@ -5,16 +5,14 @@
     Data manager uses settings.DATA_MANAGER_ACTIONS to know the list of available actions,
     they are called by entry_points from settings.DATA_MANAGER_ACTIONS dict items.
 """
+
+
 import os
 import logging
 import traceback as tb
-
 from importlib import import_module
-
 from django.conf import settings
-
 from data_manager.functions import DataManagerException
-
 logger = logging.getLogger('django')
 
 
@@ -43,7 +41,8 @@ def get_all_actions(params):
     ]
     # remove experimental features if they are disabled
     if not params.get('experimental_features', False):
-        actions = [action for action in actions if not action.get('experimental', False)]
+        actions = [action for action in actions if not action.get(
+            'experimental', False)]
     return actions
 
 
@@ -53,7 +52,8 @@ def register_action(entry_point, title, order, **kwargs):
     """
     action_id = entry_point.__name__
     if action_id in settings.DATA_MANAGER_ACTIONS:
-        logger.debug('Action with id "' + action_id + '" already exists, rewriting registration')
+        logger.debug('Action with id "' + action_id +
+                     '" already exists, rewriting registration')
 
     settings.DATA_MANAGER_ACTIONS[action_id] = {
         'id': action_id,
@@ -69,22 +69,26 @@ def register_actions_from_dir(base_module, action_dir):
     """
     for path in os.listdir(action_dir):
         if '.py' in path and '__init__' not in path:
-            name = path[0:path.find('.py')]  # get only module name to read *.py and *.pyc
+            # get only module name to read *.py and *.pyc
+            name = path[0:path.find('.py')]
             module_actions = import_module(base_module + '.' + name).actions
 
             for action in module_actions:
                 register_action(**action)
-                logger.debug('Action registered: ' + str(action['entry_point'].__name__))
+                logger.debug('Action registered: ' +
+                             str(action['entry_point'].__name__))
 
 
 def perform_action(action_id, project, queryset, **kwargs):
     """ Perform action using entry point from actions
     """
     if action_id not in settings.DATA_MANAGER_ACTIONS:
-        raise DataManagerException("Can't find '" + action_id + "' in registered actions")
+        raise DataManagerException(
+            "Can't find '" + action_id + "' in registered actions")
 
     try:
-        result = settings.DATA_MANAGER_ACTIONS[action_id]['entry_point'](project, queryset, **kwargs)
+        result = settings.DATA_MANAGER_ACTIONS[action_id]['entry_point'](
+            project, queryset, **kwargs)
     except Exception as e:
         text = 'Error while perform action: ' + action_id + '\n' + tb.format_exc()
         logger.error(text)

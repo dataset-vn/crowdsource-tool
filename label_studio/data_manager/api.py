@@ -1,5 +1,6 @@
 """This file and its contents are licensed under the Apache License 2.0. Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
 """
+from django.db.models import Case, When, Value, F, Q
 import logging
 
 from django_filters.rest_framework import DjangoFilterBackend
@@ -38,8 +39,10 @@ class TaskPagination(PageNumberPagination):
     total_predictions = 0
 
     def paginate_queryset(self, queryset, request, view=None):
-        self.total_annotations = queryset.aggregate(all_annotations=Sum("total_annotations"))["all_annotations"] or 0
-        self.total_predictions = queryset.aggregate(all_predictions=Sum("total_predictions"))["all_predictions"] or 0
+        self.total_annotations = queryset.aggregate(
+            all_annotations=Sum("total_annotations"))["all_annotations"] or 0
+        self.total_predictions = queryset.aggregate(
+            all_predictions=Sum("total_predictions"))["all_predictions"] or 0
         return super().paginate_queryset(queryset, request, view)
 
     def get_paginated_response(self, data):
@@ -90,7 +93,8 @@ class ViewAPI(viewsets.ModelViewSet):
         project_id = self.request.GET.get('project')
         current_user_id = self.request.user.id
         if not ProjectMember.objects.filter(user=current_user_id, project=project_id).exists():
-            raise DatasetJscDatabaseException("Operation can only be performed by a project member")
+            raise DatasetJscDatabaseException(
+                "Operation can only be performed by a project member")
         return View.objects.filter(user_id=current_user_id)
 
     def perform_create(self, serializer):
@@ -123,7 +127,8 @@ class ViewAPI(viewsets.ModelViewSet):
         """
         view = self.get_object()
         queryset = self.get_task_queryset(request, view)
-        context = {'proxy': bool_from_request(request.GET, 'proxy', True), 'resolve_uri': True, 'request': request}
+        context = {'proxy': bool_from_request(
+            request.GET, 'proxy', True), 'resolve_uri': True, 'request': request}
         project = view.project
 
         # paginated tasks
@@ -133,16 +138,19 @@ class ViewAPI(viewsets.ModelViewSet):
             # retrieve ML predictions if tasks don't have them
             if project.evaluate_predictions_automatically:
                 ids = [task.id for task in page]  # page is a list already
-                tasks_for_predictions = Task.objects.filter(id__in=ids, predictions__isnull=True)
+                tasks_for_predictions = Task.objects.filter(
+                    id__in=ids, predictions__isnull=True)
                 evaluate_predictions(tasks_for_predictions)
 
-            serializer = self.task_serializer_class(page, many=True, context=context)
+            serializer = self.task_serializer_class(
+                page, many=True, context=context)
             return self.get_paginated_response(serializer.data)
 
         # all tasks
         if project.evaluate_predictions_automatically:
             evaluate_predictions(queryset.filter(predictions__isnull=True))
-        serializer = self.task_serializer_class(queryset, many=True, context=context)
+        serializer = self.task_serializer_class(
+            queryset, many=True, context=context)
         return Response(serializer.data)
 
     @swagger_auto_schema(tags=['Data Manager'], methods=["get", "post", "delete", "patch"])
@@ -177,7 +185,8 @@ class ViewAPI(viewsets.ModelViewSet):
             return Response(serializer.data)
 
         data = request.data
-        serializer = SelectedItemsSerializer(data=data, context={"view": view, "request": request})
+        serializer = SelectedItemsSerializer(
+            data=data, context={"view": view, "request": request})
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
@@ -272,8 +281,12 @@ class ProjectStateAPI(APIView):
 
         Retrieve the project state for data manager.
         """
-        pk = int_from_request(request.GET, "project", 1)  # replace 1 to None, it's for debug only
-        project = get_object_with_check_and_log(request, Project.objects.with_counts(), pk=pk)
+        pk = int_from_request(request.GET, "project",
+                              1)  # replace 1 to None, it's for debug only
+        project = get_object_with_check_and_log(
+            request, Project.objects.with_counts(), pk=pk)
+        current_user_role = ProjectMember.objects.filter(
+            project_id=project.id, user_id=request.user.id)[0].role
         self.check_object_permissions(request, project)
         data = ProjectSerializer(project).data
         data.update(
@@ -285,7 +298,8 @@ class ProjectStateAPI(APIView):
                 "target_syncing": False,
                 "task_count": project.tasks.count(),
                 "annotation_count": Annotation.objects.filter(task__project=project).count(),
-                'config_has_control_tags': len(project.get_control_tags_from_config()) > 0
+                'config_has_control_tags': len(project.get_control_tags_from_config()) > 0,
+                "current_user_role": current_user_role,
             }
         )
         return Response(data)
@@ -305,7 +319,8 @@ class ProjectActionsAPI(APIView):
 
         Retrieve all the registered actions with descriptions that data manager can use.
         """
-        pk = int_from_request(request.GET, "project", 1)  # replace 1 to None, it's for debug only
+        pk = int_from_request(request.GET, "project",
+                              1)  # replace 1 to None, it's for debug only
         project = get_object_with_check_and_log(request, Project, pk=pk)
         self.check_object_permissions(request, project)
 
@@ -339,7 +354,8 @@ class ProjectActionsAPI(APIView):
         # wrong action id
         action_id = request.GET.get('id', None)
         if action_id is None:
-            response = {'detail': 'No action id "' + str(action_id) + '", use ?id=<action-id>'}
+            response = {'detail': 'No action id "' +
+                        str(action_id) + '", use ?id=<action-id>'}
             return Response(response, status=422)
 
         # perform action and return the result dict

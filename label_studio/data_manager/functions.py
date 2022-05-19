@@ -35,13 +35,15 @@ def get_all_columns(project):
     data_types.update(project.data_types.items())
     # all data types from import data
     if project.summary.all_data_columns:
-        data_types.update({key: 'Unknown' for key in project.summary.all_data_columns if key not in data_types})
+        data_types.update(
+            {key: 'Unknown' for key in project.summary.all_data_columns if key not in data_types})
 
     # remove $undefined$ if there is one type at least in labeling config, because it will be resolved automatically
     if len(project.data_types) > 0:
         data_types.pop(settings.DATA_UNDEFINED_NAME, None)
 
-    for key, data_type in list(data_types.items()):  # make data types from labeling config first
+    # make data types from labeling config first
+    for key, data_type in list(data_types.items()):
         column = {
             'id': key,
             'title': key if key != settings.DATA_UNDEFINED_NAME else 'Dữ liệu',
@@ -184,7 +186,31 @@ def get_all_columns(project):
             'type': 'List',
             'target': 'tasks',
             'help': 'Tất cả người dùng tham gia hoàn thành tác vụ',
-            'schema': { 'items': project.members.values_list('user__id', flat=True) },
+            'schema': {'items': project.members.values_list('user__id', flat=True)},
+            # 'schema': { 'items': project.organization.members.values_list('user__id', flat=True) },
+            'visibility_defaults': {
+                'explore': True,
+                'labeling': False
+            }
+        },
+        # {
+        #     'id': 'is_accepted',
+        #     'title': 'Được chấp thuận',
+        #     'type': 'Boolean',
+        #     'target': 'tasks',
+        #     'help': 'Trạng thái chấp thuận hay từ chối của tác vụ',
+        #     'visibility_defaults': {
+        #         'explore': True,
+        #         'labeling': False
+        #     }
+        # },
+        {
+            'id': 'reviewers',
+            'title': 'Được kiểm tra bởi',
+            'type': 'List',
+            'target': 'tasks',
+            'help': 'Tất cả người dùng tham gia kiểm tra tác vụ',
+            'schema': {'items': project.members.values_list('user__id', flat=True)},
             # 'schema': { 'items': project.organization.members.values_list('user__id', flat=True) },
             'visibility_defaults': {
                 'explore': True,
@@ -209,7 +235,8 @@ def get_prepared_queryset(request, project):
 
     # use filters and selected items from request if it's specified
     else:
-        selected = request.data.get('selectedItems', {"all": True, "excluded": []})
+        selected = request.data.get(
+            'selectedItems', {"all": True, "excluded": []})
         if not isinstance(selected, dict):
             raise DataManagerException('selectedItems must be dict: {"all": [true|false], '
                                        '"excluded | included": [...task_ids...]}')

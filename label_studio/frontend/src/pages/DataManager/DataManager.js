@@ -55,7 +55,7 @@ const initializeDataManager = async (root, props, params, user) => {
 		...settings,
 	};
 
-	console.log("dmconfig: ", dmConfig);
+	// console.log("dmconfig: ", dmConfig);
 
 	return new window.DataManager(dmConfig);
 };

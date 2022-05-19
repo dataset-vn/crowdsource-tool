@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "linkify-react": "^3.0.1",
+    "react-linkify": "^1.0.0-alpha"
+  }
+}
