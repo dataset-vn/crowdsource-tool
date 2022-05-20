@@ -16,6 +16,8 @@ from organizations.models import OrganizationMember, Organization
 from users.functions import hash_upload
 from core.utils.common import load_func
 
+from notifications.telegram.bot import telegram_bot_sendtext
+
 YEAR_START = 1980
 YEAR_CHOICES = []
 for r in range(YEAR_START, (datetime.datetime.now().year+1)):
@@ -31,14 +33,20 @@ class UserManager(BaseUserManager):
         """
         Create and save a user with the given email and password.
         """
-        if not email:
+        if not email or email == "":
             raise ValueError('Must specify an email address')
+
+        if User.objects.filter(email=email):
+            user = User.objects.filter(email=email)[0]
+            return user
 
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
 
         user.set_password(password)
         user.save(using=self._db)
+
+        telegram_bot_sendtext('Account ' + user.email.split('@')[0] + ' has just been created')
 
         return user
 
@@ -87,7 +95,6 @@ class User(UserMixin, AbstractBaseUser, PermissionsMixin, UserLastActivityMixin)
     last_name = models.CharField(_('last name'), max_length=256, blank=True)
     phone = models.CharField(_('phone'), max_length=256, blank=True)
     avatar = models.ImageField(upload_to=hash_upload, blank=True)
-
     is_staff = models.BooleanField(_('staff status'), default=False,
                                    help_text=_('Designates whether the user can log into this admin site.'))
 

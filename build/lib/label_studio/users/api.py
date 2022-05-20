@@ -14,7 +14,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from core.permissions import all_permissions
 from users.models import User
@@ -166,11 +166,12 @@ class UserGetTokenAPI(APIView):
 class UserWhoAmIAPI(generics.RetrieveAPIView):
     parser_classes = (JSONParser, FormParser, MultiPartParser)
     queryset = User.objects.all()
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (AllowAny, )
     serializer_class = UserSerializer
 
     def get_object(self):
-        return User.objects.get(id=self.request.user.id)
+        if User.objects.filter(id=self.request.user.id).exists():
+            return User.objects.get(id=self.request.user.id)
 
     def get(self, request, *args, **kwargs):
         return super(UserWhoAmIAPI, self).get(request, *args, **kwargs)

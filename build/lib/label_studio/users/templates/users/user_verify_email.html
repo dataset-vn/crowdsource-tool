@@ -1,0 +1,11 @@
+{% autoescape off %}
+{ English caption below }
+
+Xin chào {{ user.username }},
+Để xác nhận email của bạn, hãy ấn vào đường link phía dưới
+http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+
+Hi {{ user.username }},
+Please click on the link to confirm your registration,
+http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+{% endautoescape %}

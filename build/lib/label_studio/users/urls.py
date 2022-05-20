@@ -18,6 +18,7 @@ urlpatterns = [
     # Authentication
     path('user/login/', views.user_login, name='user-login'),
     path('user/signup/', views.user_signup, name='user-signup'),
+    path('user/activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', views.activate_user, name='activate'),
     path('user/account/', views.user_account, name='user-account'),
     url(r'^logout/?$', views.logout, name='logout'),
 
@@ -34,6 +35,6 @@ urlpatterns = [
     # Token
     path('api/current-user/reset-token/', api.UserResetTokenAPI.as_view(), name='current-user-reset-token'),
     path('api/current-user/token', api.UserGetTokenAPI.as_view(), name='current-user-token'),
-
+    path('oauth/', include('social_django.urls', namespace='social')),
     path('api/current-user/whoami', api.UserWhoAmIAPI.as_view(), name='current-user-whoami'),
 ]

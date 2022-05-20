@@ -11,6 +11,7 @@ app_name = 'projects'
 # reverse for projects:name
 _urlpatterns = [
     path('', views.project_list, name='project-index'),
+    path('<int:pk>/details/', views.project_details, name='project-details'),
     path('<int:pk>/settings/', views.project_settings, name='project-settings', kwargs={'sub_path': ''}),
     path('<int:pk>/settings/<sub_path>', views.project_settings, name='project-settings-anything'),
 
@@ -55,6 +56,12 @@ _api_urlpatterns = [
 
     # List available model versions
     path('<int:pk>/model-versions/', api.ProjectModelVersions.as_view(), name='project-model-versions'),
+
+    #Update contact status of project member
+    path('<int:pk>/settings/members', api.ProjectMemberAPI.as_view(), name='update-project-member'),
+
+    #Update ranking of project member
+    path('<int:pk>/ranking', api.RankingProjectMemberAPI.as_view(), name='update-project-member-ranking'),
 
 ]
 

@@ -93,6 +93,11 @@ class UserAPI(viewsets.ModelViewSet):
         return super(UserAPI, self).create(request, *args, **kwargs)
 
     def retrieve(self, request, *args, **kwargs):
+        
+        print("request user: ", request.user)
+        print("args: ", *args)
+        print("kwargs: ", *kwargs)
+
         return super(UserAPI, self).retrieve(request, *args, **kwargs)
 
     def partial_update(self, request, *args, **kwargs):
