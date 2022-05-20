@@ -95,6 +95,7 @@ class UserAPI(viewsets.ModelViewSet):
 
     def retrieve(self, request, *args, **kwargs):
         
+        print("request: ", request)
         print("request user: ", request.user)
         print("args: ", *args)
         print("kwargs: ", *kwargs)
