@@ -68,7 +68,7 @@ class UserAPI(viewsets.ModelViewSet):
 
     def get_queryset(self):
         # return User.objects.filter(organizations=self.request.user.active_organization)
-        return User.objects.filter(active_organization!=1)
+        return User.objects.filter(active_organization=None)
 
     @swagger_auto_schema(auto_schema=None, methods=['delete', 'post'])
     @action(detail=True, methods=['delete', 'post'])
