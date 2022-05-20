@@ -67,7 +67,8 @@ class UserAPI(viewsets.ModelViewSet):
     permission_required = all_permissions.organizations_view
 
     def get_queryset(self):
-        return User.objects.filter(organizations=self.request.user.active_organization)
+        # return User.objects.filter(organizations=self.request.user.active_organization)
+        return User.objects.all()
 
     @swagger_auto_schema(auto_schema=None, methods=['delete', 'post'])
     @action(detail=True, methods=['delete', 'post'])
