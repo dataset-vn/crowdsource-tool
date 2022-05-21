@@ -50,9 +50,9 @@ def check_avatar(files):
 def save_user(request, next_page, user):
     """ Save user instance to DB
     """
-    # user = user_form.save()
-    # user.username = user.email.split('@')[0]
-    # user.save()
+    user = user_form.save()
+    user.username = user.email.split('@')[0]
+    user.save()
 
     if Organization.objects.exists():
         org = Organization.objects.first()
