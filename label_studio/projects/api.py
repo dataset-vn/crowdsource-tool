@@ -962,3 +962,4 @@ class RankingProjectMemberAPI(generics.ListCreateAPIView,
                 order_by=F('total_points').desc(),
             )
         )
+    

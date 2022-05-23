@@ -28,6 +28,7 @@ export const Leaderboard = () => {
   useEffect(() => {
     getListProjects();
   }, []);
+  
   const sortByTotal = (projectID) => {
     console.log("projectID, projectID", projectID);
     fetch(`http://127.0.0.1:8080/api/projects/${projectID}/ranking`)

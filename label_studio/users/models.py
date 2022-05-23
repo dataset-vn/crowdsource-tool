@@ -23,7 +23,8 @@ YEAR_CHOICES = []
 for r in range(YEAR_START, (datetime.datetime.now().year+1)):
     YEAR_CHOICES.append((r, r))
 
-year = models.IntegerField(_('year'), choices=YEAR_CHOICES, default=datetime.datetime.now().year)
+year = models.IntegerField(
+    _('year'), choices=YEAR_CHOICES, default=datetime.datetime.now().year)
 
 
 class UserManager(BaseUserManager):
@@ -46,7 +47,8 @@ class UserManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
 
-        telegram_bot_sendtext('Account ' + user.email.split('@')[0] + ' has just been created')
+        telegram_bot_sendtext(
+            'Account ' + user.email.split('@')[0] + ' has just been created')
 
         return user
 
@@ -78,6 +80,7 @@ class UserLastActivityMixin(models.Model):
     class Meta:
         abstract = True
 
+
 UserMixin = load_func(settings.USER_MIXIN)
 
 
@@ -104,9 +107,14 @@ class User(UserMixin, AbstractBaseUser, PermissionsMixin, UserLastActivityMixin)
 
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
 
-    activity_at = models.DateTimeField(_('last annotation activity'), auto_now=True)
+    activity_at = models.DateTimeField(
+        _('last annotation activity'), auto_now=True)
 
-    active_organization = models.ForeignKey('organizations.Organization', on_delete=models.SET_NULL, related_name='active_users', null=True)
+    active_organization = models.ForeignKey(
+        'organizations.Organization', on_delete=models.SET_NULL, related_name='active_users', null=True)
+
+    ranking_tier = models.CharField(_('ranking_tier'), max_length=256, default='Unranked', help_text=_(
+        'The tiers based on ranking points of users'))
 
     objects = UserManager()
 
@@ -145,7 +153,7 @@ class User(UserMixin, AbstractBaseUser, PermissionsMixin, UserLastActivityMixin)
             name = self.email
 
         return name
-        
+
     def get_full_name(self):
         """
         Return the first_name and the last_name for a given user with a space in between.
@@ -162,7 +170,7 @@ class User(UserMixin, AbstractBaseUser, PermissionsMixin, UserLastActivityMixin)
         if token.exists():
             token.delete()
         return Token.objects.create(user=self)
-    
+
     def get_initials(self):
         initials = '?'
         if not self.first_name and not self.last_name:

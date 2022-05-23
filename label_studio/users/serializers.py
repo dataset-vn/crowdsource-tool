@@ -31,27 +31,30 @@ class BaseUserSerializer(serializers.ModelSerializer):
             'initials',
             'phone',
             'active_organization',
-            
+
         )
 
 
 class UserSimpleSerializer(BaseUserSerializer):
-    num_annotations=serializers.IntegerField(read_only=True)
+    num_annotations = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name', 'email', 'avatar', 'num_annotations')
+        fields = ('id', 'first_name', 'last_name',
+                  'email', 'avatar', 'num_annotations')
+
 
 class UserStatisticsSerializer(BaseUserSerializer):
     num_tasks = serializers.IntegerField(read_only=True)
-    num_annotations= serializers.IntegerField(read_only=True)
-    num_skips= serializers.IntegerField(read_only=True)
-    avg_lead_time= serializers.IntegerField(read_only=True)
+    num_annotations = serializers.IntegerField(read_only=True)
+    num_skips = serializers.IntegerField(read_only=True)
+    avg_lead_time = serializers.IntegerField(read_only=True)
     total_points = serializers.IntegerField(read_only=True)
-    since_date = serializers.DateTimeField(default = "2021-07-13 00:00:00+07")
+
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name', 'email', 'avatar', 'num_tasks', 'num_annotations', 'num_skips', 'since_date', 'avg_lead_time', 'total_points')
+        fields = ('id', 'first_name', 'last_name', 'email', 'avatar', 'num_tasks',
+                  'num_annotations', 'num_skips', 'avg_lead_time', 'ranking_tier', 'total_points')
 
 
 UserSerializer = load_func(settings.USER_SERIALIZER)
