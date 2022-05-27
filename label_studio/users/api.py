@@ -34,34 +34,34 @@ logger = logging.getLogger(__name__)
     request_body=UserSerializer
 ))
 @method_decorator(name='list', decorator=swagger_auto_schema(
-        tags=['Users'],
-        operation_summary='List users',
-        operation_description='List the users that exist on the Label Studio server.'
-    ))
+    tags=['Users'],
+    operation_summary='List users',
+    operation_description='List the users that exist on the Label Studio server.'
+))
 @method_decorator(name='create', decorator=swagger_auto_schema(
-        tags=['Users'],
-        operation_summary='Create new user',
-        operation_description='Create a user in Label Studio.',
-        request_body=UserSerializer
-    ))
+    tags=['Users'],
+    operation_summary='Create new user',
+    operation_description='Create a user in Label Studio.',
+    request_body=UserSerializer
+))
 @method_decorator(name='retrieve', decorator=swagger_auto_schema(
-        tags=['Users'],
-        operation_summary='Get user info',
-        operation_description='Get info about a specific Label Studio user, based on the user ID.'
-    ))
+    tags=['Users'],
+    operation_summary='Get user info',
+    operation_description='Get info about a specific Label Studio user, based on the user ID.'
+))
 @method_decorator(name='partial_update', decorator=swagger_auto_schema(
-        tags=['Users'],
-        operation_summary='Update user details',
-        operation_description="""
+    tags=['Users'],
+    operation_summary='Update user details',
+    operation_description="""
         Update details for a specific user, such as their name or contact information, in Label Studio.
         """,
-        request_body=UserSerializer
-    ))
+    request_body=UserSerializer
+))
 @method_decorator(name='destroy', decorator=swagger_auto_schema(
-        tags=['Users'],
-        operation_summary='Delete user',
-        operation_description='Delete a specific Label Studio user.',
-    ))
+    tags=['Users'],
+    operation_summary='Delete user',
+    operation_description='Delete a specific Label Studio user.',
+))
 class UserAPI(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_required = all_permissions.organizations_view
@@ -103,23 +103,23 @@ class UserAPI(viewsets.ModelViewSet):
 
 
 @method_decorator(name='post', decorator=swagger_auto_schema(
-        tags=['Users'],
-        operation_summary='Reset user token',
-        operation_description='Reset the user token for the current user.',
-        responses={
-            201: openapi.Response(
-                description='User token response',
-                schema=openapi.Schema(
-                    description='User token',
-                    type=openapi.TYPE_OBJECT,
-                    properties={
+    tags=['Users'],
+    operation_summary='Reset user token',
+    operation_description='Reset the user token for the current user.',
+    responses={
+        201: openapi.Response(
+            description='User token response',
+            schema=openapi.Schema(
+                description='User token',
+                type=openapi.TYPE_OBJECT,
+                properties={
                         'token': openapi.Schema(
                             description='Token',
                             type=openapi.TYPE_STRING
                         )
-                    }
-                ))
-        }))
+                }
+            ))
+    }))
 class UserResetTokenAPI(APIView):
     parser_classes = (JSONParser, FormParser, MultiPartParser)
     queryset = User.objects.all()
@@ -133,25 +133,25 @@ class UserResetTokenAPI(APIView):
 
 
 @method_decorator(name='get', decorator=swagger_auto_schema(
-        tags=['Users'],
-        operation_summary='Get user token',
-        operation_description='Get a user token to authenticate to the API as the current user.',
-        responses={
-            200: openapi.Response(
-                description='User token response',
-                type=openapi.TYPE_OBJECT,
-                properties={
-                    'detail': openapi.Schema(
+    tags=['Users'],
+    operation_summary='Get user token',
+    operation_description='Get a user token to authenticate to the API as the current user.',
+    responses={
+        200: openapi.Response(
+            description='User token response',
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'detail': openapi.Schema(
                         description='Token',
                         type=openapi.TYPE_STRING
-                    )
-                }
-            )
-        }))
+                )
+            }
+        )
+    }))
 class UserGetTokenAPI(APIView):
     parser_classes = (JSONParser,)
     permission_classes = (IsAuthenticated,)
-    
+
     def get(self, request, *args, **kwargs):
         user = request.user
         token = Token.objects.get(user=user)
@@ -159,10 +159,10 @@ class UserGetTokenAPI(APIView):
 
 
 @method_decorator(name='get', decorator=swagger_auto_schema(
-        tags=['Users'],
-        operation_summary='Retrieve my user',
-        operation_description='Retrieve details the account that you are using to access the API.'
-    ))
+    tags=['Users'],
+    operation_summary='Retrieve my user',
+    operation_description='Retrieve details the account that you are using to access the API.'
+))
 class UserWhoAmIAPI(generics.RetrieveAPIView):
     parser_classes = (JSONParser, FormParser, MultiPartParser)
     queryset = User.objects.all()

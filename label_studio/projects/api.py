@@ -15,7 +15,7 @@ from django.conf import settings
 from django.shortcuts import get_object_or_404
 from drf_yasg.utils import swagger_auto_schema
 from django.utils.decorators import method_decorator
-from django.db.models import F, Q, When, Count, Case, OuterRef, Max, Exists, Value, BooleanField, Avg, Window
+from django.db.models import F, Q, When, Count, Case, OuterRef, Max, Exists, Value, BooleanField, Avg, Window, ExpressionWrapper, FloatField
 from django.db.models.functions import Rank
 from rest_framework.views import APIView
 from rest_framework import generics, status, filters
@@ -134,11 +134,11 @@ class ProjectListAPI(generics.ListCreateAPIView):
 
     def get_queryset(self):
         # TODO:
-        #1. 
-        #2. Get all ID of projects inside this active organization of which current user is member (using ProjectMember)
-        #3. return all projects that its id is in IDs list from step 2
-        user = self.request.user        
-        
+        # 1.
+        # 2. Get all ID of projects inside this active organization of which current user is member (using ProjectMember)
+        # 3. return all projects that its id is in IDs list from step 2
+        user = self.request.user
+
         if user.is_authenticated:
             current_user_id = self.request.user.id
             current_user_projects = Project.objects.with_counts().all().filter(Q(members__user_id=current_user_id)).annotate(current_user_role=Case(
@@ -146,7 +146,8 @@ class ProjectListAPI(generics.ListCreateAPIView):
                 default=Value('')
             ))
 
-            public_projects = Project.objects.with_counts().filter(Q(project_status='open') | Q(project_status='open_running')).exclude(Q(members__user_id=current_user_id))
+            public_projects = Project.objects.with_counts().filter(Q(project_status='open') | Q(
+                project_status='open_running')).exclude(Q(members__user_id=current_user_id))
 
             projects = current_user_projects | public_projects
 
@@ -164,37 +165,42 @@ class ProjectListAPI(generics.ListCreateAPIView):
         user_id = self.request.user.id
         user_name = User.objects.filter(id=user_id)[0].username
         try:
-            project = ser.save(organization=self.request.user.active_organization)
+            project = ser.save(
+                organization=self.request.user.active_organization)
             # Also make that curent user owner of the project
             try:
-                ProjectMember.objects.create(user_id=user_id, project_id=project.id, role='owner')
-                telegram_bot_sendtext("User " + user_name + " has created project " + project.title.replace("#","no."))
+                ProjectMember.objects.create(
+                    user_id=user_id, project_id=project.id, role='owner')
+                telegram_bot_sendtext(
+                    "User " + user_name + " has created project " + project.title.replace("#", "no."))
             except IntegrityError as e:
-                raise DatasetJscDatabaseException('Database error during project member creation. Try again.')
+                raise DatasetJscDatabaseException(
+                    'Database error during project member creation. Try again.')
 
         except IntegrityError as e:
             if str(e) == 'UNIQUE constraint failed: project.title, project.created_by_id':
                 raise ProjectExistException('Project with the same name already exists: {}'.
                                             format(ser.validated_data.get('title', '')))
-            raise LabelStudioDatabaseException('Database error during project creation. Try again.')
+            raise LabelStudioDatabaseException(
+                'Database error during project creation. Try again.')
 
 
 @method_decorator(name='get', decorator=swagger_auto_schema(
-        tags=['Projects'],
-        operation_summary='Get project by ID',
-        operation_description='Retrieve information about a project by project ID.'
-    ))
+    tags=['Projects'],
+    operation_summary='Get project by ID',
+    operation_description='Retrieve information about a project by project ID.'
+))
 @method_decorator(name='delete', decorator=swagger_auto_schema(
-        tags=['Projects'],
-        operation_summary='Delete project',
-        operation_description='Delete a project by specified project ID.'
-    ))
+    tags=['Projects'],
+    operation_summary='Delete project',
+    operation_description='Delete a project by specified project ID.'
+))
 @method_decorator(name='patch', decorator=swagger_auto_schema(
-        tags=['Projects'],
-        operation_summary='Update project',
-        operation_description='Update the project settings for a specific project.',
-        request_body=ProjectSerializer
-    ))
+    tags=['Projects'],
+    operation_summary='Update project',
+    operation_description='Update the project settings for a specific project.',
+    request_body=ProjectSerializer
+))
 class ProjectAPI(APIViewVirtualRedirectMixin,
                  APIViewVirtualMethodMixin,
                  generics.RetrieveUpdateDestroyAPIView):
@@ -217,25 +223,28 @@ class ProjectAPI(APIViewVirtualRedirectMixin,
         current_user_id = self.request.user.id
         project_id = self.kwargs['pk']
         if not ProjectMember.objects.filter(user=current_user_id, project=project_id).exists():
-          return Project.objects.with_counts().filter(Q(id=project_id))
+            return Project.objects.with_counts().filter(Q(id=project_id))
         return Project.objects.with_counts().filter(Q(members__user_id=current_user_id)).annotate(current_user_role=Case(
-                When(Q(members__user_id=current_user_id) & Q(members__project_id=project_id), then=F('members__role')),
-                default=Value('')
-            ))
+            When(Q(members__user_id=current_user_id) & Q(
+                members__project_id=project_id), then=F('members__role')),
+            default=Value('')
+        ))
 
     def get(self, request, *args, **kwargs):
         return super(ProjectAPI, self).get(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
-        
+
         current_user_id = self.request.user.id
         current_user_email = self.request.user.email
         project_id = self.kwargs['pk']
         project = Project.objects.get(id=project_id)
-        current_user_role = ProjectMember.objects.filter(project_id=project_id, user_id=current_user_id)[0].role
+        current_user_role = ProjectMember.objects.filter(
+            project_id=project_id, user_id=current_user_id)[0].role
 
         if current_user_role != 'owner' and current_user_id != project.created_by_id and current_user_email != 'chon@dataset.vn':
-            raise DatasetJscDatabaseException('Operation can only be performed by a project owner')
+            raise DatasetJscDatabaseException(
+                'Operation can only be performed by a project owner')
 
         return super(ProjectAPI, self).delete(request, *args, **kwargs)
 
@@ -248,7 +257,8 @@ class ProjectAPI(APIViewVirtualRedirectMixin,
         # config changes can break view, so we need to reset them
         if label_config:
             try:
-                has_changes = config_essential_data_has_changed(label_config, project.label_config)
+                has_changes = config_essential_data_has_changed(
+                    label_config, project.label_config)
             except KeyError:
                 pass
             else:
@@ -257,7 +267,8 @@ class ProjectAPI(APIViewVirtualRedirectMixin,
         if(self.request.data.get('title')):
             project_title = self.request.data.get('title')
             if(project_title != project.title):
-                telegram_bot_sendtext("User " + user_name + " has changed project name from " + project.title.replace("#","no.") + " to " + project_title.replace("#","no."))
+                telegram_bot_sendtext("User " + user_name + " has changed project name from " +
+                                      project.title.replace("#", "no.") + " to " + project_title.replace("#", "no."))
 
         return super(ProjectAPI, self).patch(request, *args, **kwargs)
 
@@ -265,17 +276,21 @@ class ProjectAPI(APIViewVirtualRedirectMixin,
         """Performance optimization for whole project deletion
         if we catch constraint error fallback to regular .delete() method"""
         try:
-            task_annotation_qs = Annotation.objects.filter(task__project_id=instance.id)
+            task_annotation_qs = Annotation.objects.filter(
+                task__project_id=instance.id)
             task_annotation_qs._raw_delete(task_annotation_qs.db)
-            task_prediction_qs = Prediction.objects.filter(task__project_id=instance.id)
+            task_prediction_qs = Prediction.objects.filter(
+                task__project_id=instance.id)
             task_prediction_qs._raw_delete(task_prediction_qs.db)
-            task_locks_qs = TaskLock.objects.filter(task__project_id=instance.id)
+            task_locks_qs = TaskLock.objects.filter(
+                task__project_id=instance.id)
             task_locks_qs._raw_delete(task_locks_qs.db)
             task_qs = Task.objects.filter(project_id=instance.id)
             task_qs._raw_delete(task_qs.db)
             instance.delete()
         except IntegrityError as e:
-            logger.error('Fallback to cascade deleting after integrity_error: {}'.format(str(e)))
+            logger.error(
+                'Fallback to cascade deleting after integrity_error: {}'.format(str(e)))
             instance.delete()
 
     @swagger_auto_schema(auto_schema=None)
@@ -288,25 +303,24 @@ class ProjectAPI(APIViewVirtualRedirectMixin,
 
 
 @method_decorator(name='get', decorator=swagger_auto_schema(
-        tags=['Projects'],
-        operation_summary='Get next task to label',
-        operation_description="""
+    tags=['Projects'],
+    operation_summary='Get next task to label',
+    operation_description="""
             Get the next task for labeling. If you enable Machine Learning in
             your project, the response might include a "predictions"
             field. It contains a machine learning prediction result for
             this task.
         """,
-        responses={200: TaskWithAnnotationsAndPredictionsAndDraftsSerializer()}
-    ))
-
-class ProjectMemberStatisticsAPI(generics.ListCreateAPIView, 
-                       generics.RetrieveUpdateDestroyAPIView):
+    responses={200: TaskWithAnnotationsAndPredictionsAndDraftsSerializer()}
+))
+class ProjectMemberStatisticsAPI(generics.ListCreateAPIView,
+                                 generics.RetrieveUpdateDestroyAPIView):
     parser_classes = (JSONParser, FormParser, MultiPartParser)
     permission_classes = (IsAuthenticated,)
     serializer_class = UserStatisticsSerializer
 
     def get_queryset(self,):
-        
+
         project_id = self.kwargs['pk']
         user_id = None
         if 'user' in self.kwargs:
@@ -318,30 +332,36 @@ class ProjectMemberStatisticsAPI(generics.ListCreateAPIView,
         # TODO: Only Project Leader or above can see member list
         # TODO: use django permission instead of directly checking if role is manager as below
         if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner']).exists():
-            raise DatasetJscDatabaseException("Operation can only be performed by a project manager or project owner")
+            raise DatasetJscDatabaseException(
+                "Operation can only be performed by a project manager or project owner")
         current_project = Project.objects.get(id=project_id)
         time_point = "2021-07-13 00:00:00+07"
 
         if user_id != None:
-            return User.objects.filter(id=user_id, project_memberships__project_id=project_id).annotate(num_tasks=Count('annotations__task', filter=Q(annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)), 
-                                                                                        num_annotations=Count('annotations', filter=Q(annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)),
-                                                                                        num_skips=Count('annotations', filter=Q(annotations__was_cancelled=True) & Q(annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)),
+            return User.objects.filter(id=user_id, project_memberships__project_id=project_id).annotate(num_tasks=Count('annotations__task', filter=Q(annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)),
+                                                                                                        num_annotations=Count('annotations', filter=Q(
+                                                                                                            annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)),
+                                                                                                        num_skips=Count('annotations', filter=Q(annotations__was_cancelled=True) & Q(
+                                                                                                            annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)),
+                                                                                                        avg_lead_time=Avg('annotations__lead_time', filter=Q(annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)))
+
+        return User.objects.filter(project_memberships__project_id=project_id).annotate(num_tasks=Count('annotations__task', filter=Q(annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)),
+                                                                                        num_annotations=Count('annotations', filter=Q(
+                                                                                            annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)),
+                                                                                        num_skips=Count('annotations', filter=Q(annotations__was_cancelled=True) & Q(
+                                                                                            annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)),
                                                                                         avg_lead_time=Avg('annotations__lead_time', filter=Q(annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)))
 
-        return User.objects.filter(project_memberships__project_id=project_id).annotate(num_tasks=Count('annotations__task', filter=Q(annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)), 
-                                                                                        num_annotations=Count('annotations', filter=Q(annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)),
-                                                                                        num_skips=Count('annotations', filter=Q(annotations__was_cancelled=True) & Q(annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)),
-                                                                                        avg_lead_time=Avg('annotations__lead_time', filter=Q(annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)))
 
-
-class ProjectMemberAPI(generics.ListCreateAPIView, 
+class ProjectMemberAPI(generics.ListCreateAPIView,
                        generics.RetrieveUpdateDestroyAPIView):
     parser_classes = (JSONParser, FormParser, MultiPartParser)
     permission_classes = (IsAuthenticated,)
     filter_backends = [filters.SearchFilter]
     serializer_class = ProjectMemberSerializer
 
-    search_fields = ['user__username', 'user__email', 'user__first_name', 'user__last_name']
+    search_fields = ['user__username', 'user__email',
+                     'user__first_name', 'user__last_name']
 
     def get_queryset(self,):
         project_id = self.kwargs['pk']
@@ -351,17 +371,21 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         current_user_id = self.request.user.id
         project = Project.objects.get(id=project_id)
 
-        current_user_role = self.get_project_member_role(project_id, current_user_id)
+        current_user_role = self.get_project_member_role(
+            project_id, current_user_id)
         # TODO: Only Project Leader or above can see member list
         # TODO: use django permission instead of directly checking if role is manager as below
         if user_id != None and (user_id == current_user_id or current_user_role in ["manager", "owner"]):
             return ProjectMember.objects.filter(project=project_id, user=user_id)
 
         if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner']).exists() and current_user_id != project.created_by_id:
-            raise DatasetJscDatabaseException("Operation can only be performed by a project manager or project owner")
-        
-        members = ProjectMember.objects.filter(project=project_id).order_by('-role')
-        members = members.extra(select={'total_records': members.count()}) # This extra total_records will temporarily help frontend to paginate members list 
+            raise DatasetJscDatabaseException(
+                "Operation can only be performed by a project manager or project owner")
+
+        members = ProjectMember.objects.filter(
+            project=project_id).order_by('-role')
+        # This extra total_records will temporarily help frontend to paginate members list
+        members = members.extra(select={'total_records': members.count()})
 
         if self.request.query_params.get('search'):
             return members
@@ -379,10 +403,11 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         if not User.objects.filter(pk=user_id).exists():
             raise DatasetJscDatabaseException('There is no such member')
         # TODO: use django permission instead of directly checking if role is manager as below
-        #if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner']).exists():
+        # if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner']).exists():
         #    raise DatasetJscDatabaseException("Operation can only be performed by a project manager or project owner")
         if not ProjectMember.objects.filter(user=user_id, project=project_id).exists():
-            raise DatasetJscDatabaseException('There is no such member in the project')
+            raise DatasetJscDatabaseException(
+                'There is no such member in the project')
 
         project = Project.objects.get(pk=project_id)
         user = User.objects.get(pk=user_id)
@@ -396,7 +421,7 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         instance = self.get_object()
         result, detail = self.perform_destroy(instance)
         if result == True:
-            return Response({'code':200, 'detail': detail}, status=status.HTTP_200_OK)
+            return Response({'code': 200, 'detail': detail}, status=status.HTTP_200_OK)
         raise DatasetJscDatabaseException(detail)
 
     def get_project_member_role(self, project_id: str, user_id: str) -> str:
@@ -405,7 +430,8 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
             Returns `None` if that user doesn't exist
         """
         current_project = Project.objects.get(id=project_id)
-        current_user = ProjectMember.objects.filter(project_id=project_id, user_id=user_id).first()
+        current_user = ProjectMember.objects.filter(
+            project_id=project_id, user_id=user_id).first()
 
         if not hasattr(current_user, 'role'):
             return None
@@ -414,7 +440,7 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         if current_project.created_by_id == user_id:
             return 'owner'
         return 'annotator'
-        
+
     def perform_create(self, serializer):
         # Added by NgDMau
         # check if logging user is admin of current project
@@ -425,36 +451,42 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         user_id = json.loads(self.request.body)['user_pk']
         user_role = json.loads(self.request.body)['role']
 
-        current_user_role = self.get_project_member_role(project_id, current_user_id)
+        current_user_role = self.get_project_member_role(
+            project_id, current_user_id)
 
         # Error handling
 
         if current_user_role != 'owner' and user_role == 'owner':
-            raise DatasetJscDatabaseException('Operation can only be performed by a project owner')
+            raise DatasetJscDatabaseException(
+                'Operation can only be performed by a project owner')
 
-        roles = ['owner', 'manager', 'reviewer', 'annotator','trainee','pending']
+        roles = ['owner', 'manager', 'reviewer',
+                 'annotator', 'trainee', 'pending']
         if user_role not in roles:
-            user_role = 'annotator' # In case body content changed unexpectedly
+            user_role = 'annotator'  # In case body content changed unexpectedly
 
         if not Project.objects.filter(pk=project_id).exists():
             raise DatasetJscDatabaseException('There is no such project')
         if not User.objects.filter(pk=user_id).exists():
             raise DatasetJscDatabaseException('There is no such member')
         # TODO: use django permission instead of directly checking if role is manager as below
-        #if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner',None]).exists():
+        # if not ProjectMember.objects.filter(user=current_user_id, project=project_id, role__in=['manager', 'owner',None]).exists():
         #   raise DatasetJscDatabaseException("Operation can only be performed by a project manager or project owner")
         if ProjectMember.objects.filter(user=user_id, project=project_id).exists():
-            raise DatasetJscDatabaseException('This user is already in the project')
-        
+            raise DatasetJscDatabaseException(
+                'This user is already in the project')
+
         project = Project.objects.get(pk=project_id)
         user = User.objects.get(pk=user_id)
         self.check_object_permissions(self.request, project)
 
         try:
             serializer.save(user=user, project=project, role=user_role)
-            telegram_bot_sendtext("User " + user.username + " has joined project " + project.title.replace('#','no.') + " as a " + user_role)
+            telegram_bot_sendtext("User " + user.username + " has joined project " +
+                                  project.title.replace('#', 'no.') + " as a " + user_role)
         except IntegrityError as e:
-            raise DatasetJscDatabaseException('Database error during project creation. Try again.')
+            raise DatasetJscDatabaseException(
+                'Database error during project creation. Try again.')
 
     def perform_update(self, serializer):
         project_id = self.kwargs['pk']
@@ -466,9 +498,11 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         user = User.objects.get(pk=user_id)
         self.check_object_permissions(self.request, project)
         try:
-            serializer.save(user=user, project=project, contact_status=contact_status, role=role)
+            serializer.save(user=user, project=project,
+                            contact_status=contact_status, role=role)
         except IntegrityError as e:
-            raise DatasetJscDatabaseException('Database error during project creation. Try again.')
+            raise DatasetJscDatabaseException(
+                'Database error during project creation. Try again.')
 
     def perform_destroy(self, instance):
         body = json.loads(self.request.body)
@@ -480,8 +514,8 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
         member_role = self.get_project_member_role(project_id, member_id)
         #operator_id = self.request.user.id
         #operator_role = self.get_project_member_role(project_id, operator_id)
-        
-        #if operator_role not in ["manager", "owner"]:
+
+        # if operator_role not in ["manager", "owner"]:
         #    return False, "Operation can only be performed by a project manager or project owner"
 
         if member_role == "owner":
@@ -492,12 +526,13 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
 
         try:
             instance.delete()
-            telegram_bot_sendtext("User " + user.username + " has been removed from project " + project.title.replace('#','no.'))
+            telegram_bot_sendtext(
+                "User " + user.username + " has been removed from project " + project.title.replace('#', 'no.'))
             return True, "Removed member successfully"
         except IntegrityError as e:
-            logger.error('Fallback to cascase deleting after integrity_error: {}'.format(str(e)))
+            logger.error(
+                'Fallback to cascase deleting after integrity_error: {}'.format(str(e)))
             return False, "Removed member failed"
-
 
     @swagger_auto_schema(tags=['ProjectMember'])
     def get(self, request, *args, **kwargs):
@@ -518,7 +553,8 @@ class ProjectMemberAPI(generics.ListCreateAPIView,
 
 class ProjectNextTaskAPI(generics.RetrieveAPIView):
     permission_required = all_permissions.tasks_view
-    serializer_class = TaskWithAnnotationsAndPredictionsAndDraftsSerializer  # using it for swagger API docs
+    # using it for swagger API docs
+    serializer_class = TaskWithAnnotationsAndPredictionsAndDraftsSerializer
 
     # def _get_random_unlocked(self, task_query, upper_limit=None):
     #     # get random task from task query, ignoring locked tasks
@@ -548,7 +584,8 @@ class ProjectNextTaskAPI(generics.RetrieveAPIView):
         # Skip tasks that are locked due to being taken by collaborators
         for task_id in tasks_query.values_list('id', flat=True):
             try:
-                task = Task.objects.select_for_update(skip_locked=True).get(pk=task_id)
+                task = Task.objects.select_for_update(
+                    skip_locked=True).get(pk=task_id)
                 if not task.has_lock(self.current_user):
                     return task
             except Task.DoesNotExist:
@@ -556,7 +593,8 @@ class ProjectNextTaskAPI(generics.RetrieveAPIView):
 
     def _try_ground_truth(self, tasks, project):
         """Returns task from ground truth set"""
-        ground_truth = Annotation.objects.filter(task=OuterRef('pk'), ground_truth=True)
+        ground_truth = Annotation.objects.filter(
+            task=OuterRef('pk'), ground_truth=True)
         not_solved_tasks_with_ground_truths = tasks.annotate(
             has_ground_truths=Exists(ground_truth)).filter(has_ground_truths=True)
         if not_solved_tasks_with_ground_truths.exists():
@@ -590,7 +628,8 @@ class ProjectNextTaskAPI(generics.RetrieveAPIView):
         #     return next_task
 
         tasks = tasks.annotate(annotations_count=Count('annotations'))
-        max_annotations_count = tasks.aggregate(Max('annotations_count'))['annotations_count__max']
+        max_annotations_count = tasks.aggregate(Max('annotations_count'))[
+            'annotations_count__max']
         if max_annotations_count == 0:
             # there is no any labeled tasks found
             return
@@ -608,7 +647,8 @@ class ProjectNextTaskAPI(generics.RetrieveAPIView):
             return self._get_random_unlocked(not_solved_tasks_labeling_with_max_annotations)
 
     def _try_uncertainty_sampling(self, tasks, project, user_solved_tasks_array):
-        task_with_current_predictions = tasks.filter(predictions__model_version=project.model_version)
+        task_with_current_predictions = tasks.filter(
+            predictions__model_version=project.model_version)
         if task_with_current_predictions.exists():
             logger.debug('Use uncertainty sampling')
             # collect all clusters already solved by user, count number of solved task in them
@@ -616,16 +656,20 @@ class ProjectNextTaskAPI(generics.RetrieveAPIView):
                 cluster=Max('predictions__cluster')).values_list('cluster', flat=True)
             user_solved_clusters = Counter(user_solved_clusters)
             # order each task by the count of how many tasks solved in it's cluster
-            cluster_num_solved_map = [When(predictions__cluster=k, then=v) for k, v in user_solved_clusters.items()]
+            cluster_num_solved_map = [
+                When(predictions__cluster=k, then=v) for k, v in user_solved_clusters.items()]
 
-            num_tasks_with_current_predictions = task_with_current_predictions.count()  # WARNING! this call doesn't work after consequent annotate
+            # WARNING! this call doesn't work after consequent annotate
+            num_tasks_with_current_predictions = task_with_current_predictions.count()
             if cluster_num_solved_map:
                 task_with_current_predictions = task_with_current_predictions.annotate(
                     cluster_num_solved=Case(*cluster_num_solved_map, default=0, output_field=DecimalField()))
                 # next task is chosen from least solved cluster and with lowest prediction score
-                possible_next_tasks = task_with_current_predictions.order_by('cluster_num_solved', 'predictions__score')
+                possible_next_tasks = task_with_current_predictions.order_by(
+                    'cluster_num_solved', 'predictions__score')
             else:
-                possible_next_tasks = task_with_current_predictions.order_by('predictions__score')
+                possible_next_tasks = task_with_current_predictions.order_by(
+                    'predictions__score')
 
             num_annotators = project.annotators().count()
             if num_annotators > 1 and num_tasks_with_current_predictions > 0:
@@ -658,7 +702,8 @@ class ProjectNextTaskAPI(generics.RetrieveAPIView):
         # serialize task
         context = {'request': request, 'project': project, 'resolve_uri': True,
                    'proxy': bool_from_request(request.GET, 'proxy', True)}
-        serializer = TaskWithAnnotationsAndPredictionsAndDraftsSerializer(next_task, context=context)
+        serializer = TaskWithAnnotationsAndPredictionsAndDraftsSerializer(
+            next_task, context=context)
         response = serializer.data
 
         annotations = []
@@ -674,7 +719,8 @@ class ProjectNextTaskAPI(generics.RetrieveAPIView):
         return Response(response)
 
     def get(self, request, *args, **kwargs):
-        project = get_object_with_check_and_log(request, Project, pk=self.kwargs['pk'])
+        project = get_object_with_check_and_log(
+            request, Project, pk=self.kwargs['pk'])
         self.check_object_permissions(request, project)
         user = request.user
         self.current_user = user
@@ -684,7 +730,8 @@ class ProjectNextTaskAPI(generics.RetrieveAPIView):
             project.prepared_tasks = self.prepared_tasks
         # get prepared tasks from request params (filters, selected items)
         else:
-            project.prepared_tasks = get_prepared_queryset(self.request, project)
+            project.prepared_tasks = get_prepared_queryset(
+                self.request, project)
 
         # detect solved and not solved tasks
         user_solved_tasks_array = user.annotations.filter(ground_truth=False)\
@@ -696,7 +743,8 @@ class ProjectNextTaskAPI(generics.RetrieveAPIView):
                 exclude(pk__in=user_solved_tasks_array)
 
             # if annotator is assigned for tasks, he must to solve it regardless of is_labeled=True
-            assigned_flag = hasattr(self, 'assignee_flag') and self.assignee_flag
+            assigned_flag = hasattr(
+                self, 'assignee_flag') and self.assignee_flag
             if not assigned_flag:
                 not_solved_tasks = not_solved_tasks.filter(is_labeled=False)
 
@@ -704,12 +752,15 @@ class ProjectNextTaskAPI(generics.RetrieveAPIView):
 
             # return nothing if there are no tasks remain
             if not_solved_tasks_count == 0:
-                raise NotFound(f'There are no tasks remaining to be annotated by the user={user}')
-            logger.debug(f'{not_solved_tasks_count} tasks that still need to be annotated for user={user}')
+                raise NotFound(
+                    f'There are no tasks remaining to be annotated by the user={user}')
+            logger.debug(
+                f'{not_solved_tasks_count} tasks that still need to be annotated for user={user}')
 
             # ordered by data manager
             if assigned_flag:
-                next_task = not_solved_tasks.filter(annotator_assigned=user).first()
+                next_task = not_solved_tasks.filter(
+                    annotator_assigned=user).first()
                 if not next_task:
                     raise NotFound('No more tasks found')
                 return self._make_response(next_task, request, use_task_lock=False)
@@ -720,34 +771,42 @@ class ProjectNextTaskAPI(generics.RetrieveAPIView):
                 return self._make_response(next_task, request, use_task_lock=False)
 
             if project.show_ground_truth_first:
-                logger.debug(f'User={request.user} tries ground truth from {not_solved_tasks_count} tasks')
+                logger.debug(
+                    f'User={request.user} tries ground truth from {not_solved_tasks_count} tasks')
                 next_task = self._try_ground_truth(not_solved_tasks, project)
                 if next_task:
                     return self._make_response(next_task, request)
 
             if project.show_overlap_first:
                 # don't output anything - just filter tasks with overlap
-                logger.debug(f'User={request.user} tries overlap first from {not_solved_tasks_count} tasks')
-                _, not_solved_tasks = self._try_tasks_with_overlap(not_solved_tasks)
+                logger.debug(
+                    f'User={request.user} tries overlap first from {not_solved_tasks_count} tasks')
+                _, not_solved_tasks = self._try_tasks_with_overlap(
+                    not_solved_tasks)
 
             # don't use this mode for data manager sorting, because the sorting becomes not obvious
             if project.sampling != project.SEQUENCE:
                 # if there any tasks in progress (with maximum number of annotations), randomly sampling from them
-                logger.debug(f'User={request.user} tries depth first from {not_solved_tasks_count} tasks')
+                logger.debug(
+                    f'User={request.user} tries depth first from {not_solved_tasks_count} tasks')
                 next_task = self._try_breadth_first(not_solved_tasks)
                 if next_task:
                     return self._make_response(next_task, request)
 
             if project.sampling == project.UNCERTAINTY:
-                logger.debug(f'User={request.user} tries uncertainty sampling from {not_solved_tasks_count} tasks')
-                next_task = self._try_uncertainty_sampling(not_solved_tasks, project, user_solved_tasks_array)
+                logger.debug(
+                    f'User={request.user} tries uncertainty sampling from {not_solved_tasks_count} tasks')
+                next_task = self._try_uncertainty_sampling(
+                    not_solved_tasks, project, user_solved_tasks_array)
 
             elif project.sampling == project.UNIFORM:
-                logger.debug(f'User={request.user} tries random sampling from {not_solved_tasks_count} tasks')
+                logger.debug(
+                    f'User={request.user} tries random sampling from {not_solved_tasks_count} tasks')
                 next_task = self._get_random_unlocked(not_solved_tasks)
 
             elif project.sampling == project.SEQUENCE:
-                logger.debug(f'User={request.user} tries sequence sampling from {not_solved_tasks_count} tasks')
+                logger.debug(
+                    f'User={request.user} tries sequence sampling from {not_solved_tasks_count} tasks')
                 next_task = self._get_first_unlocked(not_solved_tasks)
 
             if next_task:
@@ -758,11 +817,11 @@ class ProjectNextTaskAPI(generics.RetrieveAPIView):
 
 
 @method_decorator(name='post', decorator=swagger_auto_schema(
-        tags=['Projects'],
-        operation_summary='Validate label config',
-        operation_description='Validate a labeling configuration for a project.',
-        responses={200: 'Validation success'}
-    ))
+    tags=['Projects'],
+    operation_summary='Validate label config',
+    operation_description='Validate a labeling configuration for a project.',
+    responses={200: 'Validation success'}
+))
 class LabelConfigValidateAPI(generics.CreateAPIView):
     parser_classes = (JSONParser, FormParser, MultiPartParser)
     permission_classes = (AllowAny,)
@@ -785,15 +844,15 @@ class LabelConfigValidateAPI(generics.CreateAPIView):
 
 
 @method_decorator(name='post', decorator=swagger_auto_schema(
-        tags=['Projects'],
-        operation_summary='Validate a label config',
-        manual_parameters=[
-            openapi.Parameter(
-                name='label_config',
-                type=openapi.TYPE_STRING,
-                in_=openapi.IN_QUERY,
-                description='labeling config')
-        ]
+    tags=['Projects'],
+    operation_summary='Validate a label config',
+    manual_parameters=[
+        openapi.Parameter(
+            name='label_config',
+            type=openapi.TYPE_STRING,
+            in_=openapi.IN_QUERY,
+            description='labeling config')
+    ]
 ))
 class ProjectLabelConfigValidateAPI(generics.RetrieveAPIView):
     """ Validate label config
@@ -810,7 +869,8 @@ class ProjectLabelConfigValidateAPI(generics.RetrieveAPIView):
             raise RestValidationError('Label config is not set or is empty')
 
         # check new config includes meaningful changes
-        has_changed = config_essential_data_has_changed(label_config, project.label_config)
+        has_changed = config_essential_data_has_changed(
+            label_config, project.label_config)
         project.validate_config(label_config)
         return Response({'config_essential_data_has_changed': has_changed}, status=status.HTTP_200_OK)
 
@@ -831,20 +891,20 @@ class ProjectSummaryAPI(generics.RetrieveAPIView):
 
 
 @method_decorator(name='delete', decorator=swagger_auto_schema(
-        tags=['Projects'],
-        operation_summary='Delete all tasks',
-        operation_description='Delete all tasks from a specific project.'
+    tags=['Projects'],
+    operation_summary='Delete all tasks',
+    operation_description='Delete all tasks from a specific project.'
 ))
 @method_decorator(name='get', decorator=swagger_auto_schema(
-        **paginator_help('tasks', 'Projects'),
-        operation_summary='List project tasks',
-        operation_description="""
+    **paginator_help('tasks', 'Projects'),
+    operation_summary='List project tasks',
+    operation_description="""
             Retrieve a paginated list of tasks for a specific project. For example, use the following cURL command:
             ```bash
             curl -X GET {}/api/projects/{{id}}/tasks/ -H 'Authorization: Token abc123'
             ```
         """.format(settings.HOSTNAME or 'https://localhost:8080')
-    ))
+))
 class TasksListAPI(generics.ListCreateAPIView,
                    generics.DestroyAPIView,
                    APIViewVirtualMethodMixin,
@@ -861,12 +921,14 @@ class TasksListAPI(generics.ListCreateAPIView,
     redirect_kwarg = 'pk'
 
     def get_queryset(self):
-        project = generics.get_object_or_404(Project.objects.for_user(self.request.user), pk=self.kwargs.get('pk', 0))
+        project = generics.get_object_or_404(Project.objects.for_user(
+            self.request.user), pk=self.kwargs.get('pk', 0))
         tasks = Task.objects.filter(project=project)
         return paginator(tasks, self.request)
 
     def delete(self, request, *args, **kwargs):
-        project = generics.get_object_or_404(Project.objects.for_user(self.request.user), pk=self.kwargs['pk'])
+        project = generics.get_object_or_404(
+            Project.objects.for_user(self.request.user), pk=self.kwargs['pk'])
         Task.objects.filter(project=project).delete()
         return Response(status=204)
 
@@ -879,11 +941,13 @@ class TasksListAPI(generics.ListCreateAPIView,
 
     def get_serializer_context(self):
         context = super(TasksListAPI, self).get_serializer_context()
-        context['project'] = get_object_with_check_and_log(self.request, Project, pk=self.kwargs['pk'])
+        context['project'] = get_object_with_check_and_log(
+            self.request, Project, pk=self.kwargs['pk'])
         return context
 
     def perform_create(self, serializer):
-        project = get_object_with_check_and_log(self.request, Project, pk=self.kwargs['pk'])
+        project = get_object_with_check_and_log(
+            self.request, Project, pk=self.kwargs['pk'])
         serializer.save(project=project)
 
 
@@ -901,7 +965,8 @@ class TemplateListAPI(generics.ListAPIView):
                 # if hostname set manually, create full image urls
                 config['image'] = settings.HOSTNAME + config['image']
             configs.append(config)
-        template_groups_file = find_file(os.path.join('annotation_templates', 'groups.txt'))
+        template_groups_file = find_file(
+            os.path.join('annotation_templates', 'groups.txt'))
         with open(template_groups_file, encoding='utf-8') as f:
             groups = f.read().splitlines()
         logger.debug(f'{len(configs)} templates found.')
@@ -932,13 +997,15 @@ class ProjectModelVersions(generics.RetrieveAPIView):
 
     def get(self, request, *args, **kwargs):
         project = self.get_object()
-        model_versions = Prediction.objects.filter(task__project=project).values_list('model_version', flat=True).distinct()
+        model_versions = Prediction.objects.filter(
+            task__project=project).values_list('model_version', flat=True).distinct()
         return Response(data=model_versions)
 
+
 class RankingProjectMemberAPI(generics.ListCreateAPIView,
-                           generics.DestroyAPIView,
-                           APIViewVirtualMethodMixin,
-                           APIViewVirtualRedirectMixin):
+                              generics.DestroyAPIView,
+                              APIViewVirtualMethodMixin,
+                              APIViewVirtualRedirectMixin):
 
     parser_classes = (JSONParser, FormParser, MultiPartParser)
     permission_classes = (IsAuthenticated,)
@@ -946,20 +1013,111 @@ class RankingProjectMemberAPI(generics.ListCreateAPIView,
 
     def get_queryset(self):
         project_id = self.kwargs['pk']
-        user_id = None
-        if 'user' in self.kwargs:
-            user_id = self.kwargs['user']
         current_project = Project.objects.get(id=project_id)
         time_point = "2021-07-13 00:00:00+07"
         num_annotations = Count('annotations', filter=Q(annotations__task__project=current_project) & Q(
             annotations__updated_at__gt=time_point))
 
         return User.objects.filter(project_memberships__project_id=project_id).annotate(
-            avg_lead_time=Avg('annotations__lead_time', filter=Q(annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)),
-            total_points = num_annotations * 100,
+            avg_lead_time=Avg('annotations__lead_time', filter=Q(
+                annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)),
+            total_points=num_annotations * 100,
             rank=Window(
                 expression=Rank(),
                 order_by=F('total_points').desc(),
             )
         )
-    
+
+
+class FilterUserAPI(generics.ListCreateAPIView,
+                    generics.DestroyAPIView,
+                    APIViewVirtualMethodMixin,
+                    APIViewVirtualRedirectMixin):
+
+    parser_classes = (JSONParser, FormParser, MultiPartParser)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserStatisticsSerializer
+
+    def get_queryset(self):
+        project_id = self.kwargs['pk']
+        current_project = Project.objects.get(id=project_id)
+        time_point = "2021-07-13 00:00:00+07"
+        num_annotations = Count('annotations', filter=Q(annotations__task__project=current_project) & Q(
+            annotations__updated_at__gt=time_point))
+
+        return User.objects.filter(project_memberships__project_id=project_id).annotate(
+            avg_lead_time=Avg('annotations__lead_time', filter=Q(
+                annotations__task__project=current_project) & Q(annotations__updated_at__gt=time_point)),
+            total_points=num_annotations * 100,
+            rank=Window(
+                expression=Rank(),
+                order_by=F('total_points').desc(),
+            )
+        )
+
+    def get(self, request, *args, **kwargs):
+        # user_id = None
+        # if 'user' in self.kwargs:
+        #     user_id = self.kwargs['user']
+
+        project_id = self.kwargs['pk']
+        current_user = User.objects.filter(
+            project_memberships__project_id=project_id)
+
+        ranking_tier = current_user.values_list('ranking_tier', flat=True)
+
+        current_project = Project.objects.get(id=project_id)
+        time_point = "2021-07-13 00:00:00+07"
+        num_annotations = Count('annotations', filter=Q(annotations__task__project=current_project) & Q(
+            annotations__updated_at__gt=time_point))
+        total_points = num_annotations*100
+
+        print(num_annotations)
+
+        if not hasattr(current_user, 'ranking_tier'):
+            ranking_tier = None
+
+        if total_points in range(500, 1000):
+            ranking_tier == 'bronze'
+        elif total_points in range(1000, 5000):
+            ranking_tier == 'silver'
+        elif total_points in range(5000, 20000):
+            ranking_tier == 'gold'
+        elif total_points in range(20000, 100000):
+            ranking_tier == 'ruby'
+        elif total_points == '1900':
+            ranking_tier == 'diamond'
+
+        total_ranking_tier = ['bronze', 'silver', 'gold',
+                              'ruby', 'diamond']
+
+        if ranking_tier not in total_ranking_tier:
+            ranking_tier = 'Unranked'
+
+        return super(FilterUserAPI, self).get(request, *args, **kwargs)
+
+    def perform_update(self, serializer):
+        project_id = self.kwargs['pk']
+        user_id = json.loads(self.request.body)['user_pk']
+        ranking_tier = json.loads(self.request.body)['ranking_tier']
+
+        project = Project.objects.get(pk=project_id)
+        user = User.objects.get(pk=user_id)
+        try:
+            serializer.save(user=user, project=project,
+                            ranking_tier=ranking_tier)
+        except IntegrityError as e:
+            raise DatasetJscDatabaseException(
+                'Database error during project creation. Try again.')
+
+    @swagger_auto_schema(auto_schema=None)
+    def post(self, request, *args, **kwargs):
+        return super(FilterUserAPI, self).post(request, *args, **kwargs)
+
+    @swagger_auto_schema(auto_schema=None)
+    def patch(self, request, *args, **kwargs):
+        return super(FilterUserAPI, self).patch(request, *args, **kwargs)
+
+    @swagger_auto_schema(auto_schema=None)
+    def delete(self, request, *args, **kwargs):
+        return super(FilterUserAPI, self).delete(request, *args, **kwargs)

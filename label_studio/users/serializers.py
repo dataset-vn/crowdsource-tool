@@ -1,5 +1,7 @@
 """This file and its contents are licensed under the Apache License 2.0. Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
 """
+from asyncore import read
+from pkgutil import read_code
 from rest_framework import serializers
 from django.conf import settings
 
@@ -50,6 +52,7 @@ class UserStatisticsSerializer(BaseUserSerializer):
     num_skips = serializers.IntegerField(read_only=True)
     avg_lead_time = serializers.IntegerField(read_only=True)
     total_points = serializers.IntegerField(read_only=True)
+    ranking_tier = serializers.CharField(read_only=True)
 
     class Meta:
         model = User
