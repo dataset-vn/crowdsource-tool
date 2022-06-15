@@ -118,7 +118,8 @@ class ViewSerializer(serializers.ModelSerializer):
                 filters_data = filter_group_data.pop("filters", [])
                 filter_group = FilterGroup.objects.create(**filter_group_data)
 
-                self._create_filters(filter_group=filter_group, filters_data=filters_data)
+                self._create_filters(
+                    filter_group=filter_group, filters_data=filters_data)
 
                 validated_data["filter_group_id"] = filter_group.id
             view = View.objects.create(**validated_data)
@@ -133,7 +134,8 @@ class ViewSerializer(serializers.ModelSerializer):
 
                 filter_group = instance.filter_group
                 if filter_group is None:
-                    filter_group = FilterGroup.objects.create(**filter_group_data)
+                    filter_group = FilterGroup.objects.create(
+                        **filter_group_data)
 
                 conjunction = filter_group_data.get("conjunction")
                 if conjunction and filter_group.conjunction != conjunction:
@@ -141,7 +143,8 @@ class ViewSerializer(serializers.ModelSerializer):
                     filter_group.save()
 
                 filter_group.filters.clear()
-                self._create_filters(filter_group=filter_group, filters_data=filters_data)
+                self._create_filters(
+                    filter_group=filter_group, filters_data=filters_data)
 
             ordering = validated_data.pop("ordering", None)
             if ordering and ordering != instance.ordering:
@@ -169,6 +172,9 @@ class DataManagerTaskSerializer(TaskSerializer):
     total_predictions = serializers.SerializerMethodField()
     file_upload = serializers.ReadOnlyField(source='file_upload_name')
     annotators = serializers.SerializerMethodField()
+    """
+    might add a reviewers field here
+    """
 
     class Meta:
         model = Task
@@ -190,7 +196,9 @@ class DataManagerTaskSerializer(TaskSerializer):
             "drafts",
             "file_upload",
             "annotators",
-            "project"
+            "project",
+            "annotator_assigned",
+            "reviewer_assigned",
         ]
 
     @staticmethod
@@ -224,7 +232,8 @@ class DataManagerTaskSerializer(TaskSerializer):
     def get_predictions_score(obj):
         predictions = obj.predictions.all()
         if predictions:
-            values = [item.score for item in predictions if isinstance(item.score, (float, int))]
+            values = [item.score for item in predictions if isinstance(
+                item.score, (float, int))]
             if values:
                 return sum(values) / float(len(values))
         return None
@@ -239,7 +248,8 @@ class DataManagerTaskSerializer(TaskSerializer):
 
     @staticmethod
     def get_annotators(obj):
-        result = obj.annotations.values_list('completed_by', flat=True).distinct()
+        result = obj.annotations.values_list(
+            'completed_by', flat=True).distinct()
         result = [r for r in result if r is not None]
         return result
 
@@ -259,20 +269,25 @@ class DataManagerTaskSerializer(TaskSerializer):
 
 class SelectedItemsSerializer(serializers.Serializer):
     all = serializers.BooleanField()
-    included = serializers.ListField(child=serializers.IntegerField(), required=False)
-    excluded = serializers.ListField(child=serializers.IntegerField(), required=False)
+    included = serializers.ListField(
+        child=serializers.IntegerField(), required=False)
+    excluded = serializers.ListField(
+        child=serializers.IntegerField(), required=False)
 
     def validate(self, data):
         if data["all"] is True and data.get("included"):
-            raise serializers.ValidationError("included not allowed with all==true")
+            raise serializers.ValidationError(
+                "included not allowed with all==true")
         if data["all"] is False and data.get("excluded"):
-            raise serializers.ValidationError("excluded not allowed with all==false")
+            raise serializers.ValidationError(
+                "excluded not allowed with all==false")
 
         view = self.context.get("view")
         request = self.context.get("request")
         if view and request and request.method in ("PATCH", "DELETE"):
             all_value = view.selected_items.get("all")
             if all_value and all_value != data["all"]:
-                raise serializers.ValidationError("changing all value possible only with POST method")
+                raise serializers.ValidationError(
+                    "changing all value possible only with POST method")
 
         return data

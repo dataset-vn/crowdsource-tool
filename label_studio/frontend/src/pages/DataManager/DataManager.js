@@ -1,30 +1,40 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { generatePath, useHistory } from 'react-router';
-import { NavLink } from 'react-router-dom';
-import { Button } from '../../components/Button/Button';
-import { modal } from '../../components/Modal/Modal';
-import { Space } from '../../components/Space/Space';
-import { useLibrary } from '../../providers/LibraryProvider';
-import { useProject } from '../../providers/ProjectProvider';
-import { useContextProps, useFixedLocation, useParams } from '../../providers/RoutesProvider';
-import { addAction, addCrumb, deleteAction, deleteCrumb } from '../../services/breadrumbs';
-import { Block, Elem } from '../../utils/bem';
-import { ImportModal } from '../CreateProject/Import/ImportModal';
-import { ExportPage } from '../ExportPage/ExportPage';
-import { APIConfig } from './api-config';
+import {useCallback, useEffect, useRef, useState} from "react";
+import {generatePath, useHistory} from "react-router";
+import {NavLink} from "react-router-dom";
+import {Button} from "../../components/Button/Button";
+import {modal} from "../../components/Modal/Modal";
+import {Space} from "../../components/Space/Space";
+import {useLibrary} from "../../providers/LibraryProvider";
+import {useProject} from "../../providers/ProjectProvider";
+import {
+  useContextProps,
+  useFixedLocation,
+  useParams,
+} from "../../providers/RoutesProvider";
+import {
+  addAction,
+  addCrumb,
+  deleteAction,
+  deleteCrumb,
+} from "../../services/breadrumbs";
+import {Block, Elem} from "../../utils/bem";
+import {ImportModal} from "../CreateProject/Import/ImportModal";
+import {ExportPage} from "../ExportPage/ExportPage";
+import {APIConfig} from "./api-config";
 import "./DataManager.styl";
-import { useTranslation } from "react-i18next";
+import {useTranslation} from "react-i18next";
+import {useCurrentUser} from "../../providers/CurrentUser";
 
-const initializeDataManager = async (root, props, params) => {
+const initializeDataManager = async (root, props, params, user) => {
   if (!window.LabelStudio) {
-    const { t } = useTranslation();
-    throw Error( t('initDataMan.error') );
+    const {t} = useTranslation();
+    throw Error(t("initDataMan.error"));
   }
   if (!root && root.dataset.dmInitialized) return;
 
   root.dataset.dmInitialized = true;
 
-  const { ...settings } = root.dataset;
+  const {...settings} = root.dataset;
 
   const dmConfig = {
     root,
@@ -34,6 +44,7 @@ const initializeDataManager = async (root, props, params) => {
     polling: !window.APP_SETTINGS,
     showPreviews: false,
     apiEndpoints: APIConfig.endpoints,
+    user: user,
     interfaces: {
       import: false,
       export: false,
@@ -55,11 +66,12 @@ export const DataManagerPage = ({...props}) => {
   const root = useRef();
   const params = useParams();
   const history = useHistory();
-  const LabelStudio = useLibrary('lsf');
-  const DataManager = useLibrary('dm');
+  const LabelStudio = useLibrary("lsf");
+  const DataManager = useLibrary("dm");
   const setContextProps = useContextProps();
   const [crashed, setCrashed] = useState(false);
   const dataManagerRef = useRef();
+  const {user} = useCurrentUser();
 
   const init = useCallback(async () => {
     if (!LabelStudio) return;
@@ -67,11 +79,9 @@ export const DataManagerPage = ({...props}) => {
     if (!root.current) return;
     if (dataManagerRef.current) return;
 
-    dataManagerRef.current = dataManagerRef.current ?? await initializeDataManager(
-      root.current,
-      props,
-      params,
-    );
+    dataManagerRef.current =
+      dataManagerRef.current ??
+      (await initializeDataManager(root.current, props, params, user));
 
     const {current: dataManager} = dataManagerRef;
 
@@ -104,17 +114,15 @@ export const DataManagerPage = ({...props}) => {
 
     return () => destroyDM();
   }, [root, init]);
-  const { t } = useTranslation();
+  const {t} = useTranslation();
   return crashed ? (
-    <Block name="crash">
-      <Elem name="info">{ t('dataMan.info') }</Elem>
+    <Block name='crash'>
+      <Elem name='info'>{t("dataMan.info")}</Elem>
 
-      <Button to="/projects">
-        { t('dataMan.fallback') }
-      </Button>
+      <Button to='/projects'>{t("dataMan.fallback")}</Button>
     </Block>
   ) : (
-    <Block ref={root} name="datamanager"/>
+    <Block ref={root} name='datamanager' />
   );
 };
 
@@ -125,32 +133,34 @@ DataManagerPage.pages = {
 };
 DataManagerPage.context = ({dmRef}) => {
   const location = useFixedLocation();
-  const { project } = useProject();
+  const {project} = useProject();
   const [mode, setMode] = useState(dmRef?.mode ?? "explorer");
-  const { t } = useTranslation();
+  const {t} = useTranslation();
   var links;
-  if(project.current_user_role == "manager" || project.current_user_role == "owner"){
+  if (
+    project.current_user_role == "manager" ||
+    project.current_user_role == "owner"
+  ) {
     links = {
-      '/details': t('dataMan.details'),
-      '/settings': t('dataMan.setting'),
-      '/data/import': t('dataMan.import'),
-      '/data/export': t('dataMan.export'),
+      "/details": t("dataMan.details"),
+      "/settings": t("dataMan.setting"),
+      "/data/import": t("dataMan.import"),
+      "/data/export": t("dataMan.export"),
     };
-  }
-  else{
+  } else {
     links = {
-      '/details': t('dataMan.details'),
-      '/data/import': t('dataMan.import'),
-      '/data/export': t('dataMan.export'),
+      "/details": t("dataMan.details"),
+      "/data/import": t("dataMan.import"),
+      "/data/export": t("dataMan.export"),
     };
   }
   const updateCrumbs = (currentMode) => {
-    const isExplorer = currentMode === 'explorer';
-    const dmPath = location.pathname.replace(DataManagerPage.path, '');
+    const isExplorer = currentMode === "explorer";
+    const dmPath = location.pathname.replace(DataManagerPage.path, "");
 
     if (isExplorer) {
       deleteAction(dmPath);
-      deleteCrumb('dm-crumb');
+      deleteCrumb("dm-crumb");
     } else {
       addAction(dmPath, (e) => {
         e.preventDefault();
@@ -159,20 +169,20 @@ DataManagerPage.context = ({dmRef}) => {
       });
       addCrumb({
         key: "dm-crumb",
-        title: t('dataMan.title'),
+        title: t("dataMan.title"),
       });
     }
   };
 
   const showLabelingInstruction = (currentMode) => {
-    const isLabelStream = currentMode === 'labelstream';
+    const isLabelStream = currentMode === "labelstream";
     const {expert_instruction, show_instruction} = project;
 
     if (isLabelStream && show_instruction && expert_instruction) {
       modal({
         title: "Labeling Instructions",
-        body: <div dangerouslySetInnerHTML={{__html: expert_instruction}}/>,
-        style: { width: 680 },
+        body: <div dangerouslySetInnerHTML={{__html: expert_instruction}} />,
+        style: {width: 680},
       });
     }
   };
@@ -185,24 +195,30 @@ DataManagerPage.context = ({dmRef}) => {
 
   useEffect(() => {
     if (dmRef) {
-      dmRef.on('modeChanged', onDMModeChanged);
+      dmRef.on("modeChanged", onDMModeChanged);
     }
 
     return () => {
-      dmRef?.off?.('modeChanged', onDMModeChanged);
+      dmRef?.off?.("modeChanged", onDMModeChanged);
     };
   }, [dmRef, project]);
 
   return project && project.id ? (
-    <Space size="small">
-      {(project.expert_instruction && mode !== 'explorer') && (
-        <Button size="compact" onClick={() => {
-          modal({
-            title: t('labelInstruc.title'),
-            body: () => <div dangerouslySetInnerHTML={{__html: project.expert_instruction}}/>,
-          });
-        }}>
-          {t('labelInstruc.action')}
+    <Space size='small'>
+      {project.expert_instruction && mode !== "explorer" && (
+        <Button
+          size='compact'
+          onClick={() => {
+            modal({
+              title: t("labelInstruc.title"),
+              body: () => (
+                <div
+                  dangerouslySetInnerHTML={{__html: project.expert_instruction}}
+                />
+              ),
+            });
+          }}>
+          {t("labelInstruc.action")}
         </Button>
       )}
 
@@ -210,10 +226,9 @@ DataManagerPage.context = ({dmRef}) => {
         <Button
           key={path}
           tag={NavLink}
-          size="compact"
+          size='compact'
           to={`/projects/${project.id}${path}`}
-          data-external
-        >
+          data-external>
           {label}
         </Button>
       ))}
