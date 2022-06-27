@@ -1,5 +1,6 @@
 """This file and its contents are licensed under the Apache License 2.0. Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
 """
+from datetime import datetime
 import json
 import logging
 
@@ -30,7 +31,8 @@ class ProjectManager(models.Manager):
     def with_counts(self):
         return self.annotate(
             task_number=Count('tasks', distinct=True),
-            total_predictions_number=Count('tasks__predictions', distinct=True),
+            total_predictions_number=Count(
+                'tasks__predictions', distinct=True),
             total_annotations_number=Count(
                 'tasks__annotations__id', distinct=True,
                 filter=Q(tasks__annotations__was_cancelled=False)
@@ -38,15 +40,15 @@ class ProjectManager(models.Manager):
             num_tasks_with_annotations=Count(
                 'tasks__id', distinct=True,
                 filter=Q(tasks__annotations__isnull=False) &
-                       Q(tasks__annotations__ground_truth=False) &
-                       Q(tasks__annotations__was_cancelled=False) &
-                       Q(tasks__annotations__result__isnull=False)
+                Q(tasks__annotations__ground_truth=False) &
+                Q(tasks__annotations__was_cancelled=False) &
+                Q(tasks__annotations__result__isnull=False)
             ),
             useful_annotation_number=Count(
                 'tasks__annotations__id', distinct=True,
                 filter=Q(tasks__annotations__was_cancelled=False) &
-                       Q(tasks__annotations__ground_truth=False) &
-                       Q(tasks__annotations__result__isnull=False)
+                Q(tasks__annotations__ground_truth=False) &
+                Q(tasks__annotations__result__isnull=False)
             ),
             ground_truth_number=Count(
                 'tasks__annotations__id', distinct=True,
@@ -67,28 +69,40 @@ class Project(ProjectMixin, models.Model):
     """
     objects = ProjectManager()
     __original_label_config = None
-    
+
     title = models.CharField(_('title'), null=True, blank=True, default='', max_length=settings.PROJECT_TITLE_MAX_LEN,
                              help_text=f'Project name. Must be between {settings.PROJECT_TITLE_MIN_LEN} and {settings.PROJECT_TITLE_MAX_LEN} characters long.',
                              validators=[MinLengthValidator(settings.PROJECT_TITLE_MIN_LEN), MaxLengthValidator(settings.PROJECT_TITLE_MAX_LEN)])
-    description = models.TextField(_('description'), blank=True, null=True, default='', help_text='Project description')
+    description = models.TextField(
+        _('description'), blank=True, null=True, default='', help_text='Project description')
 
-    organization = models.ForeignKey('organizations.Organization', on_delete=models.CASCADE, related_name='projects', null=True)
+    organization = models.ForeignKey(
+        'organizations.Organization', on_delete=models.CASCADE, related_name='projects', null=True)
     label_config = models.TextField(_('label config'), blank=True, null=True, default='<View></View>',
                                     help_text='Label config in XML format. See more about it in documentation')
-    expert_instruction = models.TextField(_('expert instruction'), blank=True, null=True, default='', help_text='Labeling instructions in HTML format')
-    show_instruction = models.BooleanField(_('show instruction'), default=False, help_text='Show instructions to the annotator before they start')
+    expert_instruction = models.TextField(
+        _('expert instruction'), blank=True, null=True, default='', help_text='Labeling instructions in HTML format')
+    show_instruction = models.BooleanField(
+        _('show instruction'), default=False, help_text='Show instructions to the annotator before they start')
 
-    show_skip_button = models.BooleanField(_('show skip button'), default=True, help_text='Show a skip button in interface and allow annotators to skip the task')
-    enable_empty_annotation = models.BooleanField(_('enable empty annotation'), default=True, help_text='Allow annotators to submit empty annotations')
+    show_skip_button = models.BooleanField(
+        _('show skip button'), default=True, help_text='Show a skip button in interface and allow annotators to skip the task')
+    enable_empty_annotation = models.BooleanField(
+        _('enable empty annotation'), default=True, help_text='Allow annotators to submit empty annotations')
 
-    show_annotation_history = models.BooleanField(_('show annotation history'), default=False, help_text='Show annotation history to annotator')
-    show_collab_predictions = models.BooleanField(_('show predictions to annotator'), default=True, help_text='If set, the annotator can view model predictions')
-    evaluate_predictions_automatically = models.BooleanField(_('evaluate predictions automatically'), default=False, help_text='Retrieve and display predictions when loading a task')
-    token = models.CharField(_('token'), max_length=256, default=create_hash, null=True, blank=True)
-    result_count = models.IntegerField(_('result count'), default=0, help_text='Total results inside of annotations counter')
-    color = models.CharField(_('color'), max_length=16, default='#FFFFFF', null=True, blank=True)
-    
+    show_annotation_history = models.BooleanField(
+        _('show annotation history'), default=False, help_text='Show annotation history to annotator')
+    show_collab_predictions = models.BooleanField(
+        _('show predictions to annotator'), default=True, help_text='If set, the annotator can view model predictions')
+    evaluate_predictions_automatically = models.BooleanField(
+        _('evaluate predictions automatically'), default=False, help_text='Retrieve and display predictions when loading a task')
+    token = models.CharField(_('token'), max_length=256,
+                             default=create_hash, null=True, blank=True)
+    result_count = models.IntegerField(
+        _('result count'), default=0, help_text='Total results inside of annotations counter')
+    color = models.CharField(_('color'), max_length=16,
+                             default='#FFFFFF', null=True, blank=True)
+
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name='created_projects',
@@ -106,17 +120,19 @@ class Project(ProjectMixin, models.Model):
         help_text='Minimum number of completed tasks after which model training is started'
     )
 
-    control_weights = JSONField(_('control weights'), null=True, default=dict, help_text='Weights for control tags')
+    control_weights = JSONField(
+        _('control weights'), null=True, default=dict, help_text='Weights for control tags')
     model_version = models.TextField(_('model version'), blank=True, null=True, default='',
                                      help_text='Machine learning model version')
     data_types = JSONField(_('data_types'), default=dict, null=True)
-    
+
     is_draft = models.BooleanField(
         _('is draft'), default=False, help_text='Whether or not the project is in the middle of being created')
-    is_published = models.BooleanField(_('published'), default=False, help_text='Whether or not the project is published to annotators')
+    is_published = models.BooleanField(
+        _('published'), default=False, help_text='Whether or not the project is published to annotators')
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
-    
+
     # PROJECT_STATUS = (
     #     ('COMMUNITY', 'Community'),
     #     ('PAID', 'Paid')
@@ -128,12 +144,15 @@ class Project(ProjectMixin, models.Model):
     #     ('CLOSED - RUNNING', 'closed - running'),
     # )
 
-    project_status = models.CharField(_('project_status'), default='Working', max_length=32, help_text='Represents the project status')
-    project_type = models.CharField(_('project_type'), default='Community', max_length=32, help_text='Represents the project status')
-    project_rate = models.DecimalField(_('project_rate'), null = True, decimal_places = 2, max_digits = 10)
-    project_due = models.DateField(_('project_due'), null = True)
-    project_size = models.IntegerField(_('project_size'), default = 0)
-    auto_approval = models.BooleanField(_('auto_approval'), default = False)
+    project_status = models.CharField(
+        _('project_status'), default='Working', max_length=32, help_text='Represents the project status')
+    project_type = models.CharField(
+        _('project_type'), default='Community', max_length=32, help_text='Represents the project status')
+    project_rate = models.DecimalField(
+        _('project_rate'), null=True, decimal_places=2, max_digits=10)
+    project_due = models.DateField(_('project_due'), null=True)
+    project_size = models.IntegerField(_('project_size'), default=0)
+    auto_approval = models.BooleanField(_('auto_approval'), default=False)
 
     SEQUENCE = 'Sequential sampling'
     UNIFORM = 'Uniform sampling'
@@ -145,10 +164,14 @@ class Project(ProjectMixin, models.Model):
         (UNCERTAINTY, 'Tasks are chosen according to model uncertainty scores (active learning mode)')
     )
 
-    sampling = models.CharField(max_length=100, choices=SAMPLING_CHOICES, null=True, default=SEQUENCE)
-    show_ground_truth_first = models.BooleanField(_('show ground truth first'), default=True)
-    show_overlap_first = models.BooleanField(_('show overlap first'), default=True)
-    overlap_cohort_percentage = models.IntegerField(_('overlap_cohort_percentage'), default=100)
+    sampling = models.CharField(
+        max_length=100, choices=SAMPLING_CHOICES, null=True, default=SEQUENCE)
+    show_ground_truth_first = models.BooleanField(
+        _('show ground truth first'), default=True)
+    show_overlap_first = models.BooleanField(
+        _('show overlap first'), default=True)
+    overlap_cohort_percentage = models.IntegerField(
+        _('overlap_cohort_percentage'), default=100)
 
     task_data_login = models.CharField(
         _('task_data_login'), max_length=256, blank=True, null=True, help_text='Task data credentials: login')
@@ -217,7 +240,7 @@ class Project(ProjectMixin, models.Model):
     @property
     def get_labeled_count(self):
         return self.tasks.filter(is_labeled=True).count()
-    
+
     @property
     def get_collected_count(self):
         return self.tasks.count()
@@ -241,7 +264,7 @@ class Project(ProjectMixin, models.Model):
     @property
     def need_annotators(self):
         return self.maximum_annotations - self.num_annotators
-    
+
     @classmethod
     def find_by_invite_url(cls, url):
         token = url.strip('/').split('/')[-1]
@@ -263,7 +286,8 @@ class Project(ProjectMixin, models.Model):
                 ProjectMember.objects.create(user=user, project=self)
                 created = True
             else:
-                logger.debug(f'Project membership {self} for user {user} already exists')
+                logger.debug(
+                    f'Project membership {self} for user {user} already exists')
         return created
 
     def has_collaborator(self, user):
@@ -304,14 +328,16 @@ class Project(ProjectMixin, models.Model):
         tasks_with_overlap_count = tasks_with_overlap.count()
         total_tasks = self.tasks.count()
 
-        new_tasks_with_overlap_count = int(self.overlap_cohort_percentage / 100 * total_tasks + 0.5)
+        new_tasks_with_overlap_count = int(
+            self.overlap_cohort_percentage / 100 * total_tasks + 0.5)
         if tasks_with_overlap_count > new_tasks_with_overlap_count:
             # TODO: warn if we try to reduce current cohort that is already labeled with overlap
             reduce_by = tasks_with_overlap_count - new_tasks_with_overlap_count
             reduce_tasks = sample_query(tasks_with_overlap, reduce_by)
             reduce_tasks.update(overlap=1)
             reduced_tasks_ids = reduce_tasks.values_list('id', flat=True)
-            tasks_with_overlap.exclude(id__in=reduced_tasks_ids).update(overlap=self.maximum_annotations)
+            tasks_with_overlap.exclude(id__in=reduced_tasks_ids).update(
+                overlap=self.maximum_annotations)
 
         elif tasks_with_overlap_count < new_tasks_with_overlap_count:
             increase_by = new_tasks_with_overlap_count - tasks_with_overlap_count
@@ -328,12 +354,12 @@ class Project(ProjectMixin, models.Model):
         """
         po_qs = self.steps_left.order_by('step__order')
         count = po_qs.count()
-        
+
         if count:
             po = po_qs.first()
             po.finished = True
             po.save()
-            
+
             return count != 1
 
     def created_at_prettify(self):
@@ -372,17 +398,21 @@ class Project(ProjectMixin, models.Model):
         fields_from_data = set(self.summary.common_data_columns)
         fields_from_data.discard(settings.DATA_UNDEFINED_NAME)
         if fields_from_data and not fields_from_config.issubset(fields_from_data):
-            different_fields = list(fields_from_config.difference(fields_from_data))
-            raise ValidationError(f'These fields are not present in the data: {",".join(different_fields)}')
+            different_fields = list(
+                fields_from_config.difference(fields_from_data))
+            raise ValidationError(
+                f'These fields are not present in the data: {",".join(different_fields)}')
 
         # validate annotations consistency
-        annotations_from_config = set(get_all_control_tag_tuples(config_string))
+        annotations_from_config = set(
+            get_all_control_tag_tuples(config_string))
         if not annotations_from_config:
             logger.debug(f'Annotation schema is not found in config')
             return
         annotations_from_data = set(self.summary.created_annotations)
         if annotations_from_data and not annotations_from_data.issubset(annotations_from_config):
-            different_annotations = list(annotations_from_data.difference(annotations_from_config))
+            different_annotations = list(
+                annotations_from_data.difference(annotations_from_config))
             diff_str = []
             for ann_tuple in different_annotations:
                 from_name, to_name, t = ann_tuple.split('|')
@@ -402,11 +432,15 @@ class Project(ProjectMixin, models.Model):
                 raise ValidationError(
                     f'There are {sum(labels_from_data.values(), 0)} annotation(s) created with tag '
                     f'"{control_tag_from_data}", you can\'t remove it')
-            labels_from_config_by_tag = set(labels_from_config[control_tag_from_data])
+            labels_from_config_by_tag = set(
+                labels_from_config[control_tag_from_data])
             if not set(labels_from_data).issubset(set(labels_from_config_by_tag)):
-                different_labels = list(set(labels_from_data).difference(labels_from_config_by_tag))
-                diff_str = '\n'.join(f'{l} ({labels_from_data[l]} annotations)' for l in different_labels)
-                raise ValidationError(f'These labels still exist in annotations:\n{diff_str}')
+                different_labels = list(
+                    set(labels_from_data).difference(labels_from_config_by_tag))
+                diff_str = '\n'.join(
+                    f'{l} ({labels_from_data[l]} annotations)' for l in different_labels)
+                raise ValidationError(
+                    f'These labels still exist in annotations:\n{diff_str}')
 
     def _label_config_has_changed(self):
         return self.label_config != self.__original_label_config
@@ -447,7 +481,8 @@ class Project(ProjectMixin, models.Model):
 
         if not exists:
             steps = ProjectOnboardingSteps.objects.all()
-            objs = [ProjectOnboarding(project=self, step=step) for step in steps]
+            objs = [ProjectOnboarding(project=self, step=step)
+                    for step in steps]
             ProjectOnboarding.objects.bulk_create(objs)
 
         # argument for recalculate project task stats
@@ -503,10 +538,12 @@ class Project(ProjectMixin, models.Model):
         :return: filtered annotators
         """
         annotators = self.annotators()
-        q = Q(annotations__task__project=self) & Q_task_finished_annotations & Q(annotations__ground_truth=False)
-        annotators = annotators.annotate(annotation_count=Count('annotations', filter=q, distinct=True))
+        q = Q(annotations__task__project=self) & Q_task_finished_annotations & Q(
+            annotations__ground_truth=False)
+        annotators = annotators.annotate(annotation_count=Count(
+            'annotations', filter=q, distinct=True))
         return annotators.filter(annotation_count__gte=min_count)
-        
+
     def labeled_tasks(self):
         return self.tasks.filter(is_labeled=True)
 
@@ -545,12 +582,14 @@ class Project(ProjectMixin, models.Model):
 
         # get minimum remain annotations
         total_annotations_needed = self.get_total_possible_count
-        annotations_remain = total_annotations_needed - min_n_finished_annotations - annotations_unfinished_tasks
+        annotations_remain = total_annotations_needed - \
+            min_n_finished_annotations - annotations_unfinished_tasks
 
         # get average time of all finished TC
         finished_annotations = Annotation.objects.filter(
             Q(task__project=self.id) & Q(ground_truth=False), result__isnull=False).values('lead_time')
-        avg_lead_time = finished_annotations.aggregate(avg_lead_time=Avg('lead_time'))['avg_lead_time']
+        avg_lead_time = finished_annotations.aggregate(
+            avg_lead_time=Avg('lead_time'))['avg_lead_time']
 
         if avg_lead_time is None:
             return None
@@ -560,9 +599,10 @@ class Project(ProjectMixin, models.Model):
         return not self.tasks.filter(is_labeled=False).exists()
 
     def annotations_lead_time(self):
-        annotations = Annotation.objects.filter(Q(task__project=self.id) & Q(ground_truth=False))
+        annotations = Annotation.objects.filter(
+            Q(task__project=self.id) & Q(ground_truth=False))
         return annotations.aggregate(avg_lead_time=Avg('lead_time'))['avg_lead_time']
-    
+
     @staticmethod
     def django_settings():
         return settings
@@ -582,29 +622,29 @@ class Project(ProjectMixin, models.Model):
 
     class Meta:
         db_table = 'project'
-    
-    
+
+
 class ProjectOnboardingSteps(models.Model):
     """
     """
-    DATA_UPLOAD    = "DU"
-    CONF_SETTINGS  = "CF"
-    PUBLISH        = "PB"
+    DATA_UPLOAD = "DU"
+    CONF_SETTINGS = "CF"
+    PUBLISH = "PB"
     INVITE_EXPERTS = "IE"
-    
+
     STEPS_CHOICES = (
         (DATA_UPLOAD, "Import your data"),
         (CONF_SETTINGS, "Configure settings"),
         (PUBLISH, "Publish project"),
         (INVITE_EXPERTS, "Invite collaborators")
     )
-    
+
     code = models.CharField(max_length=2, choices=STEPS_CHOICES, null=True)
-    
-    title       = models.CharField(_('title'), max_length=1000, null=False)
+
+    title = models.CharField(_('title'), max_length=1000, null=False)
     description = models.TextField(_('description'), null=False)
-    order       = models.IntegerField(default=0)
-    
+    order = models.IntegerField(default=0)
+
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
 
@@ -615,7 +655,8 @@ class ProjectOnboardingSteps(models.Model):
 class ProjectOnboarding(models.Model):
     """
     """
-    step = models.ForeignKey(ProjectOnboardingSteps, on_delete=models.CASCADE, related_name="po_through")
+    step = models.ForeignKey(
+        ProjectOnboardingSteps, on_delete=models.CASCADE, related_name="po_through")
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
     finished = models.BooleanField(default=False)
@@ -665,29 +706,48 @@ class ProjectOnboarding(models.Model):
 #     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
 #     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
 
+class TimePoint(models.Model):
+    project = models.ForeignKey(
+        Project, on_delete=models.CASCADE, related_name='timepoint', help_text='Project ID')
+    start_date = models.DateTimeField(
+        _('start_date'), help_text='Start date of timepoint')
+    end_date = models.DateTimeField(
+        _('end_date'), default=datetime.now(), help_text='End date of timepoint')
+
+    def duration(self):
+        return self.end_time - self.start_time
+
 
 class ProjectMember(models.Model):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='project_memberships', help_text='User ID')  # noqa
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='members', help_text='Project ID')
-    enabled = models.BooleanField(default=True, help_text='Project member is enabled')
-    role = models.CharField(default='annotator', max_length=32, help_text='Represents role of member in project')
+    project = models.ForeignKey(
+        Project, on_delete=models.CASCADE, related_name='members', help_text='Project ID')
+    enabled = models.BooleanField(
+        default=True, help_text='Project member is enabled')
+    role = models.CharField(default='annotator', max_length=32,
+                            help_text='Represents role of member in project')
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
-    contact_status = models.CharField(default='not check', max_length=32, help_text='Represents contact status of member')
+    contact_status = models.CharField(
+        default='not check', max_length=32, help_text='Represents contact status of member')
 
     def get_statistics(self):
-        avg_lead_time = Annotation.objects.filter(completed_by=self.user).aggregate(total_lead_time=Avg('lead_time'))
+        avg_lead_time = Annotation.objects.filter(
+            completed_by=self.user).aggregate(total_lead_time=Avg('lead_time'))
         total_assigned_tasks = 0
-        total_done_tasks = Annotation.objects.filter(completed_by=self.user).count()
+        total_done_tasks = Annotation.objects.filter(
+            completed_by=self.user).count()
 
-        return total_done_tasks 
+        return total_done_tasks
 
 
 class ProjectSummary(models.Model):
 
-    project = AutoOneToOneField(Project, primary_key=True, on_delete=models.CASCADE, related_name='summary')
-    created_at = models.DateTimeField(_('created at'), auto_now_add=True, help_text='Creation time')
+    project = AutoOneToOneField(
+        Project, primary_key=True, on_delete=models.CASCADE, related_name='summary')
+    created_at = models.DateTimeField(
+        _('created at'), auto_now_add=True, help_text='Creation time')
 
     # { col1: task_count_with_col1, col2: task_count_with_col2 }
     all_data_columns = JSONField(
@@ -732,9 +792,11 @@ class ProjectSummary(models.Model):
         if not self.common_data_columns:
             self.common_data_columns = list(sorted(common_data_columns))
         else:
-            self.common_data_columns = list(sorted(set(self.common_data_columns) & common_data_columns))
+            self.common_data_columns = list(
+                sorted(set(self.common_data_columns) & common_data_columns))
         logger.debug(f'summary.all_data_columns = {self.all_data_columns}')
-        logger.debug(f'summary.common_data_columns = {self.common_data_columns}')
+        logger.debug(
+            f'summary.common_data_columns = {self.common_data_columns}')
         self.save()
 
     def remove_data_columns(self, tasks):
@@ -758,7 +820,8 @@ class ProjectSummary(models.Model):
                     common_data_columns.remove(key)
             self.common_data_columns = common_data_columns
         logger.debug(f'summary.all_data_columns = {self.all_data_columns}')
-        logger.debug(f'summary.common_data_columns = {self.common_data_columns}')
+        logger.debug(
+            f'summary.common_data_columns = {self.common_data_columns}')
         self.save()
 
     def _get_annotation_key(self, result):
@@ -770,7 +833,8 @@ class ProjectSummary(models.Model):
                 'Unexpected annotation.result format: "from_name" or "to_name" not found in %r' % result)
             return None
         result_from_name = result['from_name']
-        key = get_annotation_tuple(result_from_name, result['to_name'], result_type or '')
+        key = get_annotation_tuple(
+            result_from_name, result['to_name'], result_type or '')
         return key
 
     def _get_labels(self, result):
@@ -802,7 +866,8 @@ class ProjectSummary(models.Model):
                     labels[from_name] = dict()
 
                 for label in self._get_labels(result):
-                    labels[from_name][label] = labels[from_name].get(label, 0) + 1
+                    labels[from_name][label] = labels[from_name].get(
+                        label, 0) + 1
 
         logger.debug(f'summary.created_annotations = {created_annotations}')
         logger.debug(f'summary.created_labels = {labels}')

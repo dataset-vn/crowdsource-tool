@@ -6,7 +6,7 @@ from django.conf import settings
 from django.contrib.auth.models import Group
 
 from users.models import User
-from projects.models import Project, ProjectMember
+from projects.models import Project, ProjectMember, TimePoint
 from ml.models import MLBackend, MLBackendTrainJob
 from tasks.models import Task, Annotation
 from organizations.models import Organization
@@ -21,14 +21,17 @@ class UserAdminShort(UserAdmin):
         self.list_display = [l for l in self.list_display if l != 'username']
 
         self.fieldsets = ((None, {'fields': ('password', )}),
-                          ('Personal info', {'fields': ('first_name', 'last_name', 'email')}),
-                          ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser',)}),
+                          ('Personal info', {
+                           'fields': ('first_name', 'last_name', 'email')}),
+                          ('Permissions', {
+                           'fields': ('is_active', 'is_staff', 'is_superuser',)}),
                           ('Important dates', {'fields': ('last_login', 'date_joined')}))
-        
+
 
 admin.site.register(User, UserAdminShort)
 admin.site.register(Project)
 admin.site.register(ProjectMember)
+admin.site.register(TimePoint)
 admin.site.register(MLBackend)
 admin.site.register(MLBackendTrainJob)
 admin.site.register(Task)

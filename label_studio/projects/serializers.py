@@ -7,7 +7,7 @@ from rest_framework import serializers
 from rest_framework.serializers import SerializerMethodField
 from users.serializers import UserSimpleSerializer
 
-from projects.models import Project, ProjectMember, ProjectOnboarding, ProjectSummary
+from projects.models import Project, ProjectMember, ProjectOnboarding, ProjectSummary, TimePoint
 
 
 class CreatedByFromContext:
@@ -23,23 +23,24 @@ class ProjectSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
     """
 
     task_number = serializers.IntegerField(default=None, read_only=True,
-                                        help_text='Total task number in project')
+                                           help_text='Total task number in project')
     total_annotations_number = serializers.IntegerField(default=None, read_only=True,
-                                                    help_text='Total annotations number in project including '
-                                                              'skipped_annotations_number and ground_truth_number.')
+                                                        help_text='Total annotations number in project including '
+                                                        'skipped_annotations_number and ground_truth_number.')
     total_predictions_number = serializers.IntegerField(default=None, read_only=True,
-                                                    help_text='Total predictions number in project including '
-                                                              'skipped_annotations_number and ground_truth_numberuseful_annotation_number.')
+                                                        help_text='Total predictions number in project including '
+                                                        'skipped_annotations_number and ground_truth_numberuseful_annotation_number.')
     useful_annotation_number = serializers.IntegerField(default=None, read_only=True,
-                                                     help_text='Useful annotation number in project not including '
-                                                               'skipped_annotations_number and ground_truth_number. '
-                                                               'Total annotations = annotation_number + '
-                                                               'skipped_annotations_number + ground_truth_number')
+                                                        help_text='Useful annotation number in project not including '
+                                                        'skipped_annotations_number and ground_truth_number. '
+                                                        'Total annotations = annotation_number + '
+                                                        'skipped_annotations_number + ground_truth_number')
     ground_truth_number = serializers.IntegerField(default=None, read_only=True,
-                                            help_text='Honeypot annotation number in project')
+                                                   help_text='Honeypot annotation number in project')
     skipped_annotations_number = serializers.IntegerField(default=None, read_only=True,
-                                                      help_text='Skipped by collaborators annotation number in project')
-    num_tasks_with_annotations = serializers.IntegerField(default=None, read_only=True, help_text='Tasks with annotations count')
+                                                          help_text='Skipped by collaborators annotation number in project')
+    num_tasks_with_annotations = serializers.IntegerField(
+        default=None, read_only=True, help_text='Tasks with annotations count')
     created_by = UserSimpleSerializer(default=CreatedByFromContext())
 
     parsed_label_config = SerializerMethodField(default=None, read_only=True,
@@ -48,7 +49,8 @@ class ProjectSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
                                                                 help_text='Start model training after any annotations are submitted or updated')
     config_has_control_tags = SerializerMethodField(default=None, read_only=True,
                                                     help_text='Flag to detect is project ready for labeling')
-    current_user_role = serializers.CharField(default=None, read_only=True, help_text='Role of the current user in Project')
+    current_user_role = serializers.CharField(
+        default=None, read_only=True, help_text='Role of the current user in Project')
 
     @staticmethod
     def get_config_has_control_tags(project):
@@ -67,12 +69,14 @@ class ProjectSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
         initial_data = data
         data = super().to_internal_value(data)
         if 'start_training_on_annotation_update' in initial_data:
-            data['min_annotations_to_start_training'] = int(initial_data['start_training_on_annotation_update'])
+            data['min_annotations_to_start_training'] = int(
+                initial_data['start_training_on_annotation_update'])
         return data
 
     class Meta:
         model = Project
-        extra_kwargs = {'memberships': {'required': False}, 'title': {'required': False}, 'created_by': {'required': False}}
+        extra_kwargs = {'memberships': {'required': False}, 'title': {
+            'required': False}, 'created_by': {'required': False}}
         fields = ['id', 'title', 'description', 'label_config', 'expert_instruction', 'show_instruction', 'show_skip_button',
                   'enable_empty_annotation', 'show_annotation_history', 'organization', 'color',
                   'maximum_annotations', 'is_published', 'model_version', 'is_draft', 'created_by', 'created_at',
@@ -95,21 +99,25 @@ class ProjectSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
             self.instance.validate_config(value)
         return value
 
+
 class ProjectMemberSerializer(serializers.ModelSerializer):
-    
-    first_name = serializers.CharField(source='user.first_name', required = False)
-    last_name = serializers.CharField(source='user.last_name', required = False)
-    email = serializers.CharField(source='user.email', required = False)
-    phone = serializers.CharField(source='user.phone', required = False)
-    date_joined = serializers.CharField(source='user.date_joined', required = False)
-    activity_at = serializers.CharField(source='user.activity_at', required = False)
-    avatar = serializers.CharField(source='user.avatar', required = False)
+
+    first_name = serializers.CharField(
+        source='user.first_name', required=False)
+    last_name = serializers.CharField(source='user.last_name', required=False)
+    email = serializers.CharField(source='user.email', required=False)
+    phone = serializers.CharField(source='user.phone', required=False)
+    date_joined = serializers.CharField(
+        source='user.date_joined', required=False)
+    activity_at = serializers.CharField(
+        source='user.activity_at', required=False)
+    avatar = serializers.CharField(source='user.avatar', required=False)
     total_records = serializers.IntegerField(read_only=True)
-    
 
     class Meta:
         model = ProjectMember
-        extra_kwargs = {'project': {'required': False}, 'user': {'required': False}}
+        extra_kwargs = {'project': {'required': False},
+                        'user': {'required': False}}
         fields = (
             'id',
             'role',
@@ -129,10 +137,12 @@ class ProjectMemberSerializer(serializers.ModelSerializer):
 
 
 class ProjectMemberStatisticsSerializer(serializers.ModelSerializer):
-    num_annotations=serializers.IntegerField(read_only=True)
+    num_annotations = serializers.IntegerField(read_only=True)
+
     class Meta:
         model = ProjectMember
-        extra_kwargs = {'project': {'required': False}, 'user': {'required': False}}
+        extra_kwargs = {'project': {'required': False},
+                        'user': {'required': False}}
         fields = (
             'user',
             'project',
@@ -159,4 +169,10 @@ class ProjectSummarySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProjectSummary
+        fields = '__all__'
+
+
+class TimePointSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TimePoint
         fields = '__all__'

@@ -1,5 +1,6 @@
 """This file and its contents are licensed under the Apache License 2.0. Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
 """
+from sqlite3 import Time
 import drf_yasg.openapi as openapi
 import logging
 import numpy as np
@@ -15,7 +16,7 @@ from django.conf import settings
 from django.shortcuts import get_object_or_404
 from drf_yasg.utils import swagger_auto_schema
 from django.utils.decorators import method_decorator
-from django.db.models import F, Q, When, Count, Case, OuterRef, Max, Exists, Value, BooleanField, Avg, Window, ExpressionWrapper, FloatField
+from django.db.models import F, Q, When, Count, Case, OuterRef, Max, Exists, Value, BooleanField, Avg, Window
 from django.db.models.functions import Rank
 from rest_framework.views import APIView
 from rest_framework import generics, status, filters
@@ -28,10 +29,10 @@ from rest_framework.views import exception_handler
 from core.utils.common import conditional_atomic
 from core.label_config import config_essential_data_has_changed
 from projects.models import (
-    Project, ProjectSummary, ProjectMember
+    Project, ProjectSummary, ProjectMember, TimePoint
 )
 from projects.serializers import (
-    ProjectSerializer, ProjectMemberSerializer, ProjectLabelConfigSerializer, ProjectSummarySerializer, ProjectMemberStatisticsSerializer
+    ProjectSerializer, ProjectMemberSerializer, ProjectLabelConfigSerializer, ProjectSummarySerializer, ProjectMemberStatisticsSerializer, TimePointSerializer
 )
 
 from users.models import User
@@ -335,6 +336,7 @@ class ProjectMemberStatisticsAPI(generics.ListCreateAPIView,
             raise DatasetJscDatabaseException(
                 "Operation can only be performed by a project manager or project owner")
         current_project = Project.objects.get(id=project_id)
+
         time_point = "2021-07-13 00:00:00+07"
 
         if user_id != None:
@@ -1011,10 +1013,23 @@ class RankingProjectMemberAPI(generics.ListCreateAPIView,
     permission_classes = (IsAuthenticated,)
     serializer_class = UserStatisticsSerializer
 
+    def get_time_point(self):
+        project_id = self.kwargs['pk']
+        current_project = Project.objects.get(id=project_id)
+        time_point = TimePoint.objects.filter(
+            project=current_project)[0].start_date
+
+        if time_point is None:
+            time_point = "2021-07-13 00:00:00+07"
+
+        return time_point
+
     def get_queryset(self):
         project_id = self.kwargs['pk']
         current_project = Project.objects.get(id=project_id)
-        time_point = "2021-07-13 00:00:00+07"
+
+        time_point = self.get_time_point()
+
         num_annotations = Count('annotations', filter=Q(annotations__task__project=current_project) & Q(
             annotations__updated_at__gt=time_point))
 
@@ -1029,6 +1044,34 @@ class RankingProjectMemberAPI(generics.ListCreateAPIView,
         )
 
 
+class TimePointAPI(generics.ListCreateAPIView,
+                   generics.DestroyAPIView,
+                   APIViewVirtualMethodMixin,
+                   APIViewVirtualRedirectMixin):
+
+    parser_classes = (JSONParser, FormParser, MultiPartParser)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = TimePointSerializer
+
+    def get_queryset(self):
+        return TimePoint.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        return super(TimePointAPI, self).get(request, *args, **kwargs)
+
+    @swagger_auto_schema(auto_schema=None)
+    def post(self, request, *args, **kwargs):
+        return super(TimePointAPI, self).post(request, *args, **kwargs)
+
+    @swagger_auto_schema(auto_schema=None)
+    def patch(self, request, *args, **kwargs):
+        return super(TimePointAPI, self).patch(request, *args, **kwargs)
+
+    @swagger_auto_schema(auto_schema=None)
+    def delete(self, request, *args, **kwargs):
+        return super(TimePointAPI, self).delete(request, *args, **kwargs)
+
+
 class FilterUserAPI(generics.ListCreateAPIView,
                     generics.DestroyAPIView,
                     APIViewVirtualMethodMixin,
@@ -1038,10 +1081,23 @@ class FilterUserAPI(generics.ListCreateAPIView,
     permission_classes = (IsAuthenticated,)
     serializer_class = UserStatisticsSerializer
 
+    def get_time_point(self):
+        project_id = self.kwargs['pk']
+        current_project = Project.objects.get(id=project_id)
+        time_point = TimePoint.objects.filter(
+            project=current_project)[0].start_date
+
+        if time_point is None:
+            time_point = "2021-07-13 00:00:00+07"
+
+        return time_point
+
     def get_queryset(self):
         project_id = self.kwargs['pk']
         current_project = Project.objects.get(id=project_id)
-        time_point = "2021-07-13 00:00:00+07"
+
+        time_point = self.get_time_point()
+
         num_annotations = Count('annotations', filter=Q(annotations__task__project=current_project) & Q(
             annotations__updated_at__gt=time_point))
 
@@ -1056,37 +1112,18 @@ class FilterUserAPI(generics.ListCreateAPIView,
         )
 
     def get(self, request, *args, **kwargs):
-        # user_id = None
-        # if 'user' in self.kwargs:
-        #     user_id = self.kwargs['user']
+        user_id = None
+        if 'user' in self.kwargs:
+            user_id = self.kwargs['user']
 
         project_id = self.kwargs['pk']
         current_user = User.objects.filter(
             project_memberships__project_id=project_id)
 
-        ranking_tier = current_user.values_list('ranking_tier', flat=True)
-
-        current_project = Project.objects.get(id=project_id)
-        time_point = "2021-07-13 00:00:00+07"
-        num_annotations = Count('annotations', filter=Q(annotations__task__project=current_project) & Q(
-            annotations__updated_at__gt=time_point))
-        total_points = num_annotations*100
-
-        print(num_annotations)
+        ranking_tier = current_user.values('ranking_tier')
 
         if not hasattr(current_user, 'ranking_tier'):
             ranking_tier = None
-
-        if total_points in range(500, 1000):
-            ranking_tier == 'bronze'
-        elif total_points in range(1000, 5000):
-            ranking_tier == 'silver'
-        elif total_points in range(5000, 20000):
-            ranking_tier == 'gold'
-        elif total_points in range(20000, 100000):
-            ranking_tier == 'ruby'
-        elif total_points == '1900':
-            ranking_tier == 'diamond'
 
         total_ranking_tier = ['bronze', 'silver', 'gold',
                               'ruby', 'diamond']

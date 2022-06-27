@@ -80,6 +80,10 @@ _api_urlpatterns = [
     path('<int:pk>/filter_user', api.FilterUserAPI.as_view(),
          name='update-project-member-filter'),
 
+    # Update timepoint of project member's data
+    path('timepoint', api.TimePointAPI.as_view(),
+         name='update-time-point'),
+
 ]
 
 _api_urlpatterns_templates = [

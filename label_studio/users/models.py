@@ -113,7 +113,7 @@ class User(UserMixin, AbstractBaseUser, PermissionsMixin, UserLastActivityMixin)
     active_organization = models.ForeignKey(
         'organizations.Organization', on_delete=models.SET_NULL, related_name='active_users', null=True)
 
-    ranking_tier = models.CharField(_('ranking_tier'), max_length=256, help_text=_(
+    ranking_tier = models.CharField(_('ranking_tier'), max_length=256, default='Unranked', help_text=_(
         'The tiers based on ranking points of users'))
 
     objects = UserManager()
